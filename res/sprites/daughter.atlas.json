@@ -1,0 +1,304 @@
+{
+  "sprites": [ 
+    {
+      "name": "daughter-idle-east.sprite",
+      "source": {
+        "x": 14,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 338,
+        "y": 0,
+        "width": 31,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-idle-north.sprite",
+      "source": {
+        "x": 14,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 136,
+        "y": 0,
+        "width": 36,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-idle-south.sprite",
+      "source": {
+        "x": 14,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 172,
+        "y": 0,
+        "width": 36,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-idle-west.sprite",
+      "source": {
+        "x": 19,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 369,
+        "y": 0,
+        "width": 31,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-east1.sprite",
+      "source": {
+        "x": 12,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 462,
+        "y": 0,
+        "width": 38,
+        "height": 54
+      }
+    },
+    {
+      "name": "daughter-move-east2.sprite",
+      "source": {
+        "x": 12,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 574,
+        "y": 0,
+        "width": 35,
+        "height": 53
+      }
+    },
+    {
+      "name": "daughter-move-east3.sprite",
+      "source": {
+        "x": 13,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "width": 36,
+        "height": 57
+      }
+    },
+    {
+      "name": "daughter-move-east4.sprite",
+      "source": {
+        "x": 14,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 400,
+        "y": 0,
+        "width": 31,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-north1.sprite",
+      "source": {
+        "x": 12,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 644,
+        "y": 0,
+        "width": 36,
+        "height": 52
+      }
+    },
+    {
+      "name": "daughter-move-north2.sprite",
+      "source": {
+        "x": 16,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 242,
+        "y": 0,
+        "width": 32,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-north3.sprite",
+      "source": {
+        "x": 16,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 538,
+        "y": 0,
+        "width": 36,
+        "height": 53
+      }
+    },
+    {
+      "name": "daughter-move-north4.sprite",
+      "source": {
+        "x": 16,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 274,
+        "y": 0,
+        "width": 32,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-south1.sprite",
+      "source": {
+        "x": 16,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 72,
+        "y": 0,
+        "width": 32,
+        "height": 57
+      }
+    },
+    {
+      "name": "daughter-move-south2.sprite",
+      "source": {
+        "x": 16,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 306,
+        "y": 0,
+        "width": 32,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-south3.sprite",
+      "source": {
+        "x": 16,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 104,
+        "y": 0,
+        "width": 32,
+        "height": 57
+      }
+    },
+    {
+      "name": "daughter-move-south4.sprite",
+      "source": {
+        "x": 15,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 208,
+        "y": 0,
+        "width": 34,
+        "height": 56
+      }
+    },
+    {
+      "name": "daughter-move-west1.sprite",
+      "source": {
+        "x": 14,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 500,
+        "y": 0,
+        "width": 38,
+        "height": 54
+      }
+    },
+    {
+      "name": "daughter-move-west2.sprite",
+      "source": {
+        "x": 17,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 609,
+        "y": 0,
+        "width": 35,
+        "height": 53
+      }
+    },
+    {
+      "name": "daughter-move-west3.sprite",
+      "source": {
+        "x": 15,
+        "y": 4,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 36,
+        "y": 0,
+        "width": 36,
+        "height": 57
+      }
+    },
+    {
+      "name": "daughter-move-west4.sprite",
+      "source": {
+        "x": 19,
+        "y": 5,
+        "width": 64,
+        "height": 64
+      },
+      "frame": {
+        "x": 431,
+        "y": 0,
+        "width": 31,
+        "height": 56
+      }
+    }
+  ]
+}

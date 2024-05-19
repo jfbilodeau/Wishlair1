@@ -1,0 +1,18 @@
+{
+  "action.playerLeft": {
+    "code1" :"A",
+    "code2": "Left"
+  },
+  "action.playerRight": {
+    "code1" :"D",
+    "code2": "Right"
+  },
+  "action.playerUp": {
+    "code1" :"W",
+    "code2": "Up"
+  },
+  "action.playerDown": {
+    "code1" :"S",
+    "code2": "Down"
+  }
+}

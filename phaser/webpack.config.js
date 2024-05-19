@@ -31,7 +31,7 @@ module.exports = {
     ],
     output: {
         path: path.resolve(__dirname, 'dist'),
-        // publicPath: '/assets/',
+        // publicPath: '/assets',
         filename: 'wishlair1.js',
         clean: true,
     }
