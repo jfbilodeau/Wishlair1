@@ -1,4 +1,5 @@
 import 'phaser'
+import {LoadScene} from "./scenes/load-scene";
 
 export class Wishlair {
     private game: Phaser.Game
@@ -8,7 +9,7 @@ export class Wishlair {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: {},
+            scene: LoadScene,
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -19,9 +20,10 @@ export class Wishlair {
                 }
             },
             scale: {
-                mode: Phaser.Scale.ENVELOP,
-                center: Phaser.Scale.CENTER_BOTH
-            }
+                parent: 'game',
+                mode: Phaser.Scale.FIT,
+                autoCenter: Phaser.Scale.CENTER_BOTH
+            },
         }
 
         this.game = new Phaser.Game(config);
