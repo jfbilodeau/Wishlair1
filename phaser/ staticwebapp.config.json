@@ -1,0 +1,7 @@
+{
+  "route": "/*",
+  "allowedRoles": ["WishlairUser"],
+  "headers": {
+    "Cache-Control": "no-store"
+  }
+}
