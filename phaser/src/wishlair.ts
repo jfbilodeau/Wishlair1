@@ -1,5 +1,5 @@
 import 'phaser'
-import {LoadScene} from "./scenes/load-scene";
+import {LoadScene} from "./scenes/LoadScene";
 
 export class Wishlair {
     private game: Phaser.Game
@@ -9,6 +9,7 @@ export class Wishlair {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
+            pixelArt: true,
             scene: LoadScene,
             physics: {
                 default: 'arcade',
