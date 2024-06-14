@@ -1,11 +1,12 @@
 import {LoadScene} from './scenes/LoadScene'
+import {Wishlair} from './wishlair/Wishlair'
 
 // const wishlair = new Wishlair()
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 480,
+    height: 320,
     pixelArt: true,
     scene: LoadScene,
     physics: {

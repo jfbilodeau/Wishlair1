@@ -1,4 +1,5 @@
 import 'phaser'
+import {wishlair} from '../wishlair/Wishlair'
 
 export class Player extends Phaser.GameObjects.Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys
@@ -24,11 +25,11 @@ export class Player extends Phaser.GameObjects.Sprite {
 
         this.cursorKeys = this.scene.input.keyboard.createCursorKeys()
 
-        this.left1 = this.scene.input.keyboard.addKey(scene.game.wishlair.config.keyMap.left1)
-        this.left2 = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+        this.left1 = this.scene.input.keyboard.addKey(wishlair.config.keyMap.left1)
+        this.left2 = this.scene.input.keyboard.addKey(wishlair.config.keyMap.left2)
 
-        this.right1 = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
-        this.right2 = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        this.right1 = this.scene.input.keyboard.addKey(wishlair.config.keyMap.right1)
+        this.right2 = this.scene.input.keyboard.addKey(wishlair.config.keyMap.right2)
 
         this.scene.events.on("update", this.update, this)
     }

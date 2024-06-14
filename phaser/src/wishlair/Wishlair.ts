@@ -7,5 +7,9 @@ export class Wishlair {
 
     constructor() {
     }
+
+    public loadResources() {
+    }
 }
 
+export const wishlair = new Wishlair()
