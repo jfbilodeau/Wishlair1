@@ -32,7 +32,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>phaser</string>
+        <string>NomadExporter</string>
         <key>textureFileName</key>
         <filename></filename>
         <key>flipPVR</key>
@@ -121,10 +121,10 @@
         </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
-            <key>json</key>
+            <key>NomadAtlas</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>G:/My Drive/Projects/Wishlair 1/res/sprites/daughter.atlas.json</filename>
+                <filename>../res/daughter.atlas.json</filename>
             </struct>
         </map>
         <key>multiPackMode</key>
@@ -155,7 +155,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -173,26 +173,26 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-east.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-north.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-south.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-west.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east1.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east2.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east3.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east4.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north1.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north2.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north3.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north4.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south1.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south2.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south3.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south4.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west1.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west2.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west3.png</key>
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west4.png</key>
+            <key type="filename">daughter/daughter-idle-east.png</key>
+            <key type="filename">daughter/daughter-idle-north.png</key>
+            <key type="filename">daughter/daughter-idle-south.png</key>
+            <key type="filename">daughter/daughter-idle-west.png</key>
+            <key type="filename">daughter/daughter-move-east1.png</key>
+            <key type="filename">daughter/daughter-move-east2.png</key>
+            <key type="filename">daughter/daughter-move-east3.png</key>
+            <key type="filename">daughter/daughter-move-east4.png</key>
+            <key type="filename">daughter/daughter-move-north1.png</key>
+            <key type="filename">daughter/daughter-move-north2.png</key>
+            <key type="filename">daughter/daughter-move-north3.png</key>
+            <key type="filename">daughter/daughter-move-north4.png</key>
+            <key type="filename">daughter/daughter-move-south1.png</key>
+            <key type="filename">daughter/daughter-move-south2.png</key>
+            <key type="filename">daughter/daughter-move-south3.png</key>
+            <key type="filename">daughter/daughter-move-south4.png</key>
+            <key type="filename">daughter/daughter-move-west1.png</key>
+            <key type="filename">daughter/daughter-move-west2.png</key>
+            <key type="filename">daughter/daughter-move-west3.png</key>
+            <key type="filename">daughter/daughter-move-west4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -214,7 +214,7 @@
             <struct type="SpriteSheet">
                 <key>files</key>
                 <array>
-                    <filename>G:/My Drive/Projects/Wishlair 1/raw/daughter</filename>
+                    <filename>daughter</filename>
                 </array>
             </struct>
         </map>

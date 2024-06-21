@@ -1,7 +1,8 @@
 import 'phaser'
 import {wishlair} from '../wishlair/Wishlair'
+import Sprite = Phaser.GameObjects.Sprite
 
-export class Player extends Phaser.GameObjects.Sprite {
+export class Player extends Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys
     private left1: Phaser.Input.Keyboard.Key
     private left2: Phaser.Input.Keyboard.Key
@@ -16,7 +17,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     private speed = 1
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'daughter', 'daughter-idle-south.png')
+        super(scene, x, y, 'daughter', 'daughter-idle-south-00.png')
 
         this.scene.add.existing(this)
         this.scene.physics.add.existing(this)
@@ -40,9 +41,15 @@ export class Player extends Phaser.GameObjects.Sprite {
 
         if (this.moveLeft) {
             this.x -= 1
+            this.anims.play('daughter-move-west', true)
         }
         if (this.moveRight) {
             this.x += 1
+            this.anims.play('daughter-move-east', true)
+        }
+
+        if (!this.moveLeft && !this.moveRight) {
+            this.anims.play('daughter-idle-south', true)
         }
     }
 }

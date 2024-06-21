@@ -1,5 +1,5 @@
 import {LoadScene} from './scenes/LoadScene'
-import {Wishlair} from './wishlair/Wishlair'
+import WishlairScene from './scenes/WishlairScene'
 
 // const wishlair = new Wishlair()
 
@@ -8,7 +8,7 @@ const config = {
     width: 480,
     height: 320,
     pixelArt: true,
-    scene: LoadScene,
+    scene: [LoadScene, WishlairScene],
     physics: {
         default: 'arcade',
         arcade: {

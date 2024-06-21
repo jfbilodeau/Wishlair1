@@ -10,7 +10,7 @@
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "daughter-move-east3.png",
+					"filename": "daughter-move-east-02.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -35,7 +35,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-west3.png",
+					"filename": "daughter-move-west-02.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -60,7 +60,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-south1.png",
+					"filename": "daughter-move-south-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -85,7 +85,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-south3.png",
+					"filename": "daughter-move-south-02.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -110,7 +110,7 @@
 					}
 				},
 				{
-					"filename": "daughter-idle-north.png",
+					"filename": "daughter-idle-north-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -135,7 +135,7 @@
 					}
 				},
 				{
-					"filename": "daughter-idle-south.png",
+					"filename": "daughter-idle-south-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -160,7 +160,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-south4.png",
+					"filename": "daughter-move-south-03.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -185,7 +185,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-north2.png",
+					"filename": "daughter-move-north-01.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -210,7 +210,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-north4.png",
+					"filename": "daughter-move-north-03.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -235,7 +235,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-south2.png",
+					"filename": "daughter-move-south-01.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -260,7 +260,7 @@
 					}
 				},
 				{
-					"filename": "daughter-idle-east.png",
+					"filename": "daughter-idle-east-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -285,7 +285,7 @@
 					}
 				},
 				{
-					"filename": "daughter-idle-west.png",
+					"filename": "daughter-idle-west-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -310,7 +310,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-east4.png",
+					"filename": "daughter-move-east-03.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -335,7 +335,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-west4.png",
+					"filename": "daughter-move-west-03.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -360,7 +360,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-east1.png",
+					"filename": "daughter-move-east-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -385,7 +385,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-west1.png",
+					"filename": "daughter-move-west-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -410,7 +410,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-north3.png",
+					"filename": "daughter-move-north-02.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -435,7 +435,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-east2.png",
+					"filename": "daughter-move-east-01.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -460,7 +460,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-west2.png",
+					"filename": "daughter-move-west-01.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -485,7 +485,7 @@
 					}
 				},
 				{
-					"filename": "daughter-move-north1.png",
+					"filename": "daughter-move-north-00.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -515,6 +515,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:2e60aacf7081731b77eec321f5385209:b4d944f7f807265952a4a2c766ee9752:c5c552f1e32b4ae4ff3bb773771da865$"
+		"smartupdate": "$TexturePacker:SmartUpdate:c830d8ad121bc1927affe6ffb05438db:b4d944f7f807265952a4a2c766ee9752:c5c552f1e32b4ae4ff3bb773771da865$"
 	}
 }
