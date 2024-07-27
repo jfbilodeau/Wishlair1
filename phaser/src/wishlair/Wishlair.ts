@@ -1,15 +1,27 @@
 import 'phaser'
-import {LoadScene} from "../scenes/LoadScene";
 import {Configuration} from './Configuration'
+import {ControllerManager} from './ControllerManager'
+import {Game} from 'phaser'
+import {Inputs} from './Inputs'
+import {PlayerController} from '../controllers/PlayerController'
+import {Inventory} from './Inventory'
 
 export class Wishlair {
-    public config: Configuration = new Configuration()
+    config = new Configuration()
+    inputs = new Inputs(this)
+    inventory = new Inventory()
+    controllers = new ControllerManager(this)
 
-    constructor() {
+    constructor(public game: Game) {
+        this.initializeControllers()
     }
 
-    public loadResources() {
+    loadResources() {
+    }
+
+    private initializeControllers() {
+        this.controllers.addController('player', new PlayerController(this))
     }
 }
 
-export const wishlair = new Wishlair()
+// export const wishlair = new Wishlair()

@@ -1,6 +1,6 @@
 import 'phaser'
-import {wishlair} from '../wishlair/Wishlair'
 import Sprite = Phaser.GameObjects.Sprite
+import {wishlair} from '../index'
 
 export class Player extends Sprite {
     private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys
@@ -14,7 +14,7 @@ export class Player extends Sprite {
     private moveLeft = false
     private moveRight = false
 
-    private speed = 1
+    private speed = 100
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'daughter', 'daughter-idle-south-00.png')
@@ -33,6 +33,8 @@ export class Player extends Sprite {
         this.right2 = this.scene.input.keyboard.addKey(wishlair.config.keyMap.right2)
 
         this.scene.events.on("update", this.update, this)
+
+        this.speed = 100
     }
 
     update() {
@@ -40,15 +42,18 @@ export class Player extends Sprite {
         this.moveRight = this.right1.isDown || this.right2.isDown
 
         if (this.moveLeft) {
-            this.x -= 1
+            // this.x -= 1
+            this.body.velocity.x = -this.speed
             this.anims.play('daughter-move-west', true)
         }
         if (this.moveRight) {
-            this.x += 1
+            // this.x += 1
+            this.body.velocity.x = this.speed
             this.anims.play('daughter-move-east', true)
         }
 
         if (!this.moveLeft && !this.moveRight) {
+            this.body.velocity.x = 0
             this.anims.play('daughter-idle-south', true)
         }
     }

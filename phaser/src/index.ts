@@ -1,7 +1,6 @@
 import {LoadScene} from './scenes/LoadScene'
 import WishlairScene from './scenes/WishlairScene'
-
-// const wishlair = new Wishlair()
+import {Wishlair} from './wishlair/Wishlair'
 
 const config = {
     type: Phaser.AUTO,
@@ -26,4 +25,6 @@ const config = {
 }
 
 const game = new Phaser.Game(config)
+
+export const wishlair = new Wishlair(game)
 

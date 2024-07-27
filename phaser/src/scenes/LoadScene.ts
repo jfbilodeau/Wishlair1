@@ -1,5 +1,6 @@
 import {Scene} from 'phaser'
 import AnimationFrame = Phaser.Animations.AnimationFrame
+import {wishlair} from '../index'
 
 export class LoadScene extends Scene {
     preload() {
@@ -59,7 +60,7 @@ export class LoadScene extends Scene {
             frames: <Phaser.Types.Animations.AnimationFrame[]><unknown>frames,
             frameRate,
             // duration: 10,
-            repeat: -1
+            repeat: -1,
         })
     }
 
@@ -69,11 +70,13 @@ export class LoadScene extends Scene {
         this.createAnimation('daughter-idle-east', 'daughter', 0)
         this.createAnimation('daughter-idle-west', 'daughter', 0)
 
-        this.createAnimation('daughter-move-north', 'daughter', 10)
-        this.createAnimation('daughter-move-south', 'daughter', 10)
-        this.createAnimation('daughter-move-east', 'daughter', 10)
-        this.createAnimation('daughter-move-west', 'daughter', 10)
+        this.createAnimation('daughter-move-north', 'daughter', 6)
+        this.createAnimation('daughter-move-south', 'daughter', 6)
+        this.createAnimation('daughter-move-east', 'daughter', 6)
+        this.createAnimation('daughter-move-west', 'daughter', 6)
 
-        this.scene.start('wishlair')
+        this.registry.set('wishlair', wishlair)
+
+        this.scene.start('wishlair', { wishlair })
     }
 }
