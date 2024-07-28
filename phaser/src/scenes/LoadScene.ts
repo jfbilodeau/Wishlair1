@@ -1,6 +1,4 @@
 import {Scene} from 'phaser'
-import AnimationFrame = Phaser.Animations.AnimationFrame
-import {wishlair} from '../index'
 
 export class LoadScene extends Scene {
     preload() {
@@ -9,20 +7,6 @@ export class LoadScene extends Scene {
     }
 
     private createAnimation(key: string, textureKey: string, frameRate: number) {
-        // this.anims.create({
-        //     key,
-        //     frames: this.anims.generateFrameNames(textureKey, {
-        //         prefix: `${key}-`,
-        //         suffix: '.png',
-        //         zeroPad: 2,
-        //         start: 0,
-        //         end: 0,
-        //
-        //     }),
-        //     frameRate,
-        //     repeat: -1
-        // })
-
         const texture = this.textures.get(textureKey)
         const frames = []
         let frameIndex = 0
@@ -75,8 +59,6 @@ export class LoadScene extends Scene {
         this.createAnimation('daughter-move-east', 'daughter', 6)
         this.createAnimation('daughter-move-west', 'daughter', 6)
 
-        this.registry.set('wishlair', wishlair)
-
-        this.scene.start('wishlair', { wishlair })
+        this.scene.start('wishlair')
     }
 }

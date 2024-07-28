@@ -1,4 +1,5 @@
 import Point = Phaser.Geom.Point
+import {Cardinal} from '../wishlair/Directions'
 
 export class Entity {
     public controllerId: string
@@ -9,6 +10,7 @@ export class Entity {
     public z = 0
 
     public velocity = new Point()
+    public direction = Cardinal.South
 
     // Animation
     public animationId = ''

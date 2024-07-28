@@ -1,0 +1,23 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+    },
+    "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world",
+    "loadedWorlds": [
+        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.world"
+    ],
+    "map.height": 10,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 15,
+    "openFiles": [
+    ],
+    "project": "wishlair.tiled-project",
+    "recentFiles": [
+    ]
+}

@@ -1,8 +1,7 @@
 import {Entity} from '../entities/Entity'
 import {EntityController} from './EntityController'
-import {Scene} from 'phaser'
 import {Wishlair} from '../wishlair/Wishlair'
-import {wishlair} from '../index'
+import {Cardinal, getAngleFromCardinal} from '../wishlair/Directions'
 
 export class PlayerController extends EntityController {
     private wishlair: Wishlair
@@ -12,32 +11,39 @@ export class PlayerController extends EntityController {
         this.wishlair = wishlair
     }
 
-    protected override onInitialize(wishlair: Wishlair, entity: Entity): void {
-        console.log('PlayerController initialized')
+    protected override onInitialize(wishlair: Wishlair, entity: Entity) {
     }
 
-    protected override onTick(wishlair: Wishlair, entity: Entity): void {
-        console.log('PlayerController ticked')
-
+    protected override onTick(wishlair: Wishlair, entity: Entity) {
         const moveLeft = wishlair.inputs.left1.isDown || wishlair.inputs.left2.isDown
         const moveRight = wishlair.inputs.right1.isDown || wishlair.inputs.right2.isDown
+        const moveUp = wishlair.inputs.up1.isDown || wishlair.inputs.up2.isDown
+        const moveDown = wishlair.inputs.down1.isDown || wishlair.inputs.down2.isDown
+
+        entity.velocity.x = 0
+        entity.velocity.y = 0
 
         if (moveLeft) {
-            // this.x -= 1
             entity.velocity.x = -wishlair.inventory.player.speed
-            entity.animationId = 'daughter-move-west'
+            entity.direction = Cardinal.West
         }
         if (moveRight) {
-            // this.x += 1
             entity.velocity.x = wishlair.inventory.player.speed
-            entity.animationId = 'daughter-move-east'
-            // this.anims.play('daughter-move-east', true)
+            entity.direction = Cardinal.East
+        }
+        if (moveUp) {
+            entity.velocity.y = -wishlair.inventory.player.speed
+            entity.direction = Cardinal.North
+        }
+        if (moveDown) {
+            entity.velocity.y = wishlair.inventory.player.speed
+            entity.direction = Cardinal.South
         }
 
-        if (!moveLeft && !moveRight) {
-            entity.velocity.x = 0
-            entity.animationId = 'daughter-idle-south'
-            // this.anims.play('daughter-idle-south', true)
+        if (!moveLeft && !moveRight && !moveUp && !moveDown) {
+            entity.animationId = 'daughter-idle'
+        } else {
+            entity.animationId = 'daughter-move'
         }
     }
 }

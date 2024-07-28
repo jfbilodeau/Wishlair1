@@ -1,0 +1,11 @@
+{
+    "maps": [
+        {
+            "filename": "wishlair-entrance-1.tmx",
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

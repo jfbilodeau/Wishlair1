@@ -10,10 +10,10 @@ export class Inputs {
     public left2: Key
     public right1: Key
     public right2: Key
-    private up1: Key
-    private up2: Key
-    private down1: Key
-    private down2: Key
+    up1: Key
+    up2: Key
+    down1: Key
+    down2: Key
 
     constructor (private wishlair: Wishlair) {
 

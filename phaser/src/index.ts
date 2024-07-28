@@ -26,5 +26,6 @@ const config = {
 
 const game = new Phaser.Game(config)
 
-export const wishlair = new Wishlair(game)
+const wishlair = new Wishlair(game)
 
+game.registry.set('wishlair', wishlair)

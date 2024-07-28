@@ -5,6 +5,7 @@ import {Game} from 'phaser'
 import {Inputs} from './Inputs'
 import {PlayerController} from '../controllers/PlayerController'
 import {Inventory} from './Inventory'
+import WishlairScene from '../scenes/WishlairScene'
 
 export class Wishlair {
     config = new Configuration()
@@ -19,8 +20,16 @@ export class Wishlair {
     loadResources() {
     }
 
+    startScene(sceneId: string) {
+        this.game.scene.start('wishlair')
+    }
+
     private initializeControllers() {
         this.controllers.addController('player', new PlayerController(this))
+    }
+
+    initializeScene(scene: WishlairScene) {
+        this.inputs.reset(scene)
     }
 }
 
