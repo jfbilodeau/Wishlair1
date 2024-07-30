@@ -21,7 +21,9 @@ export class Wishlair {
     }
 
     startScene(sceneId: string) {
-        this.game.scene.start('wishlair')
+        const newScene = new WishlairScene(sceneId)
+
+        this.game.scene.add(sceneId, newScene, true)
     }
 
     private initializeControllers() {

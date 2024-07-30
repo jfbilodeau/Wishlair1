@@ -59,6 +59,10 @@ export class LoadScene extends Scene {
         this.createAnimation('daughter-move-east', 'daughter', 6)
         this.createAnimation('daughter-move-west', 'daughter', 6)
 
-        this.scene.start('wishlair')
+        // this.scene.start('wishlair')
+        const wishlair = this.game.registry.get('wishlair')
+        wishlair.startScene('wishlair-entrance-1')
+
+        this.scene.remove(this)
     }
 }

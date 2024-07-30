@@ -1,9 +1,39 @@
 {
     "maps": [
         {
-            "filename": "wishlair-entrance-1.tmx",
+            "fileName": ".",
+            "height": 0,
+            "width": 0,
             "x": 0,
             "y": 0
+        },
+        {
+            "fileName": ".",
+            "height": 0,
+            "width": 0,
+            "x": 0,
+            "y": 480
+        },
+        {
+            "fileName": "wishlair-entrance-1.tmx",
+            "height": 320,
+            "width": 480,
+            "x": 0,
+            "y": 480
+        },
+        {
+            "fileName": "wishlair-entrance-2.tmx",
+            "height": 320,
+            "width": 480,
+            "x": 0,
+            "y": 160
+        },
+        {
+            "fileName": "wishlair-entrance-3.tmx",
+            "height": 320,
+            "width": 480,
+            "x": 0,
+            "y": -160
         }
     ],
     "onlyShowAdjacentMaps": false,

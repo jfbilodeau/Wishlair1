@@ -4,10 +4,16 @@ import {Wishlair} from '../wishlair/Wishlair'
 export default class WishlairScene extends Phaser.Scene {
     public wishlair: Wishlair
 
-    constructor() {
+    constructor(public sceneId: string) {
         super({
-            key: 'wishlair'
+            key: sceneId
         })
+    }
+
+    preload() {
+        const tiledFileName = `assets/world/${this.sceneId}.tmx`
+
+        this.load.tilemapTiledJSON(this.sceneId, tiledFileName)
     }
 
     create() {

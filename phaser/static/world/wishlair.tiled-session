@@ -3,11 +3,51 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "entities.tsx",
     "expandedProjectPaths": [
+        "entities",
+        "."
     ],
     "fileStates": {
+        "entities.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "wishlair-entrance-1.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 180,
+                "y": -336.5
+            }
+        },
+        "wishlair-entrance-2.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 294,
+                "y": 315.5
+            }
+        },
+        "wishlair-entrance-3.tmx": {
+            "scale": 1.4487499999999998,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 240.207075064711,
+                "y": 160.48317515099228
+            }
+        },
+        "wishlair.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        }
     },
+    "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/sprites/forest",
+    "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/entities",
     "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world",
     "loadedWorlds": [
         "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.world"
@@ -16,8 +56,16 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 15,
     "openFiles": [
+        "wishlair-entrance-2.tmx",
+        "entities.tsx",
+        "wishlair-entrance-1.tmx"
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
-    ]
+        "wishlair-entrance-2.tmx",
+        "wishlair-entrance-1.tmx",
+        "entities.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
 }
