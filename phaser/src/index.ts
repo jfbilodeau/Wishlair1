@@ -4,8 +4,8 @@ import {Wishlair} from './wishlair/Wishlair'
 
 const config = {
     type: Phaser.AUTO,
-    width: 480,
-    height: 320,
+    width: 800,
+    height: 480,
     pixelArt: true,
     scene: [LoadScene, WishlairScene],
     physics: {

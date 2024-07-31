@@ -15,21 +15,21 @@
             "y": 480
         },
         {
-            "fileName": "wishlair-entrance-1.tmx",
-            "height": 320,
-            "width": 480,
+            "fileName": "wishlair-entrance-1.tmj",
+            "height": 480,
+            "width": 800,
             "x": 0,
             "y": 480
         },
         {
-            "fileName": "wishlair-entrance-2.tmx",
+            "fileName": "wishlair-entrance-2.tmj",
             "height": 320,
             "width": 480,
             "x": 0,
             "y": 160
         },
         {
-            "fileName": "wishlair-entrance-3.tmx",
+            "fileName": "wishlair-entrance-3.tmj",
             "height": 320,
             "width": 480,
             "x": 0,

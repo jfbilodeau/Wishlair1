@@ -32,7 +32,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>phaser</string>
+        <string>NomadExporter</string>
         <key>textureFileName</key>
         <filename></filename>
         <key>flipPVR</key>
@@ -121,10 +121,10 @@
         </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
-            <key>json</key>
+            <key>NomadAtlas</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>G:/My Drive/Projects/Wishlair 1/res/sprites/forest.json</filename>
+                <filename>../res/daughter.atlas.json</filename>
             </struct>
         </map>
         <key>multiPackMode</key>
@@ -155,7 +155,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -167,99 +167,43 @@
             <key>heuristicMask</key>
             <false/>
             <key>defaultPivotPoint</key>
-            <point_f>0.5,0.5</point_f>
+            <point_f>0,0</point_f>
             <key>writePivotPoints</key>
-            <false/>
+            <true/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">sprites/forest/conifer1.png</key>
+            <key type="filename">daughter/daughter-idle-east.png</key>
+            <key type="filename">daughter/daughter-idle-north.png</key>
+            <key type="filename">daughter/daughter-idle-south.png</key>
+            <key type="filename">daughter/daughter-idle-west.png</key>
+            <key type="filename">daughter/daughter-move-east1.png</key>
+            <key type="filename">daughter/daughter-move-east2.png</key>
+            <key type="filename">daughter/daughter-move-east3.png</key>
+            <key type="filename">daughter/daughter-move-east4.png</key>
+            <key type="filename">daughter/daughter-move-north1.png</key>
+            <key type="filename">daughter/daughter-move-north2.png</key>
+            <key type="filename">daughter/daughter-move-north3.png</key>
+            <key type="filename">daughter/daughter-move-north4.png</key>
+            <key type="filename">daughter/daughter-move-south1.png</key>
+            <key type="filename">daughter/daughter-move-south2.png</key>
+            <key type="filename">daughter/daughter-move-south3.png</key>
+            <key type="filename">daughter/daughter-move-south4.png</key>
+            <key type="filename">daughter/daughter-move-west1.png</key>
+            <key type="filename">daughter/daughter-move-west2.png</key>
+            <key type="filename">daughter/daughter-move-west3.png</key>
+            <key type="filename">daughter/daughter-move-west4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>46,78,93,155</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9Paddings</key>
-                <rect>46,78,93,155</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/forest/rock1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>23,21,46,41</rect>
-                <key>scale9Paddings</key>
-                <rect>23,21,46,41</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/forest/rock2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>11,9,22,19</rect>
-                <key>scale9Paddings</key>
-                <rect>11,9,22,19</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/forest/rock3.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>16,12,32,23</rect>
-                <key>scale9Paddings</key>
-                <rect>16,12,32,23</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/forest/rock4.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>32,27,63,53</rect>
-                <key>scale9Paddings</key>
-                <rect>32,27,63,53</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">sprites/forest/tree1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>62,66,123,131</rect>
-                <key>scale9Paddings</key>
-                <rect>62,66,123,131</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -270,7 +214,7 @@
             <struct type="SpriteSheet">
                 <key>files</key>
                 <array>
-                    <filename>sprites/forest</filename>
+                    <filename>daughter</filename>
                 </array>
             </struct>
         </map>

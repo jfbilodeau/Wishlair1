@@ -1,0 +1,65 @@
+{ "compressionlevel":-1,
+ "height":10,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[201, 202, 201, 201, 201, 201, 201, 73, 74, 74, 76, 10, 11, 201, 201,
+            201, 201, 201, 201, 202, 201, 201, 73, 140, 74, 74, 74, 75, 201, 203,
+            201, 201, 9, 10, 10, 10, 11, 137, 13, 74, 140, 74, 75, 201, 201,
+            201, 9, 77, 74, 140, 74, 75, 201, 137, 13, 140, 74, 75, 201, 201,
+            201, 73, 74, 74, 74, 74, 76, 11, 201, 73, 74, 74, 75, 202, 201,
+            201, 73, 74, 140, 74, 74, 141, 75, 201, 73, 74, 141, 75, 201, 201,
+            201, 137, 13, 74, 74, 74, 74, 76, 10, 77, 74, 74, 75, 201, 201,
+            201, 201, 137, 13, 141, 74, 74, 74, 74, 74, 74, 141, 75, 201, 201,
+            201, 203, 201, 137, 138, 13, 74, 141, 74, 74, 12, 138, 139, 201, 201,
+            201, 201, 201, 201, 201, 137, 138, 138, 138, 138, 139, 201, 202, 201, 201],
+         "height":10,
+         "id":1,
+         "name":"ground",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":15,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":2,
+         "name":"ground-entities",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":3,
+ "nextobjectid":10,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.10.2",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":64,
+         "firstgid":1,
+         "image":"tileset.png",
+         "imageheight":2048,
+         "imagewidth":2048,
+         "margin":0,
+         "name":"wishlair",
+         "spacing":0,
+         "tilecount":4096,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":4097,
+         "source":"entities.tsj"
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.10",
+ "width":15
+}

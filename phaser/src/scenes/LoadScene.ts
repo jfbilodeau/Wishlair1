@@ -1,9 +1,16 @@
 import {Scene} from 'phaser'
 
+const assets = `assets`
+const sprites = `${assets}/sprites`
+const world = `${assets}/world`
+
 export class LoadScene extends Scene {
     preload() {
-        this.load.atlas('daughter', 'assets/daughter.png', 'assets/daughter.json')
-        this.load.atlas('forest', 'assets/forest.png', 'assets/forest.json')
+        // Load tileset image
+        this.load.image('tiles', `${world}/tileset.png`)
+
+        this.load.atlas('daughter', `${sprites}/daughter.png`, `${sprites}/daughter.json`)
+        this.load.atlas('forest', `${sprites}/forest.png`, `${sprites}/forest.json`)
     }
 
     private createAnimation(key: string, textureKey: string, frameRate: number) {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" source="wishlair.tsx"/>
- <tileset firstgid="4097" source="entities.tsx"/>
  <layer id="1" name="ground" width="15" height="10">
   <data encoding="csv">
 201,202,201,201,201,201,201,73,74,74,76,10,11,201,201,
@@ -16,8 +15,5 @@
 201,201,201,201,201,137,138,138,138,138,139,201,202,201,201
 </data>
  </layer>
- <objectgroup id="2" name="ground-entities">
-  <object id="1" template="entities/conifer1.tx" x="-51" y="337"/>
-  <object id="4" template="entities/conifer1.tx" gid="2147487745" x="365" y="333"/>
- </objectgroup>
+ <objectgroup id="2" name="ground-entities"/>
 </map>

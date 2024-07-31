@@ -1,5 +1,5 @@
 export class Inventory {
     player = {
-        speed: 70
+        speed: 100
     }
 }
