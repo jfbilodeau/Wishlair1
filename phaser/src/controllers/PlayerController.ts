@@ -4,11 +4,8 @@ import {Wishlair} from '../wishlair/Wishlair'
 import {Cardinal, getAngleFromCardinal} from '../wishlair/Directions'
 
 export class PlayerController extends EntityController {
-    private wishlair: Wishlair
-
-    public constructor(wishlair: Wishlair) {
+    public constructor(public wishlair: Wishlair) {
         super()
-        this.wishlair = wishlair
     }
 
     protected override onInitialize(wishlair: Wishlair, entity: Entity) {
