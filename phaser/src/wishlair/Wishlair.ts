@@ -6,8 +6,10 @@ import {Inputs} from './Inputs'
 import {PlayerController} from '../controllers/PlayerController'
 import {Inventory} from './Inventory'
 import WishlairScene from '../scenes/WishlairScene'
+import {System} from './System'
 
 export class Wishlair {
+    system = new System()
     config = new Configuration()
     inputs = new Inputs(this)
     inventory = new Inventory()

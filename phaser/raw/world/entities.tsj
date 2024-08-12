@@ -16,37 +16,73 @@
          "id":2,
          "image":"..\/..\/..\/raw\/sprites\/forest\/conifer1.png",
          "imageheight":310,
-         "imagewidth":185
+         "imagewidth":185,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"conifer1"
+                }]
         }, 
         {
          "id":3,
          "image":"..\/..\/..\/raw\/sprites\/forest\/rock1.png",
          "imageheight":83,
-         "imagewidth":92
+         "imagewidth":92,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"rock1"
+                }]
         }, 
         {
          "id":4,
          "image":"..\/..\/..\/raw\/sprites\/forest\/rock2.png",
          "imageheight":37,
-         "imagewidth":44
+         "imagewidth":44,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"rock2"
+                }]
         }, 
         {
          "id":5,
          "image":"..\/..\/..\/raw\/sprites\/forest\/rock3.png",
          "imageheight":47,
-         "imagewidth":64
+         "imagewidth":64,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"rock3"
+                }]
         }, 
         {
          "id":6,
          "image":"..\/..\/..\/raw\/sprites\/forest\/rock4.png",
          "imageheight":107,
-         "imagewidth":127
+         "imagewidth":127,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"rock4"
+                }]
         }, 
         {
          "id":7,
          "image":"..\/..\/..\/raw\/sprites\/forest\/tree1.png",
          "imageheight":262,
-         "imagewidth":246
+         "imagewidth":246,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"tree1"
+                }]
         }],
  "tilewidth":246,
  "type":"tileset",

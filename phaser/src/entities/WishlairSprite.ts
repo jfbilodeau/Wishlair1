@@ -8,7 +8,7 @@ import {Cardinal, getCardinalName} from '../wishlair/Directions'
 export class WishlairSprite extends Phaser.GameObjects.Sprite {
     private readonly wishlair: Wishlair
     private readonly wishlairScene: WishlairScene
-    private entity: Entity = new Entity()
+    entity: Entity = new Entity()
     private controllerId = ""
     private controller: EntityController
     private animationId = ""
@@ -30,7 +30,7 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
 
         scene.add.existing(this)
 
-        this.scene.events.on("update", this.tick, this)
+        // this.scene.events.on("update", this.tick, this)
     }
 
     public tick() {

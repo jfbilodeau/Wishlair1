@@ -9,6 +9,9 @@ export class Entity {
     // 'Distance' from the ground. Affect shadow
     public z = 0
 
+    // Which layer the entity is on
+    public layer = 0
+
     public velocity = new Point()
     public direction = Cardinal.South
 
