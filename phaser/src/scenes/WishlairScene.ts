@@ -3,11 +3,13 @@ import {Wishlair} from '../wishlair/Wishlair'
 import Tilemap = Phaser.Tilemaps.Tilemap
 import GameObject = Phaser.GameObjects.GameObject
 import Group = Phaser.GameObjects.Group
+import {LayerGameObject, LevelGameObject} from './LevelGameObject'
 
 export default class WishlairScene extends Phaser.Scene {
-    public wishlair: Wishlair
-    private map: Tilemap
-    private layers: Group[] = []
+    wishlair: Wishlair
+    // private layers: Group[] = []
+    map: Tilemap
+    level: LevelGameObject
 
     constructor(public sceneId: string) {
         super({
@@ -26,11 +28,7 @@ export default class WishlairScene extends Phaser.Scene {
 
         console.log(this.wishlair)
 
-        this.layers = [
-            this.add.group(),
-            this.add.group(),
-            this.add.group(),
-        ]
+        this.level = new LevelGameObject(this, 0, 0)
 
         this.wishlair.initializeScene(this)
 
@@ -40,6 +38,8 @@ export default class WishlairScene extends Phaser.Scene {
 
         const groundLayer = this.map.createLayer('ground', tileset)
 
+        this.level.layers[0].tiles.add(groundLayer)
+
         // const player = new Player(this, 100, 100)
         const player = this.createEntity(100, 100, 1, 'player')
     }
@@ -47,14 +47,16 @@ export default class WishlairScene extends Phaser.Scene {
     createEntity(x: number, y: number, layer: number, controllerId: string) {
         const entitySprite = new WishlairSprite(this, x, y, controllerId)
 
-        this.layers[layer].add(entitySprite)
+        this.level.layers[layer].entities.add(entitySprite)
 
         return entitySprite
     }
 
     update() {
-        this.layers.forEach(layer => {
-            layer.children.each((child: GameObject) => {
+        this.level.layers.forEach(child => {
+            var layer = child as LayerGameObject
+
+            layer.entities.each((child: GameObject) => {
                 const sprite = child as WishlairSprite
 
                 sprite.tick()
