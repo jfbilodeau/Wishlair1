@@ -50,7 +50,7 @@
             209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 209, 211, 209, 209, 209, 210, 209, 209, 209, 209, 209, 209, 209, 209],
          "height":45,
          "id":1,
-         "name":"ground",
+         "name":"layer-1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -61,7 +61,7 @@
         {
          "draworder":"topdown",
          "id":2,
-         "name":"ground-entities",
+         "name":"layer-1-entities",
          "objects":[
                 {
                  "id":10,

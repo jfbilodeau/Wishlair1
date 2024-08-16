@@ -29,3 +29,7 @@ const game = new Phaser.Game(config)
 const wishlair = new Wishlair(game)
 
 game.registry.set('wishlair', wishlair)
+
+const debugWindow = window as any
+
+debugWindow.wishlair = wishlair

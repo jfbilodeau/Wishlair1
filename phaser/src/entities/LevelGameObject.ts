@@ -10,12 +10,14 @@ export class LayerGameObject extends Container {
     constructor(public level: LevelGameObject) {
         super(level.scene)
 
+        this.name = 'LayerGameObject'
+
         this.add(this.tiles)
         this.add(this.entities)
     }
 }
 
-export class LevelGameObject extends GameObject {
+export class LevelGameObject extends Container {
     roomX = 0
     roomY = 0
     root = this.scene.add.container(0, 0)
@@ -26,7 +28,13 @@ export class LevelGameObject extends GameObject {
     ]
 
     constructor(public scene: WishlairScene, roomX: number, roomY: number) {
-        super(scene, 'WorldGameObject')
+        super(scene)
+
+        this.name = 'WorldGameObject'
+
+        this.add(this.root)
+
+        this.root.name = 'root'
 
         this.layers.forEach(layer => {
             this.root.add(layer)
@@ -41,13 +49,15 @@ export class LevelGameObject extends GameObject {
 
         this.root.x = -roomX * this.scene.wishlair.system.roomWidth
         this.root.y = -roomY * this.scene.wishlair.system.roomHeight
+
+        console.log(this.root.x, this.root.y)
     }
 
-    createEntity(x: number, y: number, layer: number, controllerId: string) {
-        const entitySprite = new WishlairSprite(this.scene, x, y, controllerId)
-
-        this.layers[layer].entities.add(entitySprite)
-
-        return entitySprite
-    }
+    // createEntity(x: number, y: number, layer: number, controllerId: string) {
+    //     const entitySprite = new WishlairSprite(this.scene, x, y, controllerId)
+    //
+    //     this.layers[layer].entities.add(entitySprite)
+    //
+    //     return entitySprite
+    // }
 }

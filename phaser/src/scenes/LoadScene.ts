@@ -6,8 +6,6 @@ const world = `${assets}/world`
 
 export class LoadScene extends Scene {
     preload() {
-        this.load.json('build-stats', `build-stats.json`)
-
         // Load tileset image
         this.load.image('tiles', `${world}/tileset.png`)
 
