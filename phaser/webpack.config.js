@@ -1,15 +1,23 @@
 const path = require('path')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
     entry: './src/index.ts',
 
     plugins: [
-        // new HtmlWebpackPlugin({
-        //     title: 'Wishlair 1',
-        // }),
+        function() {
+            this.hooks.done.tap('BuildStatsPlugin', function() {
+                const timestamp = {
+                    buildTime: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                }
+
+                const fs = require('fs')
+
+                fs.writeFileSync('dist/build-stats.json', JSON.stringify(timestamp, null, 2))
+            })
+        },
         new MiniCssExtractPlugin(),
         new CopyWebpackPlugin({
             patterns: [
@@ -17,6 +25,9 @@ module.exports = {
                     from: path.resolve(__dirname, 'static'),
                 }, // Adjust the source directory as needed
             ],
+        }),
+        new webpack.DefinePlugin({
+            __BUILD_TIME__: JSON.stringify(new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''))
         }),
     ],
 
@@ -48,3 +59,4 @@ module.exports = {
         clean: true,
     }
 }
+
