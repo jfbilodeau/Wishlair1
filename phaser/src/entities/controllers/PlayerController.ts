@@ -1,7 +1,7 @@
-import {Entity} from '../entities/Entity'
+import {Entity} from '../Entity'
 import {EntityController} from './EntityController'
-import {Wishlair} from '../wishlair/Wishlair'
-import {Cardinal, getAngleFromCardinal} from '../wishlair/Directions'
+import {Wishlair} from '../../wishlair/Wishlair'
+import {Cardinal, getAngleFromCardinal} from '../../wishlair/Directions'
 
 export class PlayerController extends EntityController {
     public constructor(public wishlair: Wishlair) {

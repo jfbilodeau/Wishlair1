@@ -1,6 +1,6 @@
-import {Entity} from '../entities/Entity'
+import {Entity} from '../Entity'
 import {Scene} from 'phaser'
-import {Wishlair} from '../wishlair/Wishlair'
+import {Wishlair} from '../../wishlair/Wishlair'
 
 export abstract class EntityController {
     protected constructor() {

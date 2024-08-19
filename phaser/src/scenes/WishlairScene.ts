@@ -6,6 +6,8 @@ import Group = Phaser.GameObjects.Group
 import {LayerGameObject, LevelGameObject} from '../entities/LevelGameObject'
 import TilemapLayer = Phaser.Tilemaps.TilemapLayer
 import Camera = Phaser.Cameras.Scene2D.Camera
+import {SceneController} from './controllers/SceneController'
+import {PlayController} from './controllers/PlayController'
 
 // From Webpack DefinePlugin
 declare var __BUILD_TIME__: string
@@ -18,10 +20,15 @@ export default class WishlairScene extends Phaser.Scene {
     roomX = 0
     roomY = 0
 
-    constructor(public sceneId: string) {
+    private controller: SceneController
+    private nextController?: SceneController = null
+
+    constructor(public sceneId: string, controller: SceneController = new PlayController()) {
         super({
             key: sceneId
         })
+
+        this.controller = controller
     }
 
     preload() {
@@ -75,7 +82,6 @@ export default class WishlairScene extends Phaser.Scene {
         this.camera = this.cameras.main
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
-        // const player = new Player(this, 100, 100)
         const player = this.createEntity('player', 100, 100 + (this.wishlair.system.roomHeightInPixels*2), 1, 'player')
 
         this.setRoom(0, 3)
@@ -93,17 +99,12 @@ export default class WishlairScene extends Phaser.Scene {
     }
 
     update() {
-        this.level.layers.forEach(child => {
-            const layer = child as LayerGameObject
+        this.controller.tick(this.wishlair, this)
 
-            layer.entities.each((child: GameObject) => {
-                const sprite = child as WishlairSprite
-
-                sprite.tick()
-
-                return true
-            })
-        })
+        if (this.nextController) {
+            this.controller = this.nextController
+            this.nextController = null
+        }
     }
 
     setRoom(roomX: number, roomY: number) {
@@ -113,25 +114,10 @@ export default class WishlairScene extends Phaser.Scene {
         const roomPixelX = roomX * this.wishlair.system.roomWidthInPixels
         const roomPixelY = roomY * this.wishlair.system.roomHeightInPixels
 
-        // this.level.root.x = roomPixelX
-        // this.level.root.y = roomPixelY
         this.camera.setScroll(roomPixelX, roomPixelY)
+    }
 
-        // Tilemap doesn't seem to follow the root container
-        // Adjust the tilemap position manually
-        // this.map.layers.forEach((layer, index) => {
-        //     const layerGameObject = this.level.layers[index]
-        //
-        //     layerGameObject.tiles.list.forEach((tileLayer: TilemapLayer) => {
-        //         tileLayer.x = roomPixelX
-        //         tileLayer.y = roomPixelY
-        //
-        //         const tilemapLayer = tileLayer as TilemapLayer
-        //
-        //         tilemapLayer.
-        //     })
-        // })
-
-        // console.log(this.root.x, this.root.y)
+    setController(nextController: SceneController) {
+        this.nextController = nextController
     }
 }

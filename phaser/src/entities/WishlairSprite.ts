@@ -1,4 +1,4 @@
-import {EntityController} from '../controllers/EntityController'
+import {EntityController} from './controllers/EntityController'
 import {Entity} from './Entity'
 import {Wishlair} from '../wishlair/Wishlair'
 import WishlairScene from '../scenes/WishlairScene'

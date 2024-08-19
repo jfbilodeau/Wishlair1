@@ -1,6 +1,6 @@
 import {Wishlair} from './Wishlair'
-import {PlayerController} from '../controllers/PlayerController'
-import {EntityController} from '../controllers/EntityController'
+import {PlayerController} from '../entities/controllers/PlayerController'
+import {EntityController} from '../entities/controllers/EntityController'
 
 interface ControllerMap {
     [key: string]: EntityController
