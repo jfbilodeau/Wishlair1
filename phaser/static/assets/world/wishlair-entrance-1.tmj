@@ -74,6 +74,12 @@
                  "template":"..\/..\/..\/raw\/world\/entities\/rock1.tx",
                  "x":318,
                  "y":1290
+                }, 
+                {
+                 "id":16,
+                 "template":"..\/..\/..\/raw\/world\/entities\/rock4.tx",
+                 "x":257.333333333333,
+                 "y":402.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -82,7 +88,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":16,
+ "nextobjectid":17,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

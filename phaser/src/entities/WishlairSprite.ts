@@ -15,7 +15,13 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     private direction = Cardinal.South
     private currentAnimation: string
 
-    constructor(scene: WishlairScene, x: number, y: number, controllerId: string) {
+    constructor(
+        scene: WishlairScene,
+        public readonly id: string,
+        x: number,
+        y: number,
+        controllerId: string
+    ) {
         super(scene, x, y, '')
 
         this.scene.physics.add.existing(this)

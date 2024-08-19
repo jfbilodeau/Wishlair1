@@ -8,8 +8,8 @@ export class RoomLayer {
     constructor(public scene: WishlairScene) {
     }
 
-    createEntity(x: number, y: number, controllerId: string) {
-        const entitySprite = new WishlairSprite(this.scene, x, y, controllerId)
+    createEntity(id: string, x: number, y: number, controllerId: string) {
+        const entitySprite = new WishlairSprite(this.scene, id, x, y, controllerId)
 
         this.sprites.push(entitySprite)
         this.group.add(entitySprite)

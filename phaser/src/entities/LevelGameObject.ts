@@ -20,37 +20,23 @@ export class LayerGameObject extends Container {
 export class LevelGameObject extends Container {
     roomX = 0
     roomY = 0
-    root = this.scene.add.container(0, 0)
+    root = new Container(this.scene)
     layers = [
         new LayerGameObject(this),
         new LayerGameObject(this),
         new LayerGameObject(this),
     ]
 
-    constructor(public scene: WishlairScene, roomX: number, roomY: number) {
+    constructor(public scene: WishlairScene) {
         super(scene)
 
-        this.name = 'WorldGameObject'
+        this.name = 'LevelGameObject'
 
         this.add(this.root)
 
         this.root.name = 'root'
 
-        this.layers.forEach(layer => {
-            this.root.add(layer)
-        })
-
-        this.setRoom(roomX, roomY)
-    }
-
-    setRoom(roomX: number, roomY: number) {
-        this.roomX = roomX
-        this.roomY = roomY
-
-        this.root.x = -roomX * this.scene.wishlair.system.roomWidth
-        this.root.y = -roomY * this.scene.wishlair.system.roomHeight
-
-        console.log(this.root.x, this.root.y)
+        this.root.add(this.layers)
     }
 
     // createEntity(x: number, y: number, layer: number, controllerId: string) {
