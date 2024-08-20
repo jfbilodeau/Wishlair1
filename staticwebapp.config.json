@@ -1,11 +1,13 @@
 {
-  "routes": {
-    "route": "/*",
-    "allowedRoles": [
-      "WishlairUser"
-    ],
-    "headers": {
-      "Cache-Control": "no-store"
+  "routes": [
+    {
+      "route": "/*",
+      "allowedRoles": [
+        "WishlairUser"
+      ],
+      "headers": {
+        "Cache-Control": "no-store"
+      }
     }
-  }
+  ]
 }
