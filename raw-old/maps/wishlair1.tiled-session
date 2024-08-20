@@ -1,0 +1,45 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.tsx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/jfbil/Downloads/simple-map.json": {
+            "scale": 0.7640625,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 399.18200408997956,
+                "y": 490.14314928425364
+            }
+        },
+        "C:/Users/jfbil/Downloads/simple-map.json#tiles": {
+            "scaleInDock": 1
+        }
+    },
+    "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets",
+    "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/maps",
+    "map.height": 10,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 15,
+    "openFiles": [
+        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.tsx"
+    ],
+    "project": "wishlair1.tiled-project",
+    "recentFiles": [
+        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/world/wishlair.tsx",
+        "C:/Users/jfbil/Downloads/simple-map.json"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

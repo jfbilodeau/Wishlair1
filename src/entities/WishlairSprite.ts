@@ -1,0 +1,92 @@
+import {EntityController} from './controllers/EntityController'
+import {Entity} from './Entity'
+import {Wishlair} from '../wishlair/Wishlair'
+import WishlairScene from '../scenes/WishlairScene'
+import {Cardinal, getCardinalName} from '../wishlair/Directions'
+
+
+export class WishlairSprite extends Phaser.GameObjects.Sprite {
+    private readonly wishlair: Wishlair
+    private readonly wishlairScene: WishlairScene
+    entity: Entity = new Entity()
+    private controllerId = ''
+    private controller: EntityController
+    private animationId = ''
+    private direction = Cardinal.South
+    private currentAnimation: string
+
+    constructor(
+        scene: WishlairScene,
+        public readonly id: string,
+        x: number,
+        y: number,
+        controllerId: string
+    ) {
+        super(scene, x, y, '')
+
+        this.scene.physics.add.existing(this)
+
+        this.wishlair = scene.wishlair
+        this.wishlairScene = scene
+
+        this.controllerId = controllerId
+        this.updateEntity()
+
+        this.controller = this.wishlair.controllers.getController(this.controllerId)
+        if (this.controller) {
+            this.controller.initialize(this.wishlair, this.entity)
+            this.updateThis()
+        }
+
+        scene.add.existing(this)
+    }
+
+    public tick() {
+        this.updateEntity()
+
+        if (this.controller) {
+            this.controller.tick(this.wishlair, this.entity)
+
+            this.updateThis()
+        }
+    }
+
+    private updateEntity() {
+        this.entity.x = this.x
+        this.entity.y = this.y
+
+        this.entity.controllerId = this.controllerId
+        this.entity.animationId = this.animationId
+    }
+
+    private updateThis() {
+        // Update controller first to allow it to initialize and then update the entity
+        if (this.controllerId !== this.entity.controllerId) {
+            this.controllerId = this.entity.controllerId
+            this.controller = this.wishlair.controllers.getController(this.controllerId)
+            this.controller.initialize(this.wishlair, this.entity)
+        }
+
+        this.x = this.entity.x
+        this.y = this.entity.y
+
+        this.setOrigin(this.entity.originX, this.entity.originY)
+
+        this.body.velocity.x = this.entity.velocity.x
+        this.body.velocity.y = this.entity.velocity.y
+
+        if (this.entity.animationId !== this.animationId || this.entity.direction !== this.direction) {
+            this.animationId = this.entity.animationId
+            this.direction = this.entity.direction
+
+            this.currentAnimation = `${this.animationId}`
+
+            if (this.entity.direction !== Cardinal.None) {
+                const directionName = getCardinalName(this.direction)
+                this.currentAnimation += `-${directionName}`
+            }
+
+            this.anims.play(this.currentAnimation, true)
+        }
+    }
+}
