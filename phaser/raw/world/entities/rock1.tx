@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<template>
- <tileset firstgid="1" source="../entities.tsj"/>
- <object gid="4" width="92" height="83"/>
-</template>
