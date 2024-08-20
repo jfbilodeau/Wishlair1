@@ -9,9 +9,6 @@ import Camera = Phaser.Cameras.Scene2D.Camera
 import {SceneController} from './controllers/SceneController'
 import {PlayController} from './controllers/PlayController'
 
-// From Webpack DefinePlugin
-declare var __BUILD_TIME__: string
-
 export default class WishlairScene extends Phaser.Scene {
     wishlair: Wishlair
     map: Tilemap
@@ -40,8 +37,6 @@ export default class WishlairScene extends Phaser.Scene {
     create() {
         this.wishlair = this.registry.get('wishlair') as Wishlair
 
-        console.log(this.wishlair)
-
         this.level = new LevelGameObject(this)
         this.add.existing(this.level)
 
@@ -66,13 +61,16 @@ export default class WishlairScene extends Phaser.Scene {
             // Setup entities
             const entityLayerName = `${layerName}-entities`
 
-            const entityLayerExists = this.map.layers.find(layer => layer.name === entityLayerName) !== undefined
+            const entityLayerExists = this.map.objects.find(entityLayer => entityLayer.name === entityLayerName) !== undefined
 
             if (entityLayerExists) {
                 const entityLayer = this.map.getObjectLayer(entityLayerName)
 
                 entityLayer.objects.forEach(object => {
-                    console.log(object)
+                    // Calculate object position
+                    const x = object.x + object.width / 2
+                    const y = object.y - object.height / 2
+
                     const entity = this.createEntity(object.id.toString(), object.x, object.y, index, object.properties[0].value)
                 })
             }
@@ -85,9 +83,6 @@ export default class WishlairScene extends Phaser.Scene {
         const player = this.createEntity('player', 100, 100 + (this.wishlair.system.roomHeightInPixels*2), 1, 'player')
 
         this.setRoom(0, 3)
-
-        // DEV:
-        this.add.text(10, 10, `Build: ${__BUILD_TIME__}`, {font: '16px Courier'})
     }
 
     createEntity(id: string, x: number, y: number, layer: number, controllerId: string) {

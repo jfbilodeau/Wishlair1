@@ -65,18 +65,36 @@
          "objects":[
                 {
                  "id":10,
+                 "properties":[
+                        {
+                         "name":"entityId",
+                         "type":"string",
+                         "value":"conifer1"
+                        }],
                  "template":"..\/..\/..\/raw\/world\/entities\/conifer1.tx",
                  "x":603,
                  "y":1407
                 }, 
                 {
                  "id":11,
+                 "properties":[
+                        {
+                         "name":"entityId",
+                         "type":"string",
+                         "value":"rock1"
+                        }],
                  "template":"..\/..\/..\/raw\/world\/entities\/rock1.tx",
                  "x":318,
                  "y":1290
                 }, 
                 {
                  "id":16,
+                 "properties":[
+                        {
+                         "name":"entityId",
+                         "type":"string",
+                         "value":"rock4"
+                        }],
                  "template":"..\/..\/..\/raw\/world\/entities\/rock4.tx",
                  "x":257.333333333333,
                  "y":402.666666666667

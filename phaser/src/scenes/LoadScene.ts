@@ -1,4 +1,5 @@
 import {Scene} from 'phaser'
+import {DebugScene} from './DebugScene'
 
 const assets = `assets`
 const sprites = `${assets}/sprites`
@@ -56,6 +57,7 @@ export class LoadScene extends Scene {
     }
 
     create() {
+        // Create daughter animations
         this.createAnimation('daughter-idle-north', 'daughter', 0)
         this.createAnimation('daughter-idle-south', 'daughter', 0)
         this.createAnimation('daughter-idle-east', 'daughter', 0)
@@ -66,9 +68,14 @@ export class LoadScene extends Scene {
         this.createAnimation('daughter-move-east', 'daughter', 6)
         this.createAnimation('daughter-move-west', 'daughter', 6)
 
+        // Create forest animations
+        // this.createAnimation()
+
         // this.scene.start('wishlair')
         const wishlair = this.game.registry.get('wishlair')
         wishlair.startScene('wishlair-entrance-1')
+
+        this.scene.add('DebugScene', DebugScene, true)
 
         this.scene.remove(this)
     }
