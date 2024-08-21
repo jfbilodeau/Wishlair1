@@ -68,10 +68,20 @@ export default class WishlairScene extends Phaser.Scene {
 
                 entityLayer.objects.forEach(object => {
                     // Calculate object position
-                    const x = object.x + object.width / 2
-                    const y = object.y - object.height / 2
+                    // const x = object.x + object.width / 2
+                    // const y = object.y - object.height / 2
+                    const entityX = object.x
+                    const entityY = object.y - object.height
 
-                    const entity = this.createEntity(object.id.toString(), object.x, object.y, index, object.properties[0].value)
+                    const entity = this.createEntity(
+                        object.id.toString(),
+                        entityX,
+                        entityY,
+                        object.width,
+                        object.height,
+                        index,
+                        object.properties[0].value
+                    )
                 })
             }
         })
@@ -80,17 +90,25 @@ export default class WishlairScene extends Phaser.Scene {
         this.camera = this.cameras.main
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
-        const player = this.createEntity('player', 100, 100 + (this.wishlair.system.roomHeightInPixels*2), 1, 'player')
+        const player = this.createEntity('player', 100, 100 + (this.wishlair.system.roomHeightInPixels * 2), 64, 64, 1, 'player')
 
         this.setRoom(0, 3)
     }
 
-    createEntity(id: string, x: number, y: number, layer: number, controllerId: string) {
-        const entitySprite = new WishlairSprite(this, id, x, y, controllerId)
+    createEntity(
+        id: string,
+        x: number,
+        y: number,
+        width: number,
+        height: number,
+        layer: number,
+        controllerId: string
+    ) {
+        const entitySprite = new WishlairSprite(this, id, x, y, width, height, controllerId)
 
         this.level.layers[layer].entities.add(entitySprite)
 
-        return entitySprite
+        return entitySprite.entity
     }
 
     update() {

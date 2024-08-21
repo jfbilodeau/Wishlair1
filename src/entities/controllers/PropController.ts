@@ -15,6 +15,10 @@ export class PropController extends EntityController {
         entity.originX = this.originX
         entity.originY = this.originY
         entity.animationId = this.animationId
+
+        // Reposition the prop so it's aligned to its origin.
+        entity.x += entity.width * entity.originX
+        entity.y += entity.height * entity.originY
     }
 
     protected onTick(wishlair: Wishlair, entity: Entity): void {

@@ -20,9 +20,14 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         public readonly id: string,
         x: number,
         y: number,
+        width: number,
+        height: number,
         controllerId: string
     ) {
         super(scene, x, y, '')
+
+        this.entity.width = width
+        this.entity.height = height
 
         this.scene.physics.add.existing(this)
 
@@ -48,6 +53,13 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
             this.controller.tick(this.wishlair, this.entity)
 
             this.updateThis()
+
+            // Update controller first to allow it to initialize and then update the entity
+            if (this.controllerId !== this.entity.controllerId) {
+                this.controllerId = this.entity.controllerId
+                this.controller = this.wishlair.controllers.getController(this.controllerId)
+                this.controller.initialize(this.wishlair, this.entity)
+            }
         }
     }
 
@@ -60,13 +72,6 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     }
 
     private updateThis() {
-        // Update controller first to allow it to initialize and then update the entity
-        if (this.controllerId !== this.entity.controllerId) {
-            this.controllerId = this.entity.controllerId
-            this.controller = this.wishlair.controllers.getController(this.controllerId)
-            this.controller.initialize(this.wishlair, this.entity)
-        }
-
         this.x = this.entity.x
         this.y = this.entity.y
 

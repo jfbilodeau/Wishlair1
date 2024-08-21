@@ -31,7 +31,9 @@ export class Wishlair {
 
     private initializeControllers() {
         this.controllers.addController('player', new PlayerController(this))
-        this.controllers.addController('conifer1', new PropController(0, 0, 'conifer1'))
+
+        // Props
+        this.controllers.addController('conifer1', new PropController(85/185, 250/310, 'conifer1'))
     }
 
     initializeScene(scene: WishlairScene) {
