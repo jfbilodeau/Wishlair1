@@ -8,6 +8,7 @@ import {Inventory} from './Inventory'
 import WishlairScene from '../scenes/WishlairScene'
 import {System} from './System'
 import {PropController} from '../entities/controllers/PropController'
+import {EntityBody} from '../entities/Entity'
 
 export class Wishlair {
     system = new System()
@@ -33,7 +34,7 @@ export class Wishlair {
         this.controllers.addController('player', new PlayerController(this))
 
         // Props
-        this.controllers.addController('conifer1', new PropController(85/185, 250/310, 'conifer1'))
+        this.controllers.addController('conifer1', new PropController(85/185, 250/310, 'conifer1', new EntityBody().setCircle(20)))
     }
 
     initializeScene(scene: WishlairScene) {

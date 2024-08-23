@@ -1,12 +1,13 @@
 import {Wishlair} from '../../wishlair/Wishlair'
-import {Entity} from '../Entity'
+import {Entity, EntityBody} from '../Entity'
 import {EntityController} from './EntityController'
 
 export class PropController extends EntityController {
     constructor(
         public originX: number,
         public originY: number,
-        public animationId: string
+        public animationId: string,
+        public body: EntityBody
     ) {
         super()
     }
@@ -19,6 +20,9 @@ export class PropController extends EntityController {
         // Reposition the prop so it's aligned to its origin.
         entity.x += entity.width * entity.originX
         entity.y += entity.height * entity.originY
+
+        // Create body
+        entity.body.copy(this.body)
     }
 
     protected onTick(wishlair: Wishlair, entity: Entity): void {

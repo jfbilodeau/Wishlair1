@@ -1,5 +1,5 @@
 import {EntityController} from './controllers/EntityController'
-import {Entity} from './Entity'
+import {BodyType, Entity, EntityBody} from './Entity'
 import {Wishlair} from '../wishlair/Wishlair'
 import WishlairScene from '../scenes/WishlairScene'
 import {Cardinal, getCardinalName} from '../wishlair/Directions'
@@ -72,6 +72,30 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     }
 
     private updateThis() {
+        if (this.entity.body.reset) {
+            const body = this.body as Phaser.Physics.Arcade.Body
+
+            switch (this.entity.body.type) {
+                case BodyType.Rectangle: {
+                    body.setSize(this.entity.body.width, this.entity.body.height)
+                    body.setOffset(0, 0)
+                    break
+                }
+                case BodyType.Circle: {
+                    body.setCircle(this.entity.body.radius)
+                    break
+                }
+                case BodyType.None: {
+                    body.setSize(0, 0)
+                    break
+                }
+                default: {
+                    console.error(`[WishlairSprite.ts]updateThis(): Unexpected body type: ${this.entity.body.type}`)
+                    break
+                }
+            }
+        }
+
         this.x = this.entity.x
         this.y = this.entity.y
 
