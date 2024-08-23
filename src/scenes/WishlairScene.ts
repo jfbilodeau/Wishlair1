@@ -126,6 +126,10 @@ export default class WishlairScene extends Phaser.Scene {
             this.nextController = null
         }
 
+        for (const activeEntity of this.activeEntities) {
+            activeEntity.depth = activeEntity.y + (activeEntity.entity.layer * LayerSize)
+        }
+
         // // Sort entities by their 'z' value
         // this.level.layers.forEach(layer => {
         //     layer.entities.sort('y')

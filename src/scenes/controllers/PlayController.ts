@@ -14,6 +14,8 @@ export class PlayController extends SceneController {
         for (const entity of scene.activeEntities) {
             entity.tick()
         }
+
+
         // scene.level.layers.forEach(child => {
         //     const layer = child as LayerGameObject
         //
