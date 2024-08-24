@@ -9,6 +9,9 @@ export class PlayerController extends EntityController {
     }
 
     protected override onInitialize(wishlair: Wishlair, entity: Entity) {
+        // entity.originX = 0.5
+        // entity.originY = 50/64
+        entity.body.setOffset(0.5, 50/64).setCircle(20)
         entity.direction = Cardinal.South
     }
 

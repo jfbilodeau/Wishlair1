@@ -3,6 +3,7 @@ import {BodyType, Entity, EntityBody} from './Entity'
 import {Wishlair} from '../wishlair/Wishlair'
 import WishlairScene from '../scenes/WishlairScene'
 import {Cardinal, getCardinalName} from '../wishlair/Directions'
+import Body = Phaser.Physics.Arcade.Body
 
 
 export class WishlairSprite extends Phaser.GameObjects.Sprite {
@@ -14,6 +15,8 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     private animationId = ''
     private direction = Cardinal.South
     private currentAnimation: string
+    // Convenience property to make TypeScript happy and not have to cast `body` to Arcade.Body every time
+    private readonly arcadeBody: Body
 
     constructor(
         scene: WishlairScene,
@@ -22,12 +25,14 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         y: number,
         width: number,
         height: number,
+        layer: number,
         controllerId: string
     ) {
         super(scene, x, y, '')
 
         this.entity.width = width
         this.entity.height = height
+        this.entity.layer = layer
 
         this.scene.physics.add.existing(this)
 
@@ -35,7 +40,14 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         this.wishlairScene = scene
 
         this.controllerId = controllerId
-        this.updateEntity()
+        this.updateEntity() // Allow entity to initialize itself
+
+        this.setOrigin(0, 0)
+
+        this.arcadeBody = this.body as Body
+        this.arcadeBody.setCollideWorldBounds(true)
+        this.arcadeBody.debugShowBody = true
+        this.arcadeBody.debugShowVelocity = true
 
         this.controller = this.wishlair.controllers.getController(this.controllerId)
         if (this.controller) {
@@ -73,16 +85,26 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
 
     private updateThis() {
         if (this.entity.body.reset) {
-            const body = this.body as Phaser.Physics.Arcade.Body
+            const body = this.arcadeBody
+
+            body.setOffset(this.entity.body.offsetX, this.entity.body.offsetY)
+            this.setOrigin(
+                this.entity.body.offsetX / this.entity.width,
+                this.entity.body.offsetY / this.entity.height,
+            )
 
             switch (this.entity.body.type) {
                 case BodyType.Rectangle: {
-                    body.setSize(this.entity.body.width, this.entity.body.height)
-                    body.setOffset(0, 0)
+                    body.setSize(
+                        this.entity.body.width,
+                        this.entity.body.height
+                    )
                     break
                 }
                 case BodyType.Circle: {
-                    body.setCircle(this.entity.body.radius)
+                    body.setCircle(
+                        this.entity.body.radius,
+                    )
                     break
                 }
                 case BodyType.None: {
@@ -99,8 +121,6 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         this.x = this.entity.x
         this.y = this.entity.y
 
-        this.setOrigin(this.entity.originX, this.entity.originY)
-
         this.body.velocity.x = this.entity.velocity.x
         this.body.velocity.y = this.entity.velocity.y
 
@@ -116,6 +136,14 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
             }
 
             this.anims.play(this.currentAnimation, true)
+        }
+
+        // Playing an animation reset the origin to (0,0) for a frame
+        // so let's set the origin _after_ the animation.
+        // TODO: Do we really need to be able to change the origin after onInitialize() or will it always be the same?
+        if (this.originX !== this.entity.originX || this.originY !== this.entity.originY) {
+            // console.log(`setOrigin${this.entity.originX}, ${this.entity.originY}) (${this.originX}, ${this.originY})`)
+            this.setOrigin(this.entity.originX, this.entity.originY)
         }
     }
 }

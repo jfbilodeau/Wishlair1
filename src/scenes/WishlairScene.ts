@@ -4,8 +4,8 @@ import {SceneController} from './controllers/SceneController'
 import {PlayController} from './controllers/PlayController'
 import Tilemap = Phaser.Tilemaps.Tilemap
 import GameObject = Phaser.GameObjects.GameObject
-import TilemapLayer = Phaser.Tilemaps.TilemapLayer
 import Camera = Phaser.Cameras.Scene2D.Camera
+import Graphics = Phaser.GameObjects.Graphics
 
 const LayerSize = 10000
 
@@ -41,26 +41,21 @@ export default class WishlairScene extends Phaser.Scene {
     create() {
         this.wishlair = this.registry.get('wishlair') as Wishlair
 
-        // this.level = new LevelGameObject(this)
-        // this.add.existing(this.level)
-
         this.wishlair.initializeScene(this)
 
         this.map = this.make.tilemap({key: this.sceneId})
 
+        this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+
         const tileset = this.map.addTilesetImage('wishlair', 'tiles')
 
-        // this.level.layers.forEach((layer, index) => {
         for (const index of [0, 1, 2]) {
             const layerName = `layer-${index}`
 
             const layerIndex = this.map.layers.findIndex(layer => layer.name === layerName)
 
             if (layerIndex !== -1) {
-                // const tileLayer = new TilemapLayer(this, this.map, layerIndex, tileset, 0, 0)
                 const tileLayer = this.map.createLayer(layerName, tileset)
-
-                // layer.tiles.add(tileLayer)
             }
 
             // Setup entities
@@ -109,13 +104,13 @@ export default class WishlairScene extends Phaser.Scene {
         layer: number,
         controllerId: string
     ) {
-        const entitySprite = new WishlairSprite(this, id, x, y, width, height, controllerId)
+        const sprite = new WishlairSprite(this, id, x, y, width, height, layer, controllerId)
 
-        // this.level.layers[layer].entities.add(entitySprite)
-        this.add.existing(entitySprite)
-        this.activeEntities.push(entitySprite)
+        this.add.existing(sprite)
+        this.activeEntities.push(sprite)
+        this.computeDepth(sprite)
 
-        return entitySprite.entity
+        return sprite.entity
     }
 
     update() {
@@ -127,13 +122,8 @@ export default class WishlairScene extends Phaser.Scene {
         }
 
         for (const activeEntity of this.activeEntities) {
-            activeEntity.depth = activeEntity.y + (activeEntity.entity.layer * LayerSize)
+            this.computeDepth(activeEntity)
         }
-
-        // // Sort entities by their 'z' value
-        // this.level.layers.forEach(layer => {
-        //     layer.entities.sort('y')
-        // })
     }
 
     setRoom(roomX: number, roomY: number) {
@@ -150,7 +140,7 @@ export default class WishlairScene extends Phaser.Scene {
         this.nextController = nextController
     }
 
-    private computeDepth(entity: WishlairSprite) {
-        return entity.y + entity.entity.layer * LayerSize
+    private computeDepth(sprite: WishlairSprite) {
+        sprite.depth = sprite.y + (sprite.entity.layer * LayerSize)
     }
 }

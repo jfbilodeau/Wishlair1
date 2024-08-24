@@ -70,6 +70,10 @@ export class LoadScene extends Scene {
 
         // Create forest animations
         this.createAnimation('conifer1', 'forest', 0)
+        this.createAnimation('rock1', 'forest', 0)
+        this.createAnimation('rock2', 'forest', 0)
+        this.createAnimation('rock3', 'forest', 0)
+        this.createAnimation('rock4', 'forest', 0)
 
         // this.scene.start('wishlair')
         const wishlair = this.game.registry.get('wishlair')

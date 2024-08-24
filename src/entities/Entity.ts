@@ -9,6 +9,8 @@ export enum BodyType {
 
 export class EntityBody {
     type = BodyType.None
+    offsetX = 0
+    offsetY = 0
     width = 0
     height = 0
     radius = 0
@@ -16,6 +18,8 @@ export class EntityBody {
 
     copy(body: EntityBody) {
         this.type = body.type
+        this.offsetX = body.offsetX
+        this.offsetY = body.offsetY
         this.width = body.width
         this.height = body.height
         this.radius = body.radius
@@ -34,7 +38,7 @@ export class EntityBody {
         this.type = BodyType.Rectangle
         this.width = width
         this.height = height
-        this.reset = false
+        this.reset = true
 
         return this
     }
@@ -42,7 +46,14 @@ export class EntityBody {
     setCircle(radius: number) {
         this.type = BodyType.Circle
         this.radius = radius
-        this.reset = false
+        this.reset = true
+
+        return this
+    }
+
+    setOffset(offsetX: number, offsetY: number) {
+        this.offsetX = offsetX
+        this.offsetY = offsetY
 
         return this
     }

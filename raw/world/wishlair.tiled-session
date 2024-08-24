@@ -5,8 +5,8 @@
     },
     "activeFile": "wishlair-entrance-1.tmj",
     "expandedProjectPaths": [
-        "entities",
-        "."
+        ".",
+        "entities"
     ],
     "fileStates": {
         "": {
@@ -30,8 +30,8 @@
             "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 420,
-                "y": 967.3333333333333
+                "x": 418.66666666666663,
+                "y": 966
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -111,9 +111,9 @@
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
-        "entities.tsj",
         "wishlair-entrance-2.tmj",
         "wishlair-entrance-1.tmj",
+        "entities.tsj",
         "wishlair.tsj",
         "wishlair-entrance-3.tmj",
         "wishlair-entrance-1.tmx",

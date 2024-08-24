@@ -4,22 +4,20 @@ import {EntityController} from './EntityController'
 
 export class PropController extends EntityController {
     constructor(
-        public originX: number,
-        public originY: number,
         public animationId: string,
-        public body: EntityBody
+        public body: EntityBody,
     ) {
         super()
     }
 
     protected onInitialize(wishlair: Wishlair, entity: Entity): void {
-        entity.originX = this.originX
-        entity.originY = this.originY
+        // entity.originX = this.body.offsetX
+        // entity.originY = this.body.offsetY
         entity.animationId = this.animationId
 
         // Reposition the prop so it's aligned to its origin.
-        entity.x += entity.width * entity.originX
-        entity.y += entity.height * entity.originY
+        entity.x += entity.width * entity.body.offsetX
+        entity.y += entity.height * entity.body.offsetY
 
         // Create body
         entity.body.copy(this.body)
