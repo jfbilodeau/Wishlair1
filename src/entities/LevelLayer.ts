@@ -63,6 +63,7 @@ export class LevelLayer extends Layer {
         const obstacleLayer = this.addTileMapLayer(obstacleLayerName)
 
         if (obstacleLayer) {
+            obstacleLayer.setCollisionByExclusion([-1])
             this.scene.physics.add.collider(
                 obstacleLayer,
                 this.entityGroup,
