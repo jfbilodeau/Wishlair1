@@ -10,7 +10,6 @@ import Group = Phaser.GameObjects.Group
 export default class WishlairScene extends Phaser.Scene {
     wishlair: Wishlair
     map: Tilemap
-    // level: LevelGameObject
     camera: Camera
     roomX = 0
     roomY = 0
@@ -89,9 +88,6 @@ export default class WishlairScene extends Phaser.Scene {
                 const entityLayer = this.map.getObjectLayer(entityLayerName)
 
                 entityLayer.objects.forEach(object => {
-                    // Calculate object position
-                    // const x = object.x + object.width / 2
-                    // const y = object.y - object.height / 2
                     const entityX = object.x
                     const entityY = object.y - object.height
 
@@ -167,7 +163,7 @@ export default class WishlairScene extends Phaser.Scene {
     }
 
     private computeDepth(sprite: WishlairSprite) {
-        sprite.depth = sprite.y
+        sprite.depth = sprite.y + sprite.baseline
     }
 
     private collideObstacle() {

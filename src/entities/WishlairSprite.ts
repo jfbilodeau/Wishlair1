@@ -14,6 +14,8 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     private controller: EntityController
     private currentAnimationId: string
     private currentDirection = Cardinal.None
+    // The 'y' baseline of the object. Set based on the body and used for depth sorting.
+    baseline = 0
     // Convenience property to make TypeScript happy and not have to cast `body` to Arcade.Body every time
     readonly arcadeBody: Body
 
@@ -227,6 +229,6 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
                 break;
         }
 
-        // this.arcadeBody.moves = false
+        this.baseline = body.offsetY + body.height / 2
     }
 }
