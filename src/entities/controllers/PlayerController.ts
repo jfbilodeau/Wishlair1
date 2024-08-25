@@ -5,7 +5,10 @@ import {Cardinal} from '../../wishlair/Directions'
 import {WishlairSprite} from '../WishlairSprite'
 
 export class PlayerController extends EntityController {
-    private body = new EntityBody().setOffset(32, 52).setCircle(10).setCollision(CollisionType.Player)
+    private body = new EntityBody()
+        .setOffset(32, 52)
+        .setCircle(10)
+        .setCollision(CollisionType.Player)
 
     public constructor() {
         super()
@@ -17,7 +20,7 @@ export class PlayerController extends EntityController {
         sprite.entity.width = 64
         sprite.entity.height = 64
         sprite.entity.direction = Cardinal.South
-        sprite.setBody(this.body)
+        sprite.setEntityBody(this.body)
         sprite.entity.animationId = 'daughter-idle'
     }
 

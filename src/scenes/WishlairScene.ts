@@ -6,25 +6,22 @@ import Tilemap = Phaser.Tilemaps.Tilemap
 import GameObject = Phaser.GameObjects.GameObject
 import Camera = Phaser.Cameras.Scene2D.Camera
 import Group = Phaser.GameObjects.Group
+import * as Constants from '../wishlair/Constants'
+import Tileset = Phaser.Tilemaps.Tileset
+import {LevelLayer} from '../entities/LevelLayer'
 
 export default class WishlairScene extends Phaser.Scene {
     wishlair: Wishlair
     map: Tilemap
+    tileset: Tileset
     camera: Camera
     roomX = 0
     roomY = 0
+    layers: LevelLayer[] = []
     // Props are temporary visual objects that are not part of the game logic
     props: GameObject[] = []
     // Active entities are entities that receive ticks
     activeEntities: WishlairSprite[] = []
-
-    // Collision groups
-    obstacleGroup: Group  // Impassable obstacles
-    entityGroup: Group  // Moveable entities
-    playerGroup: Group  // Player
-    hostileGroup: Group  // Hostiles
-    weaponGroup: Group  // Player weapons
-    shardGroup: Group  // Wishshards
 
     private controller: SceneController
     private nextController?: SceneController = null
@@ -48,76 +45,30 @@ export default class WishlairScene extends Phaser.Scene {
 
         this.wishlair.initializeScene(this)
 
-        // Create collision groups
-        this.obstacleGroup = this.add.group()
-        this.entityGroup = this.add.group()
-        this.playerGroup = this.add.group()
-        this.hostileGroup = this.add.group()
-        this.weaponGroup = this.add.group()
-        this.shardGroup = this.add.group()
-
-        this.physics.add.collider(
-            this.obstacleGroup,
-            this.entityGroup,
-            this.collideObstacle,
-            () => { return true },
-            this,
-        )
-
         this.map = this.make.tilemap({key: this.sceneId})
 
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
-        const tileset = this.map.addTilesetImage('wishlair', 'tiles')
+        this.tileset = this.map.addTilesetImage('wishlair', 'tiles')
 
         for (const index of [0, 1, 2]) {
-            const layerName = `layer-${index}`
+            const layer = new LevelLayer(this, index)
 
-            const layerIndex = this.map.layers.findIndex(layer => layer.name === layerName)
+            this.layers.push(layer)
 
-            if (layerIndex !== -1) {
-                const tileLayer = this.map.createLayer(layerName, tileset)
-            }
-
-            // Setup entities
-            const entityLayerName = `${layerName}-entities`
-
-            const entityLayerExists = this.map.objects.find(entityLayer => entityLayer.name === entityLayerName) !== undefined
-
-            if (entityLayerExists) {
-                const entityLayer = this.map.getObjectLayer(entityLayerName)
-
-                entityLayer.objects.forEach(object => {
-                    const entityX = object.x
-                    const entityY = object.y - object.height
-
-                    const controllerId = object.properties.find((p: any) => {
-                        return p.name === `entityId`
-                    }).value
-
-                    const entity = this.createEntity(
-                        object.id.toString(),
-                        entityX,
-                        entityY,
-                        object.width,
-                        object.height,
-                        index,
-                        controllerId
-                    )
-                })
-            }
+            this.layers[index].initialize()
         }
 
         // Setup camera
         this.camera = this.cameras.main
         this.camera.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
 
-        const player = this.createEntity('player', 100, 100 + (this.wishlair.system.roomHeightInPixels * 2), 64, 64, 1, 'player')
+        const player = this.createSprite('player', 100, 100 + (Constants.roomHeightInPixels * 2), 64, 64, 1, 'player')
 
         this.setRoom(0, 3)
     }
 
-    createEntity(
+    createSprite(
         id: string,
         x: number,
         y: number,
@@ -129,10 +80,12 @@ export default class WishlairScene extends Phaser.Scene {
         const sprite = new WishlairSprite(this, id, x, y, width, height, layer, controllerId)
 
         this.add.existing(sprite)
+        this.physics.add.existing(sprite)
         this.activeEntities.push(sprite)
         this.computeDepth(sprite)
+        this.layers[layer].addSprite(sprite)
 
-        return sprite.entity
+        return sprite
     }
 
     update() {
@@ -152,8 +105,8 @@ export default class WishlairScene extends Phaser.Scene {
         this.roomX = roomX
         this.roomY = roomY
 
-        const roomPixelX = roomX * this.wishlair.system.roomWidthInPixels
-        const roomPixelY = roomY * this.wishlair.system.roomHeightInPixels
+        const roomPixelX = roomX * Constants.roomWidthInPixels
+        const roomPixelY = roomY * Constants.roomHeightInPixels
 
         this.camera.setScroll(roomPixelX, roomPixelY)
     }
@@ -164,9 +117,5 @@ export default class WishlairScene extends Phaser.Scene {
 
     private computeDepth(sprite: WishlairSprite) {
         sprite.depth = sprite.y + sprite.baseline
-    }
-
-    private collideObstacle() {
-
     }
 }

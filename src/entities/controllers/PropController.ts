@@ -2,7 +2,6 @@ import {Wishlair} from '../../wishlair/Wishlair'
 import {EntityBody} from '../Entity'
 import {EntityController} from './EntityController'
 import {WishlairSprite} from '../WishlairSprite'
-import {Cardinal} from '../../wishlair/Directions'
 
 export class PropController extends EntityController {
     constructor(
@@ -16,7 +15,7 @@ export class PropController extends EntityController {
         // entity.originX = this.body.offsetX
         // entity.originY = this.body.offsetY
         sprite.entity.animationId = this.animationId
-        sprite.setBody(this.body)
+        sprite.setEntityBody(this.body)
 
         // Reposition the prop so it's aligned to its origin.
         // sprite.x += sprite.entity.width * this.body.offsetX

@@ -4,6 +4,7 @@ import {Wishlair} from '../wishlair/Wishlair'
 import WishlairScene from '../scenes/WishlairScene'
 import {Cardinal, getCardinalName} from '../wishlair/Directions'
 import Body = Phaser.Physics.Arcade.Body
+import {LevelLayer} from './LevelLayer'
 
 
 export class WishlairSprite extends Phaser.GameObjects.Sprite {
@@ -18,6 +19,7 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     baseline = 0
     // Convenience property to make TypeScript happy and not have to cast `body` to Arcade.Body every time
     readonly arcadeBody: Body
+    private entityBody = new EntityBody()
 
     constructor(
         scene: WishlairScene,
@@ -57,7 +59,7 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         // }
         this.activateNewController()
 
-        scene.add.existing(this)
+        // scene.add.existing(this)
     }
 
     public tick() {
@@ -162,73 +164,13 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         // }
     }
 
-    // setAnimation(animationId: string) {
-    //     this.entity.animationId = animationId
-    // }
-    //
-    // setController(controllerId: string) {
-    //     this.entity.controllerId = controllerId
-    // }
-
-    setBody(body: EntityBody) {
-        // this.arcadeBody.reset(0, 0)
-
-        switch (body.type) {
-            case BodyType.Rectangle: {
-                this.arcadeBody.setSize(
-                    body.width,
-                    body.height,
-                    true
-                )
-                //
-                // this.arcadeBody.setOffset(
-                //     body.offsetX - body.width / 2,
-                //     body.offsetY - body.height / 2,
-                // )
-
-                break
-            }
-            case BodyType.Circle: {
-                this.arcadeBody.setCircle(
-                    body.radius,
-                    body.offsetX - body.radius,
-                    body.offsetY - body.radius,
-                )
-
-                break
-            }
-            case BodyType.None: {
-                this.arcadeBody.setSize(0, 0)
-                break
-            }
-            default: {
-                console.error(`[WishlairSprite.ts]updateThis(): Unexpected body type: ${body.type}`)
-                break
-            }
-        }
-
-        switch (body.collision) {
-            case CollisionType.None:
-                // Nothing
-                break;
-            case CollisionType.Player:
-                this.wishlairScene.playerGroup.add(this)
-                this.wishlairScene.entityGroup.add(this)
-                break;
-            case CollisionType.Obstacle:
-                this.arcadeBody.immovable = true
-                this.wishlairScene.obstacleGroup.add(this)
-                break;
-            case CollisionType.Hostile:
-                break;
-            case CollisionType.Weapon:
-                break;
-            case CollisionType.Shard:
-                break;
-            case CollisionType.Interactive:
-                break;
-        }
+    setEntityBody(body: EntityBody) {
+        this.entityBody = body
 
         this.baseline = body.offsetY + body.height / 2
+    }
+
+    getEntityBody() {
+        return this.entityBody
     }
 }
