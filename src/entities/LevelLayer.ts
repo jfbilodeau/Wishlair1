@@ -57,26 +57,22 @@ export class LevelLayer extends Layer {
         const layerName = `layer-${this.layerIndex}`
 
         this.addTileMapLayer(layerName)
-        // const layerIndex = this.scene.map.layers.findIndex(layer => layer.name === layerName)
-        //
-        // if (layerIndex !== -1) {
-        //     const tileLayer = this.scene.map.createLayer(layerName, this.scene.tileset)
-        // }
 
         const obstacleLayerName = `${layerName}-obstacles`
 
         const obstacleLayer = this.addTileMapLayer(obstacleLayerName)
 
         if (obstacleLayer) {
-            this.obstacleGroup.add(obstacleLayer)
+            this.scene.physics.add.collider(
+                obstacleLayer,
+                this.entityGroup,
+                this.collideObstacle,
+                () => {
+                    return true
+                },
+            )
+            // this.obstacleGroup.add(obstacleLayer)
         }
-        // const obstacleLayerIndex = this.scene.map.layers.findIndex(layer => layer.name === obstacleLayerName)
-        //
-        // if (obstacleLayerIndex !== -1) {
-        //     const obstacleLayer = this.scene.map.createLayer(obstacleLayerName, this.scene.tileset)
-        //     obstacleLayer.setCollisionByExclusion([0])
-        //     // this.obstacleGroup.add(obstacleLayer)
-        // }
 
         // Setup entities
         const entityLayerName = `${layerName}-entities`

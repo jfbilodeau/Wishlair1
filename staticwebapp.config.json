@@ -9,5 +9,11 @@
         "Cache-Control": "no-store"
       }
     }
-  ]
+  ],
+  "responseOverrides": {
+    "401": {
+      "statusCode": 302,
+      "redirect": "/.auth/login/aad"
+    }
+  }
 }
