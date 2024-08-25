@@ -5,7 +5,7 @@ import {PlayController} from './controllers/PlayController'
 import Tilemap = Phaser.Tilemaps.Tilemap
 import GameObject = Phaser.GameObjects.GameObject
 import Camera = Phaser.Cameras.Scene2D.Camera
-import Graphics = Phaser.GameObjects.Graphics
+import Group = Phaser.GameObjects.Group
 
 const LayerSize = 10000
 
@@ -20,6 +20,15 @@ export default class WishlairScene extends Phaser.Scene {
     props: GameObject[] = []
     // Active entities are entities that receive ticks
     activeEntities: WishlairSprite[] = []
+
+    // Collision groups
+    obstacleGroup: Group  // Impassable obstacles
+    entityGroup: Group  // Moveable entities
+    playerGroup: Group  // Player
+    propGroup: Group  // Immovable props
+    hostileGroup: Group  // Hostiles
+    weaponGroup: Group  // Player weapons
+    shardGroup: Group  // Wishshards
 
     private controller: SceneController
     private nextController?: SceneController = null
@@ -42,6 +51,23 @@ export default class WishlairScene extends Phaser.Scene {
         this.wishlair = this.registry.get('wishlair') as Wishlair
 
         this.wishlair.initializeScene(this)
+
+        // Create collision groups
+        this.obstacleGroup = this.add.group()
+        this.entityGroup = this.add.group()
+        this.playerGroup = this.add.group()
+        this.propGroup = this.add.group()
+        this.hostileGroup = this.add.group()
+        this.weaponGroup = this.add.group()
+        this.shardGroup = this.add.group()
+
+        this.physics.add.collider(
+            this.obstacleGroup,
+            this.entityGroup,
+            this.collideObstacle,
+            () => { return true },
+            this,
+        )
 
         this.map = this.make.tilemap({key: this.sceneId})
 
@@ -73,6 +99,10 @@ export default class WishlairScene extends Phaser.Scene {
                     const entityX = object.x
                     const entityY = object.y - object.height
 
+                    const controllerId = object.properties.find((p: any) => {
+                        return p.name === `entityId`
+                    }).value
+
                     const entity = this.createEntity(
                         object.id.toString(),
                         entityX,
@@ -80,7 +110,7 @@ export default class WishlairScene extends Phaser.Scene {
                         object.width,
                         object.height,
                         index,
-                        object.properties[0].value
+                        controllerId
                     )
                 })
             }
@@ -142,5 +172,9 @@ export default class WishlairScene extends Phaser.Scene {
 
     private computeDepth(sprite: WishlairSprite) {
         sprite.depth = sprite.y + (sprite.entity.layer * LayerSize)
+    }
+
+    private collideObstacle() {
+
     }
 }

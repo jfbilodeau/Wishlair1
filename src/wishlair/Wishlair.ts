@@ -31,11 +31,11 @@ export class Wishlair {
     }
 
     private initializeControllers() {
-        this.controllers.addController('player', new PlayerController(this))
+        this.controllers.addController('player', new PlayerController())
 
         // Props
-        this.controllers.addController('conifer1', new PropController('conifer1', new EntityBody().setCircle(20).setOffset(85, 250)))
-        this.controllers.addController('rock1', new PropController('rock1', new EntityBody().setCircle(40).setOffset(92/2, 83/2)))
+        this.controllers.addController('conifer1', new PropController('conifer1', new EntityBody().setCircle(24).setOffset(85, 250)))
+        this.controllers.addController('rock1', new PropController('rock1', new EntityBody().setCircle(42).setOffset(92/2, 83/2)))
     }
 
     initializeScene(scene: WishlairScene) {

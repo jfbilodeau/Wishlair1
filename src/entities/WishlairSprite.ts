@@ -12,11 +12,10 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     entity: Entity = new Entity()
     private controllerId = ''
     private controller: EntityController
-    private animationId = ''
-    private direction = Cardinal.South
-    private currentAnimation: string
+    private currentAnimationId: string
+    private currentDirection = Cardinal.None
     // Convenience property to make TypeScript happy and not have to cast `body` to Arcade.Body every time
-    private readonly arcadeBody: Body
+    readonly arcadeBody: Body
 
     constructor(
         scene: WishlairScene,
@@ -39,7 +38,7 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         this.wishlair = scene.wishlair
         this.wishlairScene = scene
 
-        this.controllerId = controllerId
+        this.entity.controllerId = controllerId
         this.updateEntity() // Allow entity to initialize itself
 
         this.setOrigin(0, 0)
@@ -51,7 +50,7 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
 
         this.controller = this.wishlair.controllers.getController(this.controllerId)
         if (this.controller) {
-            this.controller.initialize(this.wishlair, this.entity)
+            this.controller.initialize(this.wishlair, this)
             this.updateThis()
         }
 
@@ -61,89 +60,144 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
     public tick() {
         this.updateEntity()
 
-        if (this.controller) {
-            this.controller.tick(this.wishlair, this.entity)
+        this.controller?.tick(this.wishlair, this)
 
-            this.updateThis()
+        // Update controller first to allow it to initialize and then update the entity
+        if (this.controllerId !== this.entity.controllerId) {
+            this.controllerId = this.entity.controllerId
+            this.controller = this.wishlair.controllers.getController(this.controllerId)
 
-            // Update controller first to allow it to initialize and then update the entity
-            if (this.controllerId !== this.entity.controllerId) {
-                this.controllerId = this.entity.controllerId
-                this.controller = this.wishlair.controllers.getController(this.controllerId)
-                this.controller.initialize(this.wishlair, this.entity)
-            }
+            this.controller?.initialize(this.wishlair, this)
         }
+
+        this.updateThis()
     }
 
     private updateEntity() {
         this.entity.x = this.x
         this.entity.y = this.y
-
-        this.entity.controllerId = this.controllerId
-        this.entity.animationId = this.animationId
     }
 
     private updateThis() {
-        if (this.entity.body.reset) {
-            const body = this.arcadeBody
+        // if (this.entity.body.reset) {
+        //     const body = this.arcadeBody
+        //
+        //     body.setOffset(this.entity.body.offsetX, this.entity.body.offsetY)
+        //     this.setOrigin(
+        //         this.entity.body.offsetX / this.entity.width,
+        //         this.entity.body.offsetY / this.entity.height,
+        //     )
+        //
+        //     switch (this.entity.body.type) {
+        //         case BodyType.Rectangle: {
+        //             body.setSize(
+        //                 this.entity.body.width,
+        //                 this.entity.body.height
+        //             )
+        //             break
+        //         }
+        //         case BodyType.Circle: {
+        //             body.setCircle(
+        //                 this.entity.body.radius,
+        //             )
+        //             break
+        //         }
+        //         case BodyType.None: {
+        //             body.setSize(0, 0)
+        //             break
+        //         }
+        //         default: {
+        //             console.error(`[WishlairSprite.ts]updateThis(): Unexpected body type: ${this.entity.body.type}`)
+        //             break
+        //         }
+        //     }
+        // }
 
-            body.setOffset(this.entity.body.offsetX, this.entity.body.offsetY)
-            this.setOrigin(
-                this.entity.body.offsetX / this.entity.width,
-                this.entity.body.offsetY / this.entity.height,
-            )
+        // this.x = this.entity.x
+        // this.y = this.entity.y
 
-            switch (this.entity.body.type) {
-                case BodyType.Rectangle: {
-                    body.setSize(
-                        this.entity.body.width,
-                        this.entity.body.height
-                    )
-                    break
-                }
-                case BodyType.Circle: {
-                    body.setCircle(
-                        this.entity.body.radius,
-                    )
-                    break
-                }
-                case BodyType.None: {
-                    body.setSize(0, 0)
-                    break
-                }
-                default: {
-                    console.error(`[WishlairSprite.ts]updateThis(): Unexpected body type: ${this.entity.body.type}`)
-                    break
-                }
-            }
-        }
+        if (this.currentAnimationId !== this.entity.animationId || this.currentDirection != this.entity.direction) {
+            this.currentAnimationId = this.entity.animationId
+            this.currentDirection = this.entity.direction
 
-        this.x = this.entity.x
-        this.y = this.entity.y
+            let animationId = this.currentAnimationId
 
-        this.body.velocity.x = this.entity.velocity.x
-        this.body.velocity.y = this.entity.velocity.y
-
-        if (this.entity.animationId !== this.animationId || this.entity.direction !== this.direction) {
-            this.animationId = this.entity.animationId
-            this.direction = this.entity.direction
-
-            this.currentAnimation = `${this.animationId}`
-
-            if (this.entity.direction !== Cardinal.None) {
-                const directionName = getCardinalName(this.direction)
-                this.currentAnimation += `-${directionName}`
+            if (this.currentDirection !== Cardinal.None) {
+                const directionName = getCardinalName(this.currentDirection)
+                animationId += `-${directionName}`
             }
 
-            this.anims.play(this.currentAnimation, true)
+            this.anims.play(animationId, true)
         }
+        // this.body.velocity.x = this.entity.velocity.x
+        // this.body.velocity.y = this.entity.velocity.y
 
-        // Playing an animation reset the origin to (0,0) for a frame
-        // so let's set the origin _after_ the animation.
-        // TODO: Do we really need to be able to change the origin after onInitialize() or will it always be the same?
-        if (this.originX !== this.entity.originX || this.originY !== this.entity.originY) {
-            // console.log(`setOrigin${this.entity.originX}, ${this.entity.originY}) (${this.originX}, ${this.originY})`)
-            this.setOrigin(this.entity.originX, this.entity.originY)
+        // if (this.entity.animationId !== this.animationId || this.entity.direction !== this.direction) {
+        //     this.animationId = this.entity.animationId
+        //     this.direction = this.entity.direction
+        //
+        //     this.currentAnimation = `${this.animationId}`
+        //
+        //     if (this.entity.direction !== Cardinal.None) {
+        //         const directionName = getCardinalName(this.direction)
+        //         this.currentAnimation += `-${directionName}`
+        //     }
+        //
+        //     this.anims.play(this.currentAnimation, true)
+        // }
+        //
+        // // Playing an animation reset the origin to (0,0) for a frame
+        // // so let's set the origin _after_ the animation.
+        // // TODO: Do we really need to be able to change the origin after onInitialize() or will it always be the same?
+        // if (this.originX !== this.entity.originX || this.originY !== this.entity.originY) {
+        //     // console.log(`setOrigin${this.entity.originX}, ${this.entity.originY}) (${this.originX}, ${this.originY})`)
+        //     this.setOrigin(this.entity.originX, this.entity.originY)
+        // }
+    }
+
+    // setAnimation(animationId: string) {
+    //     this.entity.animationId = animationId
+    // }
+    //
+    // setController(controllerId: string) {
+    //     this.entity.controllerId = controllerId
+    // }
+
+    setBody(body: EntityBody) {
+        // this.arcadeBody.reset(0, 0)
+
+        switch (body.type) {
+            case BodyType.Rectangle: {
+                this.arcadeBody.setSize(
+                    body.width,
+                    body.height,
+                    true
+                )
+                //
+                // this.arcadeBody.setOffset(
+                //     body.offsetX - body.width / 2,
+                //     body.offsetY - body.height / 2,
+                // )
+
+                break
+            }
+            case BodyType.Circle: {
+                this.arcadeBody.setCircle(
+                    body.radius,
+                    body.offsetX - body.radius,
+                    body.offsetY - body.radius,
+                )
+
+                break
+            }
+            case BodyType.None: {
+                this.arcadeBody.setSize(0, 0)
+                break
+            }
+            default: {
+                console.error(`[WishlairSprite.ts]updateThis(): Unexpected body type: ${body.type}`)
+                break
+            }
         }
     }
 }

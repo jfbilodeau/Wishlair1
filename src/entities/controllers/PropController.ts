@@ -1,6 +1,8 @@
 import {Wishlair} from '../../wishlair/Wishlair'
-import {Entity, EntityBody} from '../Entity'
+import {EntityBody} from '../Entity'
 import {EntityController} from './EntityController'
+import {WishlairSprite} from '../WishlairSprite'
+import {Cardinal} from '../../wishlair/Directions'
 
 export class PropController extends EntityController {
     constructor(
@@ -10,20 +12,20 @@ export class PropController extends EntityController {
         super()
     }
 
-    protected onInitialize(wishlair: Wishlair, entity: Entity): void {
+    protected onInitialize(wishlair: Wishlair, sprite: WishlairSprite): void {
         // entity.originX = this.body.offsetX
         // entity.originY = this.body.offsetY
-        entity.animationId = this.animationId
+        sprite.entity.animationId = this.animationId
+        sprite.setBody(this.body)
 
         // Reposition the prop so it's aligned to its origin.
-        entity.x += entity.width * entity.body.offsetX
-        entity.y += entity.height * entity.body.offsetY
+        // sprite.x += sprite.entity.width * this.body.offsetX
+        // sprite.y += sprite.entity.height * this.body.offsetY
 
-        // Create body
-        entity.body.copy(this.body)
+
     }
 
-    protected onTick(wishlair: Wishlair, entity: Entity): void {
+    protected onTick(wishlair: Wishlair, sprite: WishlairSprite) {
         // Nothing to do...
     }
 }
