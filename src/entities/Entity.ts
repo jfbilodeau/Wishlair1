@@ -2,12 +2,23 @@ import {Cardinal} from '../wishlair/Directions'
 
 export enum BodyType {
     None = 1,
-    Rectangle = 2,
-    Circle = 3,
+    Rectangle,
+    Circle,
+}
+
+export enum CollisionType {
+    None = 1,
+    Player,
+    Obstacle,
+    Hostile,
+    Weapon,
+    Shard,
+    Interactive,
 }
 
 export class EntityBody {
     type = BodyType.None
+    collision = CollisionType.None
     offsetX = 0
     offsetY = 0
     width = 0
@@ -48,6 +59,12 @@ export class EntityBody {
     setOffset(offsetX: number, offsetY: number) {
         this.offsetX = offsetX
         this.offsetY = offsetY
+
+        return this
+    }
+
+    setCollision(collision: CollisionType) {
+        this.collision = collision
 
         return this
     }

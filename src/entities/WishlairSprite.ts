@@ -1,5 +1,5 @@
 import {EntityController} from './controllers/EntityController'
-import {BodyType, Entity, EntityBody} from './Entity'
+import {BodyType, CollisionType, Entity, EntityBody} from './Entity'
 import {Wishlair} from '../wishlair/Wishlair'
 import WishlairScene from '../scenes/WishlairScene'
 import {Cardinal, getCardinalName} from '../wishlair/Directions'
@@ -48,11 +48,12 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
         this.arcadeBody.debugShowBody = true
         this.arcadeBody.debugShowVelocity = true
 
-        this.controller = this.wishlair.controllers.getController(this.controllerId)
-        if (this.controller) {
-            this.controller.initialize(this.wishlair, this)
-            this.updateThis()
-        }
+        // this.controller = this.wishlair.controllers.getController(this.controllerId)
+        // if (this.controller) {
+        //     this.controller.initialize(this.wishlair, this)
+        //     this.updateThis()
+        // }
+        this.activateNewController()
 
         scene.add.existing(this)
     }
@@ -64,13 +65,17 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
 
         // Update controller first to allow it to initialize and then update the entity
         if (this.controllerId !== this.entity.controllerId) {
-            this.controllerId = this.entity.controllerId
-            this.controller = this.wishlair.controllers.getController(this.controllerId)
-
-            this.controller?.initialize(this.wishlair, this)
+            this.activateNewController()
         }
 
         this.updateThis()
+    }
+
+    private activateNewController() {
+        this.controllerId = this.entity.controllerId
+        this.controller = this.wishlair.controllers.getController(this.controllerId)
+
+        this.controller?.initialize(this.wishlair, this)
     }
 
     private updateEntity() {
@@ -199,5 +204,29 @@ export class WishlairSprite extends Phaser.GameObjects.Sprite {
                 break
             }
         }
+
+        switch (body.collision) {
+            case CollisionType.None:
+                // Nothing
+                break;
+            case CollisionType.Player:
+                this.wishlairScene.playerGroup.add(this)
+                this.wishlairScene.entityGroup.add(this)
+                break;
+            case CollisionType.Obstacle:
+                this.arcadeBody.immovable = true
+                this.wishlairScene.obstacleGroup.add(this)
+                break;
+            case CollisionType.Hostile:
+                break;
+            case CollisionType.Weapon:
+                break;
+            case CollisionType.Shard:
+                break;
+            case CollisionType.Interactive:
+                break;
+        }
+
+        // this.arcadeBody.moves = false
     }
 }

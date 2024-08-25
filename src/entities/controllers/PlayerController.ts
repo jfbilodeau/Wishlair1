@@ -1,11 +1,11 @@
-import {Entity, EntityBody} from '../Entity'
+import {CollisionType, EntityBody} from '../Entity'
 import {EntityController} from './EntityController'
 import {Wishlair} from '../../wishlair/Wishlair'
-import {Cardinal, getAngleFromCardinal} from '../../wishlair/Directions'
+import {Cardinal} from '../../wishlair/Directions'
 import {WishlairSprite} from '../WishlairSprite'
 
 export class PlayerController extends EntityController {
-    private body = new EntityBody().setOffset(32, 52).setCircle(10)
+    private body = new EntityBody().setOffset(32, 52).setCircle(10).setCollision(CollisionType.Player)
 
     public constructor() {
         super()

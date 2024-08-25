@@ -7,8 +7,6 @@ import GameObject = Phaser.GameObjects.GameObject
 import Camera = Phaser.Cameras.Scene2D.Camera
 import Group = Phaser.GameObjects.Group
 
-const LayerSize = 10000
-
 export default class WishlairScene extends Phaser.Scene {
     wishlair: Wishlair
     map: Tilemap
@@ -25,7 +23,6 @@ export default class WishlairScene extends Phaser.Scene {
     obstacleGroup: Group  // Impassable obstacles
     entityGroup: Group  // Moveable entities
     playerGroup: Group  // Player
-    propGroup: Group  // Immovable props
     hostileGroup: Group  // Hostiles
     weaponGroup: Group  // Player weapons
     shardGroup: Group  // Wishshards
@@ -56,7 +53,6 @@ export default class WishlairScene extends Phaser.Scene {
         this.obstacleGroup = this.add.group()
         this.entityGroup = this.add.group()
         this.playerGroup = this.add.group()
-        this.propGroup = this.add.group()
         this.hostileGroup = this.add.group()
         this.weaponGroup = this.add.group()
         this.shardGroup = this.add.group()
@@ -171,7 +167,7 @@ export default class WishlairScene extends Phaser.Scene {
     }
 
     private computeDepth(sprite: WishlairSprite) {
-        sprite.depth = sprite.y + (sprite.entity.layer * LayerSize)
+        sprite.depth = sprite.y
     }
 
     private collideObstacle() {

@@ -8,7 +8,7 @@ import {Inventory} from './Inventory'
 import WishlairScene from '../scenes/WishlairScene'
 import {System} from './System'
 import {PropController} from '../entities/controllers/PropController'
-import {EntityBody} from '../entities/Entity'
+import {CollisionType, EntityBody} from '../entities/Entity'
 
 export class Wishlair {
     system = new System()
@@ -34,8 +34,8 @@ export class Wishlair {
         this.controllers.addController('player', new PlayerController())
 
         // Props
-        this.controllers.addController('conifer1', new PropController('conifer1', new EntityBody().setCircle(24).setOffset(85, 250)))
-        this.controllers.addController('rock1', new PropController('rock1', new EntityBody().setCircle(42).setOffset(92/2, 83/2)))
+        this.controllers.addController('conifer1', new PropController('conifer1', new EntityBody().setCircle(24).setOffset(85, 250).setCollision(CollisionType.Obstacle)))
+        this.controllers.addController('rock1', new PropController('rock1', new EntityBody().setCircle(42).setOffset(92/2, 83/2).setCollision(CollisionType.Obstacle)))
     }
 
     initializeScene(scene: WishlairScene) {
