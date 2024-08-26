@@ -56,16 +56,12 @@ export class LevelLayer extends Layer {
 
         const layerName = `layer-${this.layerIndex}`
 
-        this.addTileMapLayer(layerName)
+        const tileLayer = this.addTileMapLayer(layerName)
 
-        const obstacleLayerName = `${layerName}-obstacles`
-
-        const obstacleLayer = this.addTileMapLayer(obstacleLayerName)
-
-        if (obstacleLayer) {
-            obstacleLayer.setCollisionByExclusion([-1])
+        if (tileLayer) {
+            tileLayer.setCollisionByProperty({type: ['obstacle', 'void']})
             this.scene.physics.add.collider(
-                obstacleLayer,
+                tileLayer,
                 this.entityGroup,
                 this.collideObstacle,
                 () => {

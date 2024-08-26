@@ -39,7 +39,7 @@ export class Wishlair {
         this.controllers.addController('rock1', new PropController('rock1', new EntityBody(CollisionType.Obstacle).setCircle(42).setOffset(92/2, 83/2)))
         this.controllers.addController('rock2', new PropController('rock2', new EntityBody(CollisionType.Obstacle).setCircle(14).setOffset(44/2, 37/2)))
         this.controllers.addController('rock3', new PropController('rock3', new EntityBody(CollisionType.Obstacle).setCircle(20).setOffset(64/2, 47/2)))
-        this.controllers.addController('rock4', new PropController('rock4', new EntityBody(CollisionType.Obstacle).setCircle(45).setOffset(127/2, 107/2)))
+        this.controllers.addController('rock4', new PropController('rock4', new EntityBody(CollisionType.Obstacle).setCircle(48).setOffset(127/2, 107/2)))
     }
 
     initializeScene(scene: WishlairScene) {

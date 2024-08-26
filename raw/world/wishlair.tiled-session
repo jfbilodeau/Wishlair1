@@ -23,6 +23,14 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "test-1.tmj": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 293,
+                "y": 143.5
+            }
+        },
         "wishlair-entrance-1.tmj": {
             "expandedObjectLayers": [
                 2
