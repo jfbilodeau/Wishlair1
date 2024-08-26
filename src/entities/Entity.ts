@@ -18,12 +18,14 @@ export enum CollisionType {
 
 export class EntityBody {
     type = BodyType.None
-    collision = CollisionType.None
     offsetX = 0
     offsetY = 0
     width = 0
     height = 0
     radius = 0
+
+    constructor(public collision: CollisionType = CollisionType.None) {
+    }
 
     copy(body: EntityBody) {
         this.type = body.type

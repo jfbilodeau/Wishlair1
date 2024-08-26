@@ -170,6 +170,7 @@ export class LevelLayer extends Layer {
             case CollisionType.Obstacle:
                 this.obstacleGroup.add(sprite)
                 sprite.arcadeBody.immovable = true
+                sprite.arcadeBody.moves = false
                 break;
             case CollisionType.Hostile:
                 break;

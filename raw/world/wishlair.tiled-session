@@ -27,11 +27,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.75,
-            "selectedLayer": 0,
+            "scale": 0.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 416,
-                "y": 1088.6666666666665
+                "x": 500,
+                "y": 1239
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -104,7 +104,7 @@
     "map.height": 15,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "json",
-    "map.width": 25,
+    "map.width": 20,
     "openFiles": [
         "wishlair-entrance-2.tmj",
         "wishlair-entrance-1.tmj"
