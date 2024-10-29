@@ -114,6 +114,8 @@ export class LevelLayer extends Layer {
         if (this.tileMapLayerExists(layerName)) {
             const tileLayer = this.scene.map.createLayer(layerName, this.scene.tileset)
 
+            this.add(tileLayer)
+
             return tileLayer
         }
 

@@ -3,7 +3,7 @@ game.organization = "Chronogears"
 game.name = "Wishlair 1"
 
 # Init window
-resolution.x = 640
+resolution.x = 800
 resolution.y = 480
 
 window.fps = 60

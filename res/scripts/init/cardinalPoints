@@ -1,4 +1,0 @@
-const NORTH = 1
-const EAST  = 2
-const SOUTH = 3
-const WEST  = 4

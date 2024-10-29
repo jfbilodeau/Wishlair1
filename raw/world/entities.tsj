@@ -8,7 +8,7 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":6,
+ "tilecount":8,
  "tiledversion":"1.10.2",
  "tileheight":310,
  "tiles":[
@@ -82,6 +82,30 @@
                  "name":"entityId",
                  "type":"string",
                  "value":"tree1"
+                }]
+        }, 
+        {
+         "id":8,
+         "image":"..\/system\/down.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"layerDown"
+                }]
+        }, 
+        {
+         "id":9,
+         "image":"..\/system\/up.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "properties":[
+                {
+                 "name":"entityId",
+                 "type":"string",
+                 "value":"layerUp"
                 }]
         }],
  "tilewidth":246,

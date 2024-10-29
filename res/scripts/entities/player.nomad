@@ -1,6 +1,9 @@
 this.name = "player"
 
-this.setAnimation "player/idleSouth" 12 true false
+this.animation.name = "daughter"
+this.animation.variant = "idle"
+this.animation.direction = "south"
+this.animation.speed = 24
 
 this.direction = SOUTH
 this.moveLeft = false
@@ -42,28 +45,37 @@ end
 
 this.onFrame fun
     action = IDLE
+    this.animation.variant = "idle"
 
     if this.moveLeft 
-        this.x = this.x - 1
+        this.x = this.x - 1.0
         this.direction = WEST
+        this.animation.variant = "move"
+        this.animation.direction = "west"
         action = MOVING
     endIf
 
     if this.moveRight  
-        this.x = this.x + 1
+        this.x = this.x + 1.0
         this.direction = EAST
+        this.animation.variant = "move"
+        this.animation.direction = "east"
         action = MOVING
     endIf
 
     if this.moveUp 
-        this.y = this.y - 1
+        this.y = this.y - 1.0
         this.direction = NORTH
+        this.animation.variant = "move"
+        this.animation.direction = "north"
         action = MOVING
     endIf
 
     if this.moveDown   
-        this.y = this.y + 1
+        this.y = this.y + 1.0
         this.direction = SOUTH
+        this.animation.variant = "move"
+        this.animation.direction = "south"
         action = MOVING
     endIf
 end

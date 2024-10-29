@@ -1,7 +1,7 @@
 {
   "sprites": [ 
     {
-      "name": "daughter-idle-east.sprite",
+      "name": "daughter-idle-east-00.sprite",
       "source": {
         "x": 14,
         "y": 5,
@@ -9,44 +9,14 @@
         "height": 64
       },
       "frame": {
-        "x": 338,
+        "x": 266,
         "y": 0,
         "width": 31,
         "height": 56
       }
     },
     {
-      "name": "daughter-idle-north.sprite",
-      "source": {
-        "x": 14,
-        "y": 5,
-        "width": 64,
-        "height": 64
-      },
-      "frame": {
-        "x": 136,
-        "y": 0,
-        "width": 36,
-        "height": 56
-      }
-    },
-    {
-      "name": "daughter-idle-south.sprite",
-      "source": {
-        "x": 14,
-        "y": 5,
-        "width": 64,
-        "height": 64
-      },
-      "frame": {
-        "x": 172,
-        "y": 0,
-        "width": 36,
-        "height": 56
-      }
-    },
-    {
-      "name": "daughter-idle-west.sprite",
+      "name": "daughter-idle-west-00.sprite",
       "source": {
         "x": 19,
         "y": 5,
@@ -54,14 +24,14 @@
         "height": 64
       },
       "frame": {
-        "x": 369,
+        "x": 297,
         "y": 0,
         "width": 31,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-east1.sprite",
+      "name": "daughter-move-east-00.sprite",
       "source": {
         "x": 12,
         "y": 4,
@@ -69,14 +39,14 @@
         "height": 64
       },
       "frame": {
-        "x": 462,
+        "x": 390,
         "y": 0,
         "width": 38,
         "height": 54
       }
     },
     {
-      "name": "daughter-move-east2.sprite",
+      "name": "daughter-move-east-01.sprite",
       "source": {
         "x": 12,
         "y": 5,
@@ -84,14 +54,14 @@
         "height": 64
       },
       "frame": {
-        "x": 574,
+        "x": 502,
         "y": 0,
         "width": 35,
         "height": 53
       }
     },
     {
-      "name": "daughter-move-east3.sprite",
+      "name": "daughter-move-east-02.sprite",
       "source": {
         "x": 13,
         "y": 4,
@@ -106,7 +76,7 @@
       }
     },
     {
-      "name": "daughter-move-east4.sprite",
+      "name": "daughter-move-east-03.sprite",
       "source": {
         "x": 14,
         "y": 5,
@@ -114,14 +84,14 @@
         "height": 64
       },
       "frame": {
-        "x": 400,
+        "x": 328,
         "y": 0,
         "width": 31,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-north1.sprite",
+      "name": "daughter-move-north-00.sprite",
       "source": {
         "x": 12,
         "y": 4,
@@ -129,14 +99,14 @@
         "height": 64
       },
       "frame": {
-        "x": 644,
+        "x": 572,
         "y": 0,
         "width": 36,
         "height": 52
       }
     },
     {
-      "name": "daughter-move-north2.sprite",
+      "name": "daughter-move-north-01.sprite",
       "source": {
         "x": 16,
         "y": 5,
@@ -144,14 +114,14 @@
         "height": 64
       },
       "frame": {
-        "x": 242,
+        "x": 170,
         "y": 0,
         "width": 32,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-north3.sprite",
+      "name": "daughter-move-north-02.sprite",
       "source": {
         "x": 16,
         "y": 4,
@@ -159,14 +129,14 @@
         "height": 64
       },
       "frame": {
-        "x": 538,
+        "x": 466,
         "y": 0,
         "width": 36,
         "height": 53
       }
     },
     {
-      "name": "daughter-move-north4.sprite",
+      "name": "daughter-move-north-03.sprite",
       "source": {
         "x": 16,
         "y": 5,
@@ -174,14 +144,14 @@
         "height": 64
       },
       "frame": {
-        "x": 274,
+        "x": 202,
         "y": 0,
         "width": 32,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-south1.sprite",
+      "name": "daughter-move-south-00.sprite",
       "source": {
         "x": 16,
         "y": 4,
@@ -196,7 +166,7 @@
       }
     },
     {
-      "name": "daughter-move-south2.sprite",
+      "name": "daughter-move-south-01.sprite",
       "source": {
         "x": 16,
         "y": 5,
@@ -204,14 +174,14 @@
         "height": 64
       },
       "frame": {
-        "x": 306,
+        "x": 234,
         "y": 0,
         "width": 32,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-south3.sprite",
+      "name": "daughter-move-south-02.sprite",
       "source": {
         "x": 16,
         "y": 4,
@@ -226,7 +196,7 @@
       }
     },
     {
-      "name": "daughter-move-south4.sprite",
+      "name": "daughter-move-south-03.sprite",
       "source": {
         "x": 15,
         "y": 5,
@@ -234,14 +204,14 @@
         "height": 64
       },
       "frame": {
-        "x": 208,
+        "x": 136,
         "y": 0,
         "width": 34,
         "height": 56
       }
     },
     {
-      "name": "daughter-move-west1.sprite",
+      "name": "daughter-move-west-00.sprite",
       "source": {
         "x": 14,
         "y": 4,
@@ -249,14 +219,14 @@
         "height": 64
       },
       "frame": {
-        "x": 500,
+        "x": 428,
         "y": 0,
         "width": 38,
         "height": 54
       }
     },
     {
-      "name": "daughter-move-west2.sprite",
+      "name": "daughter-move-west-01.sprite",
       "source": {
         "x": 17,
         "y": 5,
@@ -264,14 +234,14 @@
         "height": 64
       },
       "frame": {
-        "x": 609,
+        "x": 537,
         "y": 0,
         "width": 35,
         "height": 53
       }
     },
     {
-      "name": "daughter-move-west3.sprite",
+      "name": "daughter-move-west-02.sprite",
       "source": {
         "x": 15,
         "y": 4,
@@ -286,7 +256,7 @@
       }
     },
     {
-      "name": "daughter-move-west4.sprite",
+      "name": "daughter-move-west-03.sprite",
       "source": {
         "x": 19,
         "y": 5,
@@ -294,7 +264,7 @@
         "height": 64
       },
       "frame": {
-        "x": 431,
+        "x": 359,
         "y": 0,
         "width": 31,
         "height": 56
