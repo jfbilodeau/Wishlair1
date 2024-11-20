@@ -7,3 +7,13 @@ const COLOR_YELLOW = 0xFFFF00FF
 const COLOR_MAGENTA = 0xFF00FFFF
 const COLOR_CYAN = 0x00FFFFFF
 const COLOR_TRANSPARENT = 0x00000000
+
+const Color.Black = 0x000000FF
+const Color.White = 0xFFFFFFFF
+const Color.Red = 0xFF0000FF
+const Color.Green = 0x00FF00FF
+const Color.Blue = 0x0000FFFF
+const Color.Yellow = 0xFFFF00FF
+const Color.Magenta = 0xFF00FFFF
+const Color.Cyan = 0x00FFFFFF
+const Color.Transparent = 0x00000000

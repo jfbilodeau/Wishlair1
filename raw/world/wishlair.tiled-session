@@ -30,10 +30,10 @@
         },
         "test-1.tmj": {
             "scale": 1.5,
-            "selectedLayer": 3,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 395.33333333333337,
-                "y": 188.33333333333331
+                "x": 160.99999999999997,
+                "y": 165
             }
         },
         "wishlair-entrance-1.tmj": {
@@ -43,8 +43,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 400,
-                "y": 719.5
+                "x": 398.5,
+                "y": 718.5
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -83,7 +83,7 @@
             "scale": 1.4487499999999998,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 238.82657463330463,
+                "x": 237.44607420189823,
                 "y": 160.48317515099228
             }
         },
@@ -105,14 +105,14 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/public/assets/world",
+    "last.exportedFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/res/world",
     "last.externalTilesetPath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world",
     "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world",
     "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world/entities",
     "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world",
+    "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "loadedWorlds": [
-        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world/wishlair.world",
-        "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world/wishlair.world"
+        "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world/wishlair.world"
     ],
     "map.height": 15,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",

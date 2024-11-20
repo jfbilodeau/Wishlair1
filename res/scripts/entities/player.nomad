@@ -3,9 +3,10 @@ this.name = "player"
 this.animation.name = "daughter"
 this.animation.variant = "idle"
 this.animation.direction = "south"
-this.animation.speed = 24
+this.animation.speed = 20
+this.layer = 1
 
-this.direction = SOUTH
+this.direction = cardinal.south
 this.moveLeft = false
 this.moveRight = false
 this.moveUp = false
@@ -49,7 +50,7 @@ this.onFrame fun
 
     if this.moveLeft 
         this.x = this.x - 1.0
-        this.direction = WEST
+        this.direction = cardinal.west
         this.animation.variant = "move"
         this.animation.direction = "west"
         action = MOVING
@@ -57,7 +58,7 @@ this.onFrame fun
 
     if this.moveRight  
         this.x = this.x + 1.0
-        this.direction = EAST
+        this.direction = cardinal.east
         this.animation.variant = "move"
         this.animation.direction = "east"
         action = MOVING
@@ -65,7 +66,7 @@ this.onFrame fun
 
     if this.moveUp 
         this.y = this.y - 1.0
-        this.direction = NORTH
+        this.direction = cardinal.north
         this.animation.variant = "move"
         this.animation.direction = "north"
         action = MOVING
@@ -73,7 +74,7 @@ this.onFrame fun
 
     if this.moveDown   
         this.y = this.y + 1.0
-        this.direction = SOUTH
+        this.direction = cardinal.south
         this.animation.variant = "move"
         this.animation.direction = "south"
         action = MOVING
