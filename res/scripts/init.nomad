@@ -15,6 +15,7 @@ window.setTitle $"Wishlair 1"
 global.font.default = game.loadFont "fonts/PressStart/PressStart2P-vaV7.ttf" 8
 
 # Init scripts
+init.forest
 init.player
 
 # Start initial scene

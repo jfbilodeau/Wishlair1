@@ -3,8 +3,9 @@ this.name = "player"
 this.animation.name = "daughter"
 this.animation.variant = "idle"
 this.animation.direction = "south"
+this.sprite.x = 16.0
+this.sprite.y = 32.0
 this.animation.speed = 20
-this.layer = 1
 
 this.direction = cardinal.south
 this.moveLeft = false

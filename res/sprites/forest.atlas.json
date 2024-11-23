@@ -1,0 +1,94 @@
+{
+  "sprites": [ 
+    {
+      "name": "conifer1-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 185,
+        "height": 310
+      },
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "width": 185,
+        "height": 310
+      }
+    },
+    {
+      "name": "rock1-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 92,
+        "height": 83
+      },
+      "frame": {
+        "x": 312,
+        "y": 262,
+        "width": 92,
+        "height": 83
+      }
+    },
+    {
+      "name": "rock2-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 44,
+        "height": 37
+      },
+      "frame": {
+        "x": 64,
+        "y": 310,
+        "width": 44,
+        "height": 37
+      }
+    },
+    {
+      "name": "rock3-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 64,
+        "height": 47
+      },
+      "frame": {
+        "x": 0,
+        "y": 310,
+        "width": 64,
+        "height": 47
+      }
+    },
+    {
+      "name": "rock4-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 127,
+        "height": 107
+      },
+      "frame": {
+        "x": 185,
+        "y": 262,
+        "width": 127,
+        "height": 107
+      }
+    },
+    {
+      "name": "tree1-idle-south-00.sprite",
+      "source": {
+        "x": 0,
+        "y": 0,
+        "width": 246,
+        "height": 262
+      },
+      "frame": {
+        "x": 185,
+        "y": 0,
+        "width": 246,
+        "height": 262
+      }
+    }
+  ]
+}

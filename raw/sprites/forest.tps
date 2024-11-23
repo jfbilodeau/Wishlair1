@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>6</int>
         <key>texturePackerVersion</key>
-        <string>7.4.0</string>
+        <string>7.5.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -32,7 +32,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>phaser</string>
+        <string>NomadExporter</string>
         <key>textureFileName</key>
         <filename></filename>
         <key>flipPVR</key>
@@ -121,10 +121,10 @@
         </struct>
         <key>dataFileNames</key>
         <map type="GFileNameMap">
-            <key>json</key>
+            <key>NomadAtlas</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../public/assets/sprites/forest.json</filename>
+                <filename>../../res/sprites/forest.atlas.json</filename>
             </struct>
         </map>
         <key>multiPackMode</key>
@@ -155,7 +155,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -167,9 +167,9 @@
             <key>heuristicMask</key>
             <false/>
             <key>defaultPivotPoint</key>
-            <point_f>0.5,0.5</point_f>
+            <point_f>0,0</point_f>
             <key>writePivotPoints</key>
-            <false/>
+            <true/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">

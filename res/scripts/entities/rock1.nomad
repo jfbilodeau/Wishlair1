@@ -1,0 +1,1 @@
+this.animation.name = "conifer1"
