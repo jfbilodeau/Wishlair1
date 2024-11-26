@@ -1,1 +1,0 @@
-this.animation.name = "rock5"

@@ -1,3 +1,1 @@
-this.animation.name = "rock1"
-
-this.repositionOnAnchor 85.0 250.0
+prop.initCircle "conifer1" 85.5 250.0 24.0

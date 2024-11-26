@@ -3,13 +3,13 @@ game.organization = "Chronogears"
 game.name = "Wishlair 1"
 
 # Init window
-resolution.x = 800
-resolution.y = 480
+resolution.x = 800 #16*32 #800
+resolution.y = 480 #12*32 #480
 
 window.fps = 60
 window.setResolution resolution.x resolution.y
 window.setSize resolution.x resolution.y
-window.setTitle $"Wishlair 1"
+window.setTitle $"Wishlair 1 ({resolution.x}x{resolution.y})"
 
 # Load resources
 global.font.default = game.loadFont "fonts/PressStart/PressStart2P-vaV7.ttf" 8

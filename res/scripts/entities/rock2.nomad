@@ -1,1 +1,1 @@
-this.animation.name = "rock2"
+prop.initCircle "rock2" 44.0/2.0 37.0/2.0 14.0
