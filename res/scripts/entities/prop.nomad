@@ -22,11 +22,11 @@ end
 fun prop.initRectangle animationName:string anchorX:float anchorY:float width:float height:float
     prop.init animationName anchorX anchorY
 
-    this.setRectangleBody width height
+    this.body.rectangle body.static width height
 end
 
 fun prop.initCircle animationName:string anchorX:float anchorY:float radius:float
     prop.init animationName anchorX anchorY
 
-    this.setCircleBody radius
+    this.body.circle body.static radius
 end

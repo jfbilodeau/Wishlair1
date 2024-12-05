@@ -173,10 +173,10 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">forest/conifer1-00.png</key>
+            <key type="filename">forest/conifer1-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -188,10 +188,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock1-00.png</key>
+            <key type="filename">forest/rock1-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -203,10 +203,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock2-00.png</key>
+            <key type="filename">forest/rock2-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -218,10 +218,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock3-00.png</key>
+            <key type="filename">forest/rock3-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -233,10 +233,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock4-00.png</key>
+            <key type="filename">forest/rock4-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>
@@ -248,10 +248,10 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/tree1-00.png</key>
+            <key type="filename">forest/tree1-idle-south-00.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0,0</point_f>
                 <key>spriteScale</key>
                 <double>1</double>
                 <key>scale9Enabled</key>

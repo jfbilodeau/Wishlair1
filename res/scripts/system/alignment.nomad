@@ -8,7 +8,6 @@
 # const ALIGNMENT_BOTTOM_CENTER = 8
 # const ALIGNMENT_BOTTOM_RIGHT = 9
 
-
 const alignment.topLeft = 1
 const alignment.topCenter = 2
 const alignment.topRight = 3

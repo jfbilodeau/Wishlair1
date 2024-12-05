@@ -3,8 +3,8 @@ this.name = "player"
 this.animation.name = "daughter"
 this.animation.variant = "idle"
 this.animation.direction = "south"
-this.sprite.x = 16.0
-this.sprite.y = 32.0
+this.sprite.x = 32.0
+this.sprite.y = 52.0
 this.animation.speed = 10
 
 this.direction = cardinal.south
@@ -12,7 +12,11 @@ this.moveLeft = false
 this.moveRight = false
 this.moveUp = false
 this.moveDown = false
-this.move.speed = 2.0
+this.move.speed = 2.0 * 60.0
+
+this.body.circle body.dynamic 10.0
+this.mask = mask.player
+this.collisionMask = mask.solid
 
 this.onPress action.playerLeft fun
     this.moveLeft = true
@@ -49,9 +53,11 @@ end
 this.onFrame fun
     action = IDLE
     this.animation.variant = "idle"
+    this.velocity.clear
 
     if this.moveLeft 
-        this.x = this.x - this.move.speed
+        #this.x = this.x - this.move.speed
+        this.velocity.x = -this.move.speed
         this.direction = cardinal.west
         this.animation.variant = "move"
         this.animation.direction = "west"
@@ -59,7 +65,8 @@ this.onFrame fun
     endIf
 
     if this.moveRight  
-        this.x = this.x + this.move.speed
+        #this.x = this.x + this.move.speed
+        this.velocity.x = this.move.speed
         this.direction = cardinal.east
         this.animation.variant = "move"
         this.animation.direction = "east"
@@ -67,7 +74,8 @@ this.onFrame fun
     endIf
 
     if this.moveUp 
-        this.y = this.y - this.move.speed
+        #this.y = this.y - this.move.speed
+        this.velocity.y = -this.move.speed
         this.direction = cardinal.north
         this.animation.variant = "move"
         this.animation.direction = "north"
@@ -75,7 +83,8 @@ this.onFrame fun
     endIf
 
     if this.moveDown   
-        this.y = this.y + this.move.speed
+        #this.y = this.y + this.move.speed
+        this.velocity.y = this.move.speed
         this.direction = cardinal.south
         this.animation.variant = "move"
         this.animation.direction = "south"
@@ -85,4 +94,7 @@ this.onFrame fun
     this.z = this.y
 
     #log.info $"this.z: {this.z}, this.y: {this.y}"
+    mask = this.getCollidingMask
+    this.text.color = color.white
+    this.setText global.font.default $"velocity: {this.velocity.x}, {this.velocity.y}, mask: {mask}"
 end
