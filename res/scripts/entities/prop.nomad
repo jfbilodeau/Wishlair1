@@ -8,11 +8,7 @@
 #this.z = this.y
 #this.mask = mask.solid
 
-#log.info $"this.animation.name: {this.animation.name}, this.x: {this.x}, this.y: {this.y}, this.z: {this.z}"
-
 fun prop.init animationName:string anchorX:float anchorY:float
-    log.info $"animationName: {animationName}, anchorX: {anchorX}, anchorY: {anchorY}, layer: {this.layer}"
-
     this.animation.name = animationName
     this.repositionOnAnchor anchorX anchorY
     this.z = this.y
