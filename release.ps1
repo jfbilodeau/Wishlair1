@@ -16,11 +16,11 @@ cmake -DCMAKE_BUILD_TYPE=Release -S $SourcePath -B $BuildPath
 
 cmake --build $BuildPath --config Release
 
-Copy-Item -Path "$BuildPath\Release\*.dll" -Destination $ReleasePath
-Copy-Item -Path "$BuildPath\Release\nomad.exe" -Destination "$ReleasePath\$ReleaseName.exe"
-Copy-Item -Path "$BuildPath\licenses" -Destination "$ReleasePath"
-Copy-Item -Path "$BuildPath\LICENSE.txt" -Destination "$ReleasePath"
+Copy-Item -Path "$BuildPath\Release\*.dll" -Destination $ReleasePath -Force
+Copy-Item -Path "$BuildPath\Release\nomad.exe" -Destination "$ReleasePath\$ReleaseName.exe" -Force
+Copy-Item -Path "$BuildPath\licenses" -Destination "$ReleasePath" -Force
+Copy-Item -Path "$BuildPath\LICENSE.txt" -Destination "$ReleasePath" -Force
 
-Copy-Item -Path "./res/*" -Destination $ReleasePath -Recurse
+Copy-Item -Path "./res/*" -Destination $ReleasePath -Recurse -Force
 
-Compress-Archive -Path $ReleasePath -DestinationPath "$ReleaseId.zip"
+Compress-Archive -Path $ReleasePath -DestinationPath "$ReleaseId.zip" -Force

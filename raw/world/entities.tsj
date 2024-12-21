@@ -8,9 +8,9 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":8,
+ "tilecount":9,
  "tiledversion":"1.10.2",
- "tileheight":310,
+ "tileheight":480,
  "tiles":[
         {
          "id":2,
@@ -107,8 +107,20 @@
                  "type":"string",
                  "value":"entities.layerUp"
                 }]
+        }, 
+        {
+         "id":10,
+         "image":"..\/ui\/dialog-box-v.png",
+         "imageheight":480,
+         "imagewidth":400,
+         "properties":[
+                {
+                 "name":"scriptName",
+                 "type":"string",
+                 "value":"entities.ui.dialogLeft"
+                }]
         }],
- "tilewidth":246,
+ "tilewidth":400,
  "type":"tileset",
  "version":"1.10"
 }

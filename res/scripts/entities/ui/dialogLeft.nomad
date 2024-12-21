@@ -1,0 +1,1 @@
+this.sprite.name = "dialog-box-v.sprite"

@@ -13,6 +13,7 @@ fun prop.init animationName:string anchorX:float anchorY:float
     this.repositionOnAnchor anchorX anchorY
     this.z = this.y
     this.mask = mask.solid
+    this.collisionMask = mask.entities
 end
 
 fun prop.initRectangle animationName:string anchorX:float anchorY:float width:float height:float

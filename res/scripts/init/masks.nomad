@@ -7,3 +7,6 @@ const mask.hostile = 0x0020
 const mask.weapon  = 0x0040
 const mask.player  = 0x0080
 const mask.solid   = 0x0100
+
+# Composite masks
+const mask.entities = mask.player | mask.hostile | mask.weapon

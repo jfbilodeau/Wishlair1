@@ -1,0 +1,1 @@
+game.loadSpriteAtlas "sprites/ui.atlas.json"

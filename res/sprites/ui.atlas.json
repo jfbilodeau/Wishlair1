@@ -1,0 +1,34 @@
+{
+  "sprites": [ 
+    {
+      "name": "dialog-box-h.sprite",
+      "source": {
+        "x": 5,
+        "y": 5,
+        "width": 800,
+        "height": 240
+      },
+      "frame": {
+        "x": 388,
+        "y": 0,
+        "width": 790,
+        "height": 230
+      }
+    },
+    {
+      "name": "dialog-box-v.sprite",
+      "source": {
+        "x": 6,
+        "y": 14,
+        "width": 400,
+        "height": 480
+      },
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "width": 388,
+        "height": 455
+      }
+    }
+  ]
+}
