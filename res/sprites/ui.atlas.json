@@ -1,7 +1,7 @@
 {
   "sprites": [ 
     {
-      "name": "dialog-box-h.sprite",
+      "name": "dialog-box-h",
       "source": {
         "x": 5,
         "y": 5,
@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "dialog-box-v.sprite",
+      "name": "dialog-box-v",
       "source": {
         "x": 6,
         "y": 14,

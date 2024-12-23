@@ -2,5 +2,5 @@ key,en
 title,Wishlair
 yes,Yes
 no,No
-scene.test1.moveLeft,Use WASD to move to the right.
+scene.test1.moveLeft,"Use the W,A,S,D keys to move around. Head to the right."
 scene.test1.moveUp,Move to the top of the screen to go to the next room.

@@ -1,19 +1,10 @@
-# const ALIGNMENT_TOP_LEFT = 1
-# const ALIGNMENT_TOP_CENTER = 2
-# const ALIGNMENT_TOP_RIGHT = 3
-# const ALIGNMENT_CENTER_LEFT = 4
-# const ALIGNMENT_CENTER = 5
-# const ALIGNMENT_CENTER_RIGHT = 6
-# const ALIGNMENT_BOTTOM_LEFT = 7
-# const ALIGNMENT_BOTTOM_CENTER = 8
-# const ALIGNMENT_BOTTOM_RIGHT = 9
-
-const alignment.topLeft = 1
-const alignment.topCenter = 2
-const alignment.topRight = 3
-const alignment.centerLeft = 4
-const alignment.center = 5
-const alignment.enterRight = 6
-const alignment.bottomLeft = 7
-const alignment.bottomCenter = 8
-const alignment.bottomRight = 9   
+# Now defined in the engine
+#const alignment.topLeft = 1
+#const alignment.topCenter = 2
+#const alignment.topRight = 3
+#const alignment.centerLeft = 4
+#const alignment.center = 5
+#const alignment.enterRight = 6
+#const alignment.bottomLeft = 7
+#const alignment.bottomCenter = 8
+#const alignment.bottomRight = 9

@@ -173,7 +173,7 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">forest/conifer1-idle-south-00.png</key>
+            <key type="filename">forest/conifer1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -188,7 +188,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock1-idle-south-00.png</key>
+            <key type="filename">forest/rock1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -203,7 +203,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock2-idle-south-00.png</key>
+            <key type="filename">forest/rock2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -218,7 +218,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock3-idle-south-00.png</key>
+            <key type="filename">forest/rock3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -233,7 +233,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/rock4-idle-south-00.png</key>
+            <key type="filename">forest/rock4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -248,7 +248,7 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">forest/tree1-idle-south-00.png</key>
+            <key type="filename">forest/tree1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>

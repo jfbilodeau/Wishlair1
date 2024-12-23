@@ -1,7 +1,7 @@
 {
   "sprites": [ 
     {
-      "name": "conifer1-idle-south-00.sprite",
+      "name": "conifer1",
       "source": {
         "x": 0,
         "y": 0,
@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "rock1-idle-south-00.sprite",
+      "name": "rock1",
       "source": {
         "x": 0,
         "y": 0,
@@ -31,7 +31,7 @@
       }
     },
     {
-      "name": "rock2-idle-south-00.sprite",
+      "name": "rock2",
       "source": {
         "x": 0,
         "y": 0,
@@ -46,7 +46,7 @@
       }
     },
     {
-      "name": "rock3-idle-south-00.sprite",
+      "name": "rock3",
       "source": {
         "x": 0,
         "y": 0,
@@ -61,7 +61,7 @@
       }
     },
     {
-      "name": "rock4-idle-south-00.sprite",
+      "name": "rock4",
       "source": {
         "x": 0,
         "y": 0,
@@ -76,7 +76,7 @@
       }
     },
     {
-      "name": "tree1-idle-south-00.sprite",
+      "name": "tree1",
       "source": {
         "x": 0,
         "y": 0,

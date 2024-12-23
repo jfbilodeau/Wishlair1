@@ -8,22 +8,22 @@
 #this.z = this.y
 #this.mask = mask.solid
 
-fun prop.init animationName:string anchorX:float anchorY:float
-    this.animation.name = animationName
+fun prop.init spriteName:string anchorX:float anchorY:float
+    this.sprite.name = spriteName
     this.repositionOnAnchor anchorX anchorY
     this.z = this.y
     this.mask = mask.solid
     this.collisionMask = mask.entities
 end
 
-fun prop.initRectangle animationName:string anchorX:float anchorY:float width:float height:float
-    prop.init animationName anchorX anchorY
+fun prop.initRectangle spriteName:string anchorX:float anchorY:float width:float height:float
+    prop.init spriteName anchorX anchorY
 
     this.body.rectangle body.static width height
 end
 
-fun prop.initCircle animationName:string anchorX:float anchorY:float radius:float
-    prop.init animationName anchorX anchorY
+fun prop.initCircle spriteName:string anchorX:float anchorY:float radius:float
+    prop.init spriteName anchorX anchorY
 
     this.body.circle body.static radius
 end

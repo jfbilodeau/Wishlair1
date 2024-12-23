@@ -173,7 +173,26 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-east-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-north-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-south-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-idle-west-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east-01.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east-02.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-east-03.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north-01.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north-02.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-north-03.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south-01.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south-02.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-south-03.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west-00.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west-01.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west-02.png</key>
+            <key type="filename">G:/My Drive/Projects/Wishlair 1/raw/daughter/daughter-move-west-03.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0,0</point_f>
@@ -182,9 +201,9 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>0,0,0,0</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9Paddings</key>
-                <rect>0,0,0,0</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

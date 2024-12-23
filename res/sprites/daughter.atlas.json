@@ -1,7 +1,7 @@
 {
   "sprites": [ 
     {
-      "name": "daughter-idle-east-00.sprite",
+      "name": "daughter-idle-east-00",
       "source": {
         "x": 14,
         "y": 5,
@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "daughter-idle-north-00.sprite",
+      "name": "daughter-idle-north-00",
       "source": {
         "x": 14,
         "y": 5,
@@ -31,7 +31,7 @@
       }
     },
     {
-      "name": "daughter-idle-south-00.sprite",
+      "name": "daughter-idle-south-00",
       "source": {
         "x": 14,
         "y": 5,
@@ -46,7 +46,7 @@
       }
     },
     {
-      "name": "daughter-idle-west-00.sprite",
+      "name": "daughter-idle-west-00",
       "source": {
         "x": 19,
         "y": 5,
@@ -61,7 +61,7 @@
       }
     },
     {
-      "name": "daughter-move-east-00.sprite",
+      "name": "daughter-move-east-00",
       "source": {
         "x": 12,
         "y": 4,
@@ -76,7 +76,7 @@
       }
     },
     {
-      "name": "daughter-move-east-01.sprite",
+      "name": "daughter-move-east-01",
       "source": {
         "x": 12,
         "y": 5,
@@ -91,7 +91,7 @@
       }
     },
     {
-      "name": "daughter-move-east-02.sprite",
+      "name": "daughter-move-east-02",
       "source": {
         "x": 13,
         "y": 4,
@@ -106,7 +106,7 @@
       }
     },
     {
-      "name": "daughter-move-east-03.sprite",
+      "name": "daughter-move-east-03",
       "source": {
         "x": 14,
         "y": 5,
@@ -121,7 +121,7 @@
       }
     },
     {
-      "name": "daughter-move-north-00.sprite",
+      "name": "daughter-move-north-00",
       "source": {
         "x": 12,
         "y": 4,
@@ -136,7 +136,7 @@
       }
     },
     {
-      "name": "daughter-move-north-01.sprite",
+      "name": "daughter-move-north-01",
       "source": {
         "x": 16,
         "y": 5,
@@ -151,7 +151,7 @@
       }
     },
     {
-      "name": "daughter-move-north-02.sprite",
+      "name": "daughter-move-north-02",
       "source": {
         "x": 16,
         "y": 4,
@@ -166,7 +166,7 @@
       }
     },
     {
-      "name": "daughter-move-north-03.sprite",
+      "name": "daughter-move-north-03",
       "source": {
         "x": 16,
         "y": 5,
@@ -181,7 +181,7 @@
       }
     },
     {
-      "name": "daughter-move-south-00.sprite",
+      "name": "daughter-move-south-00",
       "source": {
         "x": 16,
         "y": 4,
@@ -196,7 +196,7 @@
       }
     },
     {
-      "name": "daughter-move-south-01.sprite",
+      "name": "daughter-move-south-01",
       "source": {
         "x": 16,
         "y": 5,
@@ -211,7 +211,7 @@
       }
     },
     {
-      "name": "daughter-move-south-02.sprite",
+      "name": "daughter-move-south-02",
       "source": {
         "x": 16,
         "y": 4,
@@ -226,7 +226,7 @@
       }
     },
     {
-      "name": "daughter-move-south-03.sprite",
+      "name": "daughter-move-south-03",
       "source": {
         "x": 15,
         "y": 5,
@@ -241,7 +241,7 @@
       }
     },
     {
-      "name": "daughter-move-west-00.sprite",
+      "name": "daughter-move-west-00",
       "source": {
         "x": 14,
         "y": 4,
@@ -256,7 +256,7 @@
       }
     },
     {
-      "name": "daughter-move-west-01.sprite",
+      "name": "daughter-move-west-01",
       "source": {
         "x": 17,
         "y": 5,
@@ -271,7 +271,7 @@
       }
     },
     {
-      "name": "daughter-move-west-02.sprite",
+      "name": "daughter-move-west-02",
       "source": {
         "x": 15,
         "y": 4,
@@ -286,7 +286,7 @@
       }
     },
     {
-      "name": "daughter-move-west-03.sprite",
+      "name": "daughter-move-west-03",
       "source": {
         "x": 19,
         "y": 5,
