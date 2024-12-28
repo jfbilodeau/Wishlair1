@@ -1,4 +1,5 @@
-this.name = "player"
+const player.name = "player"
+this.name = player.name
 
 this.animation.name = "daughter"
 this.animation.variant = "idle"

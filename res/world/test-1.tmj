@@ -322,7 +322,12 @@
                         {
                          "name":"scriptName",
                          "type":"string",
-                         "value":"entities.ui.dialogLeft"
+                         "value":"entities.ui.dialogOverlayLeft"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"scene.opening.moveRight"
                         }],
                  "rotation":0,
                  "type":"",
@@ -37580,8 +37585,6 @@
                 {
                  "id":2,
                  "image":"..\/..\/raw\/sprites\/forest\/conifer1-idle-south-00.png",
-                 "imageheight":310,
-                 "imagewidth":185,
                  "properties":[
                         {
                          "name":"scriptName",
@@ -37592,8 +37595,6 @@
                 {
                  "id":3,
                  "image":"..\/..\/raw\/sprites\/forest\/rock1-idle-south-00.png",
-                 "imageheight":83,
-                 "imagewidth":92,
                  "properties":[
                         {
                          "name":"scriptName",
@@ -37604,8 +37605,6 @@
                 {
                  "id":4,
                  "image":"..\/..\/raw\/sprites\/forest\/rock2-idle-south-00.png",
-                 "imageheight":37,
-                 "imagewidth":44,
                  "properties":[
                         {
                          "name":"scriptName",
@@ -37616,8 +37615,6 @@
                 {
                  "id":5,
                  "image":"..\/..\/raw\/sprites\/forest\/rock3-idle-south-00.png",
-                 "imageheight":47,
-                 "imagewidth":64,
                  "properties":[
                         {
                          "name":"scriptName",
@@ -37628,8 +37625,6 @@
                 {
                  "id":6,
                  "image":"..\/..\/raw\/sprites\/forest\/rock4-idle-south-00.png",
-                 "imageheight":107,
-                 "imagewidth":127,
                  "properties":[
                         {
                          "name":"scriptName",
@@ -37640,8 +37635,6 @@
                 {
                  "id":7,
                  "image":"..\/..\/raw\/sprites\/forest\/tree1-idle-south-00.png",
-                 "imageheight":262,
-                 "imagewidth":246,
                  "properties":[
                         {
                          "name":"scriptName",

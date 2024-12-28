@@ -266,6 +266,17 @@
                  "height":480,
                  "id":24,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"scriptName",
+                         "type":"string",
+                         "value":"entities.ui.dialogOverlayLeft"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"scene.opening.moveRight"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

@@ -1,6 +1,6 @@
 # Init game
 game.organization = "Chronogears"
-game.name = "Wishlair 1"
+game.name = t.game.title
 
 # Init window
 resolution.x = 800 #16*32 #800
