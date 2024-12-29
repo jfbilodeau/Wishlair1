@@ -1,5 +1,6 @@
 fun initDialogOverlay x:float
     this.x = x
+    this.z = 10000.0 # Make it always on top
 
     this.sprite.name = "dialog-box-v"
 
@@ -11,6 +12,14 @@ fun initDialogOverlay x:float
     this.text.lineSpacing = 10.0
 
     this.font = global.font.ui
+
+    this.onFrame fun
+        select.all.byName player.name
+
+        #log.info $"others.count: {others.count}"
+
+        #this.visible = this.touchOther
+    end
 end
 
 fun entities.ui.dialogOverlayLeft

@@ -8,13 +8,13 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":9,
+ "tilecount":10,
  "tiledversion":"1.10.2",
  "tileheight":480,
  "tiles":[
         {
          "id":2,
-         "image":"..\/sprites\/forest\/conifer1-idle-south-00.png",
+         "image":"..\/sprites\/forest\/conifer1.png",
          "imageheight":310,
          "imagewidth":185,
          "properties":[
@@ -26,7 +26,7 @@
         }, 
         {
          "id":3,
-         "image":"..\/sprites\/forest\/rock1-idle-south-00.png",
+         "image":"..\/sprites\/forest\/rock1.png",
          "imageheight":83,
          "imagewidth":92,
          "properties":[
@@ -38,7 +38,7 @@
         }, 
         {
          "id":4,
-         "image":"..\/sprites\/forest\/rock2-idle-south-00.png",
+         "image":"..\/sprites\/forest\/rock2.png",
          "imageheight":37,
          "imagewidth":44,
          "properties":[
@@ -50,7 +50,7 @@
         }, 
         {
          "id":5,
-         "image":"..\/sprites\/forest\/rock3-idle-south-00.png",
+         "image":"..\/sprites\/forest\/rock3.png",
          "imageheight":47,
          "imagewidth":64,
          "properties":[
@@ -62,7 +62,7 @@
         }, 
         {
          "id":6,
-         "image":"..\/sprites\/forest\/rock4-idle-south-00.png",
+         "image":"..\/sprites\/forest\/rock4.png",
          "imageheight":107,
          "imagewidth":127,
          "properties":[
@@ -74,7 +74,7 @@
         }, 
         {
          "id":7,
-         "image":"..\/sprites\/forest\/tree1-idle-south-00.png",
+         "image":"..\/sprites\/forest\/tree1.png",
          "imageheight":262,
          "imagewidth":246,
          "properties":[
@@ -117,7 +117,19 @@
                 {
                  "name":"scriptName",
                  "type":"string",
-                 "value":"entities.ui.dialogLeft"
+                 "value":"entities.ui.dialogOverlayLeft"
+                }]
+        }, 
+        {
+         "id":11,
+         "image":"..\/ui\/dialog-box-v.png",
+         "imageheight":480,
+         "imagewidth":400,
+         "properties":[
+                {
+                 "name":"scriptName",
+                 "type":"string",
+                 "value":"entities.ui.dialogOverlayRight"
                 }]
         }],
  "tilewidth":400,

@@ -29,11 +29,15 @@
             "scaleInEditor": 1
         },
         "test-1.tmj": {
-            "scale": 1,
-            "selectedLayer": 2,
+            "expandedObjectLayers": [
+                2,
+                7
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 500.5,
-                "y": 418.5
+                "x": 639,
+                "y": 451
             }
         },
         "wishlair-entrance-1.tmj": {
@@ -43,8 +47,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 400,
-                "y": 577.5
+                "x": 395.5,
+                "y": 1159.5
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -67,8 +71,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 260,
-                "y": 159.5
+                "x": 259.5,
+                "y": 158.5
             }
         },
         "wishlair-entrance-2.tmx": {
@@ -95,6 +99,17 @@
                 "y": 160.48317515099228
             }
         },
+        "wishlair-entrance.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.5099652777777778,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 401.0076938789406,
+                "y": 706.910873561653
+            }
+        },
         "wishlair.tsj": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -108,7 +123,7 @@
     "last.exportedFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/res/world",
     "last.externalTilesetPath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world",
     "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/ui",
-    "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world/entities",
+    "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world/entities",
     "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "loadedWorlds": [
@@ -126,10 +141,11 @@
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
-        "test-1.tmj",
         "entities.tsj",
+        "wishlair-entrance.tmj",
         "wishlair-entrance-2.tmj",
         "wishlair-entrance-1.tmj",
+        "test-1.tmj",
         "boundary.tsj",
         "wishlair.tsj",
         "wishlair-entrance-3.tmj",
