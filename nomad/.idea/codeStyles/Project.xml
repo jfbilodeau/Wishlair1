@@ -1,0 +1,56 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <Objective-C>
+      <option name="INDENT_NAMESPACE_MEMBERS" value="0" />
+      <option name="KEEP_STRUCTURES_IN_ONE_LINE" value="true" />
+      <option name="FUNCTION_PARAMETERS_NEW_LINE_AFTER_LPAR" value="true" />
+      <option name="FUNCTION_PARAMETERS_NEW_LINE_BEFORE_RPAR" value="true" />
+      <option name="FUNCTION_CALL_ARGUMENTS_NEW_LINE_AFTER_LPAR" value="true" />
+      <option name="FUNCTION_CALL_ARGUMENTS_NEW_LINE_BEFORE_RPAR" value="true" />
+      <option name="CLASS_CONSTRUCTOR_INIT_LIST_ALIGN_MULTILINE" value="false" />
+      <option name="CLASS_CONSTRUCTOR_INIT_LIST_NEW_LINE_BEFORE_COLON" value="0" />
+      <option name="CLASS_CONSTRUCTOR_INIT_LIST_NEW_LINE_AFTER_COLON" value="2" />
+      <option name="SUPERCLASS_LIST_WRAP" value="1" />
+      <option name="SUPERCLASS_LIST_ALIGN_MULTILINE" value="false" />
+      <option name="SUPERCLASS_LIST_BEFORE_COLON" value="0" />
+      <option name="ALIGN_INIT_LIST_IN_COLUMNS" value="false" />
+      <option name="SPACE_BEFORE_SUPERCLASS_COLON" value="false" />
+      <option name="SPACE_BEFORE_INIT_LIST_COLON" value="false" />
+      <option name="SPACE_BEFORE_POINTER_IN_DECLARATION" value="false" />
+      <option name="SPACE_AFTER_POINTER_IN_DECLARATION" value="true" />
+      <option name="SPACE_BEFORE_REFERENCE_IN_DECLARATION" value="false" />
+      <option name="SPACE_AFTER_REFERENCE_IN_DECLARATION" value="true" />
+    </Objective-C>
+    <RiderCodeStyleSettings>
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/NAMESPACE_DECLARATION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/EXPORT_DECLARATION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/TYPE_DECLARATION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/INVOCABLE_DECLARATION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/ANONYMOUS_METHOD_DECLARATION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/CASE_BLOCK_BRACES/@EntryValue" value="NEXT_LINE_SHIFTED" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/REQUIRES_EXPRESSION_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/OTHER_BRACES/@EntryValue" value="END_OF_LINE" type="string" />
+      <option name="/Default/CodeStyle/CppIncludeDirective/SortIncludeDirectives/@EntryValue" value="true" type="bool" />
+      <option name="/Default/CodeInspection/Highlighting/InspectionSeverities/=CppWrongIncludesOrder/@EntryIndexedValue" value="SUGGESTION" type="string" />
+      <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/NAMESPACE_INDENTATION/@EntryValue" value="None" type="string" />
+    </RiderCodeStyleSettings>
+    <files>
+      <extensions>
+        <pair source="cpp" header="hpp" fileNamingConvention="NONE" />
+        <pair source="c" header="h" fileNamingConvention="NONE" />
+        <pair source="cu" header="cuh" fileNamingConvention="NONE" />
+        <pair source="ixx" header="" fileNamingConvention="NONE" />
+        <pair source="mxx" header="" fileNamingConvention="NONE" />
+        <pair source="cppm" header="" fileNamingConvention="NONE" />
+        <pair source="ccm" header="" fileNamingConvention="NONE" />
+        <pair source="cxxm" header="" fileNamingConvention="NONE" />
+        <pair source="c++m" header="" fileNamingConvention="NONE" />
+      </extensions>
+    </files>
+    <codeStyleSettings language="ObjectiveC">
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>

@@ -1,0 +1,36 @@
+<exporter version="1.0"> <!-- file format version, must be 1.0 -->
+    <name>NomadExporter</name>
+
+    <displayName>Nomad Exporter</displayName>
+
+    <description>Texture Packer Exporter template for texture atlas for Nomad game engine</description>
+
+    <version>1.0</version>
+
+    <files>
+        <file>
+            <name>NomadAtlas</name>
+            <displayName>Nomad Atlas</displayName>
+            <fileExtension>atlas.json</fileExtension>
+            <description>Nomad Texture Atlas</description>
+            <template>template.json</template>
+            <optional>false</optional>
+            <hasSeparateAutoSDFiles>all</hasSeparateAutoSDFiles>
+            <hasSeparateMultiPackFiles>true</hasSeparateMultiPackFiles>
+        </file>
+    </files>
+
+    <supportsTrimming>true</supportsTrimming>
+    <supportsRotation>false</supportsRotation>
+    <supportsNPOT>true</supportsNPOT>
+
+    <defaults>
+        <extrude>0</extrude>
+        <shapePadding>0</shapePadding>
+        <borderPadding>0</borderPadding>
+        <trimMode>Trim</trimMode>               <!-- None, Trim, Crop, CropKeepPos, Polygon -->
+        <sizeConstraints>AnySize</sizeConstraints>     <!-- POT, WordAligned, AnySize -->
+        <writePivotPoints>true</writePivotPoints>  <!-- true, false -->
+        <defaultPivotPoint>0.0,0.0</defaultPivotPoint>
+    </defaults>
+</exporter>
