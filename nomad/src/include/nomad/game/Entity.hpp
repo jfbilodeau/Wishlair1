@@ -51,6 +51,9 @@ public:
     void set_script_name(const NomadString& script_name);
     [[nodiscard]] const NomadString& get_script_name() const;
 
+    void set_visible(NomadBoolean visible);
+    [[nodiscard]] NomadBoolean is_visible() const;
+
     void set_x(NomadFloat x);
     [[nodiscard]] NomadFloat get_x() const;
 
@@ -97,6 +100,9 @@ public:
     void set_collision_mask(NomadInteger collision_mask);
     [[nodiscard]] NomadInteger get_collision_mask() const;
 
+    void set_sensor(bool is_sensor);
+    [[nodiscard]] bool is_sensor() const;
+
     void set_no_body();
     void set_circle_body(BodyType body_type, NomadFloat radius);
     void set_rectangle_body(BodyType body_type, NomadFloat width, NomadFloat height);
@@ -111,7 +117,7 @@ public:
     bool is_touching(const CircleF& circle) const;
     bool is_touching(const Entity* entity) const;
 
-    void invalidate_body();
+    void invalidate_physics_body();
     void before_simulation_update(b2WorldId world);
     void after_simulation_update(b2WorldId world);
 
@@ -209,13 +215,15 @@ private:
     PointF m_destination = {};
     NomadFloat m_speed = 0;
 
-    // Mask, body and collision
-//    NomadInteger m_mask = 0;
-//    NomadInteger m_collision_mask = 0;
-//    Body m_body;
+    // World position
     PointF m_position;
+    NomadFloat m_z = 0.0;
+    NomadInteger m_layer = 0;
+
+    // Mask, body and collision
     BodyShape m_body_shape = BodyShape::None;
     BodyType m_body_type = BodyType::Static;
+    NomadBoolean m_is_sensor = false;
     NomadFloat m_body_width = 0;
     NomadFloat m_body_height = 0;
     NomadFloat m_body_radius = 0;
@@ -224,9 +232,9 @@ private:
     b2Filter m_b2_filter = b2DefaultFilter();
     NomadBoolean m_has_body = false;
     NomadBoolean m_body_invalidated = true;
-    NomadFloat m_z = 0.0;
-    NomadInteger m_layer = 0;
 
+    // Visuals
+    NomadBoolean m_visible = true;
     PointF m_sprite_anchor;  // Sprite image anchor point
     const Sprite* m_sprite = nullptr;
     const Animation* m_animation = nullptr;
@@ -241,6 +249,7 @@ private:
     NomadBoolean m_animation_reverse = false;
     bool m_animation_dirty = false;
 
+    // Text
     NomadString m_text;
     NomadString m_wrapped_text;
     Alignment m_text_alignment = Alignment::CenterMiddle;
@@ -257,6 +266,7 @@ private:
     EventManager m_events;
     GameExecutionContext m_execution_context;
 
+    // Events
     NomadId m_on_frame = NOMAD_INVALID_ID;
     NomadId m_on_collision_begin = NOMAD_INVALID_ID;
     NomadId m_on_collision_end = NOMAD_INVALID_ID;

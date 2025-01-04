@@ -5,4 +5,3 @@ out/
 # Release build
 build
 release
-/nomad/src/cmake-build-debug/

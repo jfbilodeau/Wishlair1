@@ -17,7 +17,7 @@ this.move.speed = 2.0 * 60.0
 
 this.body.circle body.dynamic 10.0
 this.mask = mask.player
-this.collisionMask = mask.solid
+this.collisionMask = mask.solid | mask.ui
 
 this.onPress action.playerLeft fun
     this.moveLeft = true

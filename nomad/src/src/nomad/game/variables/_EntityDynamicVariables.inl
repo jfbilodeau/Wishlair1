@@ -139,6 +139,48 @@ m_runtime->register_dynamic_variable(
 );
 
 m_runtime->register_dynamic_variable(
+    VARIABLE_NAME_PREFIX ".sensor",
+    [this](Interpreter* interpreter, const ScriptValue& value) {
+        START_ENTITY_BLOCK("Attempted to set sensor of null entity")
+
+        auto sensor = value.get_boolean_value();
+        entity->set_sensor(sensor);
+
+        END_ENTITY_BLOCK
+    },
+    [this](Interpreter* interpreter, ScriptValue& value) {
+        START_SINGLE_ENTITY_BLOCK("Attempted to get sensor of null entity")
+
+        value.set_boolean_value(entity->is_sensor());
+
+        END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_BOOLEAN)
+    },
+    m_runtime->get_boolean_type(),
+    NomadDoc("Determine if the body of the entity is a sensor. Default is false.")
+);
+
+m_runtime->register_dynamic_variable(
+    VARIABLE_NAME_PREFIX ".visible",
+    [this](Interpreter* interpreter, const ScriptValue& value) {
+        START_ENTITY_BLOCK("Attempted to set visible of null entity")
+
+        auto visible = value.get_boolean_value();
+        entity->set_visible(visible);
+
+        END_ENTITY_BLOCK
+    },
+    [this](Interpreter* interpreter, ScriptValue& value) {
+        START_SINGLE_ENTITY_BLOCK("Attempted to get visible of null entity")
+
+        value.set_boolean_value(entity->is_visible());
+
+        END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_BOOLEAN)
+    },
+    m_runtime->get_boolean_type(),
+    NomadDoc("Determine if the entity is visible. Default is true.")
+);
+
+m_runtime->register_dynamic_variable(
     VARIABLE_NAME_PREFIX ".name",
     [this](Interpreter* interpreter, const ScriptValue& value) {
         START_ENTITY_BLOCK("Attempted to set the name of a null entity")

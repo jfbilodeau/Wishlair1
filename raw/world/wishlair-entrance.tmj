@@ -86,8 +86,8 @@
                 {
                  "id":22,
                  "template":"entities\/dialogOverlayRight.tx",
-                 "x":33.3356029141418,
-                 "y":464.737522979506
+                 "x":0,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",

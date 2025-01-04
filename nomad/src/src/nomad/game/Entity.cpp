@@ -54,6 +54,14 @@ const NomadString& Entity::get_script_name() const {
     return m_script_name;
 }
 
+void Entity::set_visible(NomadBoolean visible) {
+    m_visible = visible;
+}
+
+NomadBoolean Entity::is_visible() const {
+    return m_visible;
+}
+
 void Entity::set_x(const NomadFloat x) {
     m_position.set_x(x);
     m_destination.set_x(x);
@@ -210,7 +218,6 @@ NomadInteger Entity::get_mask() const {
 }
 
 void Entity::set_collision_mask(const NomadInteger collision_mask) {
-//    m_collision_mask = collision_mask;
     m_b2_filter.maskBits = collision_mask;
 }
 
@@ -218,14 +225,24 @@ void Entity::set_collision_mask(const NomadInteger collision_mask) {
     return m_b2_filter.maskBits;
 }
 
+void Entity::set_sensor(bool is_sensor) {
+    m_is_sensor = is_sensor;
+
+    invalidate_physics_body();
+}
+
+bool Entity::is_sensor() const {
+    return m_is_sensor;
+}
+
 void Entity::set_no_body() {
-    invalidate_body();
+    invalidate_physics_body();
 
     m_body_shape = BodyShape::None;
 }
 
 void Entity::set_circle_body(BodyType body_type, NomadFloat radius) {
-    invalidate_body();
+    invalidate_physics_body();
 
     m_body_shape = BodyShape::Circle;
     m_body_type = body_type;
@@ -233,7 +250,7 @@ void Entity::set_circle_body(BodyType body_type, NomadFloat radius) {
 }
 
 void Entity::set_rectangle_body(BodyType body_type, NomadFloat width, NomadFloat height) {
-    invalidate_body();
+    invalidate_physics_body();
 
     m_body_shape = BodyShape::Rectangle;
     m_body_type = body_type;
@@ -332,7 +349,7 @@ bool Entity::is_touching(const Entity* entity) const {
     return false;
 }
 
-void Entity::invalidate_body() {
+void Entity::invalidate_physics_body() {
     m_body_invalidated = true;
 }
 
@@ -348,8 +365,13 @@ void Entity::before_simulation_update(b2WorldId world) {
         if (m_body_shape != BodyShape::None) {
             b2BodyDef body_def = b2DefaultBodyDef();
 
-            // Create a new body.
-            if (m_body_type == BodyType::Static) {
+            if (m_is_sensor) {
+                if (m_body_type != BodyType::Dynamic) {
+                    log::warning("Sensors must be dynamic bodies");
+                }
+
+                body_def.type = b2_dynamicBody;
+            } else if (m_body_type == BodyType::Static) {
                 body_def.type = b2_staticBody;
             } else if (m_body_type == BodyType::Dynamic) {
                 body_def.type = b2_dynamicBody;
@@ -360,6 +382,7 @@ void Entity::before_simulation_update(b2WorldId world) {
                 return;
             }
 
+            // Create collision body.
             m_b2_body = b2CreateBody(world, &body_def);
 
             if (b2Body_IsValid(m_b2_body)) {
@@ -372,8 +395,14 @@ void Entity::before_simulation_update(b2WorldId world) {
 
             b2ShapeDef shape_def = b2DefaultShapeDef();
 
+            shape_def.isSensor = m_is_sensor;
+            shape_def.filter = m_b2_filter;
+
             if (m_body_shape == BodyShape::Rectangle) {
-                b2Polygon rectangle = b2MakeBox(m_body_width, m_body_height);
+                b2Polygon rectangle = b2MakeBox(
+                    static_cast<float>(m_body_width) / 2.0f,
+                    static_cast<float>(m_body_height) / 2.0f
+                );
                 m_b2_shape = b2CreatePolygonShape(m_b2_body, &shape_def, &rectangle);
             } else if (m_body_shape == BodyShape::Circle) {
                 b2Circle circle = {
@@ -397,7 +426,6 @@ void Entity::before_simulation_update(b2WorldId world) {
         // Make sure body is at the same position as the entity
         b2Body_SetTransform(m_b2_body, b2Vec2(m_position.x(), m_position.y()), b2Rot_identity);
         b2Body_SetLinearVelocity(m_b2_body, b2Vec2(m_velocity.x(), m_velocity.y()));
-        b2Shape_SetFilter(m_b2_shape, m_b2_filter);
     }
 }
 
@@ -411,7 +439,7 @@ void Entity::after_simulation_update(b2WorldId world) {
 
 void Entity::set_layer(const NomadInteger layer) {
     m_layer = layer;
-    invalidate_body();
+    invalidate_physics_body();
 }
 
 NomadInteger Entity::get_layer() const {
@@ -501,6 +529,10 @@ void Entity::update(Scene* scene) {
 }
 
 void Entity::render(Canvas* canvas) {
+    if (m_visible == false) {
+        return;
+    }
+
     NomadFloat entity_x = get_x();
     NomadFloat entity_y = get_y();
 
@@ -511,47 +543,6 @@ void Entity::render(Canvas* canvas) {
         canvas->render_sprite(m_sprite, sprite_x, sprite_y);
     }
 
-//    if (m_text_texture == nullptr && !m_text.empty()) {
-//        // Wrap text
-//        auto text_width = static_cast<int>(m_text_width);
-//
-//        auto font = m_scene->get_game()->get_resources()->get_fonts()->get_font(m_font_id);
-//        if (m_text.empty() || m_text_width <= 0) {
-//            m_wrapped_text = m_text;
-//        } else if (font == nullptr) {
-//            log::warning("Font not set for entity '" + m_name + "'");
-//            m_wrapped_text = m_text;
-//        } else {
-//            m_wrapped_text.clear();
-//            std::string current_line;
-//            std::string word;
-//            std::istringstream stream(m_text);
-//
-//            while (stream >> word) {
-//                std::string test_line = current_line += (current_line.empty() ? "" : " ") + word;
-//                int line_width = font->get_text_width(test_line);
-//
-//                if (line_width > text_width) {
-//                    if (!current_line.empty()) {
-//                        m_wrapped_text += current_line + "\n";
-//                        current_line = word;
-//                    } else {
-//                        m_wrapped_text += word + "\n";
-//                        current_line.clear();
-//                    }
-//                } else {
-//                    current_line = test_line;
-//                }
-//            }
-//
-//            if (!current_line.empty()) {
-//                m_wrapped_text += current_line;
-//            }
-//        }
-//
-//        generate_text_texture(canvas);
-//    }
-
     if (m_text_texture == nullptr && !m_text.empty()) {
         generate_text_texture(canvas);
     }
@@ -561,8 +552,6 @@ void Entity::render(Canvas* canvas) {
         auto text_x = static_cast<int>(m_text_x);
         auto text_y = static_cast<int>(m_text_y);
 
-//        int text_width = static_cast<int>(m_text_width);
-//        int text_height = static_cast<int>(m_text_height);
         int text_width, text_height;
         SDL_QueryTexture(m_text_texture, nullptr, nullptr, &text_width, &text_height);
 

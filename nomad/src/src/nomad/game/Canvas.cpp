@@ -52,13 +52,15 @@ void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) {
         return;
     }
 
-    const auto& source = sprite->get_frame();
+    auto& frame = sprite->get_frame();
+
+    const auto& source = frame;
 
     const auto destination = Rectangle(
         int(x) + int(sprite->get_source().get_left()),
         int(y) + int(sprite->get_source().get_top()),
-        sprite->get_frame().get_width(),
-        sprite->get_frame().get_height()
+        frame.get_width(),
+        frame.get_height()
     );
 
     render_texture(sprite->get_texture(), source, destination);

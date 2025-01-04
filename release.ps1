@@ -2,7 +2,7 @@ $ReleaseName = "wishlair1"
 $ReleaseTag = Get-Date -Format "yyyy-MM-dd"
 $ReleaseId = "$ReleaseName-$ReleaseTag"
 
-$SourcePath = "../NomadEngine/src"
+$SourcePath = "./nomad/src"
 $BuildPath = "./build"
 $ReleasePath = "./release/$ReleaseId"
 

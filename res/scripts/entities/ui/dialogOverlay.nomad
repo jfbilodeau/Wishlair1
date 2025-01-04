@@ -1,6 +1,10 @@
 fun initDialogOverlay x:float
     this.x = x
     this.z = 10000.0 # Make it always on top
+    this.sensor = true
+    this.mask = mask.ui
+    this.collisionMask = mask.player
+    this.body.rectangle body.static toFloat window.width / 2 toFloat window.height
 
     this.sprite.name = "dialog-box-v"
 
@@ -13,12 +17,14 @@ fun initDialogOverlay x:float
 
     this.font = global.font.ui
 
-    this.onFrame fun
-        select.all.byName player.name
+    this.onCollisionStart fun
+        this.visible = false
+        log.info "Hidden"
+    end
 
-        #log.info $"others.count: {others.count}"
-
-        #this.visible = this.touchOther
+    this.onCollisionEnd fun
+        this.visible = true
+        log.info "Visible"
     end
 end
 
