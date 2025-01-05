@@ -5,7 +5,7 @@
 #ifndef CPP_PARSER_HPP
 #define CPP_PARSER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <ostream>
 #include <utility>
@@ -56,7 +56,7 @@ struct Token {
     Token(TokenType type, NomadString text, NomadBoolean boolean_value) :
         type(type),
         text_value(std::move(text)),
-        boolean_value(integer_value)
+        boolean_value(boolean_value)
     {}
 
     Token(TokenType type, NomadString text, NomadInteger integer_value) :

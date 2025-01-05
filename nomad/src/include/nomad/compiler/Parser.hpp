@@ -5,7 +5,7 @@
 #ifndef NOMAD_PARSER_HPP
 #define NOMAD_PARSER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/Runtime.hpp"
 

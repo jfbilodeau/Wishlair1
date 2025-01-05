@@ -5,7 +5,7 @@
 #ifndef NOMAD_TEXT_HPP
 #define NOMAD_TEXT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <unordered_map>
 

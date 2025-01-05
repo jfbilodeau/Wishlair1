@@ -13,7 +13,7 @@
 #include "nomad/resource/Text.hpp"
 #include "nomad/resource/Texture.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <vector>
 

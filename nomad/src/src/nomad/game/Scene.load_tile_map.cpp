@@ -123,7 +123,13 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
                         // Tiled used bottom-left as origin
                         y -= height;
 
-                        entities[i].emplace_back(id, scriptName, x, y, text_id);
+                        entities[i].push_back({
+                            id,
+                            scriptName,
+                            x,
+                            y,
+                            text_id
+                        });
                     }
 
                     break;

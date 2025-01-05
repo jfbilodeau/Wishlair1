@@ -125,7 +125,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 # Warnings are good. Errors are better.
-set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
+#set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 set(
         NOMAD_LIBRARIES
@@ -333,10 +333,14 @@ add_executable(
 )
 
 target_link_libraries(nomad ${NOMAD_LIBRARIES})
+
+# Only execute on Windows.
+if(WIN32)
 add_custom_command(TARGET nomad POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:nomad> $<TARGET_FILE_DIR:nomad>
         COMMAND_EXPAND_LISTS
 )
+endif()
 
 # Copy licenses to the output directory
 configure_file(

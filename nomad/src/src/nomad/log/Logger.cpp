@@ -121,7 +121,7 @@ void Logger::log(LogLevel level, const NomadString& message) {
     std::stringstream ss;
     tm tm;
 
-    gmtime_s(&tm, &time);
+    gmtime_r(&time, &tm);
 
     ss
         << std::put_time(&tm, "%Y-%m-%dT%H:%M:%S")

@@ -5,7 +5,7 @@
 #ifndef NOMAD_SCRIPT_HPP
 #define NOMAD_SCRIPT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/FormatString.hpp"
 #include "nomad/script/OpCode.hpp"

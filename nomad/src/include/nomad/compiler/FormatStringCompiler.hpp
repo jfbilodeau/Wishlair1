@@ -5,7 +5,7 @@
 #ifndef NOMAD_FORMATSTRINGCOMPILER_HPP
 #define NOMAD_FORMATSTRINGCOMPILER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

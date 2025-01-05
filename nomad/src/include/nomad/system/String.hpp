@@ -6,7 +6,7 @@
 #include <cctype>
 #include <locale>
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #ifndef NOMAD_STRING_HPP
 #define NOMAD_STRING_HPP

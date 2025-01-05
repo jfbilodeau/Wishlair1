@@ -5,7 +5,7 @@
 #ifndef NOMAD_OPERATORS_HPP
 #define NOMAD_OPERATORS_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/ScriptValue.hpp"
 

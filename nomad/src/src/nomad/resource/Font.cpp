@@ -85,7 +85,9 @@ SDL_Texture* Font::generate_texture(
         TempString test_line, current_line, word;
         NomadInteger longest_line_width = 0;
 
-        TempStringStream text_stream(text);
+        TempStringStream text_stream(
+            reinterpret_cast<const TempString&>(text)
+        );
 
         for (TempString line; std::getline(text_stream, line);) {
             auto current_text_height = static_cast<NomadInteger>(lines.size()) * line_height;

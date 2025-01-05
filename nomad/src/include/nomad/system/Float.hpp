@@ -5,7 +5,7 @@
 #ifndef NOMAD_FLOAT_HPP
 #define NOMAD_FLOAT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <cmath>
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

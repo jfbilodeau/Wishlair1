@@ -5,7 +5,7 @@
 #ifndef NOMAD_VARIABLECONTEXT_HPP
 #define NOMAD_VARIABLECONTEXT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/Interpreter.hpp"
 #include "nomad/script/Variable.hpp"
@@ -39,7 +39,7 @@ public:
     const NomadString& get_variable_name(NomadId variable_id) const override;
 
     NomadId get_variable_id(const NomadString& name) const override;
-    void set_variable_type(NomadId variable_id, const Type* type);
+    void set_variable_type(NomadId variable_id, const Type* type) override;
     const Type* get_variable_type(NomadId variable_id) const override;
 
     void set_value(NomadId variable_id, const ScriptValue& value) override;

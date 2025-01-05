@@ -7,7 +7,7 @@
 
 #include "nomad/geometry/PointF.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <vector>
 

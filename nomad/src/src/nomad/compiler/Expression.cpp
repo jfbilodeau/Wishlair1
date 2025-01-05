@@ -454,6 +454,10 @@ void IdentifierExpression::on_parse(nomad::Compiler* compiler, Script* script) {
 
         case IdentifierType::Statement:
             compiler->report_error("Cannot use statement as identifier: "+ m_identifier);
+
+        default:
+            // Valid identifier type. Ignore
+            break; 
     }
 
     if (m_identifier_definition.identifier_type == IdentifierType::ContextVariable) {

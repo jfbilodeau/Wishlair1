@@ -121,10 +121,10 @@ void Scene::update_physics() {
                     auto body_def = b2DefaultBodyDef();
 
                     body_def.type = b2_staticBody;
-                    body_def.position = b2Vec2(
+                    body_def.position = b2Vec2{
                         static_cast<float>(x1) + tile_half_width,
                         static_cast<float>(y1) + tile_half_height
-                    );
+                    };
 
                     auto body_id = b2CreateBody(layer.world_id, &body_def);
 

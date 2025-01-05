@@ -5,7 +5,7 @@
 #ifndef NOMAD_INTERPRETER_HPP
 #define NOMAD_INTERPRETER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/Identifier.hpp"
 
@@ -22,7 +22,6 @@ class Runtime;
 class Script;
 
 struct Instruction {
-    Instruction() = default;
     explicit Instruction(InstructionFn fn) : fn(fn) {}
     explicit Instruction(const ScriptValue& value) : value(value) {}
 

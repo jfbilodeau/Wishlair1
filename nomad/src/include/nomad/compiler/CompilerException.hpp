@@ -5,7 +5,7 @@
 #ifndef NOMAD_COMPILEREXCEPTION_HPP
 #define NOMAD_COMPILEREXCEPTION_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

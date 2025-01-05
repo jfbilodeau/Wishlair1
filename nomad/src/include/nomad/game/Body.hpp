@@ -5,7 +5,7 @@
 #ifndef NOMAD_BODY_HPP
 #define NOMAD_BODY_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/geometry/PointF.hpp"
 

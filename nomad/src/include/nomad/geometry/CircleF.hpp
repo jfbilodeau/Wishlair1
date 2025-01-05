@@ -5,7 +5,7 @@
 #ifndef NOMAD_CIRCLEF_HPP
 #define NOMAD_CIRCLEF_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/geometry/PointF.hpp"
 

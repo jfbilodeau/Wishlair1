@@ -5,7 +5,7 @@
 #ifndef NOMAD_GAMEEXECUTIONCONTEXT_HPP
 #define NOMAD_GAMEEXECUTIONCONTEXT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <functional>
 

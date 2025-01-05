@@ -5,7 +5,7 @@
 #ifndef NOMAD_RUNTIME_RUNTIME_HPP
 #define NOMAD_RUNTIME_RUNTIME_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/log/Logger.hpp"
 

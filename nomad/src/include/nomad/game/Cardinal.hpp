@@ -5,7 +5,7 @@
 #ifndef NOMAD_CARDINAL_HPP
 #define NOMAD_CARDINAL_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

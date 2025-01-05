@@ -5,7 +5,7 @@
 #ifndef NOMAD_DEBUGCONSOLE_HPP
 #define NOMAD_DEBUGCONSOLE_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/log/MemorySink.hpp"
 

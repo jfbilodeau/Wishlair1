@@ -11,6 +11,7 @@
 
 #include "nomad/script/Documentation.hpp"
 
+#define BOOST_NO_CXX98_FUNCTION_BASE
 #include <boost/program_options.hpp>
 
 #include <cstdlib>

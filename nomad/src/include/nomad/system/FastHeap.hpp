@@ -5,7 +5,7 @@
 #ifndef NOMAD_FASTHEAP_HPP
 #define NOMAD_FASTHEAP_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <string>
 #include <vector>

@@ -123,7 +123,7 @@ NomadString to_string(BinaryOperator op) {
     }
 }
 
-void nomad::fold_boolean_unary_bang(const ScriptValue& value, ScriptValue& result) {
+void fold_boolean_unary_bang(const ScriptValue& value, ScriptValue& result) {
     auto boolean_value = value.get_boolean_value();
 
     auto boolean_result = boolean_not(boolean_value);

@@ -4,7 +4,7 @@
 
 #include "nomad/compiler/StatementParsers.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/Compiler.hpp"
 #include "nomad/compiler/Parser.hpp"

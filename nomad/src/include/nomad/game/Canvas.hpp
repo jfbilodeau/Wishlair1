@@ -5,7 +5,7 @@
 #ifndef NOMAD_CANVAS_HPP
 #define NOMAD_CANVAS_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/game/Color.hpp"
 #include "nomad/geometry/Geometry.hpp"

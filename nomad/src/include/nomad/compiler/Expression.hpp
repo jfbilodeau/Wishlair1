@@ -7,7 +7,7 @@
 
 #include "nomad/compiler/SyntaxTree.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

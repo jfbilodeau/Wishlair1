@@ -5,7 +5,7 @@
 #ifndef NOMAD_STATEMENT_COMPILERS_HPP
 #define NOMAD_STATEMENT_COMPILERS_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/SyntaxTree.hpp"
 

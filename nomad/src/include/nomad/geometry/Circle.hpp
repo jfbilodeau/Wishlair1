@@ -5,7 +5,7 @@
 #ifndef NOMAD_CIRCLE_HPP
 #define NOMAD_CIRCLE_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/geometry/Point.hpp"
 

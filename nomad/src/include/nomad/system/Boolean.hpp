@@ -5,7 +5,7 @@
 #ifndef NOMAD_BOOLEAN_HPP
 #define NOMAD_BOOLEAN_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 namespace nomad {
 

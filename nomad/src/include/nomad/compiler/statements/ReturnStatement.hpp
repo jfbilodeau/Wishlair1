@@ -5,7 +5,7 @@
 #ifndef NOMAD_RETURNSTATEMENT_HPP
 #define NOMAD_RETURNSTATEMENT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/SyntaxTree.hpp"
 

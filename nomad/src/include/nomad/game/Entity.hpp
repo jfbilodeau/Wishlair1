@@ -5,7 +5,7 @@
 #ifndef NOMAD_ENTITY_H
 #define NOMAD_ENTITY_H
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/game/Alignment.hpp"
 #include "nomad/game/Body.hpp"

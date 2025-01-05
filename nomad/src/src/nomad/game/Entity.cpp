@@ -406,7 +406,7 @@ void Entity::before_simulation_update(b2WorldId world) {
                 m_b2_shape = b2CreatePolygonShape(m_b2_body, &shape_def, &rectangle);
             } else if (m_body_shape == BodyShape::Circle) {
                 b2Circle circle = {
-                    b2Vec2(0.0f, 0.0f),
+                    b2Vec2{0.0f, 0.0f},
                     static_cast<float>(m_body_radius)
                 };
                 m_b2_shape = b2CreateCircleShape(m_b2_body, &shape_def, &circle);
@@ -424,8 +424,14 @@ void Entity::before_simulation_update(b2WorldId world) {
 
     if (m_has_body) {
         // Make sure body is at the same position as the entity
-        b2Body_SetTransform(m_b2_body, b2Vec2(m_position.x(), m_position.y()), b2Rot_identity);
-        b2Body_SetLinearVelocity(m_b2_body, b2Vec2(m_velocity.x(), m_velocity.y()));
+        b2Body_SetTransform(m_b2_body, b2Vec2{
+            static_cast<float>(m_position.x()),
+            static_cast<float>(m_position.y())
+        }, b2Rot_identity);
+        b2Body_SetLinearVelocity(m_b2_body, b2Vec2{
+            static_cast<float>(m_velocity.x()),
+            static_cast<float>(m_velocity.y())
+        });
     }
 }
 

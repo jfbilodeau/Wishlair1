@@ -5,7 +5,7 @@
 #ifndef NOMAD_GAME_HPP
 #define NOMAD_GAME_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 #include "nomad/log/Logger.hpp"
 
 #include "nomad/geometry/Point.hpp"

@@ -10,7 +10,7 @@
 
 #include "nomad/script/Variable.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <vector>
 

@@ -7,7 +7,7 @@
 
 #include "nomad/system/String.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <cmath>
 

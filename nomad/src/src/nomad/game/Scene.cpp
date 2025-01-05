@@ -11,7 +11,7 @@
 
 #include "nomad/game/Game.hpp"
 
-#include "nomad/script/runtime.hpp"
+#include "nomad/script/Runtime.hpp"
 
 #include <algorithm>
 
@@ -111,14 +111,14 @@ void Scene::create_entity(
         return; // skip!;
     }
 
-    m_added_entities.emplace_back(
+    m_added_entities.push_back({
         init_script_id,
         x,
         y,
         layer,
         id,
         text
-    );
+    });
 }
 
 void Scene::remove_entity(Entity* entity) {

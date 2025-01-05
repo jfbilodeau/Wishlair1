@@ -5,7 +5,7 @@
 #ifndef NOMAD_COMPILER_HPP
 #define NOMAD_COMPILER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/Operators.hpp"
 #include "nomad/compiler/Parser.hpp"

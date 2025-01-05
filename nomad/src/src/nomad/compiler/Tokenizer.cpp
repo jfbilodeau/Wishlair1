@@ -11,6 +11,7 @@
 //#define BOOST_SPIRIT_DEBUG
 #endif
 
+#define BOOST_NO_CXX98_FUNCTION_BASE
 #include "boost/spirit/include/qi.hpp"
 #include "boost/phoenix.hpp"
 

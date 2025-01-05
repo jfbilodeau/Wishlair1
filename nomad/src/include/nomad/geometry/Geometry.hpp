@@ -5,7 +5,7 @@
 #ifndef NOMAD_GEOMETRY_HPP
 #define NOMAD_GEOMETRY_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/Variable.hpp"
 

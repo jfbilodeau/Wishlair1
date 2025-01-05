@@ -5,7 +5,7 @@
 #ifndef NOMAD_ACTIONMANAGER_HPP
 #define NOMAD_ACTIONMANAGER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/game/InputManager.hpp"
 

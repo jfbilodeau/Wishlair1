@@ -5,7 +5,7 @@
 #ifndef NOMAD_EVENT_HPP
 #define NOMAD_EVENT_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <vector>
 

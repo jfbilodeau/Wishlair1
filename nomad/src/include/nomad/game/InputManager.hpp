@@ -5,7 +5,7 @@
 #ifndef NOMAD_INPUTMANAGER_HPP
 #define NOMAD_INPUTMANAGER_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "SDL_scancode.h"
 #include "SDL_events.h"

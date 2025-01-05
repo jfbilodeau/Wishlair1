@@ -5,7 +5,7 @@
 #ifndef NOMAD_COMMANDS_HPP
 #define NOMAD_COMMANDS_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/script/Interpreter.hpp"
 

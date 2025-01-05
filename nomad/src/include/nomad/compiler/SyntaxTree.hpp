@@ -5,7 +5,7 @@
 #ifndef NOMAD_SYNTAXTREE_HPP
 #define NOMAD_SYNTAXTREE_HPP
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include "nomad/compiler/Operators.hpp"
 

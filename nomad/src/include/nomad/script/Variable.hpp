@@ -7,7 +7,7 @@
 
 #include "nomad/script/Type.hpp"
 
-#include "nomad/Nomad.hpp"
+#include "nomad/nomad.hpp"
 
 #include <vector>
 
@@ -33,7 +33,7 @@ public:
     NomadId register_variable(const NomadString& name, const Type* type);
     [[nodiscard]] NomadId get_variable_id(const NomadString& name) const;
     [[nodiscard]] const NomadString& get_variable_name(NomadId variable_id) const;
-    [[nodiscard]] void set_variable_type(NomadId variable_id, const Type* type);
+    void set_variable_type(NomadId variable_id, const Type* type);
     [[nodiscard]] const Type* get_variable_type(NomadId variable_id) const;
     [[nodiscard]] NomadIndex get_variable_count() const;
 private:
