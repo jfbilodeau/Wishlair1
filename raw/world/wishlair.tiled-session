@@ -3,10 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "test-1.tmj",
+    "activeFile": "",
     "expandedProjectPaths": [
-        "entities",
-        "."
+        ".",
+        "entities"
     ],
     "fileStates": {
         "": {
@@ -134,10 +134,6 @@
     "map.lastUsedFormat": "json",
     "map.width": 20,
     "openFiles": [
-        "wishlair-entrance-2.tmj",
-        "wishlair-entrance-1.tmj",
-        "boundary.tsj",
-        "test-1.tmj"
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
