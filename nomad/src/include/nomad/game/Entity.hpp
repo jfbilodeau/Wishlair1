@@ -14,11 +14,9 @@
 #include "nomad/game/Event.hpp"
 #include "nomad/game/GameExecutionContext.hpp"
 
-#include "nomad/geometry/CircleF.hpp"
 #include "nomad/geometry/PointF.hpp"
 #include "nomad/geometry/RectangleF.hpp"
 
-//#include "chipmunk/chipmunk.h"
 #include "box2d/box2d.h"
 
 namespace nomad {
@@ -232,6 +230,8 @@ private:
     b2Filter m_b2_filter = b2DefaultFilter();
     NomadBoolean m_has_body = false;
     NomadBoolean m_body_invalidated = true;
+    NomadBoolean m_position_invalidated = true;
+    NomadBoolean m_velocity_invalidated = true;
 
     // Visuals
     NomadBoolean m_visible = true;
@@ -278,5 +278,6 @@ private:
 using EntityList = std::vector<Entity*>;
 
 } // nomad
+#include "box2d/box2d.h"
 
 #endif //NOMAD_ENTITY_H

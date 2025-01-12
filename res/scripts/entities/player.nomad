@@ -15,6 +15,8 @@ this.moveUp = false
 this.moveDown = false
 this.move.speed = 2.0 * 60.0
 
+this.y = 200.0
+
 this.body.circle body.dynamic 10.0
 this.mask = mask.player
 this.collisionMask = mask.solid | mask.ui
@@ -97,5 +99,5 @@ this.onFrame fun
     #log.info $"this.z: {this.z}, this.y: {this.y}"
     mask = this.getCollidingMask
     this.text.color = color.white
-    this.setText global.font.default $"velocity: {this.velocity.x}, {this.velocity.y}, mask: {mask}"
+    this.setText global.font.default $"{this.x},{this.y}, velocity: {this.velocity.x}, {this.velocity.y}, mask: {mask}"
 end

@@ -88,6 +88,14 @@ ResourceManager* Game::get_resources() const {
     return m_resource_manager;
 }
 
+void Game::set_debug(bool debug) {
+    m_debug = debug;
+}
+
+bool Game::is_debug() const {
+    return m_debug;
+}
+
 const VariableMap* Game::get_scene_variables() const {
     return m_scene_variable_map;
 }

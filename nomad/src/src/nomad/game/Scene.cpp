@@ -21,10 +21,6 @@ Scene::Scene(Game* game):
     m_game(game),
     m_variables(game->get_scene_variables())
 {
-    // Force load of tileset texture
-//    auto _ = game->get_resources()->get_textures()->get_texture_by_name("world/tileset.png");
-//    load_tile_map("world/test-1.tmj", "world/tileset.png");
-
     // Create Box2D worlds
     for (NomadId id = 0; id < SCENE_LAYER_COUNT; ++id) {
         auto& layer = m_layers[id];
@@ -32,6 +28,12 @@ Scene::Scene(Game* game):
         layer.id = id;
 
         b2WorldDef world_def = b2DefaultWorldDef();
+
+        // No gravity
+        world_def.gravity = { 0.0f, 0.0f };
+        // world_def.hitEventThreshold = 0.001f;
+        // world_def.enableSleep = false;
+        // world_def.contactHertz = 30.0f;
 
         layer.world_id = b2CreateWorld(&world_def);
     }

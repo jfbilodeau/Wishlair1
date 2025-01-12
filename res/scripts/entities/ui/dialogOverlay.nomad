@@ -4,7 +4,7 @@ fun initDialogOverlay x:float
     this.sensor = true
     this.mask = mask.ui
     this.collisionMask = mask.player
-    this.body.rectangle body.static toFloat window.width / 2 toFloat window.height
+    this.body.rectangle body.dynamic toFloat window.width / 2 toFloat window.height
 
     this.sprite.name = "dialog-box-v"
 
@@ -19,12 +19,10 @@ fun initDialogOverlay x:float
 
     this.onCollisionStart fun
         this.visible = false
-        log.info "Hidden"
     end
 
     this.onCollisionEnd fun
         this.visible = true
-        log.info "Visible"
     end
 end
 

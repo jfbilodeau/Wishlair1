@@ -90,7 +90,8 @@ void Scene::update_entity_layers() {
 }
 
 void Scene::update_physics() {
-    auto time_step = 1.0 / static_cast<float>(m_game->get_fps());
+    auto time_step = 1.0f / static_cast<float>(m_game->get_fps());
+
     for (auto& layer : m_layers) {
         // Check for invalidated walls.
         if (layer.walls_invalidated) {
@@ -144,11 +145,59 @@ void Scene::update_physics() {
 
         auto world_id = layer.world_id;
 
-        for (auto& entity : layer.entities) {
+        for (auto entity : layer.entities) {
             entity->before_simulation_update(world_id);
         }
 
-        b2World_Step(world_id, static_cast<float>(time_step), 4);
+        b2World_Step(world_id, time_step, 4);
+
+        auto sensor_events = b2World_GetSensorEvents(world_id);
+
+        for (auto i = 0; i < sensor_events.beginCount; ++i) {
+            log::info("sensor begin");
+            auto sensor_event = sensor_events.beginEvents[i];
+
+            auto shape_id_sensor = sensor_event.sensorShapeId;
+            auto shape_id_visitor = sensor_event.visitorShapeId;
+            auto body_id_sensor = b2Shape_GetBody(shape_id_sensor);
+            auto body_id_visitor = b2Shape_GetBody(shape_id_visitor);
+
+            auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
+            auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
+
+            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_begin() : NOMAD_INVALID_ID;
+
+            if (script_id_sensor != NOMAD_INVALID_ID) {
+                if (entity_visitor) {
+                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
+                } else {
+                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
+                }
+            }
+        }
+
+        for (auto i = 0; i < sensor_events.endCount; ++i) {
+            log::info("sensor end");
+            auto sensor_event = sensor_events.endEvents[i];
+
+            auto shape_id_sensor = sensor_event.sensorShapeId;
+            auto shape_id_visitor = sensor_event.visitorShapeId;
+            auto body_id_sensor = b2Shape_GetBody(shape_id_sensor);
+            auto body_id_visitor = b2Shape_GetBody(shape_id_visitor);
+
+            auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
+            auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
+
+            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_end() : NOMAD_INVALID_ID;
+
+            if (script_id_sensor != NOMAD_INVALID_ID) {
+                if (entity_visitor) {
+                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
+                } else {
+                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
+                }
+            }
+        }
 
         // Process collisions
         auto contact_events = b2World_GetContactEvents(world_id);
@@ -204,53 +253,6 @@ void Scene::update_physics() {
                     m_game->execute_script_in_new_context(script_id_b, this, entity_b, entity_a);
                 } else {
                     m_game->execute_script_in_new_context(script_id_b, this, entity_b);
-                }
-            }
-        }
-
-        auto sensor_events = b2World_GetSensorEvents(world_id);
-
-        for (auto i = 0; i < sensor_events.beginCount; ++i) {
-            log::info("enda");
-            auto sensor_event = sensor_events.beginEvents[i];
-
-            auto shape_id_sensor = sensor_event.sensorShapeId;
-            auto shape_id_visitor = sensor_event.visitorShapeId;
-            auto body_id_sensor = b2Shape_GetBody(shape_id_sensor);
-            auto body_id_visitor = b2Shape_GetBody(shape_id_visitor);
-
-            auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
-            auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
-
-            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_begin() : NOMAD_INVALID_ID;
-
-            if (script_id_sensor != NOMAD_INVALID_ID) {
-                if (entity_visitor) {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
-                } else {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
-                }
-            }
-        }
-
-        for (auto i = 0; i < sensor_events.endCount; ++i) {
-            auto sensor_event = sensor_events.endEvents[i];
-
-            auto shape_id_sensor = sensor_event.sensorShapeId;
-            auto shape_id_visitor = sensor_event.visitorShapeId;
-            auto body_id_sensor = b2Shape_GetBody(shape_id_sensor);
-            auto body_id_visitor = b2Shape_GetBody(shape_id_visitor);
-
-            auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
-            auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
-
-            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_end() : NOMAD_INVALID_ID;
-
-            if (script_id_sensor != NOMAD_INVALID_ID) {
-                if (entity_visitor) {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
-                } else {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
                 }
             }
         }

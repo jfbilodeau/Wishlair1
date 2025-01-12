@@ -4,7 +4,10 @@
 
 #include "nomad/game/Scene.hpp"
 
+#include "nomad/debug/DebugDraw.hpp"
+
 #include "nomad/game/Canvas.hpp"
+#include "nomad/game/Game.hpp"
 
 namespace nomad {
 
@@ -18,6 +21,15 @@ void Scene::render(Canvas* canvas) {
         // Render entities
         for (const auto entity : layer.entities) {
             entity->render(canvas);
+        }
+    }
+
+    if (m_game->is_debug()) {
+        b2DebugDraw debug_draw;
+        create_debug_draw(canvas, &debug_draw);
+
+        for (const auto& layer : m_layers) {
+            b2World_Draw(layer.world_id, &debug_draw);
         }
     }
 }

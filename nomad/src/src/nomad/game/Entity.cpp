@@ -65,6 +65,7 @@ NomadBoolean Entity::is_visible() const {
 void Entity::set_x(const NomadFloat x) {
     m_position.set_x(x);
     m_destination.set_x(x);
+    m_position_invalidated = true;
 }
 
 NomadFloat Entity::get_x() const {
@@ -74,6 +75,7 @@ NomadFloat Entity::get_x() const {
 void Entity::set_y(NomadFloat y) {
     m_position.set_y(y);
     m_destination.set_y(y);
+    m_position_invalidated = true;
 }
 
 NomadFloat Entity::get_y() const {
@@ -90,6 +92,7 @@ NomadFloat Entity::get_z() const {
 
 void Entity::set_location(NomadFloat x, NomadFloat y) {
     m_position.set(x, y);
+    m_position_invalidated = true;
 }
 
 void Entity::set_location(const PointF& location) {
@@ -102,14 +105,17 @@ const PointF& Entity::get_location() const {
 
 void Entity::stop_moving() {
    m_velocity.zero();
+    m_velocity_invalidated = true;
 }
 
 void Entity::start_moving(const PointF& velocity) {
     m_velocity.set(velocity);
+    m_velocity_invalidated = true;
 }
 
 void Entity::start_moving(NomadFloat x, NomadFloat y) {
     m_velocity.set(x, y);
+    m_velocity_invalidated = true;
 }
 
 void Entity::start_moving_in_direction(NomadFloat angle, NomadFloat speed) {
@@ -117,6 +123,7 @@ void Entity::start_moving_in_direction(NomadFloat angle, NomadFloat speed) {
         std::cos(angle) * speed,
         std::sin(angle) * speed
     );
+    m_velocity_invalidated = true;
 }
 
 void Entity::start_moving_to(const PointF& destination, NomadFloat speed) {
@@ -126,6 +133,7 @@ void Entity::start_moving_to(const PointF& destination, NomadFloat speed) {
 void Entity::start_moving_to(NomadFloat x, NomadFloat y, NomadFloat speed) {
     m_destination.set(x, y);
     m_speed = speed;
+    m_velocity_invalidated = true;
 }
 
 void Entity::set_velocity(NomadFloat x, NomadFloat y) {
@@ -134,6 +142,7 @@ void Entity::set_velocity(NomadFloat x, NomadFloat y) {
 
 void Entity::set_velocity(const PointF& velocity) {
     m_velocity.set(velocity);
+    m_velocity_invalidated = true;
 }
 
 void Entity::set_velocity(Cardinal direction, NomadFloat speed) {
@@ -158,14 +167,17 @@ void Entity::set_velocity(Cardinal direction, NomadFloat speed) {
             m_velocity.set(0, 0);
             break;
     }
+    m_velocity_invalidated = true;
 }
 
 void Entity::set_velocity_x(NomadFloat x) {
     m_velocity.set_x(x);
+    m_velocity_invalidated = true;
 }
 
 void Entity::set_velocity_y(NomadFloat y) {
     m_velocity.set_y(y);
+    m_velocity_invalidated = true;
 }
 
 const PointF& Entity::get_velocity() const {
@@ -364,13 +376,14 @@ void Entity::before_simulation_update(b2WorldId world) {
     
         if (m_body_shape != BodyShape::None) {
             b2BodyDef body_def = b2DefaultBodyDef();
+            body_def.userData = this;
 
             if (m_is_sensor) {
                 if (m_body_type != BodyType::Dynamic) {
                     log::warning("Sensors must be dynamic bodies");
                 }
 
-                body_def.type = b2_dynamicBody;
+                body_def.type = b2_staticBody;
             } else if (m_body_type == BodyType::Static) {
                 body_def.type = b2_staticBody;
             } else if (m_body_type == BodyType::Dynamic) {
@@ -387,7 +400,6 @@ void Entity::before_simulation_update(b2WorldId world) {
 
             if (b2Body_IsValid(m_b2_body)) {
                 m_has_body = true;
-                b2Body_SetUserData(m_b2_body, this);
             } else {
                 log::error("Failed to create body");
                 return;
@@ -395,6 +407,7 @@ void Entity::before_simulation_update(b2WorldId world) {
 
             b2ShapeDef shape_def = b2DefaultShapeDef();
 
+            shape_def.userData = this;
             shape_def.isSensor = m_is_sensor;
             shape_def.filter = m_b2_filter;
 
@@ -406,7 +419,7 @@ void Entity::before_simulation_update(b2WorldId world) {
                 m_b2_shape = b2CreatePolygonShape(m_b2_body, &shape_def, &rectangle);
             } else if (m_body_shape == BodyShape::Circle) {
                 b2Circle circle = {
-                    b2Vec2{0.0f, 0.0f},
+                    {0.0f, 0.0f},
                     static_cast<float>(m_body_radius)
                 };
                 m_b2_shape = b2CreateCircleShape(m_b2_body, &shape_def, &circle);
@@ -423,16 +436,24 @@ void Entity::before_simulation_update(b2WorldId world) {
     }
 
     if (m_has_body) {
-        // Make sure body is at the same position as the entity
-        b2Body_SetTransform(m_b2_body, b2Vec2{
-            static_cast<float>(m_position.x()),
-            static_cast<float>(m_position.y())
-        }, b2Rot_identity);
-        b2Body_SetLinearVelocity(m_b2_body, b2Vec2{
-            static_cast<float>(m_velocity.x()),
-            static_cast<float>(m_velocity.y())
-        });
+        if (m_position_invalidated) {
+            // Make sure body is at the same position as the entity
+            b2Body_SetTransform(m_b2_body, b2Vec2{
+                static_cast<float>(m_position.x()),
+                static_cast<float>(m_position.y())
+            }, b2Rot_identity);
+        }
+
+        if  (m_velocity_invalidated) {
+            b2Body_SetLinearVelocity(m_b2_body, b2Vec2{
+                static_cast<float>(m_velocity.x()),
+                static_cast<float>(m_velocity.y())
+            });
+        }
     }
+
+    m_position_invalidated = false;
+    m_velocity_invalidated = false;
 }
 
 void Entity::after_simulation_update(b2WorldId world) {

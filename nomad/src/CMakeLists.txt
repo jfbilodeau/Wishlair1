@@ -76,7 +76,8 @@ FetchContent_Declare(
 FetchContent_Declare(
         box2d
         GIT_REPOSITORY https://github.com/erincatto/box2d
-        GIT_TAG v3.0.0
+#        GIT_TAG v3.0.0
+        GIT_TAG f377034920c42a26cd498c0a0b1b2e9f2b064989
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         OVERRIDE_FIND_PACKAGE
@@ -167,6 +168,7 @@ set(
 
 #        ${NOMAD_INCLUDE_DIR}/nomad/debug/Decompiler.hpp
 #        ${NOMAD_INCLUDE_DIR}/nomad/debug/DebugConsole.hpp
+        ${NOMAD_INCLUDE_DIR}/nomad/debug/DebugDraw.hpp
 
         ${NOMAD_INCLUDE_DIR}/nomad/game/Alignment.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/game/ActionManager.hpp
@@ -247,6 +249,7 @@ set(
 
 #        ${NOMAD_SOURCE_DIR}/nomad/debug/Decompiler.cpp
 #        ${NOMAD_SOURCE_DIR}/nomad/debug/DebugConsole.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/debug/DebugDraw.cpp
 
         ${NOMAD_SOURCE_DIR}/nomad/game/Alignment.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/ActionManager.cpp

@@ -50,6 +50,9 @@ public:
     [[nodiscard]] Canvas* get_canvas();
     [[nodiscard]] ResourceManager* get_resources() const;
 
+    void set_debug(bool debug);
+    [[nodiscard]] bool is_debug() const;
+
     [[nodiscard]] const VariableMap* get_scene_variables() const;
     [[nodiscard]] const VariableMap* get_entity_variables() const;
 

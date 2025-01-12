@@ -12,15 +12,7 @@ namespace nomad {
 // Forward declarations
 class Canvas;
 
-class DebugDraw : public b2DebugDraw {
-public:
-    DebugDraw(Canvas* canvas);
-
-    
-
-private:
-    Canvas* m_canvas;
-};
+void create_debug_draw(Canvas* canvas, b2DebugDraw* debug_draw);
 
 } // namespace nomad
 
