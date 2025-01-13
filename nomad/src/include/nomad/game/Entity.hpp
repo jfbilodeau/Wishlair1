@@ -165,6 +165,10 @@ public:
     void set_text_alignment(Alignment alignment);
     [[nodiscard]] Alignment get_text_alignment() const;
 
+    void set_text_position(NomadFloat x, NomadFloat y);
+    void set_text_position(const PointF& position);
+    [[nodiscard]] const PointF& get_text_position() const;
+
     void set_text_x(NomadFloat x);
     [[nodiscard]] NomadFloat get_text_x() const;
 
@@ -253,8 +257,7 @@ private:
     NomadString m_text;
     NomadString m_wrapped_text;
     Alignment m_text_alignment = Alignment::CenterMiddle;
-    NomadFloat m_text_x = 0;
-    NomadFloat m_text_y = 0;
+    PointF m_text_position;
     NomadFloat m_text_width = 0;
     NomadFloat m_text_height = 0;
     NomadFloat m_text_line_spacing = 0;

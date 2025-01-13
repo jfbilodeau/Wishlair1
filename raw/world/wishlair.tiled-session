@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "entities.tsj",
     "expandedProjectPaths": [
         ".",
         "entities"
@@ -44,11 +44,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
+            "scale": 0.25,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 400,
-                "y": 719.5
+                "x": 606,
+                "y": 960
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -103,11 +103,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5099652777777778,
-            "selectedLayer": 0,
+            "scale": 0.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 401.0076938789406,
-                "y": 706.910873561653
+                "x": 401,
+                "y": 330
             }
         },
         "wishlair.tsj": {
@@ -120,7 +120,7 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/res/world",
+    "last.exportedFilePath": "/Users/jfbilodeau/CLionProjects/Wishlair1/res/world",
     "last.externalTilesetPath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world",
     "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/ui",
     "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world/entities",
@@ -130,20 +130,21 @@
         "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world/wishlair.world"
     ],
     "map.height": 15,
-    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedExportFilter": "Tous les Fichiers (*)",
     "map.lastUsedFormat": "json",
     "map.width": 20,
     "openFiles": [
+        "entities.tsj"
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
         "entities.tsj",
+        "wishlair.tsj",
         "wishlair-entrance.tmj",
-        "wishlair-entrance-2.tmj",
         "wishlair-entrance-1.tmj",
+        "wishlair-entrance-2.tmj",
         "test-1.tmj",
         "boundary.tsj",
-        "wishlair.tsj",
         "wishlair-entrance-3.tmj",
         "wishlair-entrance-1.tmx",
         "entities.tsx",

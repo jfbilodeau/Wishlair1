@@ -302,6 +302,7 @@ void Game::init_entity_commands() {
             auto new_y = entity->get_y() + anchor_y;
 
             entity->set_location(new_x, new_y);
+            // entity->set_text_position(anchor_x, anchor_y);
             entity->set_sprite_anchor(anchor_x, anchor_y);
         },
         {

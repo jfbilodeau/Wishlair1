@@ -576,8 +576,8 @@ void Entity::render(Canvas* canvas) {
 
     if (m_text_texture != nullptr) {
         Point anchor;
-        auto text_x = static_cast<int>(m_text_x);
-        auto text_y = static_cast<int>(m_text_y);
+        auto text_x = static_cast<int>(m_text_position.x());
+        auto text_y = static_cast<int>(m_text_position.y());
 
         int text_width, text_height;
         SDL_QueryTexture(m_text_texture, nullptr, nullptr, &text_width, &text_height);
@@ -630,8 +630,8 @@ void Entity::render(Canvas* canvas) {
         }
 
         auto destination = SDL_Rect{
-            anchor.x() + static_cast<int>(entity_x),
-            anchor.y() +  static_cast<int>(entity_y),
+            anchor.x() + static_cast<int>(entity_x + m_text_position.x()),
+            anchor.y() + static_cast<int>(entity_y + m_text_position.y()),
             text_width,
             text_height
         };
@@ -808,20 +808,32 @@ Alignment Entity::get_text_alignment() const {
     return m_text_alignment;
 }
 
+void Entity::set_text_position(NomadFloat x, NomadFloat y) {
+    m_text_position = { x, y };
+}
+
+void Entity::set_text_position(const PointF &position) {
+    m_text_position = position;
+}
+
+const PointF & Entity::get_text_position() const {
+    return m_text_position;
+}
+
 void Entity::set_text_x(NomadFloat x) {
-    m_text_x = x;
+    m_text_position.set_x(x);
 }
 
 NomadFloat Entity::get_text_x() const {
-    return m_text_x;
+    return m_text_position.x();
 }
 
 void Entity::set_text_y(NomadFloat y) {
-    m_text_y = y;
+    m_text_position.set_y(y);
 }
 
 NomadFloat Entity::get_text_y() const {
-    return m_text_y;
+    return m_text_position.y();
 }
 
 void Entity::set_text_width(NomadFloat width) {

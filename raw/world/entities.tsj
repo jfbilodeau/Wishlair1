@@ -8,8 +8,8 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":10,
- "tiledversion":"1.10.2",
+ "tilecount":9,
+ "tiledversion":"1.11.1",
  "tileheight":480,
  "tiles":[
         {
@@ -117,19 +117,7 @@
                 {
                  "name":"scriptName",
                  "type":"string",
-                 "value":"entities.ui.dialogOverlayLeft"
-                }]
-        }, 
-        {
-         "id":11,
-         "image":"..\/ui\/dialog-box-v.png",
-         "imageheight":480,
-         "imagewidth":400,
-         "properties":[
-                {
-                 "name":"scriptName",
-                 "type":"string",
-                 "value":"entities.ui.dialogOverlayRight"
+                 "value":"entities.ui.dialogFloatVertical"
                 }]
         }],
  "tilewidth":400,

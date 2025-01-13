@@ -49,9 +49,9 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
 
         boost::json::stream_parser parser;
 
-        char buffer[1024];
-
         while (!file.eof()) {
+            char buffer[1024];
+
             file.read(buffer, sizeof(buffer));
             parser.write(buffer, file.gcount());
         }

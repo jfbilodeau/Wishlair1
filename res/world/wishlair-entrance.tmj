@@ -3,7 +3,7 @@
  "infinite":false,
  "layers":[
         {
-         "data":[201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201,
+         "data":[201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 135, 201, 201, 201, 201,
             201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 202, 201, 201, 201, 201, 201, 201,
             201, 201, 201, 201, 203, 201, 201, 201, 201, 201, 201, 201, 201, 202, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201,
             201, 201, 202, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 201, 9, 10, 11, 201, 201, 201, 201,
@@ -100,7 +100,7 @@
                  "y":1409.89991148635
                 }, 
                 {
-                 "gid":4108,
+                 "gid":4107,
                  "height":480,
                  "id":22,
                  "name":"",
@@ -108,7 +108,7 @@
                         {
                          "name":"scriptName",
                          "type":"string",
-                         "value":"entities.ui.dialogOverlayRight"
+                         "value":"entities.ui.dialogFloatVertical"
                         }, 
                         {
                          "name":"text",
@@ -129,10 +129,10 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":23,
+ "nextobjectid":24,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.1",
  "tileheight":32,
  "tilesets":[
         {
@@ -37365,7 +37365,7 @@
          "margin":0,
          "name":"entities",
          "spacing":0,
-         "tilecount":10,
+         "tilecount":9,
          "tileheight":480,
          "tiles":[
                 {
@@ -37473,19 +37473,7 @@
                         {
                          "name":"scriptName",
                          "type":"string",
-                         "value":"entities.ui.dialogOverlayLeft"
-                        }]
-                }, 
-                {
-                 "id":11,
-                 "image":"..\/..\/raw\/ui\/dialog-box-v.png",
-                 "imageheight":480,
-                 "imagewidth":400,
-                 "properties":[
-                        {
-                         "name":"scriptName",
-                         "type":"string",
-                         "value":"entities.ui.dialogOverlayRight"
+                         "value":"entities.ui.dialogFloatVertical"
                         }]
                 }],
          "tilewidth":400

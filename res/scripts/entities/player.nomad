@@ -99,5 +99,5 @@ this.onFrame fun
     #log.info $"this.z: {this.z}, this.y: {this.y}"
     mask = this.getCollidingMask
     this.text.color = color.white
-    this.setText global.font.default $"{this.x},{this.y}, velocity: {this.velocity.x}, {this.velocity.y}, mask: {mask}"
+    #this.setText global.font.default $"velocity: {this.velocity.x}, {this.velocity.y}, mask: {mask}"
 end

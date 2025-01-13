@@ -154,7 +154,6 @@ void Scene::update_physics() {
         auto sensor_events = b2World_GetSensorEvents(world_id);
 
         for (auto i = 0; i < sensor_events.beginCount; ++i) {
-            log::info("sensor begin");
             auto sensor_event = sensor_events.beginEvents[i];
 
             auto shape_id_sensor = sensor_event.sensorShapeId;
@@ -177,7 +176,6 @@ void Scene::update_physics() {
         }
 
         for (auto i = 0; i < sensor_events.endCount; ++i) {
-            log::info("sensor end");
             auto sensor_event = sensor_events.endEvents[i];
 
             auto shape_id_sensor = sensor_event.sensorShapeId;
@@ -288,7 +286,10 @@ void Scene::process_add_remove_entities() {
         ScriptValue return_value;
 
         auto script = m_game->get_runtime()->get_script(added_entity.init_script_id);
+
+        entity->set_name(script->get_name()); // Set default name to the script.
         entity->set_script_name(script->get_name());
+
         m_game->execute_script_in_new_context(added_entity.init_script_id, this, entity, return_value);
 
         m_entities.push_back(entity);
