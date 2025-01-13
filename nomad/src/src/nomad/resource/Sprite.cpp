@@ -36,11 +36,11 @@ const Texture* Sprite::get_texture() const {
 }
 
 NomadInteger Sprite::get_width() const {
-    return m_frame.get_width();
+    return m_source.get_width();
 }
 
 NomadInteger Sprite::get_height() const {
-    return m_frame.get_height();
+    return m_source.get_height();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
