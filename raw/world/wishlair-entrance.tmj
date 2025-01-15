@@ -86,7 +86,7 @@
                 {
                  "id":22,
                  "template":"entities\/dialogFloatVertical.tx",
-                 "x":0,
+                 "x":400,
                  "y":480
                 }],
          "opacity":1,

@@ -12,6 +12,8 @@
 
 #include <fstream>
 
+#include "../../../cmake-build-release/_deps/boost-src/libs/algorithm/include/boost/algorithm/string/trim.hpp"
+
 namespace nomad {
 
 void TextManager::load_text_from_csv(const NomadString& path) {
@@ -30,6 +32,8 @@ void TextManager::load_text_from_csv(const NomadString& path) {
         throw ResourceException("Could not read header (first) line from text file: " + path);
     }
 
+    boost::trim(line);
+
     { // Read headers
         boost::tokenizer<boost::escaped_list_separator<NomadChar>> tokens(line);
 
@@ -44,6 +48,8 @@ void TextManager::load_text_from_csv(const NomadString& path) {
     }
 
     while (std::getline(file, line)) {
+        boost::trim(line);
+
         boost::tokenizer<boost::escaped_list_separator<char>> tokens(line);
 
         NomadString key;
@@ -73,8 +79,9 @@ const std::vector<NomadString>& TextManager::get_language_codes() const {
 }
 
 bool TextManager::has_text(const NomadString& language_code, const NomadString& key) const {
-    return m_texts.find(language_code) != m_texts.end()
-         && m_texts.at(language_code).find(key) != m_texts.at(language_code).end();
+    return
+        m_texts.find(language_code) != m_texts.end() &&
+        m_texts.at(language_code).find(key) != m_texts.at(language_code).end();
 }
 
 const NomadString& TextManager::get_text(const NomadString& language_code, const NomadString& key) const {
