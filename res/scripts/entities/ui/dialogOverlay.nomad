@@ -1,11 +1,13 @@
 fun initFloatingDialog
-    this.z = 10000.0 # Make it always on top
+    this.sprite.name = "dialog-box-v"
+
     this.sensor = true
     this.mask = mask.ui
     this.collisionMask = mask.player
     this.body.rectangle body.dynamic toFloat window.width / 2 toFloat window.height
+    this.visible = false
+    this.z = 10000.0 # Make it always on top
 
-    this.sprite.name = "dialog-box-v"
     this.repositionOnAnchor toFloat this.sprite.width / 2 toFloat this.sprite.height / 2
 
     this.text.x = -58.0

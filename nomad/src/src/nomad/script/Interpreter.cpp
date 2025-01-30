@@ -7,7 +7,7 @@
 
 #include "nomad/script/Interpreter.hpp"
 
-#include "nomad/system/string.hpp"
+#include "nomad/system/String.hpp"
 
 #ifdef NOMAD_DEBUG
 #define TEST_STACK_OVERFLOW if (m_stack_index >= m_stack.size()) { fault("Stack overflow"); }

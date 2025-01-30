@@ -2,5 +2,5 @@ key,en
 game.title,Wishlair
 global.yes,Yes
 global.no,No
-scene.opening.moveRight,"Use the W,A,S,D keys or controller to follow the path move to the right."
+scene.opening.moveRight,"Use the W,A,S,D keys or controller to follow the path and head to the right."
 scene.opening.moveUp,Move to the top of the screen to go to the next room.

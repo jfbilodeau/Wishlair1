@@ -22,7 +22,7 @@ FetchContent_Declare(
         Boost
         GIT_REPOSITORY https://github.com/boostorg/boost.git
         # Need to stick with 1.80 until following issue is addressed: https://github.com/boostorg/phoenix/issues/111
-        GIT_TAG boost-1.80.0
+        GIT_TAG boost-1.87.0
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         OVERRIDE_FIND_PACKAGE
@@ -77,13 +77,14 @@ FetchContent_Declare(
         box2d
         GIT_REPOSITORY https://github.com/erincatto/box2d
 #        GIT_TAG v3.0.0
-        GIT_TAG f377034920c42a26cd498c0a0b1b2e9f2b064989
+#        GIT_TAG f377034920c42a26cd498c0a0b1b2e9f2b064989
+        GIT_TAG cad8599955ad7ce19e5a3aff753535c17eeca8ef
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         OVERRIDE_FIND_PACKAGE
 )
 
-FetchContent_MakeAvailable(Boost SDL2 SDL2_image SDL2_ttf DearImGui)
+FetchContent_MakeAvailable(Boost box2d SDL2 SDL2_image SDL2_ttf DearImGui)
 
 find_package(Boost REQUIRED json)
 find_package(SDL2 REQUIRED)
@@ -336,6 +337,8 @@ add_executable(
 )
 
 target_link_libraries(nomad ${NOMAD_LIBRARIES})
+
+target_compile_definitions(nomad PRIVATE _LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION)
 
 # Only execute on Windows.
 if(WIN32)

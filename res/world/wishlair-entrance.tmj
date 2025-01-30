@@ -121,6 +121,29 @@
                  "width":400,
                  "x":400,
                  "y":480
+                }, 
+                {
+                 "gid":4107,
+                 "height":480,
+                 "id":24,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"scriptName",
+                         "type":"string",
+                         "value":"entities.ui.dialogFloatVertical"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"scene.opening.moveUp"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":400,
+                 "x":0,
+                 "y":480
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -129,7 +152,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":24,
+ "nextobjectid":25,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.1",

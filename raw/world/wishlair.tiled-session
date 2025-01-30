@@ -71,8 +71,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 260,
-                "y": 159.5
+                "x": 259.5,
+                "y": 159
             }
         },
         "wishlair-entrance-2.tmx": {
@@ -107,7 +107,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 401,
-                "y": 330
+                "y": 840
             }
         },
         "wishlair.tsj": {
@@ -138,11 +138,11 @@
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
-        "entities.tsj",
-        "wishlair.tsj",
-        "wishlair-entrance.tmj",
-        "wishlair-entrance-1.tmj",
         "wishlair-entrance-2.tmj",
+        "wishlair-entrance-1.tmj",
+        "wishlair.tsj",
+        "entities.tsj",
+        "wishlair-entrance.tmj",
         "test-1.tmj",
         "boundary.tsj",
         "wishlair-entrance-3.tmj",

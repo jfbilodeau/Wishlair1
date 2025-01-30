@@ -207,10 +207,10 @@ void debug_draw_point(
 void debug_draw_string(
     b2Vec2 p,
     const char* s,
+    b2HexColor color,
     void* context
 ) {
-    // log::warning("debug_draw_string() not implemented");
-    // log::info(s);
+    // Ignore...
 }
 
 void bounds(

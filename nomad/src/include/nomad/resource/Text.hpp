@@ -8,6 +8,7 @@
 #include "nomad/nomad.hpp"
 
 #include <unordered_map>
+#include <vector>
 
 namespace nomad {
 
