@@ -27,7 +27,7 @@ NomadString generate_fun_script_name(Compiler* compiler, Script* script, NomadIn
     auto test_id = NOMAD_INVALID_ID;
 
     do {
-        test_script_name = script->get_name() + "@" + std::to_string(line) + "[" + std::to_string(count) + "]";
+        test_script_name = script->get_name() + "@" + to_string(line) + "[" + to_string(count) + "]";
         test_id = compiler->get_runtime()->get_script_id(test_script_name);
         count++;
 

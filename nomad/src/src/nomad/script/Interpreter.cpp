@@ -355,7 +355,7 @@ bool Interpreter::get_variable_value(IdentifierType identifier_type, NomadId con
         return true;
 
     default:
-        log::warning("Unexpected identifier type: " + std::to_string(static_cast<int>(identifier_type)));
+        log::warning("Unexpected identifier type: " + to_string(static_cast<int>(identifier_type)));
     }
 
     return false;

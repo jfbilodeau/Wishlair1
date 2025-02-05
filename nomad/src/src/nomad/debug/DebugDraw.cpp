@@ -22,7 +22,7 @@ void debug_draw_polygon(
     b2HexColor color,
     void* context
 ) {
-    TempVector<SDL_FPoint> temp_vertices;
+    std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -65,7 +65,7 @@ void debug_draw_solid_polygon(
     b2HexColor color,
     void* context
 ) {
-    TempVector<SDL_Vertex> temp_vertices;
+    std::pmr::vector<SDL_Vertex> temp_vertices(&fast_heap_allocator);
 
     SDL_Color& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -103,7 +103,7 @@ void debug_draw_circle(
 
     constexpr auto vertex_count = 32;
 
-    TempVector<SDL_FPoint> temp_vertices;
+    std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
 
     for (int i = 0; i <= vertex_count; ++i) {  // Using '<=' (+1) to close the circle
         const auto angle = 2.0f * static_cast<float>(M_PI) * i / vertex_count;

@@ -18,7 +18,7 @@ FormatString::FormatString(const NomadString& format_string, NomadId script_id):
 
 FormatString::~FormatString() = default;
 
-void FormatString::add_literal(const std::string& literal) {
+void FormatString::add_literal(const NomadString& literal) {
     m_segments.push_back({
     SegmentType::Literal,
     IdentifierType::Unknown,
@@ -39,7 +39,7 @@ void FormatString::add_variable(IdentifierType variable_type, const Type* value_
     });
 }
 
-std::string FormatString::format(Interpreter *interpreter) const {
+NomadString FormatString::format(Interpreter *interpreter) const {
     NomadString string;
 
     for (auto const& segment: m_segments) {
@@ -69,7 +69,7 @@ std::string FormatString::format(Interpreter *interpreter) const {
             }
             default:
                 interpreter->fault(
-                        "Internal error: Invalid format string segment type: " + std::to_string((int) segment.type)
+                        "Internal error: Invalid format string segment type: " + to_string((int) segment.type)
                 );
         }
     }

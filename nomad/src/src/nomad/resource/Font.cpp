@@ -62,7 +62,7 @@ SDL_Texture* Font::generate_texture(
     NomadInteger line_spacing
 ) const {
     struct Line {
-        TempString text;
+        std::pmr::string text;
         NomadInteger width;
     };
 
@@ -79,17 +79,18 @@ SDL_Texture* Font::generate_texture(
     if (max_text_width_pixels == 0) {
         surface = TTF_RenderUTF8_Blended_Wrapped(m_font, text.c_str(), color.to_sdl_color(), 0);
     } else {
-        std::vector<Line> lines;
+        std::pmr::vector<Line> lines(&fast_heap_allocator);
 
         // Pre-allocate strings to avoid allocations at each iteration.
-        TempString test_line, current_line, word;
+        TempString test_line(&fast_heap_allocator), current_line(&fast_heap_allocator), word(&fast_heap_allocator);
         NomadInteger longest_line_width = 0;
 
-        TempStringStream text_stream(
-            reinterpret_cast<const TempString&>(text)
-        );
+        // std::stringstream text_stream(
+        //     reinterpret_cast<const TempString&>(text)
+        // );
+        TempStringStream text_stream(text, &fast_heap_allocator);
 
-        for (TempString line; std::getline(text_stream, line);) {
+        for (TempString line(&fast_heap_allocator); std::getline(text_stream, line);) {
             auto current_text_height = static_cast<NomadInteger>(lines.size()) * line_height;
 
             if (max_text_height_pixels != 0 && current_text_height > max_text_height_pixels) {
@@ -101,14 +102,14 @@ SDL_Texture* Font::generate_texture(
             while (line_stream >> word) {
                 test_line.clear();
                 test_line.append(current_line).append(current_line.empty() ? "" : " ").append(word);
-                auto line_width = get_text_width(test_line.to_nomad_string_ref());
+                auto line_width = get_text_width(test_line.c_str());
 
                 if (line_width > max_text_width_pixels) {
                     if (!current_line.empty()) {
                         lines.emplace_back(
                             Line{
                                 current_line,
-                                get_text_width(current_line.to_nomad_string_ref())
+                                get_text_width(current_line.c_str())
                             }
                         );
                         current_line = word; // Start next line with 'word'
@@ -117,13 +118,13 @@ SDL_Texture* Font::generate_texture(
                         lines.emplace_back(
                             Line{
                                 word,
-                                get_text_width(word.to_nomad_string_ref())
+                                get_text_width(word.c_str())
                             }
                         );
                     }
 
                     // Update max_line_width
-                    line_width = get_text_width(lines.back().text.to_nomad_string_ref());
+                    line_width = get_text_width(lines.back().text.c_str());
                     longest_line_width = std::max(longest_line_width, line_width);
                 } else {
                     current_line = test_line;
@@ -134,10 +135,10 @@ SDL_Texture* Font::generate_texture(
                 lines.emplace_back(
                     Line {
                         current_line,
-                        get_text_width(current_line.to_nomad_string_ref())
+                        get_text_width(current_line.c_str())
                     }
                 );
-                longest_line_width = std::max(longest_line_width, get_text_width(current_line.to_nomad_string_ref()));
+                longest_line_width = std::max(longest_line_width, get_text_width(current_line.c_str()));
             }
         }
 
@@ -218,12 +219,16 @@ SDL_Texture* Font::generate_texture(
     return texture;
 }
 
-NomadInteger Font::get_text_width(const NomadString& text) const {
+NomadInteger Font::get_text_width(const NomadChar* text) const {
     int width = 0;
 
-    TTF_SizeUTF8(m_font, text.c_str(), &width, nullptr);
+    TTF_SizeUTF8(m_font, text, &width, nullptr);
 
     return static_cast<NomadInteger>(width);
+}
+
+NomadInteger Font::get_text_width(const NomadString& text) const {
+    return get_text_width(text.c_str());
 }
 
 NomadInteger Font::get_text_height(const NomadString& text) const {

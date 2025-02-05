@@ -12,7 +12,7 @@
 
 #include <fstream>
 
-#include "../../../cmake-build-release/_deps/boost-src/libs/algorithm/include/boost/algorithm/string/trim.hpp"
+#include "boost/algorithm/string/trim.hpp"
 
 namespace nomad {
 

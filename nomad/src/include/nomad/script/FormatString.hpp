@@ -51,10 +51,10 @@ public:
         return m_script_id;
     }
 
-    void add_literal(const std::string& literal);
+    void add_literal(const NomadString& literal);
     void add_variable(IdentifierType identifier_type, const Type* value_type, NomadId context_id, NomadId variable_id);
 
-    std::string format(Interpreter* interpreter) const;
+    NomadString format(Interpreter* interpreter) const;
 
 private:
     NomadString m_format_string;

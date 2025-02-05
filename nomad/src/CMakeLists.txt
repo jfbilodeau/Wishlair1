@@ -78,7 +78,7 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/erincatto/box2d
 #        GIT_TAG v3.0.0
 #        GIT_TAG f377034920c42a26cd498c0a0b1b2e9f2b064989
-        GIT_TAG cad8599955ad7ce19e5a3aff753535c17eeca8ef
+        GIT_TAG 28adacf82377d4113f2ed00586141463244b9d10
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         OVERRIDE_FIND_PACKAGE
@@ -228,6 +228,7 @@ set(
         ${NOMAD_INCLUDE_DIR}/nomad/system/FastHeap.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/Float.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/Integer.hpp
+        ${NOMAD_INCLUDE_DIR}/nomad/system/Memory.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/String.hpp
 )
 
@@ -323,6 +324,7 @@ set(
         ${NOMAD_SOURCE_DIR}/nomad/script/VariableContext.cpp
 
         ${NOMAD_SOURCE_DIR}/nomad/system/FastHeap.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/system/Memory.cpp
         ${NOMAD_SOURCE_DIR}/nomad/system/String.cpp
 )
 

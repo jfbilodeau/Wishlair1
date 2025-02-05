@@ -40,6 +40,7 @@ public:
         NomadInteger line_spacing
     ) const;
 
+    [[nodiscard]] NomadInteger get_text_width(const NomadChar* text) const;
     [[nodiscard]] NomadInteger get_text_width(const NomadString& text) const;
     [[nodiscard]] NomadInteger get_text_height(const NomadString& text) const;
     [[nodiscard]] NomadInteger get_font_height() const;

@@ -102,7 +102,7 @@ void Game::init_scene_commands() {
             auto this_entity = execution_context->get_this_entity();
             auto scene = execution_context->get_scene();
 
-            TempVector<Entity*> other_entities;
+            TempVector<Entity*> other_entities(&fast_heap_allocator);
 
             NomadInteger layer_index = this_entity->get_layer();
 
@@ -121,7 +121,7 @@ void Game::init_scene_commands() {
                 }
             );
 
-            execution_context->set_other_entities(other_entities.to_std_vector_ref());
+            execution_context->set_other_entities(other_entities);
         }, {
             def_parameter(
                 "predicate", m_runtime->get_predicate_type(),
@@ -159,7 +159,7 @@ void Game::init_scene_commands() {
                 }
             );
 
-            execution_context->set_other_entities(other_entities.to_std_vector_ref());
+            execution_context->set_other_entities(other_entities);
         }, {
             def_parameter(
                 "predicate", m_runtime->get_predicate_type(),

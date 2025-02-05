@@ -7,6 +7,8 @@
 
 #include "nomad/nomad.hpp"
 
+#include "nomad/system/FastHeap.hpp"
+
 #include <functional>
 
 namespace nomad {
@@ -36,6 +38,7 @@ public:
     void add_other_entity(Entity* entity);
     void clear_other_entities_and_add(Entity* entity);
     void set_other_entities(const std::vector<Entity*>& entities);
+    void set_other_entities(const TempVector<Entity*>& entities);
 
     void for_each_other_entities(const std::function<void(Entity*)>& callback) {
         for (auto& entity : m_other_entities) {

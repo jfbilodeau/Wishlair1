@@ -121,7 +121,7 @@ void Compiler::report_error(const NomadString& message, Script* script, Tokenize
 }
 
 void Compiler::report_error(const NomadString& message, const NomadString& script_name, NomadIndex line, NomadIndex column) {
-    auto error_message = message + ": '" + script_name + "' at line " + std::to_string(line) + ", column " + std::to_string(column);
+    auto error_message = message + ": '" + script_name + "' at line " + to_string(line) + ", column " + to_string(column);
 
     report_error(error_message);
 }
@@ -915,26 +915,26 @@ void Compiler::scan_directory_for_scripts(const NomadString& base_path, const No
 
     for (auto& entry: std::filesystem::directory_iterator(path)) {
         if (entry.is_directory()) {
-            auto directory_name = entry.path().filename().string();
+            auto directory_name = NomadString(entry.path().filename().string());
             auto new_sub_path = concat_path(sub_path, directory_name);
             scan_directory_for_scripts(base_path, new_sub_path, max_depth - 1);
         } else if (entry.is_regular_file() && entry.path().extension() == extension) {
-            auto file_name = base_path + "/" + sub_path + "/" + entry.path().filename().string();
+            auto file_name = base_path + "/" + sub_path + "/" + NomadString(entry.path().filename().string());
 
             auto start = base_path.length() + 1;
             auto length = entry.path().string().length() - start - extension.length();
 
-            auto script_name = entry.path().string().substr(start, length);
+            auto script_name = NomadString(entry.path().string().substr(start, length));
             std::replace(script_name.begin(), script_name.end(), '\\', '.');
             std::replace(script_name.begin(), script_name.end(), '/', '.');
 
             // Read source
-            std::ifstream file(file_name, std::ios::in);
+            std::ifstream file(file_name.c_str(), std::ios::in);
             if (!file.is_open()) {
                 report_error("Failed to open file '" + file_name + "'");
             }
 
-            std::string source{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
+            NomadString source{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 
             register_script_file(script_name, file_name, source);
        }

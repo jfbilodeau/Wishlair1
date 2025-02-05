@@ -2,8 +2,11 @@
 // Created by jfbil on 2023-06-05.
 //
 
+#pragma once
+
 #include <algorithm>
 #include <cctype>
+#include <cstring>
 #include <locale>
 
 #include "nomad/nomad.hpp"
@@ -13,40 +16,52 @@
 
 namespace nomad {
 
-static inline NomadString string_concatenate(const NomadString& a, const NomadString& b) {
+class NomadStringBase {
+public:
+    NomadStringBase();
+    NomadStringBase(const NomadStringBase& other);
+    NomadStringBase(NomadStringBase&& other) noexcept;
+    NomadStringBase(const NomadChar* c_str);
+    NomadStringBase(const std::string& std_string);
+
+    const NomadChar* to_c_string() const;
+    const std::string& to_std_string() const;
+};
+
+static NomadString string_concatenate(const NomadString& a, const NomadString& b) {
     return a + b;
 }
 
-static inline NomadBoolean string_equal_to(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_equal_to(const NomadString& a, const NomadString& b) {
     return a == b;
 }
 
-static inline NomadBoolean string_equal_to(const NomadChar* a, const NomadChar* b) {
+static NomadBoolean string_equal_to(const NomadChar* a, const NomadChar* b) {
     return std::strcmp(a, b) == 0;
 }
 
-static inline NomadBoolean string_not_equal_to(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_not_equal_to(const NomadString& a, const NomadString& b) {
     return a != b;
 }
 
-static inline NomadBoolean string_less_than(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_less_than(const NomadString& a, const NomadString& b) {
     return a < b;
 }
 
-static inline NomadBoolean string_less_than_or_equal_to(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_less_than_or_equal_to(const NomadString& a, const NomadString& b) {
     return a <= b;
 }
 
-static inline NomadBoolean string_greater_than(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_greater_than(const NomadString& a, const NomadString& b) {
     return a > b;
 }
 
-static inline NomadBoolean string_greater_than_or_equal_to(const NomadString& a, const NomadString& b) {
+static NomadBoolean string_greater_than_or_equal_to(const NomadString& a, const NomadString& b) {
     return a >= b;
 }
 
 // trim from start (in place)
-static inline NomadString& string_left_trim(NomadString &s) {
+static NomadString& string_left_trim(NomadString &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
         return !std::isspace(ch);
     }));
@@ -55,7 +70,7 @@ static inline NomadString& string_left_trim(NomadString &s) {
 }
 
 // trim from end (in place)
-static inline NomadString& string_right_trim(NomadString &s) {
+static NomadString& string_right_trim(NomadString &s) {
     s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
         return !std::isspace(ch);
     }).base(), s.end());
@@ -64,7 +79,7 @@ static inline NomadString& string_right_trim(NomadString &s) {
 }
 
 // trim from both ends (in place)
-static inline NomadString& string_trim(NomadString &s) {
+static NomadString& string_trim(NomadString &s) {
     string_right_trim(s);
     string_left_trim(s);
 
@@ -72,19 +87,19 @@ static inline NomadString& string_trim(NomadString &s) {
 }
 
 // trim from start (copying)
-static inline NomadString string_left_trim_copy(NomadString s) {
+static NomadString string_left_trim_copy(NomadString s) {
     string_left_trim(s);
     return s;
 }
 
 // trim from end (copying)
-static inline NomadString string_right_trim_copy(NomadString s) {
+static NomadString string_right_trim_copy(NomadString s) {
     string_right_trim(s);
     return s;
 }
 
 // trim from both ends (copying)
-static inline NomadString string_trim_copy(NomadString s) {
+static NomadString string_trim_copy(NomadString s) {
     string_trim(s);
     return s;
 }

@@ -4,6 +4,8 @@
 
 #include "nomad/game/GameExecutionContext.hpp"
 
+#include "nomad/system/FastHeap.hpp"
+
 namespace nomad {
 
 void GameExecutionContext::reset(Scene* scene, Entity* entity) {
@@ -51,6 +53,10 @@ void GameExecutionContext::clear_other_entities_and_add(Entity* entity) {
 
 void GameExecutionContext::set_other_entities(const std::vector<Entity*>& entities) {
     m_other_entities = entities;
+}
+
+void GameExecutionContext::set_other_entities(const TempVector<Entity*>& entities) {
+    m_other_entities.assign(entities.begin(), entities.end());
 }
 
 } // nomad

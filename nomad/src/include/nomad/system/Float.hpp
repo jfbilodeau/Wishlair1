@@ -89,7 +89,7 @@ inline NomadInteger float_to_integer(NomadFloat a) {
 }
 
 inline NomadString float_to_string(NomadFloat a) {
-    return std::to_string(a);
+    return NomadString(std::to_string(a));
 }
 
 } // namespace nomad

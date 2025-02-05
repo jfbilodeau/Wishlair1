@@ -18,7 +18,7 @@
 namespace nomad {
 
 ParserException::ParserException(const NomadString& message, NomadIndex row, NomadIndex column):
-    NomadException("Parse error[" + std::to_string(row) + ":" + std::to_string(column) + "]: " + message),
+    NomadException("Parse error[" + to_string(row) + ":" + to_string(column) + "]: " + message),
     m_row(row),
     m_column(column) {
 }

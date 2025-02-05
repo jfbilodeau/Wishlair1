@@ -31,13 +31,13 @@ using NomadShort = std::int16_t;
 
 // An internal index type for Nomad objects
 using NomadIndex = std::size_t;
-const NomadIndex NOMAD_INVALID_INDEX = std::numeric_limits<NomadIndex>::max()-1;
+constexpr NomadIndex NOMAD_INVALID_INDEX = std::numeric_limits<NomadIndex>::max()-1;
 
 // An internal ID type for Nomad objects
 using NomadId = std::int32_t;
-const NomadId NOMAD_INVALID_ID = -1;
-const NomadId NOMAD_ID_MIN = 0;
-const NomadId NOMAD_ID_MAX = std::numeric_limits<NomadId>::max()-1;
+constexpr NomadId NOMAD_INVALID_ID = -1;
+constexpr NomadId NOMAD_ID_MIN = 0;
+constexpr NomadId NOMAD_ID_MAX = std::numeric_limits<NomadId>::max()-1;
 
 template<typename T>
 NomadId to_nomad_id(T value) {
@@ -63,7 +63,7 @@ private:
 constexpr NomadInteger NOMAD_DEFAULT_INTEGER = 0;
 constexpr NomadFloat NOMAD_DEFAULT_FLOAT = 0.0;
 constexpr NomadBoolean NOMAD_DEFAULT_BOOLEAN = false;
-constexpr const NomadChar* NOMAD_DEFAULT_STRING = "";
+constexpr auto NOMAD_DEFAULT_STRING = "";
 
 } // namespace nomad
 
