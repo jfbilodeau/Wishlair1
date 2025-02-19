@@ -48,7 +48,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 606,
-                "y": 960
+                "y": 958
             }
         },
         "wishlair-entrance-1.tmj#wishlair": {
@@ -72,7 +72,7 @@
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 259.5,
-                "y": 159
+                "y": 158.5
             }
         },
         "wishlair-entrance-2.tmx": {
@@ -87,7 +87,7 @@
             "scale": 1.4487499999999998,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 237.44607420189823,
+                "x": 237.10094909404665,
                 "y": 160.48317515099228
             }
         },
@@ -106,8 +106,8 @@
             "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 401,
-                "y": 840
+                "x": 609,
+                "y": 1061
             }
         },
         "wishlair.tsj": {

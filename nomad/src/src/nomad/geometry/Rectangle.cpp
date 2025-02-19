@@ -4,6 +4,8 @@
 
 #include "nomad/geometry/Rectangle.hpp"
 
+#include "nomad/geometry/RectangleF.hpp"
+
 namespace nomad {
 
 Rectangle::Rectangle():
@@ -25,6 +27,15 @@ Rectangle& Rectangle::set(const SDL_FRect& rect) {
         static_cast<NomadInteger>(rect.w),
         static_cast<NomadInteger>(rect.h)
     );
+}
+
+RectangleF Rectangle::to_rectanglef() const {
+    return {
+        static_cast<Coord>(m_x),
+        static_cast<Coord>(m_y),
+        static_cast<Coord>(m_width),
+        static_cast<Coord>(m_height)
+    };
 }
 
 SDL_Rect Rectangle::to_sdl_rect() const {

@@ -141,7 +141,7 @@ void Game::init_scene_commands() {
             auto this_entity = execution_context->get_this_entity();
             auto scene = execution_context->get_scene();
 
-            TempVector<Entity*> other_entities;
+            TempVector<Entity*> other_entities(&fast_heap_allocator);
 
             execution_context->clear_other_entities();
 
@@ -180,9 +180,9 @@ void Game::init_scene_commands() {
             auto scene = execution_context->get_scene();
 
             // Use a static variable to avoid reallocating storage for the vector
-            TempVector<Entity*> other_entities;
+            TempVector<Entity*> other_entities(&fast_heap_allocator);
 
-            NomadInteger layer_index = this_entity->get_layer();
+            auto layer_index = this_entity->get_layer();
 
             execution_context->clear_other_entities();
 
@@ -211,7 +211,7 @@ void Game::init_scene_commands() {
             auto scene = execution_context->get_scene();
 
             // Use a static variable to avoid reallocating storage for the vector
-            TempVector<Entity*> other_entities;
+            TempVector<Entity*> other_entities(&fast_heap_allocator);
 
             execution_context->clear_other_entities();
 

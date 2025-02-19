@@ -111,9 +111,26 @@ public:
     [[nodiscard]] NomadFloat get_body_height() const;
     [[nodiscard]] NomadFloat get_body_radius() const;
 
-    bool is_touching(const RectangleF& rectangle) const;
-    bool is_touching(const CircleF& circle) const;
-    bool is_touching(const Entity* entity) const;
+    [[nodiscard]] bool is_touching(const RectangleF& rectangle) const;
+    [[nodiscard]] bool is_touching(const CircleF& circle) const;
+    [[nodiscard]] bool is_touching(const Entity* entity) const;
+
+    RectangleF& get_bounding_box(RectangleF& rectangle) const;
+
+    // Notify the entity that it has entered the camera frame.
+    void enter_camera();
+    // Notify the entity that it has exited the camera frame.
+    void exit_camera();
+
+    // Script to execute when the entity enters the camera frame.
+    void set_on_enter_camera(NomadId script_id);
+    [[nodiscard]] NomadId get_on_enter_camera() const;
+
+    // Script to execute when the entity exits the camera frame.
+    void set_on_exit_camera(NomadId script_id);
+    [[nodiscard]] NomadId get_on_exit_camera() const;
+
+    [[nodiscard]] bool is_in_camera() const;
 
     void invalidate_physics_body();
     void before_simulation_update(b2WorldId world);
@@ -237,6 +254,9 @@ private:
     NomadBoolean m_position_invalidated = true;
     NomadBoolean m_velocity_invalidated = true;
 
+    // Camera
+    bool m_in_camera = false;
+
     // Visuals
     NomadBoolean m_visible = true;
     PointF m_sprite_anchor;  // Sprite image anchor point
@@ -273,6 +293,8 @@ private:
     NomadId m_on_frame = NOMAD_INVALID_ID;
     NomadId m_on_collision_begin = NOMAD_INVALID_ID;
     NomadId m_on_collision_end = NOMAD_INVALID_ID;
+    NomadId m_on_enter_camera = NOMAD_INVALID_ID;
+    NomadId m_on_exit_camera = NOMAD_INVALID_ID;
 
     void invalidate_text_texture();
     void generate_text_texture(Canvas* canvas);

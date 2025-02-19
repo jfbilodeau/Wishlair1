@@ -4,6 +4,8 @@
 
 #include "nomad/geometry/Point.hpp"
 
+#include "nomad/geometry/PointF.hpp"
+
 namespace nomad {
 
 Point::Point():
@@ -13,6 +15,22 @@ Point::Point():
 Point::Point(int x, int y):
     m_x(x),
     m_y(y) { }
+
+PointF Point::to_pointf() const {
+    return {
+        static_cast<Coord>(m_x),
+        static_cast<Coord>(m_y)
+    };
+}
+
+PointF & Point::to_pointf(PointF &point) const {
+    point.set(
+        static_cast<Coord>(m_x),
+        static_cast<Coord>(m_y)
+    );
+
+    return point;
+}
 
 SDL_Point Point::to_sdl_point() const {
     return SDL_Point{m_x, m_y};

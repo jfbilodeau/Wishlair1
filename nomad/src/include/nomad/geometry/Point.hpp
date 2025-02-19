@@ -9,6 +9,8 @@
 
 namespace nomad {
 
+class PointF;
+
 class Point {
 public:
     Point();
@@ -55,6 +57,8 @@ public:
         m_y += delta.m_y;
     }
 
+    [[nodiscard]] PointF to_pointf() const;
+    PointF& to_pointf(PointF& point) const;
     [[nodiscard]] SDL_Point to_sdl_point() const;
     SDL_Point& to_sdl_point(SDL_Point& point) const;
     [[nodiscard]] SDL_FPoint to_sdl_fpoint() const;

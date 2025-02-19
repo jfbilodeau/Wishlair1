@@ -8,9 +8,7 @@
 #include "nomad/game/ActionManager.hpp"
 #include "nomad/game/Entity.hpp"
 #include "nomad/game/Event.hpp"
-#include "nomad/game/Layer.hpp"
 
-#include "nomad/geometry/CircleF.hpp"
 #include "nomad/geometry/Rectangle.hpp"
 
 #include "box2d/box2d.h"
@@ -22,7 +20,7 @@
 
 namespace nomad {
 
-const NomadInteger SCENE_LAYER_COUNT = 5;
+constexpr NomadInteger SCENE_LAYER_COUNT = 5;
 
 // Forward declarations
 class Canvas;
@@ -107,6 +105,16 @@ public:
 
     void process_tile_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const;
 
+    // Camera
+    void set_camera_position(const PointF& position);
+    void set_camera_position(NomadFloat x, NomadFloat y);
+    void camera_start_follow_entity(NomadId entity_id);
+    void camera_stop_follow_entity();
+
+    [[nodiscard]] PointF get_camera_position() const;
+    [[nodiscard]] NomadFloat get_camera_x() const;
+    [[nodiscard]] NomadFloat get_camera_y() const;
+
     // Mask
     [[nodiscard]] NomadInteger get_mask_at_entity(const Entity* entity) const;
     [[nodiscard]] NomadInteger get_mask_at_entity(const Entity* entity, const PointF& location) const;
@@ -174,6 +182,7 @@ private: // methods
 
     void update_physics();
     void update_entity_layers();
+    void update_camera();
 
     void render_tile_map(Canvas* canvas, const Layer& layer);
     void render_tile(Canvas* canvas, int y, int x, NomadIndex ground_tile_index);
@@ -187,12 +196,14 @@ private: // data
 
     VariableList m_variables;
 
+    // Entities
     NomadId m_entity_id_counter = NOMAD_ID_MIN;
 
     std::vector<AddedEntity> m_added_entities;
     EntityList m_removed_entities;
     EntityList m_entities;
 
+    // Tiles
     const Texture* m_tile_texture = nullptr;
     NomadInteger m_tile_count = 0;
     NomadInteger m_tile_width = 0, m_tile_height = 0;
@@ -200,6 +211,10 @@ private: // data
     b2Filter m_wall_filter = b2DefaultFilter();
     std::vector<TileDefinition> m_tiles;
     std::array<Layer, SCENE_LAYER_COUNT> m_layers;
+
+    // Camera
+    PointF m_camera_position;
+    NomadId m_camera_follow_entity_id = NOMAD_INVALID_ID;
 
     EventManager m_events;
     ActionManager m_action_manager;

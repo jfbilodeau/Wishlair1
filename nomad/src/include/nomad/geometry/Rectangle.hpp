@@ -12,6 +12,8 @@
 
 namespace nomad {
 
+class RectangleF;
+
 class Rectangle {
 public:
     Rectangle();
@@ -171,6 +173,7 @@ public:
 
     Rectangle& set(const SDL_FRect& rect);
 
+    [[nodiscard]] RectangleF to_rectanglef() const;
     [[nodiscard]] SDL_Rect to_sdl_rect() const;
     [[nodiscard]] SDL_FRect to_sdl_frect() const;
 

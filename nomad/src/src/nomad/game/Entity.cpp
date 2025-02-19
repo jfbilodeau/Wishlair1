@@ -361,6 +361,85 @@ bool Entity::is_touching(const Entity* entity) const {
     return false;
 }
 
+RectangleF& Entity::get_bounding_box(RectangleF &bounding_box) const {
+    bounding_box = RectangleF{
+        m_position.x(),
+        m_position.y(),
+        0.0f,
+        0.0f
+    };
+
+    if (auto sprite = get_sprite()) {
+        bounding_box = sprite->get_frame().to_rectanglef();
+    }
+
+    switch (m_body_shape) {
+        case BodyShape::None:
+            // Ignore
+            break;
+        case BodyShape::Rectangle:
+            bounding_box = bounding_box.union_rect({
+                m_position.x() - m_body_width / 2,
+                m_position.y() - m_body_height / 2,
+                m_body_width,
+                m_body_height
+            });
+            break;
+        case BodyShape::Circle:
+            bounding_box = bounding_box.union_rect({
+                m_position.x() - m_body_width / 2,
+                m_position.y() - m_body_height / 2,
+                m_body_radius,
+                m_body_radius
+            });
+            break;
+        default:
+            log::error("[Entity::get_bounding_box] Invalid body shape: " + to_string(static_cast<int>(m_body_shape)));
+    }
+
+    return bounding_box;
+}
+
+void Entity::enter_camera() {
+    if (m_in_camera) {
+        return;
+    }
+
+    if (m_on_enter_camera != NOMAD_INVALID_ID) {
+        m_scene->get_game()->execute_script_in_context(m_on_enter_camera, &m_execution_context);
+    }
+}
+
+void Entity::exit_camera() {
+    if (!m_in_camera) {
+        return;
+    }
+
+    if (m_on_exit_camera != NOMAD_INVALID_ID) {
+        m_scene->get_game()->execute_script_in_context(m_on_exit_camera, &m_execution_context);
+    }
+}
+
+void Entity::set_on_enter_camera(NomadId script_id) {
+    m_on_enter_camera = script_id;
+}
+
+NomadId Entity::get_on_enter_camera() const {
+    return m_on_enter_camera;
+}
+
+void Entity::set_on_exit_camera(NomadId script_id) {
+    m_on_exit_camera = script_id;
+}
+
+NomadId Entity::get_on_exit_camera() const {
+    return m_on_exit_camera;
+}
+
+bool Entity::is_in_camera() const {
+    return m_in_camera;
+}
+
 void Entity::invalidate_physics_body() {
     m_body_invalidated = true;
 }

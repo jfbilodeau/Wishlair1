@@ -5,6 +5,7 @@
 #include "nomad/game/Scene.hpp"
 
 #include "nomad/geometry/Rectangle.hpp"
+#include "nomad/geometry/CircleF.hpp"
 
 #include "nomad/resource/ResourceManager.hpp"
 #include "nomad/resource/Texture.hpp"
@@ -461,6 +462,34 @@ void Scene::process_tile_at(NomadIndex layer, const Rectangle& rectangle, TileCa
             callback(information);
         }
     }
+}
+
+void Scene::set_camera_position(const PointF &position) {
+    m_camera_position = position;
+}
+
+void Scene::set_camera_position(NomadFloat x, NomadFloat y) {
+    set_camera_position({x, y});
+}
+
+void Scene::camera_start_follow_entity(NomadId entity_id) {
+    m_camera_follow_entity_id = entity_id;
+}
+
+void Scene::camera_stop_follow_entity() {
+    m_camera_follow_entity_id = NOMAD_INVALID_ID;
+}
+
+PointF Scene::get_camera_position() const {
+    return m_camera_position;
+}
+
+NomadFloat Scene::get_camera_x() const {
+    return m_camera_position.x();
+}
+
+NomadFloat Scene::get_camera_y() const {
+    return m_camera_position.y();
 }
 
 NomadInteger Scene::get_mask_at_entity(const Entity* entity) const {

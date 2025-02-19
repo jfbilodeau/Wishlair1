@@ -50,45 +50,6 @@ void Scene::update(Game* game) {
     }
 }
 
-void Scene::update_entity_layers() {
-    for (NomadIndex layer_index = 0; layer_index < m_layers.size(); ++layer_index) {
-        auto layer = &m_layers[layer_index];
-
-        // If entity is not in the right layer, move it to its layer.
-        NomadIndex entity_index = 0;
-
-        while (entity_index < layer->entities.size()) {
-            auto entity = layer->entities[entity_index];
-            auto entity_layer = entity->get_layer();
-            if (entity_layer != layer_index) {
-                if (entity_layer < 0 || entity_layer >= m_layers.size()) {
-                    log::warning("Entity '" + entity->get_name() + "' has an invalid layer: " + std::to_string(entity_layer));
-                    log::warning("Defaulting to layer 0");
-
-                    entity_layer = 0;
-
-                    entity->set_layer(entity_layer);
-
-                    if (layer_index == 0) {
-                        // Already in the right layer
-                        continue;
-                    }
-                }
-
-                m_layers[entity_layer].entities.push_back(entity);
-                layer->entities.erase(layer->entities.begin() + entity_index);
-
-                // Do not advance index so we do not skip over the next entity.
-                continue;
-            }
-            else {
-                // Entity is in the right layer, move to next entity.
-                ++entity_index;
-            }
-        }
-    }
-}
-
 void Scene::update_physics() {
     auto time_step = 1.0f / static_cast<float>(m_game->get_fps());
 
@@ -257,6 +218,80 @@ void Scene::update_physics() {
 
         for (auto entity : m_entities) {
             entity->after_simulation_update(world_id);
+        }
+    }
+}
+
+void Scene::update_entity_layers() {
+    for (NomadIndex layer_index = 0; layer_index < m_layers.size(); ++layer_index) {
+        auto layer = &m_layers[layer_index];
+
+        // If entity is not in the right layer, move it to its layer.
+        NomadIndex entity_index = 0;
+
+        while (entity_index < layer->entities.size()) {
+            auto entity = layer->entities[entity_index];
+            auto entity_layer = entity->get_layer();
+            if (entity_layer != layer_index) {
+                if (entity_layer < 0 || entity_layer >= m_layers.size()) {
+                    log::warning("Entity '" + entity->get_name() + "' has an invalid layer: " + std::to_string(entity_layer));
+                    log::warning("Defaulting to layer 0");
+
+                    entity_layer = 0;
+
+                    entity->set_layer(entity_layer);
+
+                    if (layer_index == 0) {
+                        // Already in the right layer
+                        continue;
+                    }
+                }
+
+                m_layers[entity_layer].entities.push_back(entity);
+                layer->entities.erase(layer->entities.begin() + entity_index);
+
+                // Do not advance index so we do not skip over the next entity.
+                continue;
+            }
+            else {
+                // Entity is in the right layer, move to next entity.
+                ++entity_index;
+            }
+        }
+    }
+}
+
+void Scene::update_camera() {
+    if (m_camera_follow_entity_id != NOMAD_INVALID_ID) {
+        auto entity = get_entity_by_id(m_camera_follow_entity_id);
+
+        if (entity) {
+            m_camera_position.set(entity->get_location());
+        } else {
+            // Entity no longer exists, stop following
+            m_camera_follow_entity_id = NOMAD_INVALID_ID;
+        }
+    }
+
+    // Update which entities are in the camera view
+    auto resolution = m_game->get_resolution().to_pointf();
+
+    auto camera_rectangle = RectangleF{
+        m_camera_position.x() - resolution.x() / 2,
+        m_camera_position.y() - resolution.y() / 2,
+        resolution.x(),
+        resolution.y()
+    };
+
+    for (auto& entity : m_entities) {
+        RectangleF bounding_box;
+
+        entity->get_bounding_box(bounding_box);
+
+        if (camera_rectangle.intersects(bounding_box)) {
+            entity->enter_camera();
+        } else {
+            entity->exit_camera();
         }
     }
 }

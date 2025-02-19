@@ -173,7 +173,6 @@ public:
         return set(rect.x, rect.y, rect.w, rect.h);
     }
 
-
     [[nodiscard]] SDL_Rect to_sdl_rect() const;
     [[nodiscard]] SDL_FRect to_sdl_frect() const;
 
