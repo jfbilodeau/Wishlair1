@@ -8,8 +8,8 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":9,
- "tiledversion":"1.11.1",
+ "tilecount":10,
+ "tiledversion":"1.11.2",
  "tileheight":480,
  "tiles":[
         {
@@ -119,6 +119,12 @@
                  "type":"string",
                  "value":"entities.ui.dialogFloatVertical"
                 }]
+        }, 
+        {
+         "id":11,
+         "image":"..\/system\/camera.png",
+         "imageheight":64,
+         "imagewidth":64
         }],
  "tilewidth":400,
  "type":"tileset",

@@ -18,8 +18,8 @@ void Scene::render(Canvas* canvas) {
     auto resolution = m_game->get_resolution();
 
     canvas->set_offset(
-        m_camera_position.x() - resolution.x() / 2.0,
-        m_camera_position.y() - resolution.y() / 2.0
+        -m_camera_position.x() + resolution.x() / 2.0,
+        -m_camera_position.y() + resolution.y() / 2.0
     );
 
     for (const auto& layer : m_layers) {

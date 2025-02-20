@@ -30,14 +30,14 @@
         },
         "test-1.tmj": {
             "expandedObjectLayers": [
-                2,
-                7
+                7,
+                2
             ],
-            "scale": 0.5,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 553,
-                "y": 449
+                "x": 561.25,
+                "y": 250.75
             }
         },
         "wishlair-entrance-1.tmj": {
@@ -120,10 +120,10 @@
             "scaleInDock": 1
         }
     },
-    "last.exportedFilePath": "/Users/jfbilodeau/CLionProjects/Wishlair1/res/world",
+    "last.exportedFilePath": "C:/Users/jfbil/CLionProjects/Wishlair1/res/world",
     "last.externalTilesetPath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world",
-    "last.imagePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/ui",
-    "last.objectTemplatePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/raw/world/entities",
+    "last.imagePath": "C:/Users/jfbil/CLionProjects/Wishlair1/raw/system",
+    "last.objectTemplatePath": "C:/Users/jfbil/CLionProjects/Wishlair1/raw/world/entities",
     "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
     "loadedWorlds": [

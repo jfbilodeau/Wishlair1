@@ -144,6 +144,24 @@
                  "width":400,
                  "x":0,
                  "y":480
+                }, 
+                {
+                 "gid":4108,
+                 "height":64,
+                 "id":25,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"scriptName",
+                         "type":"string",
+                         "value":"entities.camera"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":64,
+                 "x":400,
+                 "y":240
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -152,10 +170,10 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":25,
+ "nextobjectid":26,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.1",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tilesets":[
         {
@@ -37388,7 +37406,7 @@
          "margin":0,
          "name":"entities",
          "spacing":0,
-         "tilecount":9,
+         "tilecount":10,
          "tileheight":480,
          "tiles":[
                 {
@@ -37498,6 +37516,12 @@
                          "type":"string",
                          "value":"entities.ui.dialogFloatVertical"
                         }]
+                }, 
+                {
+                 "id":11,
+                 "image":"..\/..\/raw\/system\/camera.png",
+                 "imageheight":64,
+                 "imagewidth":64
                 }],
          "tilewidth":400
         }],

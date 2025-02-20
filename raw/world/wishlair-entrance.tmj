@@ -100,6 +100,12 @@
                  "template":"entities\/dialogFloatVertical.tx",
                  "x":0,
                  "y":480
+                }, 
+                {
+                 "id":25,
+                 "template":"entities\/camera.tx",
+                 "x":400,
+                 "y":240
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -108,10 +114,10 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":25,
+ "nextobjectid":26,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.11.1",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tilesets":[
         {

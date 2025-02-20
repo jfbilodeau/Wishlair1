@@ -283,7 +283,13 @@
          "draworder":"topdown",
          "id":7,
          "name":"layer-3-entities",
-         "objects":[],
+         "objects":[
+                {
+                 "id":26,
+                 "template":"entities\/camera.tx",
+                 "x":400,
+                 "y":240
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -291,10 +297,10 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":26,
+ "nextobjectid":27,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.10.2",
+ "tiledversion":"1.11.2",
  "tileheight":32,
  "tilesets":[
         {

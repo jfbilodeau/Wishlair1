@@ -40,6 +40,9 @@ void Scene::update(Game* game) {
     // Update layers physics
     update_physics();
 
+    // Update camera
+    update_camera();
+
     // Process added and removed entities
     process_add_remove_entities();
 
