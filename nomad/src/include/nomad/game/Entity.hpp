@@ -283,7 +283,7 @@ private:
     NomadFloat m_text_line_spacing = 0;
     NomadId m_font_id = NOMAD_INVALID_ID;
     Color m_text_color = Colors::Black;
-    SDL_Texture* m_text_texture = nullptr;
+    Texture* m_text_texture = nullptr;
 
     VariableList m_variables;
     EventManager m_events;

@@ -108,6 +108,8 @@ public:
     // Camera
     void set_camera_position(const PointF& position);
     void set_camera_position(NomadFloat x, NomadFloat y);
+    void set_camera_x(NomadFloat x);
+    void set_camera_y(NomadFloat y);
     void camera_start_follow_entity(NomadId entity_id);
     void camera_stop_follow_entity();
 
@@ -213,7 +215,7 @@ private: // data
     std::array<Layer, SCENE_LAYER_COUNT> m_layers;
 
     // Camera
-    PointF m_camera_position;
+    PointF m_camera_position = {400, 240};
     NomadId m_camera_follow_entity_id = NOMAD_INVALID_ID;
 
     EventManager m_events;

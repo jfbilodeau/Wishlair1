@@ -658,8 +658,8 @@ void Entity::render(Canvas* canvas) {
         auto text_x = static_cast<int>(m_text_position.x());
         auto text_y = static_cast<int>(m_text_position.y());
 
-        int text_width, text_height;
-        SDL_QueryTexture(m_text_texture, nullptr, nullptr, &text_width, &text_height);
+        int text_width = m_text_texture->get_width();
+        int text_height = m_text_texture->get_height();
 
         switch (m_text_alignment) {
             case Alignment::TopLeft:
@@ -708,19 +708,21 @@ void Entity::render(Canvas* canvas) {
                 );
         }
 
-        auto destination = SDL_Rect{
+        auto source = Rectangle{
+            static_cast<NomadInteger>(0.0),
+            static_cast<NomadInteger>(0.0),
+            text_width,
+            text_height
+        };
+
+        auto destination = Rectangle{
             anchor.x() + static_cast<int>(entity_x + m_text_position.x()),
             anchor.y() + static_cast<int>(entity_y + m_text_position.y()),
             text_width,
             text_height
         };
 
-        SDL_RenderCopy(
-            canvas->get_sdl_renderer(),
-            m_text_texture,
-            nullptr,
-            &destination
-        );
+        canvas->render_texture(m_text_texture, source, destination);
     }
 }
 
@@ -1030,7 +1032,7 @@ void Entity::set_on_collision_end(NomadId script_id) {
 
 void Entity::invalidate_text_texture() {
     if (m_text_texture) {
-        SDL_DestroyTexture(m_text_texture);
+        delete m_text_texture;
 
         m_text_texture = nullptr;
     }
@@ -1038,7 +1040,7 @@ void Entity::invalidate_text_texture() {
 
 void Entity::generate_text_texture(Canvas* canvas) {
     if (m_text_texture) {
-        SDL_DestroyTexture(m_text_texture);
+        delete m_text_texture;
 
         m_text_texture = nullptr;
     }
@@ -1053,9 +1055,9 @@ void Entity::generate_text_texture(Canvas* canvas) {
             m_text,
             m_text_color,
             get_horizontal_alignment(m_text_alignment),
-            m_text_width,
-            m_text_height,
-            m_text_line_spacing
+            static_cast<NomadInteger>(m_text_width),
+            static_cast<NomadInteger>(m_text_height),
+            static_cast<NomadInteger>(m_text_line_spacing)
         );
     }
 }

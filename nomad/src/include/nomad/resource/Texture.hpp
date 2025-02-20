@@ -23,7 +23,9 @@ class ResourceManager;
 ///////////////////////////////////////////////////////////////////////////////
 class Texture : public Resource {
 public:
-    explicit Texture(const NomadString& name, const NomadString& file_name, Game* game);
+    Texture(const NomadString& name, const NomadString& file_name, Game* game);
+    Texture(const NomadString& name, Game* game, int width, int height);
+    Texture(const NomadString& name, SDL_Texture* texture);
     Texture(const Texture& other) = delete;
     ~Texture() override;
 

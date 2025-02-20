@@ -30,7 +30,7 @@ public:
     [[nodiscard]] int get_point_size() const;
     [[nodiscard]] TTF_Font* get_ttf_font() const;
 
-    SDL_Texture* generate_texture(
+    Texture* generate_texture(
         Canvas* canvas,
         const NomadString& text,
         const Color& color,

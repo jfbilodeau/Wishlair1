@@ -469,7 +469,17 @@ void Scene::set_camera_position(const PointF &position) {
 }
 
 void Scene::set_camera_position(NomadFloat x, NomadFloat y) {
+    camera_stop_follow_entity();
+
     set_camera_position({x, y});
+}
+
+void Scene::set_camera_x(NomadFloat x) {
+    set_camera_position(x, m_camera_position.y());
+}
+
+void Scene::set_camera_y(NomadFloat y) {
+    set_camera_position( m_camera_position.x(), y);
 }
 
 void Scene::camera_start_follow_entity(NomadId entity_id) {

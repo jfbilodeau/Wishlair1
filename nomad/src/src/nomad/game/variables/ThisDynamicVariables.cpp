@@ -32,6 +32,20 @@ namespace nomad {
 void Game::init_this_dynamic_variables() {
     log::debug("Initializing this dynamic variables");
 
+    m_runtime->register_dynamic_variable(
+        "this",
+        nullptr,
+        [this](Interpreter* interpreter, ScriptValue& value) {
+            START_ENTITY_BLOCK("Cannot access 'this' outside of an entity")
+
+            value.set_integer_value(entity->get_id());
+
+            END_SINGLE_ENTITY_BLOCK(NOMAD_INVALID_ID)
+        },
+        m_runtime->get_integer_type(),
+        "Get the ID of the `this` entity."
+    );
+
     #include "_EntityDynamicVariables.inl"
 }
 

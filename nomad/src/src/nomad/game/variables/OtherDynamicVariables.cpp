@@ -34,7 +34,19 @@ namespace nomad {
 void Game::init_other_dynamic_variables() {
     log::debug("Initializing this dynamic variables");
 
-    #include "_EntityDynamicVariables.inl"
+    m_runtime->register_dynamic_variable(
+        "other",
+        nullptr,
+        [this](Interpreter* interpreter, ScriptValue& value) {
+            START_SINGLE_ENTITY_BLOCK("Cannot access 'other' outside of an entity")
+
+            value.set_integer_value(entity->get_id());
+
+            END_SINGLE_ENTITY_BLOCK(static_cast<NomadInteger>(NOMAD_INVALID_ID))
+        },
+        m_runtime->get_integer_type(),
+        "Get the ID of the `other` entity."
+    );
 
     m_runtime->register_dynamic_variable(
         "others.count",
@@ -47,6 +59,8 @@ void Game::init_other_dynamic_variables() {
         m_runtime->get_integer_type(),
         NomadDoc("Returns the number of selected 'other' entities")
     );
+
+    #include "_EntityDynamicVariables.inl"
 }
 
 } // namespace nomad

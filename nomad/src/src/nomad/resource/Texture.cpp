@@ -35,6 +35,25 @@ Texture::Texture(const NomadString& name, const NomadString& file_name, Game* ga
     }
 }
 
+Texture::Texture(const NomadString &name, Game* game, int width, int height):
+    Resource(name)
+{
+    auto renderer = game->get_canvas()->get_sdl_renderer();
+
+    m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
+
+    if (m_texture == nullptr) {
+        throw ResourceException("Failed to create texture. Reason: " + NomadString(IMG_GetError()));
+    }
+}
+
+Texture::Texture(const NomadString &name, SDL_Texture *texture):
+    Resource(name),
+    m_texture(texture)
+{
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+}
+
 Texture::~Texture() {
     if (m_texture != nullptr) {
         SDL_DestroyTexture(m_texture);

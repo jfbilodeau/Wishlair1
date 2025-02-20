@@ -17,7 +17,8 @@
 namespace nomad {
 
 #define CHECK_SCENE_NOT_NULL(message) \
-    if (get_current_context()->get_scene() == nullptr) { \
+    auto scene = get_current_context()->get_scene(); \
+    if (scene == nullptr) { \
         log::error(message); \
         return; \
     }
@@ -26,29 +27,40 @@ void Game::init_scene_commands() {
     log::debug("Initializing scene commands");
 
     m_runtime->register_command(
-        "scene.loadInputMapping",
+        "scene.camera.follow",
         [this](Interpreter* interpreter) {
-            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+            CHECK_SCENE_NOT_NULL("Cannot set camera position outside of a scene")
 
-            auto mapping_name = interpreter->get_string_parameter(0);
+            auto entity_id = interpreter->get_id_parameter(0);
 
-            auto scene = get_current_context()->get_scene();
-
-            scene->load_action_mapping(mapping_name);
+            scene->camera_start_follow_entity(entity_id);
         }, {
-            def_parameter(
-                "mappingName", m_runtime->get_string_type(), NomadParamDoc("Name of the input mapping to load.")
-            )
+            def_parameter("entityId", m_runtime->get_integer_type(), NomadParamDoc("ID of the entity to follow."))
         },
         m_runtime->get_void_type(),
-        NomadDoc("Load an input mapping for this scene.")
+        NomadDoc("Makes the camera follow the specified entity.")
+    );
+
+    m_runtime->register_command(
+        "scene.camera.setPosition",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot set camera position outside of a scene")
+
+            auto x = interpreter->get_float_parameter(0);
+            auto y = interpreter->get_float_parameter(1);
+
+            scene->set_camera_position(x, y);
+        }, {
+            def_parameter("x", m_runtime->get_float_type(), NomadParamDoc("X position of the camera.")),
+            def_parameter("y", m_runtime->get_float_type(), NomadParamDoc("Y position of the camera."))
+        },
+        m_runtime->get_void_type(),
+        NomadDoc("Sets the camera position.")
     );
 
     m_runtime->register_command(
         "scene.createEntity",
-        [this](
-            Interpreter* interpreter
-        ) {
+        [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot create entity outside of a scene")
 
             auto init_script_name = interpreter->get_string_parameter(0);
@@ -56,7 +68,6 @@ void Game::init_scene_commands() {
             const auto entity_y = interpreter->get_float_parameter(2);
             const auto layer = interpreter->get_integer_parameter(3);
 
-            const auto scene = get_current_context()->get_scene();
 
             scene->create_entity(init_script_name, entity_x, entity_y, layer);
         }, {
@@ -74,15 +85,32 @@ void Game::init_scene_commands() {
 
 
     m_runtime->register_command(
+        "scene.loadInputMapping",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
+            auto mapping_name = interpreter->get_string_parameter(0);
+
+            scene->load_action_mapping(mapping_name);
+        }, {
+            def_parameter(
+                "mappingName", m_runtime->get_string_type(), NomadParamDoc("Name of the input mapping to load.")
+            )
+        },
+        m_runtime->get_void_type(),
+        NomadDoc("Load an input mapping for this scene.")
+    );
+
+    m_runtime->register_command(
         "scene.loadMap",
         [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
             NomadString map_name = interpreter->get_string_parameter(0);
             NomadString tile_set_texture = interpreter->get_string_parameter(1);
 
             auto map_file_name = map_name + ".tmj";
             auto tile_set_texture_file_name = tile_set_texture + ".png";
-
-            auto scene = get_current_context()->get_scene();
 
             scene->load_tile_map(map_file_name, tile_set_texture_file_name);
         }, {
@@ -96,11 +124,12 @@ void Game::init_scene_commands() {
     m_runtime->register_command(
         "select",
         [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
             auto predicate_id = interpreter->get_id_parameter(0);
 
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
-            auto scene = execution_context->get_scene();
 
             TempVector<Entity*> other_entities(&fast_heap_allocator);
 
@@ -135,11 +164,12 @@ void Game::init_scene_commands() {
     m_runtime->register_command(
         "select.all",
         [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
             auto predicate_id = interpreter->get_id_parameter(0);
 
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
-            auto scene = execution_context->get_scene();
 
             TempVector<Entity*> other_entities(&fast_heap_allocator);
 
@@ -173,11 +203,12 @@ void Game::init_scene_commands() {
     m_runtime->register_command(
         "select.byName",
         [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
             auto name = interpreter->get_string_parameter(0);
 
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
-            auto scene = execution_context->get_scene();
 
             // Use a static variable to avoid reallocating storage for the vector
             TempVector<Entity*> other_entities(&fast_heap_allocator);
@@ -204,11 +235,12 @@ void Game::init_scene_commands() {
     m_runtime->register_command(
         "select.all.byName",
         [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
             auto name = interpreter->get_string_parameter(0);
 
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
-            auto scene = execution_context->get_scene();
 
             // Use a static variable to avoid reallocating storage for the vector
             TempVector<Entity*> other_entities(&fast_heap_allocator);

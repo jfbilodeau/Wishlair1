@@ -52,7 +52,7 @@ TTF_Font* Font::get_ttf_font() const {
     return m_font;
 }
 
-SDL_Texture* Font::generate_texture(
+Texture* Font::generate_texture(
     Canvas* canvas,
     const NomadString& text,
     const Color& color,
@@ -68,7 +68,7 @@ SDL_Texture* Font::generate_texture(
 
     if (text.empty()) {
         // Create a 1x1 texture
-        return SDL_CreateTexture(canvas->get_sdl_renderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1, 1);
+        return new Texture("", canvas->get_game(), 1, 1);
     }
 
     const auto font_height = get_font_height();
@@ -216,7 +216,7 @@ SDL_Texture* Font::generate_texture(
 
     SDL_FreeSurface(surface);
 
-    return texture;
+    return new Texture(text, texture);
 }
 
 NomadInteger Font::get_text_width(const NomadChar* text) const {
@@ -236,13 +236,13 @@ NomadInteger Font::get_text_height(const NomadString& text) const {
 
     TTF_SizeUTF8(m_font, text.c_str(), nullptr, &height);
 
-    return static_cast<NomadInteger>(height);
+    return height;
 }
 
 NomadInteger Font::get_font_height() const {
     int font_height = TTF_FontHeight(m_font);
 
-    return static_cast<NomadInteger>(font_height);
+    return font_height;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,19 @@ void Canvas::clear(const Color& color) {
     }
 }
 
-void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) {
+void Canvas::set_offset(const PointF &offset) {
+    m_offset = offset;
+}
+
+void Canvas::set_offset(Coord x, Coord y) {
+    set_offset({x, y});
+}
+
+const PointF& Canvas::get_offset() const {
+    return m_offset;
+}
+
+void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) const {
     if (sprite->get_texture() == nullptr) {
         log::warning("Trying to render a sprite with a null texture");
 
@@ -56,9 +68,11 @@ void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) {
 
     const auto& source = frame;
 
+    int left = static_cast<int>(x) + static_cast<int>(sprite->get_source().get_left());
+    int top = static_cast<int>(y) + static_cast<int>(sprite->get_source().get_top());
     const auto destination = Rectangle(
-        int(x) + int(sprite->get_source().get_left()),
-        int(y) + int(sprite->get_source().get_top()),
+        left,
+        top,
         frame.get_width(),
         frame.get_height()
     );
@@ -66,17 +80,20 @@ void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) {
     render_texture(sprite->get_texture(), source, destination);
 }
 
-void Canvas::render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination) {
+void Canvas::render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const {
     auto sdl_texture = texture->get_sdl_texture();
 
-    SDL_Rect src_rect = source.to_sdl_rect();
+    auto src_rect = source.to_sdl_rect();
 
-    SDL_Rect dst_rect = destination.to_sdl_rect();
+    auto dst_rect = destination.to_sdl_rect();
+
+    dst_rect.x += static_cast<int>(m_offset.x());
+    dst_rect.y += static_cast<int>(m_offset.y());
 
     int result = SDL_RenderCopy(m_renderer, sdl_texture, &src_rect, &dst_rect);
 
     if (result != 0) {
-        throw GameException("Failed to render texture: " + NomadString(SDL_GetError()));
+        log::error("Failed to render texture: " + NomadString(SDL_GetError()));
     }
 }
 

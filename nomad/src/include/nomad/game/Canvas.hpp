@@ -9,6 +9,7 @@
 
 #include "nomad/game/Color.hpp"
 #include "nomad/geometry/Geometry.hpp"
+#include "nomad/geometry/PointF.hpp"
 
 // Forward declarations
 struct SDL_Renderer;
@@ -34,12 +35,17 @@ public:
 
     void clear(const Color& color);
 
-    void render_sprite(const Sprite* sprite, Coord x, Coord y);
-    void render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination);
+    void set_offset(const PointF& offset);
+    void set_offset(Coord x, Coord y);
+    [[nodiscard]] const PointF& get_offset() const;
+
+    void render_sprite(const Sprite* sprite, Coord x, Coord y) const;
+    void render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const;
 
 private:
     Game* m_game;
     SDL_Renderer* m_renderer;
+    PointF m_offset;
 };
 
 } // nomad

@@ -13,6 +13,15 @@ namespace nomad {
 
 // Render scene
 void Scene::render(Canvas* canvas) {
+    auto previous_offset = canvas->get_offset();
+
+    auto resolution = m_game->get_resolution();
+
+    canvas->set_offset(
+        m_camera_position.x() - resolution.x() / 2.0,
+        m_camera_position.y() - resolution.y() / 2.0
+    );
+
     for (const auto& layer : m_layers) {
         // Render tile map
         if (m_tile_texture != nullptr) {
@@ -32,6 +41,8 @@ void Scene::render(Canvas* canvas) {
             b2World_Draw(layer.world_id, &debug_draw);
         }
     }
+
+    canvas->set_offset(previous_offset);
 }
 
 void Scene::render_tile_map(Canvas* canvas, const Scene::Layer& layer) {
