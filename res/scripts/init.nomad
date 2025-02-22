@@ -3,8 +3,8 @@ game.organization = "Chronogears"
 game.name = t.game.title
 
 # Init window
-resolution.x = room.width
-resolution.y = room.height
+resolution.x = toInteger room.width
+resolution.y = toInteger room.height
 
 window.fps = 60
 window.setResolution resolution.x resolution.y

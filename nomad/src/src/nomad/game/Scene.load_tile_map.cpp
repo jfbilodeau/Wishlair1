@@ -20,6 +20,8 @@ struct TileMapEntity {
     NomadString scriptName;
     NomadFloat x;
     NomadFloat y;
+    NomadFloat width;
+    NomadFloat height;
     NomadString text_id;
 };
 
@@ -128,6 +130,8 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
                             scriptName,
                             x,
                             y,
+                            width,
+                            height,
                             text_id
                         });
                     }
@@ -165,6 +169,8 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
             }
         }
 
+        // Make sure entities are ready to go by the first frame.
+        // Otherwise, the first frame will not contain any entities.
         process_add_remove_entities();
 
         log::debug("Map loaded");

@@ -1,4 +1,6 @@
 const player.name = "player"
+const player.radius = 10.0
+
 this.name = player.name
 
 this.animation.name = "daughter"
@@ -17,7 +19,7 @@ this.move.speed = 2.0 * 60.0
 
 this.y = 200.0
 
-this.body.circle body.dynamic 10.0
+this.body.circle body.dynamic player.radius
 this.mask = mask.player
 this.collisionMask = mask.solid | mask.ui
 

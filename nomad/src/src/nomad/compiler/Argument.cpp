@@ -45,6 +45,11 @@ void ExpressionArgument::on_compile(Compiler* compiler, Script* script) {
     auto argument_type = get_type();
     auto expression_type = m_expression->get_type();
 
+    if ( argument_type == nullptr || expression_type == nullptr) {
+        compiler->report_error("Cannot determine type of argument");
+        return;
+    }
+
     if (!argument_type->same_type(expression_type)) {
         compiler->report_error("Argument type mismatch. Expected " + argument_type->get_name() + " but got " + expression_type->get_name());
         return;

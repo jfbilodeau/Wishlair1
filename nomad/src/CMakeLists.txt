@@ -185,6 +185,7 @@ set(
         ${NOMAD_INCLUDE_DIR}/nomad/game/InputManager.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/game/Layer.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/game/Scene.hpp
+        ${NOMAD_INCLUDE_DIR}/nomad/game/SceneVariableContext.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/game/System.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/game/TileMap.hpp
 
@@ -270,6 +271,7 @@ set(
         ${NOMAD_SOURCE_DIR}/nomad/game/Scene.load_tile_map.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/Scene.render.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/Scene.update.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/game/SceneVariableContext.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/System.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/TileMap.cpp
 

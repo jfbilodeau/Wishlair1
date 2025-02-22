@@ -53,6 +53,10 @@ NomadString Type::to_string(const ScriptValue& value) const {
 }
 
 bool Type::same_type(const Type* other) const {
+    if (other == nullptr) {
+        return false;
+    }
+
     if (other == this) {
         return true;
     }

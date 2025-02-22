@@ -12,6 +12,7 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <memory_resource>
 #include <ctime>
 
 namespace nomad {
@@ -117,23 +118,26 @@ void Logger::log(LogLevel level, const NomadString& message) {
             break;
     }
 
-    time_t time = std::time(nullptr);
-    std::stringstream ss;
-    tm tm;
+    // time_t time = std::time(nullptr);
+    // std::stringstream ss;
+    // tm tm;
+    //
+    // gmtime(&time);
+    //
+    // ss
+    //     << std::put_time(&tm, "%Y-%m-%dT%H:%M:%S")
+    //     << " ["
+    //     << log_level_name
+    //     << "] "
+    //     << message;
+    auto time = std::chrono::system_clock::now();
 
-    gmtime(&time);
-
-    ss
-        << std::put_time(&tm, "%Y-%m-%dT%H:%M:%S")
-        << " ["
-        << log_level_name
-        << "] "
-        << message;
+    auto line = std::format("{0:%F}T{0:%T} [{1}] {2}", time, log_level_name, message);
 
     m_entries.emplace_back(LogEntry{
         time,
         level,
-        ss.str()
+        line
     });
 }
 

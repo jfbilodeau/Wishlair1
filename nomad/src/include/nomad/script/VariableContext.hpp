@@ -7,7 +7,6 @@
 
 #include "nomad/nomad.hpp"
 
-#include "nomad/script/Interpreter.hpp"
 #include "nomad/script/Variable.hpp"
 
 namespace nomad {
@@ -36,16 +35,20 @@ public:
     ~SimpleVariableContext() override = default;
 
     NomadId register_variable(const NomadString& name, const Type* type) override;
+    [[nodiscard]]
     const NomadString& get_variable_name(NomadId variable_id) const override;
 
+    [[nodiscard]]
     NomadId get_variable_id(const NomadString& name) const override;
     void set_variable_type(NomadId variable_id, const Type* type) override;
+    [[nodiscard]]
     const Type* get_variable_type(NomadId variable_id) const override;
 
     void set_value(NomadId variable_id, const ScriptValue& value) override;
     void get_value(NomadId variable_id, ScriptValue& value) override;
 
-    [[nodiscard]] const VariableMap* get_variable_map() const;
+    [[nodiscard]]
+    const VariableMap* get_variable_map() const;
 
 private:
     VariableMap m_variables;

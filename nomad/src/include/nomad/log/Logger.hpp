@@ -5,6 +5,7 @@
 #ifndef NOMAD_LOGGER_HPP
 #define NOMAD_LOGGER_HPP
 
+#include <chrono>
 #include <string>
 #include <vector>
 
@@ -21,7 +22,7 @@ enum class LogLevel {
 };
 
 struct LogEntry {
-    time_t time;
+    std::chrono::system_clock::time_point time;
     LogLevel level;
     NomadString message;
 };
