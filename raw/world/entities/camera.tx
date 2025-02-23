@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <tileset firstgid="1" source="../entities.tsj"/>
+ <object gid="12" width="64" height="64">
+  <properties>
+   <property name="scriptName" value="entities.camera"/>
+  </properties>
+ </object>
+</template>
