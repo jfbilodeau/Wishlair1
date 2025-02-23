@@ -52,6 +52,14 @@ Game::Game(NomadString resource_path, bool debug) :
 
     compile_scripts();
 
+    if (m_debug) {
+        std::ofstream instruction_dump("instructions.txt");
+        m_runtime->dump_instructions(instruction_dump);
+
+        std::ofstream documentation_dump("documentation.md");
+        m_runtime->dump_documentation(documentation_dump);
+    }
+
     run_init_script();
 
     // Debug console must be initialized after the init script has been run
@@ -721,9 +729,6 @@ NomadString Game::get_text(const NomadString& key) const {
 }
 
 void Game::run_init_script() {
-    std::ofstream instruction_dump("instructions.txt");
-    m_runtime->dump_instructions(instruction_dump);
-
     log::info("Executing `init` script");
 
     NomadId init_script_id = m_runtime->get_script_id("init");

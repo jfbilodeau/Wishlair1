@@ -833,4 +833,82 @@ void Runtime::dump_instructions(std::ostream& out) {
     }
 }
 
+void Runtime::dump_documentation(std::ostream &out) {
+    out << "Constants" << std::endl;
+    out << "=========" << std::endl;
+
+    for (auto i = 0; i < m_constants_map.get_variable_count(); ++i) {
+        ScriptValue constant_value;
+        NomadString constant_text_value;
+
+        auto constant_type = get_constant_type(i);
+        get_constant_value(i, constant_value);
+
+        if (constant_type == get_void_type()) {
+            constant_text_value = "";
+        } else if (constant_type == get_boolean_type()) {
+            constant_text_value = constant_value.get_boolean_value() ? "true" : "false";
+        } else if (constant_type == get_integer_type()) {
+            constant_text_value = std::format("{0} ({0:#0x})", constant_value.get_integer_value());
+        } else if (constant_type == get_float_type()) {
+            constant_text_value = std::format("{:}", constant_value.get_float_value());
+        } else if (constant_type == get_string_type()) {
+            constant_text_value = std::format("\"{}\"", constant_value.get_string_value());
+        } else if (constant_type == get_script_type()) {
+            constant_text_value = get_script(constant_value.get_id_value())->get_name();
+        } else {
+            constant_text_value = "<unknown_type>";
+        }
+
+        out
+            << "* "
+            << get_constant_name(i)
+            << ":"
+            << get_constant_type(i)->get_name()
+            << " = "
+            << constant_text_value
+            << std::endl;
+    }
+
+    out << std::endl;
+
+    out << "Variable contexts" << std::endl;
+    out << "=================" << std::endl;
+
+    for (auto& context: m_variables) {
+        out << context.name << std::endl;
+    }
+
+    out << std::endl;
+
+    out << "Commands" << std::endl;
+    out << "========" << std::endl;
+
+    for (auto& command: m_commands) {
+        out << command.name;
+
+        for (auto& parameter: command.parameters) {
+            out << "    " << parameter.name << ":" << parameter.type->get_name() << std::endl;
+        }
+
+        out << "return " << command.return_type->get_name() << std::endl;
+
+        out << command.doc << std::endl;
+        out << std::endl;
+    }
+
+    out << std::endl;
+
+    out << "Instructions" << std::endl;
+    out << "============" << std::endl;
+
+    for (auto& op_code: m_op_codes) {
+        out << op_code.name << std::endl;
+        out << op_code.doc << std::endl;
+        out << std::endl;
+    }
+
+    out.flush();
+}
+
 } // namespace nomad

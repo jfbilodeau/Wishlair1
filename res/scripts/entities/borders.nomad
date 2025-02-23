@@ -9,7 +9,7 @@ fun createBorders
 end
 
 fun initBorderEntity
-    #this.isSensor = true
+    this.sensor = true
     this.body.rectangle body.static this.width this.height
     this.mask = mask.ui
     this.collisionMask = mask.player
@@ -24,7 +24,7 @@ fun initBorderEntity
         endIf
     end
 
-    log.info $"x: {this.x}, y: {this.y}, width: {this.width}, height: {this.height}"
+    #log.info $"x: {this.x}, y: {this.y}, width: {this.width}, height: {this.height}"
 end
 
 fun entities.border.north

@@ -195,6 +195,7 @@ public:
 
     // Debug
     void dump_instructions(std::ostream& out);
+    void dump_documentation(std::ostream& out);
 
 private:
     struct FormatStringRegistration {
