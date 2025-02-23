@@ -109,7 +109,9 @@ struct LineGrammar : boost::spirit::qi::grammar<Iterator, std::vector<Token>()> 
             qi::string("%") |
             qi::string(">") |
             qi::string("<") |
-            qi::string(":")
+            qi::string(":") |
+            qi::string("(") |
+            qi::string(")")
         ],
 //        keyword = qi::string("true") | qi::string("false") | qi::string("fun"),
         identifier = (qi::alpha | qi::char_("_")) >> *(qi::alnum | qi::char_("._"));
@@ -152,7 +154,6 @@ Tokenizer::Tokenizer(Runtime* runtime, const NomadString& source) :
         parse_line();
     }
 }
-
 
 Runtime* Tokenizer::get_runtime() const {
     return m_runtime;

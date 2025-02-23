@@ -331,14 +331,33 @@ std::unique_ptr<Expression> parse_unary_operator_expression(Compiler* compiler, 
 
     tokens->next_token();
 
-    auto expression = parse_expression(compiler, script, tokens);
+    if (tokens->current_token().text_value == "(") {
+        tokens->next_token();
 
-    return std::make_unique<UnaryExpression>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        op,
-        std::move(expression)
-    );
+        auto expression = parse_expression(compiler, script, tokens);
+
+        if (!tokens->token_is(")")) {
+            throw_parser_error("Expected ')'", tokens);
+        }
+
+        tokens->next_token();
+
+        return std::make_unique<UnaryExpression>(
+            tokens->get_line_index(),
+            tokens->get_column_index(),
+            op,
+            std::move(expression)
+        );
+    } else {
+        auto expression = parse_primary_expression(compiler, script, tokens);
+
+        return std::make_unique<UnaryExpression>(
+            tokens->get_line_index(),
+            tokens->get_column_index(),
+            op,
+            std::move(expression)
+        );
+    }
 }
 
 void expect_end_of_line(Compiler* compiler, Script* script, Tokenizer* tokens) {
