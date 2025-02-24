@@ -65,7 +65,7 @@ Runtime::Runtime() {
 
     register_constant("false", ScriptValue(NOMAD_FALSE), get_boolean_type());
     register_constant("true", ScriptValue(NOMAD_TRUE), get_boolean_type());
-    register_constant("PI", ScriptValue(NOMAD_PI), get_float_type());
+    register_constant("pi", ScriptValue(NOMAD_PI), get_float_type());
 
     register_variable_context("global", "global.", std::make_unique<SimpleVariableContext>());
 }

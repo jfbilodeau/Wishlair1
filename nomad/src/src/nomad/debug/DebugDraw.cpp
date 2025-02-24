@@ -22,6 +22,10 @@ void debug_draw_polygon(
     b2HexColor color,
     void* context
 ) {
+    auto canvas = static_cast<Canvas*>(context);
+
+    auto offset = canvas->get_offset();
+
     std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
@@ -30,16 +34,17 @@ void debug_draw_polygon(
         auto& v = vertices[i];
 
         temp_vertices.push_back(SDL_FPoint{
-            v.x, v.y,
+            v.x + static_cast<float>(offset.x()),
+            v.y + static_cast<float>(offset.y()),
         });
     }
 
     // Close polygon
     temp_vertices.push_back(SDL_FPoint{
-        vertices[0].x, vertices[0].y
+        vertices[0].x + static_cast<float>(offset.x()),
+        vertices[0].y  + static_cast<float>(offset.y())
     });
 
-    auto canvas = static_cast<Canvas*>(context);
     auto renderer = canvas->get_sdl_renderer();
 
     SDL_SetRenderDrawColor(
@@ -65,6 +70,10 @@ void debug_draw_solid_polygon(
     b2HexColor color,
     void* context
 ) {
+    auto canvas = static_cast<Canvas*>(context);
+
+    auto offset = canvas->get_offset();
+
     std::pmr::vector<SDL_Vertex> temp_vertices(&fast_heap_allocator);
 
     SDL_Color& sdl_color = reinterpret_cast<SDL_Color&>(color);
@@ -73,13 +82,14 @@ void debug_draw_solid_polygon(
         auto& v = vertices[i];
 
         temp_vertices.push_back(SDL_Vertex{
-            {v.x, v.y},
+            {
+                v.x + static_cast<float>(offset.x()),
+                v.y + static_cast<float>(offset.y())
+            },
             sdl_color,
             {0, 0}  // Texture coordinates
         });
     }
-
-    auto canvas = static_cast<Canvas*>(context);
 
     SDL_RenderGeometry(
         canvas->get_sdl_renderer(),
@@ -98,12 +108,18 @@ void debug_draw_circle(
     void* context
 ) {
     const auto canvas = static_cast<Canvas*>(context);
+
+    auto offset = canvas->get_offset();
+
     const auto renderer = canvas->get_sdl_renderer();
     const auto& [r, g, b, a] = reinterpret_cast<SDL_Color&>(color);
 
     constexpr auto vertex_count = 32;
 
     std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
+
+    center.x += static_cast<float>(offset.x());
+    center.y += static_cast<float>(offset.y());
 
     for (int i = 0; i <= vertex_count; ++i) {  // Using '<=' (+1) to close the circle
         const auto angle = 2.0f * static_cast<float>(M_PI) * i / vertex_count;
@@ -154,6 +170,9 @@ void debug_draw_segment(
     void* context
 ) {
     auto canvas = static_cast<Canvas*>(context);
+
+    auto offset = canvas->get_offset();
+
     auto renderer = canvas->get_sdl_renderer();
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -167,8 +186,8 @@ void debug_draw_segment(
 
     SDL_RenderDrawLineF(
         renderer,
-        p1.x, p1.y,
-        p2.x, p2.y
+        p1.x + static_cast<float>(offset.x()), p1.y + static_cast<float>(offset.y()),
+        p2.x + static_cast<float>(offset.x()), p2.y + static_cast<float>(offset.y())
     );
 }
 
@@ -186,6 +205,9 @@ void debug_draw_point(
     void* context
 ) {
     auto canvas = static_cast<Canvas*>(context);
+
+    auto offset = canvas->get_offset();
+
     auto renderer = canvas->get_sdl_renderer();
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
@@ -200,7 +222,8 @@ void debug_draw_point(
 
     SDL_RenderDrawPointF(
         renderer,
-        p.x, p.y
+        p.x + static_cast<float>(offset.x()),
+        p.y + static_cast<float>(offset.y())
     );
 }
 

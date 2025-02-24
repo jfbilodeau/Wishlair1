@@ -459,7 +459,7 @@ void Entity::before_simulation_update(b2WorldId world) {
 
             if (m_is_sensor) {
                 if (m_body_type != BodyType::Dynamic) {
-                    log::warning("Sensors must be dynamic bodies");
+                    log::warning("Sensors must be static bodies");
                 }
 
                 body_def.type = b2_staticBody;
