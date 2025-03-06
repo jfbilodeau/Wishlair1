@@ -2,13 +2,13 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_POINTF_HPP
-#define NOMAD_POINTF_HPP
-
-#include <SDL.h>
-#include <cmath>
+#pragma once
 
 #include "nomad/geometry/Geometry.hpp"
+
+#include <SDL.h>
+
+#include <cmath>
 
 namespace nomad {
 
@@ -53,6 +53,7 @@ public:
         m_y = 0;
     }
 
+    [[nodiscard]]
     NomadBoolean is_zero() const {
         return m_x == 0 && m_y == 0;
     }
@@ -90,7 +91,7 @@ public:
     }
 
     [[nodiscard]] PointF perpendicular() const {
-        return PointF(-m_y, m_x);
+        return {-m_y, m_x};
     }
 
     [[nodiscard]] PointF normal() const {
@@ -139,6 +140,15 @@ public:
         return {m_x / scalar, m_y / scalar};
     }
 
+    [[nodiscard]]
+    NomadFloat angle_to(PointF destination) const {
+        // Calculate the angle between this point and `destination`
+        auto delta_x = destination.x() - x();
+        auto delta_y = destination.y() - y();
+
+        return std::atan2(delta_y, delta_x);
+    }
+
 private:
     Coord m_x;
     Coord m_y;
@@ -174,4 +184,3 @@ static PointF operator/(const PointF& lhs, NomadFloat scalar) {
 
 } // nomad
 
-#endif //NOMAD_POINTF_HPP

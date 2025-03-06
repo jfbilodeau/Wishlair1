@@ -9,8 +9,6 @@
 
 #include "nomad/geometry/PointF.hpp"
 
-//#include "chipmunk/chipmunk.h"
-
 namespace nomad {
 
 // Forward declarations
@@ -46,10 +44,12 @@ public:
     [[nodiscard]] NomadFloat get_x() const;
     void set_x(NomadFloat x);
 
-    [[nodiscard]] NomadFloat get_y() const;
+    [[nodiscard]]
+    NomadFloat get_y() const;
     void set_y(NomadFloat y);
 
-    [[nodiscard]] const PointF& get_location() const;
+    [[nodiscard]]
+    const PointF& get_location() const;
     void set_location(NomadFloat x, NomadFloat y);
     void set_location(const PointF& location);
 
@@ -71,9 +71,6 @@ public:
     [[nodiscard]] bool intersects(const RectangleF& rectangle) const;
     [[nodiscard]] bool intersects(const CircleF& circle) const;
 
-//    void pre_simulation(cpSpace* space);
-//    void post_simulation(cpSpace* space);
-
     Body& operator=(const Body& other) = default;
 
 private:
@@ -85,8 +82,6 @@ private:
     NomadFloat m_radius = 0.0f;
 
     NomadBoolean m_body_valid = false;
-//    cpBody* m_cp_body = nullptr;
-//    cpShape* m_cp_shape = nullptr;
 };
 
 } // namespace nomad

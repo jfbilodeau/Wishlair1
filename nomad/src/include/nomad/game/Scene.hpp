@@ -2,8 +2,7 @@
 // Created by jfbilodeau on 23-06-14.
 //
 
-#ifndef NOMAD_SCENE_HPP
-#define NOMAD_SCENE_HPP
+#pragma once
 
 #include "nomad/game/ActionManager.hpp"
 #include "nomad/game/Entity.hpp"
@@ -103,7 +102,7 @@ public:
     [[nodiscard]] NomadIndex get_wall_tile_index(NomadIndex layer, NomadInteger x, NomadInteger y) const;
     [[nodiscard]] NomadInteger get_tile_mask(NomadIndex layer, NomadInteger x, NomadInteger y) const;
 
-    void process_tile_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const;
+    void process_tiles_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const;
 
     // Camera
     void set_camera_position(const PointF& position);
@@ -125,6 +124,15 @@ public:
     [[nodiscard]] NomadInteger get_mask_in_rectangle(NomadIndex layer, const RectangleF& rectangle, const Entity* exclude) const;
     [[nodiscard]] NomadInteger get_mask_in_circle(NomadIndex layer, const CircleF& circle, const Entity* exclude) const;
 
+    // Events
+    void register_entity_event(const NomadString& name, NomadId entity_id, NomadId script_id);
+    void unregister_entity_event(const NomadString& name, NomadId entity_id);
+    void unregister_entity_all_events(NomadId entity_id);
+    void trigger_event(const NomadString& name);
+    void trigger_event(const NomadString& name, Entity* entity);
+    void trigger_event_layer(const NomadString& name, NomadIndex layer_id);
+
+    // Entity iteration
     void for_each_entities(const std::function<void(Entity*)>& callback) const;
     void for_each_entity_by_layer(NomadIndex layer_index, const std::function<void(Entity*)>& callback) const;
 
@@ -168,6 +176,17 @@ private: // structs
         NomadInteger layer;
         NomadId id;
         NomadString text_id;
+    };
+
+    struct Event {
+        NomadId entity_id;
+        NomadId script_id;
+    };
+
+    struct EventRegistrations {
+        // Event name
+        NomadString name;
+        std::vector<Event> registrations;
     };
 
 private: // methods
@@ -218,6 +237,9 @@ private: // data
     PointF m_camera_position;
     NomadId m_camera_follow_entity_id = NOMAD_INVALID_ID;
 
+    // Events
+    std::vector<EventRegistrations> m_entity_events;
+
     EventManager m_events;
     ActionManager m_action_manager;
     std::vector<ActionMapping> m_action_mapping;
@@ -226,4 +248,3 @@ private: // data
 
 } // nomad
 
-#endif //NOMAD_SCENE_HPP

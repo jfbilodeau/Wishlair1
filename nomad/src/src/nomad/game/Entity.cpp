@@ -104,18 +104,21 @@ const PointF& Entity::get_location() const {
 }
 
 void Entity::stop_moving() {
-   m_velocity.zero();
+    m_velocity.zero();
     m_velocity_invalidated = true;
+    m_move_to_destination = false;
 }
 
-void Entity::start_moving(const PointF& velocity) {
+void Entity::move(const PointF& velocity) {
     m_velocity.set(velocity);
     m_velocity_invalidated = true;
+    m_move_to_destination = false;
 }
 
-void Entity::start_moving(NomadFloat x, NomadFloat y) {
+void Entity::move(NomadFloat x, NomadFloat y) {
     m_velocity.set(x, y);
     m_velocity_invalidated = true;
+    m_move_to_destination = false;
 }
 
 void Entity::start_moving_in_direction(NomadFloat angle, NomadFloat speed) {
@@ -124,16 +127,23 @@ void Entity::start_moving_in_direction(NomadFloat angle, NomadFloat speed) {
         std::sin(angle) * speed
     );
     m_velocity_invalidated = true;
+    m_move_to_destination = false;
 }
 
-void Entity::start_moving_to(const PointF& destination, NomadFloat speed) {
-    start_moving_to(destination.x(), destination.y(), speed);
+void Entity::move_to(const PointF& destination, NomadFloat speed, NomadId on_arrive_at_destination) {
+    move_to(destination.x(), destination.y(), speed, on_arrive_at_destination);
 }
 
-void Entity::start_moving_to(NomadFloat x, NomadFloat y, NomadFloat speed) {
+void Entity::move_to(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId on_arrive_at_destination) {
     m_destination.set(x, y);
     m_speed = speed;
     m_velocity_invalidated = true;
+    m_move_to_destination = true;
+    m_on_arrive_at_destination = on_arrive_at_destination;
+}
+
+bool Entity::is_moving() const {
+    return m_velocity.is_zero();
 }
 
 void Entity::set_velocity(NomadFloat x, NomadFloat y) {
@@ -458,7 +468,7 @@ void Entity::before_simulation_update(b2WorldId world) {
             body_def.userData = this;
 
             if (m_is_sensor) {
-                if (m_body_type != BodyType::Dynamic) {
+                if (m_body_type != BodyType::Static) {
                     log::warning("Sensors must be static bodies");
                 }
 
@@ -576,6 +586,27 @@ void Entity::update(Scene* scene) {
 
     if (m_on_frame != NOMAD_INVALID_ID) {
         game->execute_script_in_context(m_on_frame, &m_execution_context);
+    }
+
+    // Update movement.
+    if (m_move_to_destination) {
+        if (m_position.distance_to(m_destination) <= m_speed) {
+            m_position.set(m_destination);
+            m_move_to_destination = false;
+
+            if (m_on_arrive_at_destination != NOMAD_INVALID_ID) {
+                game->execute_script_in_context(m_on_arrive_at_destination, &m_execution_context);
+            }
+        } else {
+            auto angle = m_position.angle_to(m_destination);
+
+            m_velocity.set(
+                std::cos(angle) * m_speed,
+                std::sin(angle) * m_speed
+            );
+
+            m_velocity_invalidated = true;
+        }
     }
 
     // Do we need to select new animation?

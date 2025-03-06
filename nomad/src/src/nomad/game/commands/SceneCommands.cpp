@@ -260,6 +260,38 @@ void Game::init_scene_commands() {
         m_runtime->get_integer_type(),
         NomadDoc("Select entities across all layers that have the given name.")
     );
+
+    m_runtime->register_command(
+        "scene.trigger.layer",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot trigger event outside of a scene")
+
+            auto event_name = interpreter->get_string_parameter(0);
+            auto layer_id = interpreter->get_integer_parameter(1);
+
+            scene->trigger_event_layer(event_name, layer_id);
+        }, {
+            def_parameter("eventName", m_runtime->get_string_type(), NomadParamDoc("Name of the event to trigger.")),
+            def_parameter("layerId", m_runtime->get_integer_type(), NomadParamDoc("Layer ID to trigger the event on."))
+        },
+        m_runtime->get_void_type(),
+        NomadDoc("Trigger an event for all entities on the specified layer.")
+    );
+
+    m_runtime->register_command(
+        "scene.trigger",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot trigger event outside of a scene")
+
+            auto event_name = interpreter->get_string_parameter(0);
+
+            scene->trigger_event(event_name);
+        }, {
+            def_parameter("eventName", m_runtime->get_string_type(), NomadParamDoc("Name of the event to trigger."))
+        },
+        m_runtime->get_void_type(),
+        NomadDoc("Trigger an event for all entities on this scene.")
+    );
 }
 
 } // nomad

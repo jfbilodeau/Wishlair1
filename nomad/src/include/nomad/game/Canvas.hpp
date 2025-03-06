@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-19.
 //
 
-#ifndef NOMAD_CANVAS_HPP
-#define NOMAD_CANVAS_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -50,4 +49,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_CANVAS_HPP

@@ -121,10 +121,11 @@ private:
     void init_runtime();
 
     void init_commands();
-    void init_entity_commands();
     void init_game_commands();
     void init_input_commands();
+    void init_other_entity_commands();
     void init_scene_commands();
+    void init_this_entity_commands();
     void init_window_commands();
     void init_variable_context();
     void init_resource_manager();

@@ -55,7 +55,7 @@ this.onRelease action.playerDown fun
     this.moveDown = false
 end
 
-this.onFrame fun
+this.on.frame fun
     action = IDLE
     this.animation.variant = "idle"
     this.velocity.clear

@@ -5,7 +5,7 @@
 #ifndef NOMAD_POINT_HPP
 #define NOMAD_POINT_HPP
 
-#include <SDL.h>
+#include <SDL2/SDL_rect.h>
 
 namespace nomad {
 

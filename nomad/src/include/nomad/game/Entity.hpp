@@ -2,8 +2,7 @@
 // Created by jfbilodeau on 23-06-14.
 //
 
-#ifndef NOMAD_ENTITY_H
-#define NOMAD_ENTITY_H
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -66,11 +65,13 @@ public:
     [[nodiscard]] const PointF& get_location() const;
 
     void stop_moving();
-    void start_moving(const PointF& velocity);
-    void start_moving(NomadFloat x, NomadFloat y);
+    void move(const PointF& velocity);
+    void move(NomadFloat x, NomadFloat y);
     void start_moving_in_direction(NomadFloat angle, NomadFloat speed);
-    void start_moving_to(const PointF& destination, NomadFloat speed);
-    void start_moving_to(NomadFloat x, NomadFloat y, NomadFloat speed);
+    void move_to(const PointF& destination, NomadFloat speed, NomadId on_arrive_at_destination = NOMAD_INVALID_ID);
+    void move_to(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId on_arrive_at_destination = NOMAD_INVALID_ID);
+    [[nodiscard]]
+    bool is_moving() const;
 
     void set_velocity(NomadFloat x, NomadFloat y);
     void set_velocity(const PointF& velocity);
@@ -229,10 +230,13 @@ private:
     Scene* m_scene;
     NomadString m_script_name;
     NomadString m_name;
+
+    // Movement
     PointF m_velocity = {};
     bool m_move_to_destination = false;
     PointF m_destination = {};
     NomadFloat m_speed = 0;
+    NomadId m_on_arrive_at_destination = NOMAD_INVALID_ID;
 
     // World position
     PointF m_position;
@@ -303,6 +307,4 @@ private:
 using EntityList = std::vector<Entity*>;
 
 } // nomad
-#include "box2d/box2d.h"
 
-#endif //NOMAD_ENTITY_H

@@ -19,11 +19,11 @@ fun initFloatingDialog
 
     this.font = global.font.ui
 
-    this.onCollisionStart fun
+    this.on.collisionStart fun
         this.visible = false
     end
 
-    this.onCollisionEnd fun
+    this.on.collisionEnd fun
         this.visible = true
     end
 end

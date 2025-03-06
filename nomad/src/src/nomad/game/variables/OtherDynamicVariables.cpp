@@ -31,6 +31,7 @@ namespace nomad {
     } else { \
         value.set(default_value); \
     }
+
 void Game::init_other_dynamic_variables() {
     log::debug("Initializing this dynamic variables");
 

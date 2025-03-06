@@ -275,10 +275,11 @@ set(
         ${NOMAD_SOURCE_DIR}/nomad/game/System.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/TileMap.cpp
 
-        ${NOMAD_SOURCE_DIR}/nomad/game/commands/EntityCommands.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/commands/GameCommands.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/commands/InputCommands.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/game/commands/OtherEntityCommands.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/commands/SceneCommands.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/game/commands/ThisEntityCommands.cpp
         ${NOMAD_SOURCE_DIR}/nomad/game/commands/WindowCommands.cpp
 
         ${NOMAD_SOURCE_DIR}/nomad/game/variables/GameDynamicVariables.cpp

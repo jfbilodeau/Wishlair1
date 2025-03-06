@@ -435,7 +435,7 @@ NomadInteger Scene::get_tile_mask(NomadIndex layer, NomadInteger x, NomadInteger
     return m_tiles[tile_index].mask;
 }
 
-void Scene::process_tile_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const {
+void Scene::process_tiles_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const {
     if (layer >= m_layers.size()) {
         return;
     }
@@ -595,7 +595,7 @@ NomadInteger Scene::get_mask_in_rectangle(NomadIndex layer, const RectangleF& re
         static_cast<NomadInteger>(rectangle.get_bottom())
     };
 
-    process_tile_at(layer, tile_area, [&mask](const TileInformation& information) {
+    process_tiles_at(layer, tile_area, [&mask](const TileInformation& information) {
         mask |= information.mask;
     });
 
@@ -618,11 +618,157 @@ NomadInteger Scene::get_mask_in_circle(NomadIndex layer, const CircleF& circle, 
         static_cast<NomadInteger>(circle.get_y() + circle.get_radius())
     };
 
-    process_tile_at(layer, tile_area, [&mask](const TileInformation& information) {
+    process_tiles_at(layer, tile_area, [&mask](const TileInformation& information) {
         mask |= information.mask;
     });
 
     return mask;
+}
+
+void Scene::register_entity_event(const NomadString &name, NomadId entity_id, NomadId script_id) {
+    auto registrations_it = std::find_if(
+        m_entity_events.begin(),
+        m_entity_events.end(),
+        [&name](const auto& event) {
+            return event.name == name;
+        }
+    );
+
+    if (registrations_it == m_entity_events.end()) {
+        auto registration = std::vector<Event>();
+        registration.emplace_back(entity_id, script_id);
+        m_entity_events.emplace_back(name, registration);
+    } else {
+        auto& registrations = registrations_it->registrations;
+
+        auto it = std::find_if(
+            registrations_it->registrations.begin(),
+            registrations_it->registrations.end(),
+            [entity_id](const Event& registration) {
+                return registration.entity_id == entity_id;
+            }
+        );
+
+        if (it == registrations.end()) {
+            registrations.emplace_back(entity_id, script_id);
+        } else {
+            it->script_id = script_id;
+        }
+    }
+}
+
+void Scene::unregister_entity_event(const NomadString &name, NomadId entity_id) {
+    auto events_it = std::find_if(
+        m_entity_events.begin(),
+        m_entity_events.end(),
+        [&name](const auto& event) {
+            return event.name == name;
+        }
+    );
+
+    if (events_it != m_entity_events.end()) {
+        auto& registrations = events_it->registrations;
+
+        auto it = std::remove_if(
+            registrations.begin(),
+            registrations.end(),
+            [entity_id](const Event& registration) {
+                return registration.entity_id == entity_id;
+            }
+        );
+
+        registrations.erase(it, registrations.end());
+    } else {
+        log::warning("Entity ID " + to_string(entity_id) + " requested to unregister event '" + name + "' but no such event was found");
+    }
+}
+
+void Scene::unregister_entity_all_events(NomadId entity_id) {
+    for (auto& events : m_entity_events) {
+        auto& registrations = events.registrations;
+
+        auto it = std::remove_if(
+            registrations.begin(),
+            registrations.end(),
+            [entity_id](const Event& registration) {
+                return registration.entity_id == entity_id;
+            }
+        );
+
+        registrations.erase(it, registrations.end());
+    }
+}
+
+void Scene::trigger_event(const NomadString &name) {
+    auto events_it = std::find_if(
+        m_entity_events.begin(),
+        m_entity_events.end(),
+        [&name](const auto& event) {
+            return event.name == name;
+        }
+    );
+
+    if (events_it != m_entity_events.end()) {
+        auto& registrations = events_it->registrations;
+
+        for (auto& registration : registrations) {
+            const auto entity = get_entity_by_id(registration.entity_id);
+
+            if (entity) {
+                m_game->execute_script_in_new_context(registration.script_id, this, entity);
+            }
+        }
+    } else {
+        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+    }
+}
+
+void Scene::trigger_event(const NomadString &name, Entity *entity) {
+    auto events_it = std::find_if(
+        m_entity_events.begin(),
+        m_entity_events.end(),
+        [&name](const auto& event) {
+            return event.name == name;
+        }
+    );
+
+    if (events_it == m_entity_events.end()) {
+        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+        return;
+    }
+
+    auto& registrations = events_it->registrations;
+
+    for (auto& registration : registrations) {
+        if (registration.entity_id == entity->get_id()) {
+            m_game->execute_script_in_new_context(registration.script_id, this, entity);
+            return;
+        }
+    }
+}
+
+void Scene::trigger_event_layer(const NomadString &name, NomadIndex layer_id) {
+    auto events_it = std::find_if(
+        m_entity_events.begin(),
+        m_entity_events.end(),
+        [&name](const auto& event) {
+            return event.name == name;
+        }
+    );
+
+    if (events_it != m_entity_events.end()) {
+        auto& registrations = events_it->registrations;
+
+        for (auto& registration : registrations) {
+            const auto entity = get_entity_by_id(registration.entity_id);
+
+            if (entity && entity->get_layer() == layer_id) {
+                m_game->execute_script_in_new_context(registration.script_id, this, entity);
+            }
+        }
+    } else {
+        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+    }
 }
 
 void Scene::for_each_entities(const std::function<void(Entity*)>& callback) const {

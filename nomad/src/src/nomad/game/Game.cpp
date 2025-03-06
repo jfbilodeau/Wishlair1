@@ -516,10 +516,11 @@ void Game::init_runtime() {
 void Game::init_commands() {
     log::info("Initializing commands");
 
-    init_entity_commands();
     init_game_commands();
     init_input_commands();
+    init_other_entity_commands();
     init_scene_commands();
+    init_this_entity_commands();
     init_window_commands();
 }
 

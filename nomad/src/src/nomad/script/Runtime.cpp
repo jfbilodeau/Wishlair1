@@ -834,7 +834,17 @@ void Runtime::dump_instructions(std::ostream& out) {
 }
 
 void Runtime::dump_documentation(std::ostream &out) {
-    out << "Constants" << std::endl;
+    // Output TOC
+    out << "# Nomad Reference" << std::endl;
+
+    out << "* [Constants](#Constants)" << std::endl;
+    out << "* [Variable contexts](#Variable-contexts)" << std::endl;
+    out << "* [Commands](#Commands)" << std::endl;
+    out << "* [Instructions](#Instructions)" << std::endl;
+
+    out << "---" << std::endl;
+
+    out << "## Constants" << std::endl;
     out << "=========" << std::endl;
 
     for (auto i = 0; i < m_constants_map.get_variable_count(); ++i) {
@@ -861,12 +871,13 @@ void Runtime::dump_documentation(std::ostream &out) {
         }
 
         out
-            << "* "
+            << "* `"
             << get_constant_name(i)
             << ":"
             << get_constant_type(i)->get_name()
             << " = "
             << constant_text_value
+            << "`"
             << std::endl;
     }
 
@@ -876,7 +887,7 @@ void Runtime::dump_documentation(std::ostream &out) {
     out << "=================" << std::endl;
 
     for (auto& context: m_variables) {
-        out << context.name << std::endl;
+        out << "- `" << context.prefix << "`" << " (" << context.name << ")" << std::endl;
     }
 
     out << std::endl;
@@ -885,16 +896,21 @@ void Runtime::dump_documentation(std::ostream &out) {
     out << "========" << std::endl;
 
     for (auto& command: m_commands) {
-        out << command.name;
+        out << "`" << command.name << "`" << std::endl;
 
         for (auto& parameter: command.parameters) {
-            out << "    " << parameter.name << ":" << parameter.type->get_name() << std::endl;
+            out << "- `" << parameter.name << ":" << parameter.type->get_name() << "`" << std::endl;
         }
 
-        out << "return " << command.return_type->get_name() << std::endl;
+        out << std::endl;
+
+        out << "`return " << command.return_type->get_name() << "`" << std::endl;
+
+        out << std::endl;
 
         out << command.doc << std::endl;
         out << std::endl;
+        out << "---" << std::endl;
     }
 
     out << std::endl;
@@ -903,7 +919,7 @@ void Runtime::dump_documentation(std::ostream &out) {
     out << "============" << std::endl;
 
     for (auto& op_code: m_op_codes) {
-        out << op_code.name << std::endl;
+        out << "`" << op_code.name << "`" << std::endl;
         out << op_code.doc << std::endl;
         out << std::endl;
     }

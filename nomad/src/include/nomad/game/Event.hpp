@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-07-06.
 //
 
-#ifndef NOMAD_EVENT_HPP
-#define NOMAD_EVENT_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -34,6 +33,7 @@ public:
     void add_event(const NomadString& name, NomadId script_id);
     void remove_event(const NomadString& name);
 
+    [[nodiscard]]
     NomadId get_script_id_for_event(const NomadString& name) const;
 
 private:
@@ -41,5 +41,3 @@ private:
 };
 
 } // nomad
-
-#endif //NOMAD_EVENT_HPP

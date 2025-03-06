@@ -642,7 +642,7 @@ void parse_command_arguments(
         auto callback_type = argument_type->as_callback();
 
         if (callback_type) {
-            // TODO: add support for script callback
+            // TODO: add support for named script callback
             tokens->expect("fun");
 
             auto script_name = generate_fun_script_name(compiler, script, tokens->get_line_index());

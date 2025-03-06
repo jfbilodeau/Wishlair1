@@ -8,20 +8,27 @@ fun createBorders
     scene.createEntity "entities.border.west" 0.0 0.0 1
 end
 
-fun initBorderEntity
+fun initBorderEntity offsetX:float offsetY:float
     this.sensor = true
     this.body.rectangle body.static this.width this.height
     this.mask = mask.ui
     this.collisionMask = mask.player
 
-    this.onCollisionStart fun
+    this.roomOffsetX = offsetX
+    this.roomOffsetY = offsetY
+
+    this.on.collisionStart fun
         log.info "Contact"
 
-        if this.y < 0.0
-            scene.camera.y = scene.camera.y - border.size
-        else
-            scene.camera.y = scene.camera.y + border.size
-        endIf
+#        if this.y < 0.0
+#            scene.camera.y = scene.camera.y - border.size
+#        else
+#            scene.camera.y = scene.camera.y + border.size
+#        endIf
+
+        select.byName "camera"
+
+        other.trigger "changeRoom"
     end
 
     #log.info $"x: {this.x}, y: {this.y}, width: {this.width}, height: {this.height}"
@@ -35,7 +42,7 @@ fun entities.border.north
     this.width = room.width + border.margin * 2.0
     this.height = border.size
 
-    initBorderEntity
+    initBorderEntity 0.0 (-room.height)
 end
 
 fun entities.border.south
@@ -46,7 +53,7 @@ fun entities.border.south
     this.width = room.width + border.margin * 2.0
     this.height = border.size
 
-    initBorderEntity
+    initBorderEntity 0.0 room.height
 end
 
 fun entities.border.east
@@ -57,7 +64,7 @@ fun entities.border.east
     this.width = border.size
     this.height = room.height + border.margin * 2.0
 
-    initBorderEntity
+    initBorderEntity room.width 0.0
 end
 
 fun entities.border.west
@@ -68,5 +75,5 @@ fun entities.border.west
     this.width = border.size
     this.height = room.height + border.margin * 2.0
 
-    initBorderEntity
+    initBorderEntity (-room.width) 0.0
 end
