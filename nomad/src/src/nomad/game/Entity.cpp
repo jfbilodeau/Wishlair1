@@ -602,8 +602,6 @@ void Entity::update(Scene* scene) {
             auto velocity_x = std::cos(angle) * speed;
             auto velocity_y = std::sin(angle) * speed;
 
-            log::info("Distance: " + to_string(distance) + ", velocity: " + to_string(velocity_x) + ", " + to_string(velocity_y));
-
             set_velocity(velocity_x, velocity_y);
         } else {
             set_location(m_destination);

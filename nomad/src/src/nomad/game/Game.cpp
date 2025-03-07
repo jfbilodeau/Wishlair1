@@ -109,7 +109,7 @@ const VariableMap* Game::get_scene_variables() const {
 }
 
 const VariableMap* Game::get_entity_variables() const {
-    return m_entity_variable_map;
+    return m_this_entity_variable_map;
 }
 
 const Point& Game::get_resolution() const {
@@ -537,13 +537,16 @@ void Game::init_dynamic_variables() {
 
 void Game::init_variable_context() {
     auto scene_variable_context = std::make_unique<SimpleVariableContext>();
-    auto entity_variable_context = std::make_unique<EntityVariableContext>(this);
+    auto this_entity_variable_context = std::make_unique<ThisEntityVariableContext>(this);
+    auto other_entity_variable_context = std::make_unique<OtherEntityVariableContext>(this_entity_variable_context.get());
 
     m_scene_variable_map = scene_variable_context->get_variable_map();
-    m_entity_variable_map = entity_variable_context->get_variable_map();
+    m_this_entity_variable_map = this_entity_variable_context->get_this_variable_map();
+    m_other_entity_variable_map = this_entity_variable_context->get_other_variable_map();
 
     auto scene_context_id = m_runtime->register_variable_context("scene", "scene.", std::move(scene_variable_context));
-    auto entity_context_id = m_runtime->register_variable_context("entity", "this.", std::move(entity_variable_context));
+    auto this_entity_context_id = m_runtime->register_variable_context(THIS_ENTITY_VARIABLE_CONTEXT, THIS_ENTITY_VARIABLE_PREFIX, std::move(this_entity_variable_context));
+    auto other_entity_context_id = m_runtime->register_variable_context(OTHER_ENTITY_VARIABLE_CONTEXT, OTHER_ENTITY_VARIABLE_PREFIX, std::move(other_entity_variable_context));
 }
 
 void Game::init_resource_manager() {

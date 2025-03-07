@@ -26,7 +26,7 @@ namespace nomad {
 // Forward declarations
 class DebugConsole;
 class Canvas;
-class EntityVariableContext;
+class ThisEntityVariableContext;
 class InputManager;
 class Runtime;
 class Resource;
@@ -173,7 +173,8 @@ private:
 //    std::unique_ptr<SimpleVariableContext> m_scene_variable_context;
 //    std::unique_ptr<EntityVariableContext> m_entity_variable_context;
     const VariableMap* m_scene_variable_map = nullptr;
-    const VariableMap* m_entity_variable_map = nullptr;
+    const VariableMap* m_this_entity_variable_map = nullptr;
+    const VariableMap* m_other_entity_variable_map = nullptr;
 
     PointF m_mouse_position;
     struct MouseButtonState {

@@ -32,12 +32,36 @@ fun initBorderEntity offsetX:float offsetY:float
 #        other.roomY = this.roomOffsetY
 
 #        other.trigger "changeRoom"
-        other.moveTo this.roomOffsetX this.roomOffsetY 100.0 fun
+        other.moveTo this.roomOffsetX this.roomOffsetY 300.0 fun
             log.info $"Move to: {this.roomOffsetX}, {this.roomOffsetY}"
+
+            repositionBorders
         end
     end
 
     #log.info $"x: {this.x}, y: {this.y}, width: {this.width}, height: {this.height}"
+end
+
+fun repositionBorders
+    select.all.byName "camera"
+    roomX = other.x - room.width / 2.0
+    roomY = other.y - room.height / 2.0
+
+    select.all.byName "border.north"
+    other.x = room.middle.x
+    other.y = -border.size - border.margin
+
+    select.all.byName "border.south"
+    other.x = room.middle.x
+    other.y = room.height + border.margin + border.size
+
+    select.all.byName "border.east"
+    other.x = room.width + border.size + border.margin
+    other.y = room.middle.y
+
+    select.all.byName "border.west"
+    other.x = -border.size - border.margin
+    other.y = room.middle.y
 end
 
 fun entities.border.north

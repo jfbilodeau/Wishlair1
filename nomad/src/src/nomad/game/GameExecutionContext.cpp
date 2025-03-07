@@ -59,4 +59,11 @@ void GameExecutionContext::set_other_entities(const TempVector<Entity*>& entitie
     m_other_entities.assign(entities.begin(), entities.end());
 }
 
+Entity * GameExecutionContext::get_first_other_entity() const {
+    if (m_other_entities.empty()) {
+        return nullptr;
+    }
+
+    return m_other_entities.front();
+}
 } // nomad

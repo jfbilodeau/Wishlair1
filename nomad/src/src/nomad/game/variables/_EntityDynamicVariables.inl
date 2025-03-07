@@ -261,7 +261,7 @@ m_runtime->register_dynamic_variable(
         END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_FLOAT)
     },
     m_runtime->get_string_type(),
-    NomadDoc("Read the x anchor (offset) of the sprite of an entity.")
+    NomadDoc("The name of an entity.")
 );
 
 m_runtime->register_dynamic_variable(

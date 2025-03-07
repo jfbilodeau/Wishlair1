@@ -40,6 +40,8 @@ public:
     void set_other_entities(const std::vector<Entity*>& entities);
     void set_other_entities(const TempVector<Entity*>& entities);
 
+    Entity* get_first_other_entity() const;
+
     void for_each_other_entities(const std::function<void(Entity*)>& callback) {
         for (auto& entity : m_other_entities) {
             callback(entity);
