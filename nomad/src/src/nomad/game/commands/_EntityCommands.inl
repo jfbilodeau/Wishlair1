@@ -73,7 +73,7 @@ m_runtime->register_command(
     {
         def_parameter("x", m_runtime->get_float_type(), NomadParamDoc("X coordinate of the destination.")),
         def_parameter("y", m_runtime->get_float_type(), NomadParamDoc("Y coordinate of the destination.")),
-        def_parameter("speed", m_runtime->get_float_type(), NomadParamDoc("Speed to move to the destination.")),
+        def_parameter("speed", m_runtime->get_float_type(), NomadParamDoc("Speed in pixels per seconds to move to the destination.")),
         def_parameter("callback", m_runtime->get_callback_type({}, m_runtime->get_void_type()), NomadParamDoc("Callback script or function."))
     },
     m_runtime->get_void_type(),

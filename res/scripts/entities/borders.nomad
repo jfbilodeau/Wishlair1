@@ -14,8 +14,8 @@ fun initBorderEntity offsetX:float offsetY:float
     this.mask = mask.ui
     this.collisionMask = mask.player
 
-    this.roomOffsetX = offsetX
-    this.roomOffsetY = offsetY
+    this.roomOffsetX = offsetX + room.middle.x
+    this.roomOffsetY = offsetY + room.middle.y
 
     this.on.collisionStart fun
         log.info "Contact"
@@ -28,7 +28,13 @@ fun initBorderEntity offsetX:float offsetY:float
 
         select.byName "camera"
 
-        other.trigger "changeRoom"
+#        other.roomX = this.roomOffsetX
+#        other.roomY = this.roomOffsetY
+
+#        other.trigger "changeRoom"
+        other.moveTo this.roomOffsetX this.roomOffsetY 100.0 fun
+            log.info $"Move to: {this.roomOffsetX}, {this.roomOffsetY}"
+        end
     end
 
     #log.info $"x: {this.x}, y: {this.y}, width: {this.width}, height: {this.height}"

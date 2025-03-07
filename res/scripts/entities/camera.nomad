@@ -9,4 +9,6 @@ scene.camera.follow this
 
 this.on "changeRoom" fun
     log.info "Change room"
+
+
 end

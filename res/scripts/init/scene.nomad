@@ -8,6 +8,9 @@ const room.tileHeight = 15.0
 const room.width = room.tileWidth * tile.width
 const room.height = room.tileHeight * tile.height
 
+const room.middle.x = room.width / 2.0
+const room.middle.y = room.height / 2.0
+
 const camera.on.changeRoom = "camera.changeRoom"
 
 fun camera.scrollTo roomX:float roomY:float

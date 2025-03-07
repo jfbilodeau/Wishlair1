@@ -550,6 +550,9 @@ void Entity::after_simulation_update(b2WorldId world) {
     if (m_has_body) {
         auto position = b2Body_GetPosition(m_b2_body);
         m_position.set(position.x, position.y);
+    } else {
+        // Manually update velocity.
+        m_position.translate(m_velocity);
     }
 }
 
@@ -590,22 +593,26 @@ void Entity::update(Scene* scene) {
 
     // Update movement.
     if (m_move_to_destination) {
-        if (m_position.distance_to(m_destination) <= m_speed) {
-            m_position.set(m_destination);
+        auto distance = m_position.distance_to(m_destination);
+        auto speed = m_speed / m_scene->get_game()->get_fps();
+
+        if (distance > speed) {
+            auto angle = m_position.angle_to(m_destination);
+
+            auto velocity_x = std::cos(angle) * speed;
+            auto velocity_y = std::sin(angle) * speed;
+
+            log::info("Distance: " + to_string(distance) + ", velocity: " + to_string(velocity_x) + ", " + to_string(velocity_y));
+
+            set_velocity(velocity_x, velocity_y);
+        } else {
+            set_location(m_destination);
+            set_velocity(0, 0);
             m_move_to_destination = false;
 
             if (m_on_arrive_at_destination != NOMAD_INVALID_ID) {
                 game->execute_script_in_context(m_on_arrive_at_destination, &m_execution_context);
             }
-        } else {
-            auto angle = m_position.angle_to(m_destination);
-
-            m_velocity.set(
-                std::cos(angle) * m_speed,
-                std::sin(angle) * m_speed
-            );
-
-            m_velocity_invalidated = true;
         }
     }
 

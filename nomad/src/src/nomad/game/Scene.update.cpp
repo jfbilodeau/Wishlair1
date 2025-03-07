@@ -219,7 +219,7 @@ void Scene::update_physics() {
             }
         }
 
-        for (auto entity : m_entities) {
+        for (auto entity : layer.entities) {
             entity->after_simulation_update(world_id);
         }
     }

@@ -835,7 +835,7 @@ void Runtime::dump_instructions(std::ostream& out) {
 
 void Runtime::dump_documentation(std::ostream &out) {
     // Output TOC
-    out << "# Nomad Reference" << std::endl;
+    out << "# Nomad Engine Reference" << std::endl;
 
     out << "* [Constants](#Constants)" << std::endl;
     out << "* [Variable contexts](#Variable-contexts)" << std::endl;
@@ -845,7 +845,6 @@ void Runtime::dump_documentation(std::ostream &out) {
     out << "---" << std::endl;
 
     out << "## Constants" << std::endl;
-    out << "=========" << std::endl;
 
     for (auto i = 0; i < m_constants_map.get_variable_count(); ++i) {
         ScriptValue constant_value;
@@ -883,8 +882,7 @@ void Runtime::dump_documentation(std::ostream &out) {
 
     out << std::endl;
 
-    out << "Variable contexts" << std::endl;
-    out << "=================" << std::endl;
+    out << "## Variable contexts" << std::endl;
 
     for (auto& context: m_variables) {
         out << "- `" << context.prefix << "`" << " (" << context.name << ")" << std::endl;
@@ -892,8 +890,7 @@ void Runtime::dump_documentation(std::ostream &out) {
 
     out << std::endl;
 
-    out << "Commands" << std::endl;
-    out << "========" << std::endl;
+    out << "## Commands" << std::endl;
 
     for (auto& command: m_commands) {
         out << "`" << command.name << "`" << std::endl;
@@ -915,8 +912,7 @@ void Runtime::dump_documentation(std::ostream &out) {
 
     out << std::endl;
 
-    out << "Instructions" << std::endl;
-    out << "============" << std::endl;
+    out << "## Instructions" << std::endl;
 
     for (auto& op_code: m_op_codes) {
         out << "`" << op_code.name << "`" << std::endl;
