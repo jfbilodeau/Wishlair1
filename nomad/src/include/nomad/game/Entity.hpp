@@ -64,6 +64,16 @@ public:
     void set_location(const PointF& location);
     [[nodiscard]] const PointF& get_location() const;
 
+    void set_size(NomadFloat width, NomadFloat height);
+    void set_width(NomadFloat width);
+    [[nodiscard]]
+    NomadFloat get_width() const;
+    void set_height(NomadFloat height);
+    [[nodiscard]]
+    NomadFloat get_height() const;
+    [[nodiscard]]
+    PointF get_size() const;
+
     void stop_moving();
     void move(const PointF& velocity);
     void move(NomadFloat x, NomadFloat y);
@@ -231,17 +241,18 @@ private:
     NomadString m_script_name;
     NomadString m_name;
 
+    // World position
+    PointF m_position;
+    PointF m_size;
+    NomadFloat m_z = 0.0;
+    NomadInteger m_layer = 0;
+
     // Movement
     PointF m_velocity = {};
     bool m_move_to_destination = false;
     PointF m_destination = {};
     NomadFloat m_speed = 0;
     NomadId m_on_arrive_at_destination = NOMAD_INVALID_ID;
-
-    // World position
-    PointF m_position;
-    NomadFloat m_z = 0.0;
-    NomadInteger m_layer = 0;
 
     // Mask, body and collision
     BodyShape m_body_shape = BodyShape::None;

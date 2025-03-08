@@ -31,6 +31,14 @@ NomadId VariableMap::register_variable(const NomadString& name, const Type* type
     if (variable_id == NOMAD_INVALID_ID) {
         variable_id = to_nomad_id(m_variables.size());
         m_variables.emplace_back(name, type);
+    } else {
+        auto existing_type = get_variable_type(variable_id);
+
+        if (existing_type == nullptr) {
+            set_variable_type(variable_id, type);
+        } else if (existing_type != type) {
+            log::error("[VariableMap::register_variable] Redefining variable `" + name + "` from `" + existing_type->get_name() + "` to `" + type->get_name() + "`. Ignoring");
+        }
     }
 
     return variable_id;

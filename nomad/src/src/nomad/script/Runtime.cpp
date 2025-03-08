@@ -468,7 +468,6 @@ NomadId Runtime::register_variable_context(
         id,
         name,
         prefix,
-        std::vector<NomadString>(),
         std::move(context)
     };
 
@@ -500,18 +499,13 @@ NomadString Runtime::get_context_name(NomadId id) const {
 }
 
 NomadId Runtime::get_context_variable_id(NomadId context_id, const NomadString& variable_name) {
-    for (auto i = 0; i < m_variables[context_id].variables.size(); ++i) {
-        if (m_variables[context_id].variables[i] == variable_name) {
-            return to_nomad_id(i);
-        }
+    auto variable_id = m_variables[context_id].context->get_variable_id(variable_name);
+
+    if (variable_id == NOMAD_INVALID_ID) {
+        variable_id = m_variables[context_id].context->register_variable(variable_name, nullptr);
     }
 
-    auto id = to_nomad_id(m_variables[context_id].variables.size());
-
-    m_variables[context_id].variables.push_back(variable_name);
-    m_variables[context_id].context->register_variable(variable_name, nullptr);
-
-    return id;
+    return variable_id;
 }
 
 NomadId Runtime::get_variable_context_id_by_prefix(const NomadString& variable_name) const {
@@ -525,7 +519,7 @@ NomadId Runtime::get_variable_context_id_by_prefix(const NomadString& variable_n
 }
 
 NomadString Runtime::get_context_variable_name(NomadId context_id, NomadId variable_id) const {
-    return m_variables[context_id].variables[variable_id];
+    return m_variables[context_id].context->get_variable_name(variable_id);
 }
 
 const Type* Runtime::get_context_variable_type(NomadId context_id, NomadId variable_id) const {

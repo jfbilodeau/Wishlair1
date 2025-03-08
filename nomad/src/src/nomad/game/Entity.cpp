@@ -103,6 +103,30 @@ const PointF& Entity::get_location() const {
     return m_position;
 }
 
+void Entity::set_size(NomadFloat width, NomadFloat height) {
+    m_size.set(width, height);
+}
+
+void Entity::set_width(NomadFloat width) {
+    m_size.set_y(width);
+}
+
+NomadFloat Entity::get_width() const {
+    return m_size.y();
+}
+
+void Entity::set_height(NomadFloat height) {
+    m_size.set_x(height);
+}
+
+NomadFloat Entity::get_height() const {
+    return m_size.x();
+}
+
+PointF Entity::get_size() const {
+    return m_size;
+}
+
 void Entity::stop_moving() {
     m_velocity.zero();
     m_velocity_invalidated = true;

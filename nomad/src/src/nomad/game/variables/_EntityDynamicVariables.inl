@@ -83,6 +83,27 @@ m_runtime->register_dynamic_variable(
 );
 
 m_runtime->register_dynamic_variable(
+    VARIABLE_NAME_PREFIX ".height",
+    [this](Interpreter* interpreter, const ScriptValue& value) {
+        START_ENTITY_BLOCK("Attempted to set height of null entity")
+
+        auto height = value.get_float_value();
+        entity->set_height(height);
+
+        END_ENTITY_BLOCK
+    },
+    [this](Interpreter* interpreter, ScriptValue& value) {
+        START_SINGLE_ENTITY_BLOCK("Attempted to get height of null entity")
+
+        value.set_float_value(entity->get_height());
+
+        END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_FLOAT)
+    },
+    m_runtime->get_float_type(),
+    NomadDoc("The height of an entity")
+);
+
+m_runtime->register_dynamic_variable(
     VARIABLE_NAME_PREFIX ".layer",
     [this](Interpreter* interpreter, const ScriptValue& value) {
         START_ENTITY_BLOCK("Attempted to set layer position of null entity")
@@ -178,6 +199,28 @@ m_runtime->register_dynamic_variable(
     },
     m_runtime->get_boolean_type(),
     NomadDoc("Determine if the entity is visible. Default is true.")
+);
+
+m_runtime->register_dynamic_variable(
+    VARIABLE_NAME_PREFIX ".width",
+    [this](Interpreter* interpreter, const ScriptValue& value) {
+        START_ENTITY_BLOCK("Attempted to set the width of a null entity")
+
+        auto width = value.get_float_value();
+
+        entity->set_width(width);
+
+        END_ENTITY_BLOCK
+    },
+    [this](Interpreter* interpreter, ScriptValue& value) {
+        START_SINGLE_ENTITY_BLOCK("Attempted to get the width of a null entity")
+
+        value.set_float_value(entity->get_width());
+
+        END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_FLOAT)
+    },
+    m_runtime->get_float_type(),
+    NomadDoc("The width of an entity")
 );
 
 m_runtime->register_dynamic_variable(

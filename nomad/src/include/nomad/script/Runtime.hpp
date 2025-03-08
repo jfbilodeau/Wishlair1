@@ -75,7 +75,7 @@ private:
         NomadId id;
         NomadString name;
         NomadString prefix;
-        std::vector<NomadString> variables;
+        // std::vector<NomadString> variables;
         std::unique_ptr<VariableContext> context;
     };
 

@@ -477,7 +477,7 @@ void IdentifierExpression::on_parse(nomad::Compiler* compiler, Script* script) {
     }
 
     if (m_identifier_definition.value_type == nullptr) {
-        compiler->report_error("Unknown type for identifier: " + m_identifier);
+        compiler->report_error("Unknown type for identifier `" + m_identifier + "`. Was it assigned a value?");
     }
 
     set_type(m_identifier_definition.value_type);
