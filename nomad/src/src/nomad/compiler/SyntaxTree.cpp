@@ -112,9 +112,9 @@ void AssignmentStatementNode::on_parse(Compiler* compiler, Script* script) {
 
     auto expression_type = m_expression->get_type();
 
-    if (expression_type == nullptr) {
-        raise_exception("Cannot determine type of assignment expression");
-    }
+    // if (expression_type == nullptr) {
+    //     raise_exception("Cannot determine type of assignment expression");
+    // }
 
     IdentifierDefinition identifier;
     compiler->get_identifier_definition(m_identifier, script, identifier);

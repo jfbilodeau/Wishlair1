@@ -44,24 +44,31 @@ end
 
 fun repositionBorders
     select.all.byName "camera"
+
+    log.info $"Reposition borders: {other.x}, {other.y}"
+
     roomX = other.x - room.width / 2.0
     roomY = other.y - room.height / 2.0
 
+    log.info $"Reposition borders: {roomX}, {roomY}"
+
     select.all.byName "border.north"
-    other.x = room.middle.x
-    other.y = -border.size - border.margin
+    other.x = roomX + room.middle.x
+    other.y = roomY + (-border.size) - border.margin
+
+    log.info $"Border north: {other.x}, {other.y}"
 
     select.all.byName "border.south"
-    other.x = room.middle.x
-    other.y = room.height + border.margin + border.size
+    other.x = roomX + room.middle.x
+    other.y = roomY + room.height + border.margin + border.size
 
     select.all.byName "border.east"
-    other.x = room.width + border.size + border.margin
-    other.y = room.middle.y
+    other.x = roomX + room.width + border.size + border.margin
+    other.y = roomY + room.middle.y
 
     select.all.byName "border.west"
-    other.x = -border.size - border.margin
-    other.y = room.middle.y
+    other.x = roomX + (-border.size) - border.margin
+    other.y = roomY + room.middle.y
 end
 
 fun entities.border.north

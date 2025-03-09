@@ -476,9 +476,9 @@ void IdentifierExpression::on_parse(nomad::Compiler* compiler, Script* script) {
         script->register_variable(m_identifier, m_identifier_definition.value_type);
     }
 
-    if (m_identifier_definition.value_type == nullptr) {
-        compiler->report_error("Unknown type for identifier `" + m_identifier + "`. Was it assigned a value?");
-    }
+    // if (m_identifier_definition.value_type == nullptr) {
+    //     compiler->report_error("Unknown type for identifier `" + m_identifier + "`. Was it assigned a value?");
+    // }
 
     set_type(m_identifier_definition.value_type);
 }
