@@ -23,11 +23,10 @@ namespace nomad {
 
 #define START_SINGLE_ENTITY_BLOCK(message) \
     auto current_context = get_current_context(); \
-    if (current_context->get_other_entity_count()) {\
-        get_current_context()->for_each_other_entities([&,this](Entity* entity) {
+    auto entity = current_context->get_first_other_entity(); \
+    if (entity) {\
 
 #define END_SINGLE_ENTITY_BLOCK(default_value) \
-        }); \
     } else { \
         value.set(default_value); \
     }

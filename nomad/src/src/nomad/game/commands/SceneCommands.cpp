@@ -210,9 +210,6 @@ void Game::init_scene_commands() {
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
 
-            // Use a static variable to avoid reallocating storage for the vector
-            TempVector<Entity*> other_entities(&fast_heap_allocator);
-
             auto layer_index = this_entity->get_layer();
 
             execution_context->clear_other_entities();
@@ -220,7 +217,7 @@ void Game::init_scene_commands() {
             scene->for_each_entity_by_layer(
                 layer_index,
                 [&](Entity* entity) {
-                    if (entity != this_entity && entity->get_name() == name) {
+                    if (entity->get_name() == name) {
                         execution_context->add_other_entity(entity);
                     }
                 }
@@ -240,16 +237,12 @@ void Game::init_scene_commands() {
             auto name = interpreter->get_string_parameter(0);
 
             auto execution_context = get_current_context();
-            auto this_entity = execution_context->get_this_entity();
-
-            // Use a static variable to avoid reallocating storage for the vector
-            TempVector<Entity*> other_entities(&fast_heap_allocator);
 
             execution_context->clear_other_entities();
 
             scene->for_each_entities(
                 [&](Entity* entity) {
-                    if (entity != this_entity && entity->get_name() == name) {
+                    if (entity->get_name() == name) {
                         execution_context->add_other_entity(entity);
                     }
                 }
