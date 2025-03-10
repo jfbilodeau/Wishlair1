@@ -767,10 +767,6 @@ NomadId Compiler::register_script_file(
     const NomadString& file_name,
     const NomadString& source
 ) {
-//    auto script_id = register_script_source(script_name, file_name, source);
-//
-//    auto script = m_runtime->get_script(script_id);
-
     auto script_file = ScriptFile {
         script_name,
         file_name,
@@ -782,6 +778,11 @@ NomadId Compiler::register_script_file(
     script_file.script_id = register_script_source(script_name, file_name, source);
 
     m_files.emplace_back(std::move(script_file));
+
+    // Sort scripts alphabetically to ensure consistent order in compiling across systems.
+    std::sort(m_files.begin(), m_files.end(), [](const ScriptFile& a, const ScriptFile& b) {
+        return a.script_name < b.script_name;
+    });
 
     return script_file.script_id;
 }

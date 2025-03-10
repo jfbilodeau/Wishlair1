@@ -8,14 +8,14 @@ fun createBorders
     scene.createEntity "entities.border.west" 0.0 0.0 1
 end
 
-fun initBorderEntity offsetX:float offsetY:float
+fun initBorderEntity roomX:float roomY:float
     this.sensor = true
     this.body.rectangle body.static this.width this.height
     this.mask = mask.ui
     this.collisionMask = mask.player
 
-    this.roomOffsetX = offsetX + room.middle.x
-    this.roomOffsetY = offsetY + room.middle.y
+    this.roomX = roomX
+    this.roomY = roomY
 
     this.on.collisionStart fun
         log.info "Contact"
@@ -32,8 +32,8 @@ fun initBorderEntity offsetX:float offsetY:float
 #        other.roomY = this.roomOffsetY
 
 #        other.trigger "changeRoom"
-        other.moveTo this.roomOffsetX this.roomOffsetY 300.0 fun
-            log.info $"Move to: {this.roomOffsetX}, {this.roomOffsetY}"
+        other.moveTo this.roomX + room.middle.x this.roomY + room.middle.y 300.0 fun
+            log.info $"Move to: {this.roomX}, {this.roomY}"
 
             repositionBorders
         end
@@ -45,36 +45,38 @@ end
 fun repositionBorders
     select.all.byName "camera"
 
-    log.info $"Reposition borders: {other.x}, {other.y}"
-
-    roomX = other.x - room.width / 2.0
-    roomY = other.y - room.height / 2.0
-
-    log.info $"Reposition borders: {roomX}, {roomY}"
+    roomX = other.x - room.middle.x
+    roomY = other.y - room.middle.y
 
     select.all.byName "border.north"
     other.x = roomX + room.middle.x
     other.y = roomY + (-border.size) - border.margin
-
-    log.info $"Border north: {other.x}, {other.y}"
+    other.roomX = roomX
+    other.roomY = roomY - room.height
 
     select.all.byName "border.south"
     other.x = roomX + room.middle.x
     other.y = roomY + room.height + border.margin + border.size
+    other.roomX = roomX
+    other.roomY = roomY + room.height
 
     select.all.byName "border.east"
     other.x = roomX + room.width + border.size + border.margin
     other.y = roomY + room.middle.y
+    other.roomX = roomX + room.width
+    other.roomY = roomY
 
     select.all.byName "border.west"
     other.x = roomX + (-border.size) - border.margin
     other.y = roomY + room.middle.y
+    other.roomX = roomX - room.width
+    other.roomY = roomY
 end
 
 fun entities.border.north
     this.name = "border.north"
 
-    this.x = room.width / 2.0
+    this.x = room.middle.x
     this.y = -border.size - border.margin
     this.width = room.width + border.margin * 2.0
     this.height = border.size
