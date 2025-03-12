@@ -718,16 +718,8 @@ const NomadString& Game::get_language() const {
     return m_language;
 }
 
-NomadString Game::get_text(const NomadString& key) const {
-    if (m_debug) {
-        if (m_resource_manager->get_text()->get_text(m_language, key).empty()) {
-            log::warning("Missing text for key: " + key);
-
-            return "<<" + key + ">>";
-        }
-    }
-
-    auto text = m_resource_manager->get_text()->get_text(m_language, key);
+NomadString& Game::get_text(const NomadString& key, NomadString& text) const {
+    m_resource_manager->get_text()->get_text(m_language, key, text);
 
     return text;
 }

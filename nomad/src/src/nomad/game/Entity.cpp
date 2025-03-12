@@ -54,14 +54,6 @@ const NomadString& Entity::get_script_name() const {
     return m_script_name;
 }
 
-void Entity::set_visible(NomadBoolean visible) {
-    m_visible = visible;
-}
-
-NomadBoolean Entity::is_visible() const {
-    return m_visible;
-}
-
 void Entity::set_x(const NomadFloat x) {
     m_position.set_x(x);
     m_destination.set_x(x);
@@ -125,6 +117,42 @@ NomadFloat Entity::get_height() const {
 
 PointF Entity::get_size() const {
     return m_size;
+}
+
+void Entity::pause() {
+    m_paused = true;
+}
+
+void Entity::unpause() {
+    m_paused = false;
+}
+
+void Entity::set_pause(bool pause) {
+    m_paused = pause;
+}
+
+bool Entity::is_paused() const {
+    return m_paused;
+}
+
+void Entity::hide() {
+    m_visible = false;
+}
+
+void Entity::show() {
+    m_visible = true;
+}
+
+void Entity::set_visible(bool visible) {
+    m_visible = visible;
+}
+
+bool Entity::is_visible() const {
+    return m_visible;
+}
+
+bool Entity::is_hidden() const {
+    return !m_visible;
 }
 
 void Entity::stop_moving() {

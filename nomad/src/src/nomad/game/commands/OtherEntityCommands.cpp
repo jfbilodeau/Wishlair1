@@ -39,7 +39,28 @@ namespace nomad {
 void Game::init_other_entity_commands() {
     log::debug("Initializing other entity commands");
 
-    #include "_EntityCommands.inl"
+#include "_EntityCommands.inl"
+
+    // Custom commands
+    m_runtime->register_command(
+        "other.pauseOthers",
+        [this](Interpreter *interpreter) {
+            auto context = get_current_context();
+
+            auto scene = context->get_scene();
+
+            if (scene == nullptr) {
+                log::info("{other.pauseOthers} No scene in current context");
+
+                return;
+            }
+
+            scene->pause_other_entities(context->get_other_entities());
+        },
+        {},
+        m_runtime->get_void_type(),
+        NomadDoc("Pauses all other entities in the scene")
+    );
 }
 
 } // namespace nomad

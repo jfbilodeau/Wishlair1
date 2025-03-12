@@ -24,7 +24,7 @@ public:
     [[nodiscard]] const std::vector<NomadString>& get_language_codes() const;
 
     [[nodiscard]] bool has_text(const NomadString& language_code, const NomadString& key) const;
-    [[nodiscard]] const NomadString& get_text(const NomadString& language_code, const NomadString& key) const;
+    NomadString& get_text(const NomadString& language_code, const NomadString& key, NomadString& text) const;
 
     void get_all_text(const NomadString& language_code, std::unordered_map<NomadString, NomadString>& texts) const;
 

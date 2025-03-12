@@ -161,6 +161,42 @@ void Scene::get_entities_by_name(const NomadString& name, EntityList& entities) 
     }
 }
 
+void Scene::pause_other_entities(Entity* entity) {
+    for (auto other_entity : m_entities) {
+        if (other_entity != entity) {
+            other_entity->pause();
+        }
+    }
+}
+
+void Scene::pause_other_entities(const std::vector<Entity*>& entities) {
+    for (auto other_entity : m_entities) {
+        if (std::find(entities.begin(), entities.end(), other_entity) == entities.end()) {
+            other_entity->pause();
+        }
+    }
+}
+
+void Scene::pause_all_entities() {
+    for (const auto entity : m_entities) {
+        entity->pause();
+    }
+}
+
+void Scene::unpause_all_entities() {
+    for (const auto entity : m_entities) {
+        entity->unpause();
+    }
+}
+
+void Scene::unpause_all_visible_entities() {
+    for (const auto entity : m_entities) {
+        if (entity->is_visible()) {
+            entity->unpause();
+        }
+    }
+}
+
 void Scene::add_event(const NomadString& name, NomadId script_id) {
     m_events.add_event(name, script_id);
 }

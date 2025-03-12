@@ -122,6 +122,30 @@ void Game::init_scene_commands() {
     );
 
     m_runtime->register_command(
+        "scene.pauseAll",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot pause entities outside of a scene")
+
+            scene->pause_all_entities();
+        },
+        {},
+        m_runtime->get_void_type(),
+        NomadDoc("Pauses all entities in this scene.")
+    );
+
+    m_runtime->register_command(
+        "scene.unpauseAll",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot unpause entities outside of a scene")
+
+            scene->unpause_all_entities();
+        },
+        {},
+        m_runtime->get_void_type(),
+        NomadDoc("Unpauses all entities in this scene.")
+    );
+
+    m_runtime->register_command(
         "select",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")

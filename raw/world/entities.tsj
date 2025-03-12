@@ -8,7 +8,7 @@
  "margin":0,
  "name":"entities",
  "spacing":0,
- "tilecount":10,
+ "tilecount":11,
  "tiledversion":"1.11.2",
  "tileheight":480,
  "tiles":[
@@ -125,6 +125,12 @@
          "image":"..\/system\/camera.png",
          "imageheight":64,
          "imagewidth":64
+        }, 
+        {
+         "id":12,
+         "image":"..\/system\/text.png",
+         "imageheight":32,
+         "imagewidth":32
         }],
  "tilewidth":400,
  "type":"tileset",

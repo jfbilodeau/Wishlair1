@@ -59,6 +59,10 @@ void GameExecutionContext::set_other_entities(const TempVector<Entity*>& entitie
     m_other_entities.assign(entities.begin(), entities.end());
 }
 
+const std::vector<Entity*>& GameExecutionContext::get_other_entities() const {
+    return m_other_entities;
+}
+
 Entity * GameExecutionContext::get_first_other_entity() const {
     if (m_other_entities.empty()) {
         return nullptr;

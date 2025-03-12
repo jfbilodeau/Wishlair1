@@ -36,6 +36,34 @@ void Game::init_this_entity_commands() {
     log::debug("Initializing this entity commands");
 
     #include "_EntityCommands.inl"
+
+    // Custom commands
+    m_runtime->register_command(
+        "this.pauseOthers",
+        [this](Interpreter *interpreter) {
+            auto context = get_current_context();
+
+            auto entity = context->get_this_entity();
+            auto scene = context->get_scene();
+
+            if (entity == nullptr) {
+                log::info("{this.pauseOthers}: No entity in current context");
+
+                return;
+            }
+
+            if (scene == nullptr) {
+                log::info("{this.pauseOthers} No scene in current context");
+
+                return;
+            }
+
+            scene->pause_other_entities(entity);
+        },
+        {},
+        m_runtime->get_void_type(),
+        NomadDoc("Pauses all other entities in the scene except `this`.")
+    );
 }
 
 } // namespace nomad

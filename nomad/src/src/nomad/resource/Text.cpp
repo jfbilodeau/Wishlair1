@@ -84,8 +84,14 @@ bool TextManager::has_text(const NomadString& language_code, const NomadString& 
         m_texts.at(language_code).find(key) != m_texts.at(language_code).end();
 }
 
-const NomadString& TextManager::get_text(const NomadString& language_code, const NomadString& key) const {
-    return m_texts.at(language_code).at(key);
+NomadString& TextManager::get_text(const NomadString& language_code, const NomadString& key, NomadString& text) const {
+    if (has_text(language_code, key)) {
+        text = m_texts.at(language_code).at(key);
+    } else {
+        text = "[" + language_code + ":" + key + "]";
+    }
+
+    return text;
 }
 
 void TextManager::get_all_text(const NomadString& language_code, std::unordered_map<NomadString, NomadString>& texts) const {

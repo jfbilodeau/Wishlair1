@@ -110,7 +110,7 @@ public:
 
     void set_language(const NomadString& language_code);
     [[nodiscard]] const NomadString& get_language() const;
-    [[nodiscard]] NomadString get_text(const NomadString& key) const;
+    NomadString& get_text(const NomadString& key, NomadString& text) const;
 
     [[noreturn]] void raise_error(const NomadString& message);
 

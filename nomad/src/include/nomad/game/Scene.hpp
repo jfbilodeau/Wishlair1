@@ -70,6 +70,12 @@ public:
     [[nodiscard]] Entity* get_entity_by_name(const NomadString& name) const;
     void get_entities_by_name(const NomadString& name, EntityList& entities) const;
 
+    void pause_other_entities(Entity* entity);
+    void pause_other_entities(const std::vector<Entity*>& entities);
+    void pause_all_entities();
+    void unpause_all_entities();
+    void unpause_all_visible_entities();
+
     void add_event(const NomadString& name, NomadId script_id);
     void remove_event(const NomadString& name);
 

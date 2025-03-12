@@ -20,22 +20,16 @@ fun initBorderEntity roomX:float roomY:float
     this.on.collisionStart fun
         log.info "Contact"
 
-#        if this.y < 0.0
-#            scene.camera.y = scene.camera.y - border.size
-#        else
-#            scene.camera.y = scene.camera.y + border.size
-#        endIf
-
         select.byName "camera"
 
-#        other.roomX = this.roomOffsetX
-#        other.roomY = this.roomOffsetY
+        other.pauseOthers
 
-#        other.trigger "changeRoom"
         other.moveTo this.roomX + room.middle.x this.roomY + room.middle.y 300.0 fun
             log.info $"Move to: {this.roomX}, {this.roomY}"
 
             repositionBorders
+
+            scene.unpauseAll
         end
     end
 

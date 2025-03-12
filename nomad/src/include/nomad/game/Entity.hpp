@@ -48,9 +48,6 @@ public:
     void set_script_name(const NomadString& script_name);
     [[nodiscard]] const NomadString& get_script_name() const;
 
-    void set_visible(NomadBoolean visible);
-    [[nodiscard]] NomadBoolean is_visible() const;
-
     void set_x(NomadFloat x);
     [[nodiscard]] NomadFloat get_x() const;
 
@@ -73,6 +70,17 @@ public:
     NomadFloat get_height() const;
     [[nodiscard]]
     PointF get_size() const;
+
+    void pause();
+    void unpause();
+    void set_pause(bool pause);
+    [[nodiscard]] bool is_paused() const;
+
+    void hide();
+    void show();
+    void set_visible(bool visible);
+    [[nodiscard]] bool is_visible() const;
+    [[nodiscard]] bool is_hidden() const;
 
     void stop_moving();
     void move(const PointF& velocity);
@@ -247,6 +255,10 @@ private:
     NomadFloat m_z = 0.0;
     NomadInteger m_layer = 0;
 
+    // State
+    NomadBoolean m_paused = false;
+    NomadBoolean m_visible = true;
+
     // Movement
     PointF m_velocity = {};
     bool m_move_to_destination = false;
@@ -273,13 +285,13 @@ private:
     bool m_in_camera = false;
 
     // Visuals
-    NomadBoolean m_visible = true;
     PointF m_sprite_anchor;  // Sprite image anchor point
     const Sprite* m_sprite = nullptr;
     const Animation* m_animation = nullptr;
     NomadInteger m_current_frame = 0;
     NomadInteger m_frame_count = 0;
 
+    // Animation
     NomadString m_animation_name;
     NomadString m_animation_variant = "idle";
     NomadString m_animation_direction = "south";
@@ -300,6 +312,7 @@ private:
     Color m_text_color = Colors::Black;
     Texture* m_text_texture = nullptr;
 
+    // Variable / Script
     VariableList m_variables;
     EventManager m_events;
     GameExecutionContext m_execution_context;

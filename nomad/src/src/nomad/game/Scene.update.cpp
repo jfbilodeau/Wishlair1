@@ -24,7 +24,9 @@ void Scene::update(Game* game) {
     }
 
     for (const auto entity : m_entities) {
-        entity->update(this);
+        if (!entity->is_paused()) {
+            entity->update(this);
+        }
     }
 
     // Remove entities
@@ -317,7 +319,8 @@ void Scene::process_add_remove_entities() {
         const auto entity = new Entity(this, m_game->get_entity_variables(), entity_id, added_entity.x, added_entity.y, added_entity.layer);
 
         if (!added_entity.text_id.empty()) {
-            auto text = m_game->get_text(added_entity.text_id);
+            NomadString text;
+            m_game->get_text(added_entity.text_id, text);
             entity->set_text(text);
         }
 
