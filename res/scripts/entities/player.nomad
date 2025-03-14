@@ -17,8 +17,6 @@ this.moveUp = false
 this.moveDown = false
 this.move.speed = 2.0 * 60.0
 
-this.y = 200.0
-
 this.body.circle body.dynamic player.radius
 this.mask = mask.player
 this.collisionMask = mask.solid | mask.ui
@@ -101,5 +99,5 @@ this.on.frame fun
     #log.info $"this.z: {this.z}, this.y: {this.y}"
     mask = this.getCollidingMask
     this.text.color = color.white
-    this.setText global.font.default $"x: {this.x}, y: {this.y}"
+    #this.setText global.font.default $"x: {this.x}, y: {this.y}"
 end

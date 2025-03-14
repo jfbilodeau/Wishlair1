@@ -8,10 +8,39 @@
         ".",
         "entities"
     ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
         "": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance (1).tmj": {
+            "scale": 0.6597222222222222,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 399.4105263157895,
+                "y": 719.2421052631579
+            }
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance (1).tmj#entities": {
+            "scaleInDock": 1
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance (1).tmj#wishlair": {
+            "scaleInDock": 1
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance.tmj": {
+            "scale": 0.6597222222222222,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 399.4105263157895,
+                "y": 719.2421052631579
+            }
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance.tmj#entities": {
+            "scaleInDock": 1
+        },
+        "C:/Users/jfbil/Downloads/wishlair-entrance.tmj#wishlair": {
+            "scaleInDock": 1
         },
         "boundary.tsj": {
             "dynamicWrapping": true,
@@ -103,16 +132,20 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 609,
-                "y": 1061
+                "x": 529.5,
+                "y": 576.5
             }
+        },
+        "wishlair-entrance.tmj#wishlair": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
         },
         "wishlair.tsj": {
             "dynamicWrapping": false,
-            "scaleInDock": 1,
+            "scaleInDock": 0.75,
             "scaleInEditor": 1.5
         },
         "wishlair.tsx": {
@@ -122,7 +155,7 @@
     },
     "last.exportedFilePath": "C:/Users/jfbil/CLionProjects/Wishlair1/res/world",
     "last.externalTilesetPath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/static/assets/world",
-    "last.imagePath": "C:/Users/jfbil/CLionProjects/Wishlair1/raw/system",
+    "last.imagePath": "C:/Users/jfbil/CLionProjects/Wishlair1/raw/world",
     "last.objectTemplatePath": "C:/Users/jfbil/CLionProjects/Wishlair1/raw/world/entities",
     "last.worldFilePath": "C:/Users/jfbil/Documents/Projects/Wishlair1/phaser/raw/world",
     "lastUsedTilesetExportFilter": "JSON tileset files (*.tsj *.json)",
@@ -138,6 +171,8 @@
     ],
     "project": "wishlair.tiled-project",
     "recentFiles": [
+        "C:/Users/jfbil/Downloads/wishlair-entrance (1).tmj",
+        "C:/Users/jfbil/Downloads/wishlair-entrance.tmj",
         "entities.tsj",
         "wishlair-entrance-2.tmj",
         "wishlair-entrance-1.tmj",
@@ -147,8 +182,7 @@
         "boundary.tsj",
         "wishlair-entrance-3.tmj",
         "wishlair-entrance-1.tmx",
-        "entities.tsx",
-        "wishlair-entrance-2.tmx"
+        "entities.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "json",
