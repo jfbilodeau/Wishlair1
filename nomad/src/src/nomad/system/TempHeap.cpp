@@ -2,17 +2,24 @@
 // Created by jfbil on 2024-12-22.
 //
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include <array>
 #include <vector>
 
 namespace nomad {
 
-std::pmr::monotonic_buffer_resource* get_temp_resource() {
-    static std::array<std::byte, 1024 * 1024 * 10> buffer; // 10 MB
+namespace {
+    std::array<std::byte, 1024 * 1024 * 10> buffer; // 10 MB
+    auto temp_buffer = std::pmr::monotonic_buffer_resource(buffer.begin(), buffer.size());
+}
 
-    return new std::pmr::monotonic_buffer_resource(buffer.begin(), buffer.size());
+std::pmr::monotonic_buffer_resource* get_temp_buffer() {
+    return &temp_buffer;
+}
+
+void fast_temp_heap_reset() {
+    temp_buffer.release();
 }
 
 //

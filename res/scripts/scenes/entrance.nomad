@@ -6,9 +6,6 @@ scene.createEntity "entities.test.internalTest" 0.0 0.0 4
 
 scene.wall.mask = mask.solid
 
-# Setup borders
-createBorders
-
 scene.loadMap "world/wishlair-entrance" "world/tileset"
 
 

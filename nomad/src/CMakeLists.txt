@@ -226,7 +226,7 @@ set(
         ${NOMAD_INCLUDE_DIR}/nomad/script/VariableContext.hpp
 
         ${NOMAD_INCLUDE_DIR}/nomad/system/Boolean.hpp
-        ${NOMAD_INCLUDE_DIR}/nomad/system/FastHeap.hpp
+        ${NOMAD_INCLUDE_DIR}/nomad/system/TempHeap.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/Float.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/Integer.hpp
         ${NOMAD_INCLUDE_DIR}/nomad/system/Memory.hpp
@@ -326,7 +326,7 @@ set(
         ${NOMAD_SOURCE_DIR}/nomad/script/Variable.cpp
         ${NOMAD_SOURCE_DIR}/nomad/script/VariableContext.cpp
 
-        ${NOMAD_SOURCE_DIR}/nomad/system/FastHeap.cpp
+        ${NOMAD_SOURCE_DIR}/nomad/system/TempHeap.cpp
         ${NOMAD_SOURCE_DIR}/nomad/system/Memory.cpp
         ${NOMAD_SOURCE_DIR}/nomad/system/String.cpp
 )

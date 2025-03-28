@@ -2,7 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-17.
 //
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include "nomad/game/Game.hpp"
 
@@ -155,7 +155,7 @@ void Game::init_scene_commands() {
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
 
-            TempVector<Entity*> other_entities(&fast_heap_allocator);
+            auto other_entities = create_temp_vector<Entity*>();
 
             NomadInteger layer_index = this_entity->get_layer();
 
@@ -195,7 +195,7 @@ void Game::init_scene_commands() {
             auto execution_context = get_current_context();
             auto this_entity = execution_context->get_this_entity();
 
-            TempVector<Entity*> other_entities(&fast_heap_allocator);
+            auto other_entities = create_temp_vector<Entity*>();
 
             execution_context->clear_other_entities();
 

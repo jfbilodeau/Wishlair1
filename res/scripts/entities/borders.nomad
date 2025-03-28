@@ -6,6 +6,8 @@ fun createBorders
     scene.createEntity "entities.border.south" 0.0 0.0 1
     scene.createEntity "entities.border.east" 0.0 0.0 1
     scene.createEntity "entities.border.west" 0.0 0.0 1
+
+    repositionBorders
 end
 
 fun initBorderEntity roomX:float roomY:float
@@ -37,16 +39,19 @@ fun initBorderEntity roomX:float roomY:float
 end
 
 fun repositionBorders
-    select.all.byName "camera"
+    roomX = scene.room.x
+    roomY = scene.room.y
 
-    roomX = other.x - room.middle.x
-    roomY = other.y - room.middle.y
+    log.info $"Reposition borders: {roomX}, {roomY}"
 
     select.all.byName "border.north"
     other.x = roomX + room.middle.x
     other.y = roomY + (-border.size) - border.margin
     other.roomX = roomX
     other.roomY = roomY - room.height
+
+    other.x = 10.0
+    other.y = roomY + 10.0
 
     select.all.byName "border.south"
     other.x = roomX + room.middle.x

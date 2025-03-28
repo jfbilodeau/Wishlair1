@@ -8,7 +8,7 @@
 
 #include "nomad/log/Logger.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include <SDL.h>
 
@@ -26,7 +26,7 @@ void debug_draw_polygon(
 
     auto offset = canvas->get_offset();
 
-    std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
+    auto temp_vertices = create_temp_vector<SDL_FPoint>();
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -74,7 +74,7 @@ void debug_draw_solid_polygon(
 
     auto offset = canvas->get_offset();
 
-    std::pmr::vector<SDL_Vertex> temp_vertices(&fast_heap_allocator);
+    auto temp_vertices = create_temp_vector<SDL_Vertex>();
 
     SDL_Color& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -116,7 +116,7 @@ void debug_draw_circle(
 
     constexpr auto vertex_count = 32;
 
-    std::pmr::vector<SDL_FPoint> temp_vertices(&fast_heap_allocator);
+    auto temp_vertices = create_temp_vector<SDL_FPoint>();
 
     center.x += static_cast<float>(offset.x());
     center.y += static_cast<float>(offset.y());

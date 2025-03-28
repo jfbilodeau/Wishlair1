@@ -4,7 +4,7 @@
 
 #include "nomad/game/GameExecutionContext.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 namespace nomad {
 

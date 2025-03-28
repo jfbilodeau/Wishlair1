@@ -6,7 +6,7 @@
 
 #include "nomad/nomad.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include <functional>
 

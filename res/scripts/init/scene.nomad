@@ -13,6 +13,10 @@ const room.middle.y = room.height / 2.0
 
 const camera.on.changeRoom = "camera.changeRoom"
 
+# Initialize scene room location
+scene.room.x = 0.0
+scene.room.y = 0.0
+
 fun camera.scrollTo roomX:float roomY:float
     select.all.byName "camera"
 

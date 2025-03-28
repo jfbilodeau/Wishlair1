@@ -18,7 +18,7 @@
 
 #include "nomad/script/Runtime.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include <SDL.h>
 #include <SDL_ttf.h>

@@ -8,7 +8,9 @@
 #include <cctype>
 #include <cstring>
 #include <locale>
+#include <vector>
 
+#include "TempHeap.hpp"
 #include "nomad/nomad.hpp"
 
 #ifndef NOMAD_STRING_HPP
@@ -109,6 +111,12 @@ NomadString to_string(NomadId value);
 NomadString to_string(NomadInteger value);
 NomadString to_string(NomadFloat value);
 NomadString to_string(NomadIndex index);
+
+// Utility to split a string into a vector of strings at newline characters
+void split(const TempString& text, const NomadString& separator, TempStringVector& lines);
+
+void split_lines(const NomadString& text, std::vector<NomadString>& lines);
+void split_lines(const TempString& text, TempStringVector& lines);
 
 } // nomad
 

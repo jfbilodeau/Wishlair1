@@ -743,11 +743,12 @@ void Entity::render(Canvas* canvas) {
 
     if (m_text_texture != nullptr) {
         Point anchor;
-        auto text_x = static_cast<int>(m_text_position.x());
-        auto text_y = static_cast<int>(m_text_position.y());
 
-        int text_width = m_text_texture->get_width();
-        int text_height = m_text_texture->get_height();
+        const auto text_x = static_cast<int>(m_text_position.x());
+        const auto text_y = static_cast<int>(m_text_position.y());
+
+        const int text_width = m_text_texture->get_width();
+        const int text_height = m_text_texture->get_height();
 
         switch (m_text_alignment) {
             case Alignment::TopLeft:

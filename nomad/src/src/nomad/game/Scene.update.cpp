@@ -7,7 +7,6 @@
 #include "nomad/game/Game.hpp"
 
 #include "nomad/resource/ResourceManager.hpp"
-#include "nomad/resource/Text.hpp"
 
 #include "nomad/script/Runtime.hpp"
 
@@ -302,8 +301,13 @@ void Scene::update_camera() {
 }
 
 void Scene::process_add_remove_entities() {
+    // While entities are added, their `init` script will run. Some entities
+    // may create new entities which invalidates the `added_entities` list.
+    // To address this, let's create a new, temporary list of added entities
+    auto temp_added_entities = create_temp_vector(m_added_entities);
+
     // Add entities
-    for (const auto& added_entity : m_added_entities) {
+    for (const auto& added_entity : temp_added_entities) {
         auto entity_id = added_entity.id;
 
         if (entity_id == NOMAD_INVALID_ID) {

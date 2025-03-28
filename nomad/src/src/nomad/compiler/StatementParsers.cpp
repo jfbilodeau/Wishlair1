@@ -13,7 +13,7 @@
 
 #include "nomad/script/Runtime.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 #include "nomad/system/String.hpp"
 
 #include <optional>

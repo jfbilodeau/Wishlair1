@@ -11,12 +11,11 @@
 #include "nomad/resource/ResourceManager.hpp"
 #include "nomad/resource/Font.hpp"
 
-#include "nomad/system/FastHeap.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 #include <SDL.h>
 
 #include <istream>
-#include <sstream>
 
 namespace nomad {
 
@@ -62,7 +61,7 @@ Texture* Font::generate_texture(
     NomadInteger line_spacing
 ) const {
     struct Line {
-        std::pmr::string text;
+        TempString text;
         NomadInteger width;
     };
 
@@ -79,27 +78,27 @@ Texture* Font::generate_texture(
     if (max_text_width_pixels == 0) {
         surface = TTF_RenderUTF8_Blended_Wrapped(m_font, text.c_str(), color.to_sdl_color(), 0);
     } else {
-        std::pmr::vector<Line> lines(&fast_heap_allocator);
-
         // Pre-allocate strings to avoid allocations at each iteration.
-        TempString test_line(&fast_heap_allocator), current_line(&fast_heap_allocator), word(&fast_heap_allocator);
+        auto test_line = create_temp_string();
+        auto current_line = create_temp_string();
         NomadInteger longest_line_width = 0;
 
-        // std::stringstream text_stream(
-        //     reinterpret_cast<const TempString&>(text)
-        // );
-        TempStringStream text_stream(text, &fast_heap_allocator);
+        auto lines = create_temp_vector<Line>();
 
-        for (TempString line(&fast_heap_allocator); std::getline(text_stream, line);) {
+        auto split_text = create_temp_string_vector();
+        split_lines(create_temp_string(text), split_text);
+
+        for (const auto& line : split_text) {
             auto current_text_height = static_cast<NomadInteger>(lines.size()) * line_height;
 
             if (max_text_height_pixels != 0 && current_text_height > max_text_height_pixels) {
                 break;
             }
 
-            TempStringStream line_stream(line);
+            auto words = create_temp_string_vector();
+            split(line, " ", words);
 
-            while (line_stream >> word) {
+            for (const auto& word : words) {
                 test_line.clear();
                 test_line.append(current_line).append(current_line.empty() ? "" : " ").append(word);
                 auto line_width = get_text_width(test_line.c_str());
