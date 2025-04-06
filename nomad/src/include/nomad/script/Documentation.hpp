@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-26.
 //
 
-#ifndef NOMAD_DOCUMENTATION_HPP
-#define NOMAD_DOCUMENTATION_HPP
+#pragma once
 
 #include <ostream>
 
@@ -30,8 +29,8 @@ class Runtime;
 #define NomadParamDoc(param_doc) \
     param_doc
 
-void generate_documentation(Runtime* runtime, std::ostream& out);
-void generate_keywords(Runtime* runtime, std::ostream& out);
+void generateDocumentation(Runtime* runtime, std::ostream& out);
+void generateKeywords(Runtime* runtime, std::ostream& out);
 
 #else
 
@@ -45,4 +44,3 @@ void generate_keywords(Runtime* runtime, std::ostream& out);
 
 } // namespace nomad
 
-#endif //NOMAD_DOCUMENTATION_HPP

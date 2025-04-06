@@ -27,30 +27,30 @@ Animation::Animation(
     m_frames(frames)
 {}
 
-bool Animation::name_is(const NomadString& name, const NomadString& variant, const NomadString& direction) const {
+bool Animation::nameIs(const NomadString& name, const NomadString& variant, const NomadString& direction) const {
     return
         m_name == name &&
         m_variant == variant &&
         m_direction == direction;
 }
 
-const NomadString& Animation::get_name() const {
+const NomadString& Animation::getName() const {
     return m_name;
 }
 
-const NomadString& Animation::get_variant() const {
+const NomadString& Animation::getVariant() const {
     return m_variant;
 }
 
-const NomadString& Animation::get_direction() const {
+const NomadString& Animation::getDirection() const {
     return m_direction;
 }
 
-NomadIndex Animation::get_frame_count() const {
+NomadIndex Animation::getFrameCount() const {
     return m_frames.size();
 }
 
-const Sprite* Animation::get_frame(NomadIndex index) const {
+const Sprite* Animation::getFrame(NomadIndex index) const {
     if (index >= m_frames.size()) {
         return nullptr;
     }
@@ -58,7 +58,7 @@ const Sprite* Animation::get_frame(NomadIndex index) const {
     return m_frames[index];
 }
 
-const Sprite* Animation::get_last_frame() const {
+const Sprite* Animation::getLastFrame() const {
     return m_frames.back();
 }
 
@@ -70,7 +70,7 @@ AnimationManager::AnimationManager(ResourceManager* resources):
     m_resources(resources)
 {}
 
-NomadId AnimationManager::register_animation(
+NomadId AnimationManager::registerAnimation(
     const NomadString& name,
     const NomadString& variant,
     const NomadString& direction,
@@ -90,13 +90,13 @@ NomadId AnimationManager::register_animation(
     return animation_id;
 }
 
-const Animation* AnimationManager::get_animation(
+const Animation* AnimationManager::getAnimation(
     const NomadString& name,
     const NomadString& variant,
     const NomadString& direction
 ) {
     for (auto& animation : m_animations) {
-        if (animation->name_is(name, variant, direction)) {
+        if (animation->nameIs(name, variant, direction)) {
             return animation.get();
         }
     }
@@ -106,7 +106,7 @@ const Animation* AnimationManager::get_animation(
 
     auto prefix = name + "-" + variant + "-" + direction + "-";
 
-    m_resources->get_sprites()->get_sprites_by_prefix(prefix, frames);
+    m_resources->getSprites()->getSpritesByPrefix(prefix, frames);
 
     if (frames.empty()) {
         log::error("No frames found for animation prefix: " + prefix);
@@ -116,10 +116,10 @@ const Animation* AnimationManager::get_animation(
 
     // Sort sprites by name.
     std::sort(frames.begin(), frames.end(), [](const Sprite* a, const Sprite* b) {
-        return a->get_name() < b->get_name();
+        return a->getName() < b->getName();
     });
 
-    auto animation_id = register_animation(
+    auto animation_id = registerAnimation(
         name,
         variant,
         direction,

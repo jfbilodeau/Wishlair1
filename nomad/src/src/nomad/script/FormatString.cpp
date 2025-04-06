@@ -12,13 +12,13 @@
 namespace nomad {
 
 FormatString::FormatString(const NomadString& format_string, NomadId script_id):
-    m_format_string(format_string),
-    m_script_id(script_id)
+    m_formatString(format_string),
+    m_scriptId(script_id)
 {}
 
 FormatString::~FormatString() = default;
 
-void FormatString::add_literal(const NomadString& literal) {
+void FormatString::addLiteral(const NomadString& literal) {
     m_segments.push_back({
     SegmentType::Literal,
     IdentifierType::Unknown,
@@ -29,13 +29,13 @@ void FormatString::add_literal(const NomadString& literal) {
     });
 }
 
-void FormatString::add_variable(IdentifierType variable_type, const Type* value_type, NomadId context_id, NomadId variable_id) {
+void FormatString::addVariable(IdentifierType variable_type, const Type* valueType, NomadId contextId, NomadId variableId) {
     m_segments.push_back({
         SegmentType::Variable,
         variable_type,
-        value_type,
-        context_id,
-        variable_id,
+        valueType,
+        contextId,
+        variableId,
     });
 }
 
@@ -50,10 +50,10 @@ NomadString FormatString::format(Interpreter *interpreter) const {
             }
             case SegmentType::Variable: {
                 ScriptValue value;
-                auto result = interpreter->get_variable_value(
-                        segment.variable_type,
-                        segment.context_id,
-                        segment.variable_id,
+                auto result = interpreter->getVariableValue(
+                        segment.variableType,
+                        segment.contextId,
+                        segment.variableId,
                         value
                 );
 
@@ -63,13 +63,13 @@ NomadString FormatString::format(Interpreter *interpreter) const {
                     );
                 }
 
-                string += segment.value_type->to_string(value);
+                string += segment.valueType->to_string(value);
 
                 break;
             }
             default:
                 interpreter->fault(
-                        "Internal error: Invalid format string segment type: " + to_string((int) segment.type)
+                        "Internal error: Invalid format string segment type: " + toString((int) segment.type)
                 );
         }
     }

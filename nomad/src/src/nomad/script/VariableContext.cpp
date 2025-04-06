@@ -12,42 +12,42 @@ namespace nomad {
 SimpleVariableContext::SimpleVariableContext()
 { }
 
-NomadId SimpleVariableContext::register_variable(const NomadString& name, const Type* type) {
-    auto variable_id = get_variable_id(name);
+NomadId SimpleVariableContext::registerVariable(const NomadString& name, const Type* type) {
+    auto variable_id = getVariableId(name);
 
     if (variable_id == NOMAD_INVALID_ID) {
-        variable_id = m_variables.register_variable(name, type);
-        m_values.resize(m_variables.get_variable_count());
-    } else if (m_variables.get_variable_type(variable_id) == nullptr) {
-        m_variables.set_variable_type(variable_id, type);
-    } else if (m_variables.get_variable_type(variable_id) != type) {
+        variable_id = m_variables.registerVariable(name, type);
+        m_values.resize(m_variables.getVariableCount());
+    } else if (m_variables.getVariableType(variable_id) == nullptr) {
+        m_variables.setVariableType(variable_id, type);
+    } else if (m_variables.getVariableType(variable_id) != type) {
         log::warning("Context variable '" + name + "' already registered with a different type");
     }
 
     return variable_id;
 }
 
-const NomadString& SimpleVariableContext::get_variable_name(NomadId variable_id) const {
-    return m_variables.get_variable_name(variable_id);
+const NomadString& SimpleVariableContext::getVariableName(NomadId variable_id) const {
+    return m_variables.getVariableName(variable_id);
 }
 
-NomadId SimpleVariableContext::get_variable_id(const NomadString& name) const {
-    return m_variables.get_variable_id(name);
+NomadId SimpleVariableContext::getVariableId(const NomadString& name) const {
+    return m_variables.getVariableId(name);
 }
 
-void SimpleVariableContext::set_variable_type(NomadId variable_id, const Type* type) {
-    m_variables.set_variable_type(variable_id, type);
+void SimpleVariableContext::setVariableType(NomadId variable_id, const Type* type) {
+    m_variables.setVariableType(variable_id, type);
 }
 
-const Type* SimpleVariableContext::get_variable_type(NomadId variable_id) const {
-    return m_variables.get_variable_type(variable_id);
+const Type* SimpleVariableContext::getVariableType(NomadId variable_id) const {
+    return m_variables.getVariableType(variable_id);
 }
 
-void SimpleVariableContext::set_value(NomadId variable_id, const ScriptValue& value) {
+void SimpleVariableContext::setValue(NomadId variable_id, const ScriptValue& value) {
     m_values[variable_id] = value;
 }
 
-void SimpleVariableContext::get_value(NomadId variable_id, ScriptValue& value) {
+void SimpleVariableContext::getValue(NomadId variable_id, ScriptValue& value) {
     value = m_values[variable_id];
 }
 

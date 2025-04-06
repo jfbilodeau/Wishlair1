@@ -7,7 +7,7 @@
 namespace nomad {
 
 Layer::Layer():
-    m_tile_layer()
+    m_tileLayer()
 {
 }
 
@@ -23,11 +23,11 @@ void Layer::render(Canvas* canvas) {
     }
 }
 
-void Layer::add_entity(Entity* entity) {
+void Layer::addEntity(Entity* entity) {
     m_entities.push_back(entity);
 }
 
-void Layer::remove_entity(Entity* entity) {
+void Layer::removeEntity(Entity* entity) {
     const auto it = std::find(m_entities.begin(), m_entities.end(), entity);
 
     if (it != m_entities.end()) {
@@ -35,48 +35,48 @@ void Layer::remove_entity(Entity* entity) {
     }
 }
 
-void Layer::resize_tile_map(NomadIndex width, NomadIndex height) {
+void Layer::resizeTileMap(NomadIndex width, NomadIndex height) {
     // Create new tile layer. Copy old tiles to new layer and move new layer to m_tile_layer.
-    std::vector<NomadIndex> new_tile_layer(width * height);
+    std::vector<NomadIndex> newTileLayer(width * height);
 
     for (NomadIndex y = 0; y < height; ++y) {
         for (NomadIndex x = 0; x < width; ++x) {
-            if (x < m_tile_layer_width && y < m_tile_layer_height) {
-                new_tile_layer[y * width + x] = m_tile_layer[y * m_tile_layer_width + x];
+            if (x < m_tileLayerWidth && y < m_tileLayerHeight) {
+                newTileLayer[y * width + x] = m_tileLayer[y * m_tileLayerWidth + x];
             } else {
-                new_tile_layer[y * width + x] = 0;
+                newTileLayer[y * width + x] = 0;
             }
         }
     }
 
-    m_tile_layer = std::move(new_tile_layer);
+    m_tileLayer = std::move(newTileLayer);
 
-    m_tile_layer_width = width;
-    m_tile_layer_height = height;
+    m_tileLayerWidth = width;
+    m_tileLayerHeight = height;
 }
 
-NomadIndex Layer::get_tile_layer_width() const {
-    return m_tile_layer_width;
+NomadIndex Layer::getTileLayerWidth() const {
+    return m_tileLayerWidth;
 }
 
-NomadIndex Layer::get_tile_layer_height() const {
-    return m_tile_layer_height;
+NomadIndex Layer::getTileLayerHeight() const {
+    return m_tileLayerHeight;
 }
 
-void Layer::set_tile(NomadIndex x, NomadIndex y, NomadIndex tile_id) {
-    if (x >= m_tile_layer_width || y >= m_tile_layer_height) {
+void Layer::setTile(NomadIndex x, NomadIndex y, NomadIndex tileId) {
+    if (x >= m_tileLayerWidth || y >= m_tileLayerHeight) {
         return;
     }
 
-    m_tile_layer[y * m_tile_layer_width + x] = tile_id;
+    m_tileLayer[y * m_tileLayerWidth + x] = tileId;
 }
 
-NomadIndex Layer::get_tile(NomadIndex x, NomadIndex y) const {
-    if (x >= m_tile_layer_width || y >= m_tile_layer_height) {
+NomadIndex Layer::getTile(NomadIndex x, NomadIndex y) const {
+    if (x >= m_tileLayerWidth || y >= m_tileLayerHeight) {
         return 0;
     }
 
-    return m_tile_layer[y * m_tile_layer_width + x];
+    return m_tileLayer[y * m_tileLayerWidth + x];
 }
 
 } // namespace nomad

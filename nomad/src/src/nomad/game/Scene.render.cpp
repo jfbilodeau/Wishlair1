@@ -13,19 +13,19 @@ namespace nomad {
 
 // Render scene
 void Scene::render(Canvas* canvas) {
-    auto previous_offset = canvas->get_offset();
+    auto previous_offset = canvas->getOffset();
 
-    auto resolution = m_game->get_resolution();
+    auto resolution = m_game->getResolution();
 
-    canvas->set_offset(
-        -m_camera_position.x() + resolution.x() / 2.0,
-        -m_camera_position.y() + resolution.y() / 2.0
+    canvas->setOffset(
+        -m_cameraPosition.getX() + resolution.getX() / 2.0,
+        -m_cameraPosition.getY() + resolution.getY() / 2.0
     );
 
     for (const auto& layer : m_layers) {
         // Render tile map
-        if (m_tile_texture != nullptr) {
-            render_tile_map(canvas, layer);
+        if (m_tileTexture != nullptr) {
+            renderTileMap(canvas, layer);
         }
         // Render entities
         for (const auto entity : layer.entities) {
@@ -33,52 +33,52 @@ void Scene::render(Canvas* canvas) {
         }
     }
 
-    if (m_game->is_debug()) {
+    if (m_game->isDebug()) {
         b2DebugDraw debug_draw;
-        create_debug_draw(canvas, &debug_draw);
+        createDebugDraw(canvas, &debug_draw);
 
         for (const auto& layer : m_layers) {
-            b2World_Draw(layer.world_id, &debug_draw);
+            b2World_Draw(layer.worldId, &debug_draw);
         }
     }
 
-    canvas->set_offset(previous_offset);
+    canvas->setOffset(previous_offset);
 }
 
-void Scene::render_tile_map(Canvas* canvas, const Scene::Layer& layer) {
-    if (layer.has_ground_tile_map) {
-        for (auto y = 0; y < m_tile_map_height; ++y) {
-            for (auto x = 0; x < m_tile_map_width; ++x) {
-                const auto ground_tile_index = layer.ground_tile_map[y * m_tile_map_width + x];
+void Scene::renderTileMap(Canvas* canvas, const Scene::Layer& layer) {
+    if (layer.hasGroundTileMap) {
+        for (auto y = 0; y < m_tileMapHeight; ++y) {
+            for (auto x = 0; x < m_tileMapWidth; ++x) {
+                const auto ground_tile_index = layer.groundTileMap[y * m_tileMapWidth + x];
 
-                render_tile(canvas, y, x, ground_tile_index);
+                renderTile(canvas, y, x, ground_tile_index);
             }
         }
     }
 
-    if (layer.has_wall_tile_map) {
-        for (auto y = 0; y < m_tile_map_height; ++y) {
-            for (auto x = 0; x < m_tile_map_width; ++x) {
-                const auto wall_tile_index = layer.wall_tile_map[y * m_tile_map_width + x];
+    if (layer.hasWallTileMap) {
+        for (auto y = 0; y < m_tileMapHeight; ++y) {
+            for (auto x = 0; x < m_tileMapWidth; ++x) {
+                const auto wall_tile_index = layer.wallTileMap[y * m_tileMapWidth + x];
 
-                render_tile(canvas, y, x, wall_tile_index);
+                renderTile(canvas, y, x, wall_tile_index);
             }
         }
     }
 }
 
-void Scene::render_tile(Canvas* canvas, int y, int x, NomadIndex ground_tile_index) {
-    if (ground_tile_index > 0) {
-        auto& source = m_tiles[ground_tile_index].source;
+void Scene::renderTile(Canvas* canvas, int y, int x, NomadIndex groundTileIndex) {
+    if (groundTileIndex > 0) {
+        auto& source = m_tiles[groundTileIndex].source;
 
         Rectangle destination(
-            x * m_tile_width,
-            y * m_tile_height,
-            m_tile_width,
-            m_tile_height
+            x * m_tileWidth,
+            y * m_tileHeight,
+            m_tileWidth,
+            m_tileHeight
         );
 
-        canvas->render_texture(m_tile_texture, source, destination);
+        canvas->renderTexture(m_tileTexture, source, destination);
     }
 }
 

@@ -12,47 +12,47 @@ CircleF::CircleF(NomadFloat x, NomadFloat y, NomadFloat radius):
 {
 }
 
-NomadFloat CircleF::get_x() const {
-    return m_center.x();
+NomadFloat CircleF::getX() const {
+    return m_center.getX();
 }
 
-NomadFloat CircleF::get_y() const {
-    return m_center.y();
+NomadFloat CircleF::getY() const {
+    return m_center.getY();
 }
 
-NomadFloat CircleF::get_radius() const {
+NomadFloat CircleF::getRadius() const {
     return m_radius;
 }
 
-const PointF& CircleF::get_center() const {
+const PointF& CircleF::getCenter() const {
     return m_center;
 }
 
-NomadFloat CircleF::get_left() const {
-    return m_center.x() - m_radius;
+NomadFloat CircleF::getLeft() const {
+    return m_center.getX() - m_radius;
 }
 
-NomadFloat CircleF::get_right() const {
-    return m_center.x() + m_radius;
+NomadFloat CircleF::getRight() const {
+    return m_center.getX() + m_radius;
 }
 
-NomadFloat CircleF::get_top() const {
-    return m_center.y() - m_radius;
+NomadFloat CircleF::getTop() const {
+    return m_center.getY() - m_radius;
 }
 
-NomadFloat CircleF::get_bottom() const {
-    return m_center.y() + m_radius;
+NomadFloat CircleF::getBottom() const {
+    return m_center.getY() + m_radius;
 }
 
-void CircleF::set_x(NomadFloat x) {
-    m_center.set_x(x);
+void CircleF::setX(NomadFloat x) {
+    m_center.setX(x);
 }
 
-void CircleF::set_y(NomadFloat y) {
-    m_center.set_y(y);
+void CircleF::setY(NomadFloat y) {
+    m_center.setY(y);
 }
 
-void CircleF::set_radius(NomadFloat radius) {
+void CircleF::setRadius(NomadFloat radius) {
     m_radius = radius;
 }
 

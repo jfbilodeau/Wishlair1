@@ -8,7 +8,6 @@
 #include "nomad/compiler/Expression.hpp"
 #include "nomad/compiler/SyntaxTree.hpp"
 
-
 namespace nomad {
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -20,173 +19,173 @@ Expression::Expression(NomadIndex line, NomadIndex column, const Type* type):
 
 Expression::~Expression() {
     if (m_type != nullptr) {
-        m_type->free_value(m_value);
+        m_type->freeValue(m_value);
     }
 }
 
 void Expression::parse(Compiler* compiler, Script* script) {
-    if (!is_parsed()) {
-        on_parse(compiler, script);
+    if (!isParsed()) {
+        onParse(compiler, script);
     }
 }
 
 void Expression::compile(Compiler* compiler, Script* script) {
     parse(compiler, script);
 
-    if (is_parsed()) {
-        compiler->add_load_value(m_type, m_value);
+    if (isParsed()) {
+        compiler->addLoadValue(m_type, m_value);
     } else {
-        on_compile(compiler, script);
+        onCompile(compiler, script);
     }
 }
 
-const Type* Expression::get_type() const {
+const Type* Expression::getType() const {
     return m_type;
 }
 
-const ScriptValue& Expression::get_value() const {
+const ScriptValue& Expression::getValue() const {
     return m_value;
 }
 
-bool Expression::has_value() const {
-    return m_has_value;
+bool Expression::hasValue() const {
+    return m_hasValue;
 }
 
-bool Expression::has_type() const {
+bool Expression::hasType() const {
     return m_type != nullptr;
 }
 
-bool Expression::is_parsed() const {
-    return has_type() && has_value();
+bool Expression::isParsed() const {
+    return hasType() && hasValue();
 }
 
-void Expression::set_resolved(const ScriptValue& value, const Type* type) {
-    set_type(type);
-    set_value(value);
+void Expression::setResolved(const ScriptValue& value, const Type* type) {
+    setType(type);
+    setValue(value);
 }
 
-void Expression::set_type(const Type* type) {
+void Expression::setType(const Type* type) {
     m_type = type;
 }
 
-void Expression::set_value(const ScriptValue& value) {
-    m_type->copy_value(value, m_value);
+void Expression::setValue(const ScriptValue& value) {
+    m_type->copyValue(value, m_value);
 
-    m_has_value = true;
+    m_hasValue = true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // UnaryExpression
 UnaryExpression::UnaryExpression(
-    NomadIndex line, NomadIndex column, UnaryOperator unary_operator,
+    NomadIndex line, NomadIndex column, UnaryOperator unaryOperator,
     std::unique_ptr<Expression> expression
 ):
     Expression(line, column),
-    m_unary_operator(unary_operator),
+    m_unaryOperator(unaryOperator),
     m_expression(std::move(expression)) {
 }
 
 
-void UnaryExpression::on_parse(Compiler* compiler, Script* script) {
+void UnaryExpression::onParse(Compiler* compiler, Script* script) {
     m_expression->parse(compiler, script);
 
-    if (m_expression->is_parsed()) {
-        auto expression_type = m_expression->get_type();
+    if (m_expression->isParsed()) {
+        auto expressionType = m_expression->getType();
 
-        auto value = m_expression->get_value();
+        auto value = m_expression->getValue();
         ScriptValue result;
 
-        auto result_type = compiler->get_unary_operator_result_type(m_unary_operator, expression_type);
-        auto fold_success = compiler->fold_unary(m_unary_operator, expression_type, value, result);
+        auto resultType = compiler->getUnaryOperatorResultType(m_unaryOperator, expressionType);
+        auto foldSuccess = compiler->foldUnary(m_unaryOperator, expressionType, value, result);
 
-        if (!fold_success) {
-            raise_exception("Cannot fold unary operator");
+        if (!foldSuccess) {
+            raiseException("Cannot fold unary operator");
         }
 
-        set_resolved(result, result_type);
+        setResolved(result, resultType);
     } else {
-        set_type(m_expression->get_type());
+        setType(m_expression->getType());
     }
 }
 
-void UnaryExpression::on_compile(Compiler* compiler, Script* script) {
-    on_parse(compiler, script);
+void UnaryExpression::onCompile(Compiler* compiler, Script* script) {
+    onParse(compiler, script);
 
     m_expression->compile(compiler, script);
 
-    auto opcode = compiler->get_unary_operator_op_code_id(m_unary_operator, m_expression->get_type());
+    auto opcode = compiler->getUnaryOperatorOpCodeId(m_unaryOperator, m_expression->getType());
 
-    compiler->add_op_code(opcode);
+    compiler->addOpCode(opcode);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // BinaryExpression
-BinaryExpression::BinaryExpression(NomadIndex line, NomadIndex column, BinaryOperator binary_operator,
+BinaryExpression::BinaryExpression(NomadIndex line, NomadIndex column, BinaryOperator binaryOperator,
     std::unique_ptr<Expression> left, std::unique_ptr<Expression> right
 ):
     Expression(line, column),
-    m_binary_operator(binary_operator),
+    m_binaryOperator(binaryOperator),
     m_left(std::move(left)),
     m_right(std::move(right)) {
 }
 
-void BinaryExpression::on_parse(Compiler* compiler, Script* script) {
+void BinaryExpression::onParse(Compiler* compiler, Script* script) {
     m_left->parse(compiler, script);
     m_right->parse(compiler, script);
 
-    auto lhs_type = m_left->get_type();
-    auto rhs_type = m_right->get_type();
+    auto lhsType = m_left->getType();
+    auto rhsType = m_right->getType();
 
-    if (lhs_type != nullptr && rhs_type != nullptr) {
+    if (lhsType != nullptr && rhsType != nullptr) {
 
-        auto result_type = compiler->get_binary_operator_result_type(m_binary_operator, lhs_type, rhs_type);
+        auto resultType = compiler->getBinaryOperatorResultType(m_binaryOperator, lhsType, rhsType);
 
-        set_type(result_type);
+        setType(resultType);
     }
 
-    if (m_left->is_parsed() && m_right->is_parsed()) {
-        auto lhs = m_left->get_value();
-        auto rhs = m_right->get_value();
+    if (m_left->isParsed() && m_right->isParsed()) {
+        auto lhs = m_left->getValue();
+        auto rhs = m_right->getValue();
 
         ScriptValue value;
 
-        auto result_type = compiler->get_binary_operator_result_type(m_binary_operator, lhs_type, rhs_type);
-        auto result = compiler->fold_binary(m_binary_operator, lhs_type, lhs, rhs_type, rhs, value);
+        auto resultType = compiler->getBinaryOperatorResultType(m_binaryOperator, lhsType, rhsType);
+        auto result = compiler->foldBinary(m_binaryOperator, lhsType, lhs, rhsType, rhs, value);
 
         if (!result) {
-            raise_exception("Cannot fold binary operator");
+            raiseException("Cannot fold binary operator");
         }
 
-        set_resolved(value, result_type);
+        setResolved(value, resultType);
     }
 }
 
-void BinaryExpression::on_compile(Compiler* compiler, Script* script) {
+void BinaryExpression::onCompile(Compiler* compiler, Script* script) {
     parse(compiler, script);
 
-    if (is_parsed()) {
-        compiler->add_load_value(get_type(), get_value());
+    if (isParsed()) {
+        compiler->addLoadValue(getType(), getValue());
         return;
     }
 
     m_right->compile(compiler, script);
-    compiler->add_push_result(m_right->get_type());
+    compiler->addPushResult(m_right->getType());
     m_left->compile(compiler, script);
-    compiler->add_pop_intermediate(m_left->get_type());
+    compiler->addPopIntermediate(m_left->getType());
 
-    auto left_type = m_left->get_type();
-    auto right_type = m_right->get_type();
+    auto leftType = m_left->getType();
+    auto rightType = m_right->getType();
 
-    auto op_code_id = compiler->get_binary_operator_op_code_id(
-        m_binary_operator,
-        left_type,
-        right_type
+    auto opCodeId = compiler->getBinaryOperatorOpCodeId(
+        m_binaryOperator,
+        leftType,
+        rightType
     );
 
-    if (op_code_id == NOMAD_INVALID_ID) {
-        raise_exception("Invalid binary operator");
+    if (opCodeId == NOMAD_INVALID_ID) {
+        raiseException("Invalid binary operator");
     }
 
-    compiler->add_op_code(op_code_id);
+    compiler->addOpCode(opCodeId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -196,36 +195,36 @@ CallCommandExpression::CallCommandExpression(NomadIndex line, NomadIndex column,
     m_name(std::move(name)) {
 }
 
-void CallCommandExpression::on_parse(Compiler* compiler, Script* script) {
-    auto command_id = compiler->get_runtime()->get_command_id(m_name);
+void CallCommandExpression::onParse(Compiler* compiler, Script* script) {
+    auto commandId = compiler->getRuntime()->getCommandId(m_name);
 
-    if (command_id == NOMAD_INVALID_ID) {
-        raise_exception("Unknown command '" + m_name + "'");
+    if (commandId == NOMAD_INVALID_ID) {
+        raiseException("Unknown command '" + m_name + "'");
     }
 
-    CommandDefinition command_definition;
-    compiler->get_runtime()->get_command_definition(command_id, command_definition);
+    CommandDefinition commandDefinition;
+    compiler->getRuntime()->getCommandDefinition(commandId, commandDefinition);
 
-    set_type(command_definition.return_type);
+    setType(commandDefinition.returnType);
 }
 
-void CallCommandExpression::on_compile(Compiler* compiler, Script* script) {
+void CallCommandExpression::onCompile(Compiler* compiler, Script* script) {
     m_arguments.compile(compiler, script);
 
-    auto command_id = compiler->get_runtime()->get_command_id(m_name);
+    auto commandId = compiler->getRuntime()->getCommandId(m_name);
 
-    if (command_id == NOMAD_INVALID_ID) {
-        raise_exception("Unknown command '" + m_name + "'");
+    if (commandId == NOMAD_INVALID_ID) {
+        raiseException("Unknown command '" + m_name + "'");
     }
 
-    compiler->add_command_call(command_id);
+    compiler->addCommandCall(commandId);
 }
 
-void CallCommandExpression::add_argument(std::unique_ptr<Argument> argument) {
+void CallCommandExpression::addArgument(std::unique_ptr<Argument> argument) {
     m_arguments.add(std::move(argument));
 }
 
-ArgumentList* CallCommandExpression::get_arguments() {
+ArgumentList* CallCommandExpression::getArguments() {
     return &m_arguments;
 }
 
@@ -236,29 +235,29 @@ ScriptCallExpression::ScriptCallExpression(NomadIndex line, NomadIndex column, N
     m_name(std::move(name)) {
 }
 
-void ScriptCallExpression::on_parse(Compiler* compiler, Script* script) {
-    auto call_script_id = compiler->get_runtime()->get_script_id(m_name);
+void ScriptCallExpression::onParse(Compiler* compiler, Script* script) {
+    auto callScriptId = compiler->getRuntime()->getScriptId(m_name);
 
-    auto call_script = compiler->get_runtime()->get_script(call_script_id);
+    auto callScript = compiler->getRuntime()->getScript(callScriptId);
 
-    set_type(call_script->get_return_type());
+    setType(callScript->getReturnType());
 }
 
-void ScriptCallExpression::on_compile(Compiler* compiler, Script* script) {
-    auto target_script_id = compiler->get_runtime()->get_script_id(m_name);
+void ScriptCallExpression::onCompile(Compiler* compiler, Script* script) {
+    auto targetScriptId = compiler->getRuntime()->getScriptId(m_name);
 
-    if (target_script_id == NOMAD_INVALID_ID) {
-        raise_exception("Unknown script '" + m_name + "'");
+    if (targetScriptId == NOMAD_INVALID_ID) {
+        raiseException("Unknown script '" + m_name + "'");
     }
 
-    compiler->add_script_call(target_script_id);
+    compiler->addScriptCall(targetScriptId);
 }
 
-void ScriptCallExpression::add_argument(std::unique_ptr<Expression> argument) {
+void ScriptCallExpression::addArgument(std::unique_ptr<Expression> argument) {
     m_arguments.push_back(std::move(argument));
 }
 
-NomadIndex ScriptCallExpression::get_argument_count() const {
+NomadIndex ScriptCallExpression::getArgumentCount() const {
     return m_arguments.size();
 }
 
@@ -275,12 +274,12 @@ BooleanLiteral::BooleanLiteral(NomadIndex line, NomadIndex column, NomadBoolean 
     m_value(m_value) {
 }
 
-void BooleanLiteral::on_parse(Compiler* compiler, Script* script) {
-    set_resolved(ScriptValue{m_value}, compiler->get_runtime()->get_boolean_type());
+void BooleanLiteral::onParse(Compiler* compiler, Script* script) {
+    setResolved(ScriptValue{m_value}, compiler->getRuntime()->getBooleanType());
 }
 
-void BooleanLiteral::on_compile(Compiler* compiler, Script* script) {
-    compiler->add_load_boolean_value(m_value);
+void BooleanLiteral::onCompile(Compiler* compiler, Script* script) {
+    compiler->addLoadBooleanValue(m_value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -291,14 +290,14 @@ IntegerLiteral::IntegerLiteral(NomadIndex line, NomadIndex column, NomadInteger 
     m_value(value) {
 }
 
-void IntegerLiteral::on_parse(Compiler* compiler, Script* script) {
+void IntegerLiteral::onParse(Compiler* compiler, Script* script) {
     ScriptValue value{m_value};
 
-    set_resolved(value, compiler->get_runtime()->get_integer_type());
+    setResolved(value, compiler->getRuntime()->getIntegerType());
 }
 
-void IntegerLiteral::on_compile(Compiler* compiler, Script* script) {
-    compiler->add_load_integer_value(m_value);
+void IntegerLiteral::onCompile(Compiler* compiler, Script* script) {
+    compiler->addLoadIntegerValue(m_value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -308,14 +307,14 @@ FloatLiteral::FloatLiteral(NomadIndex line, NomadIndex column, NomadFloat value)
     m_value(value) {
 }
 
-void FloatLiteral::on_parse(Compiler* compiler, Script* script) {
+void FloatLiteral::onParse(Compiler* compiler, Script* script) {
     ScriptValue value{m_value};
 
-    set_resolved(value, compiler->get_runtime()->get_float_type());
+    setResolved(value, compiler->getRuntime()->getFloatType());
 }
 
-void FloatLiteral::on_compile(Compiler* compiler, Script* script) {
-    compiler->add_load_float_value(m_value);
+void FloatLiteral::onCompile(Compiler* compiler, Script* script) {
+    compiler->addLoadFloatValue(m_value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -326,106 +325,74 @@ StringLiteral::StringLiteral(NomadIndex line, NomadIndex column, NomadString val
     m_value(std::move(value)) {
 }
 
-void StringLiteral::on_parse(Compiler* compiler, Script* script) {
-    set_resolved(ScriptValue{m_value}, compiler->get_runtime()->get_string_type());
+void StringLiteral::onParse(Compiler* compiler, Script* script) {
+    setResolved(ScriptValue{m_value}, compiler->getRuntime()->getStringType());
 }
 
-void StringLiteral::on_compile(Compiler* compiler, Script* script) {
-    auto string_value = get_value().get_string_value();
+void StringLiteral::onCompile(Compiler* compiler, Script* script) {
+    auto stringValue = getValue().getStringValue();
 
-    auto string_id = compiler->get_runtime()->register_string(string_value);
+    auto stringId = compiler->getRuntime()->registerString(stringValue);
 
-    compiler->add_op_code(OpCodes::op_string_load_r);
-    compiler->add_id(string_id);
+    compiler->addOpCode(OpCodes::op_string_load_r);
+    compiler->addId(stringId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // ConstantValueExpression
-ConstantValueExpression::ConstantValueExpression(NomadIndex line, NomadIndex column, const NomadString& constant_name):
+ConstantValueExpression::ConstantValueExpression(NomadIndex line, NomadIndex column, const NomadString& constantName):
     PrimaryExpression(line, column),
-    m_constant_name(constant_name) {
+    m_constantName(constantName) {
 }
 
-void ConstantValueExpression::on_parse(Compiler* compiler, Script* script) {
-    m_constant_id = compiler->get_runtime()->get_constant_id(m_constant_name);
+void ConstantValueExpression::onParse(Compiler* compiler, Script* script) {
+    m_constantId = compiler->getRuntime()->getConstantId(m_constantName);
 
-    if (m_constant_id != NOMAD_INVALID_ID) {
-        ScriptValue constant_value;
-        compiler->get_runtime()->get_constant_value(m_constant_id, constant_value);
-        auto constant_type = compiler->get_runtime()->get_constant_type(m_constant_id);
+    if (m_constantId != NOMAD_INVALID_ID) {
+        ScriptValue constantValue;
+        compiler->getRuntime()->getConstantValue(m_constantId, constantValue);
+        auto constantType = compiler->getRuntime()->getConstantType(m_constantId);
 
-        set_resolved(constant_value, constant_type);
+        setResolved(constantValue, constantType);
     }
 }
 
-void ConstantValueExpression::on_compile(Compiler* compiler, Script* script) {
+void ConstantValueExpression::onCompile(Compiler* compiler, Script* script) {
     parse(compiler, script);
 
-    if (!is_parsed()) {
-        raise_exception("Unknown constant: " + m_constant_name);
+    if (!isParsed()) {
+        raiseException("Unknown constant: " + m_constantName);
     }
 
-    compiler->add_load_value(get_type(), get_value());
+    compiler->addLoadValue(getType(), getValue());
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// String Literal expressions
-///////////////////////////////////////////////////////////////////////////////
-//StringLiteralExpression::StringLiteralExpression(NomadIndex line, NomadIndex column, NomadString value):
-//    Expression(line, column),
-//    m_value(std::move(value))
-//{
-//}
-//
-//StringLiteralExpression::~StringLiteralExpression() {
-//    get_value().free_string_value();
-//}
-//
-//void StringLiteralExpression::on_parse(Compiler* compiler) {
-//    m_string_id = compiler->get_runtime()->get_string_id(m_value);
-//
-//    if (m_string_id == NOMAD_INVALID_ID) {
-//        raise_exception("Unknown string: " + m_value);
-//    }
-//
-//    ScriptValue string_id_value;
-//
-//    string_id_value.set_id_value(m_string_id);
-//
-//    set_resolved(string_id_value, compiler->get_runtime()->get_string_type());
-//}
-//
-//void StringLiteralExpression::on_compile(Compiler* compiler) {
-//    compiler->add_op_code(OpCodes::op_string_load_r);
-//    compiler->add_id(m_string_id);
-//}
 
 ///////////////////////////////////////////////////////////////////////////////
 // FormatStringLiteral
-FormatStringLiteral::FormatStringLiteral(NomadIndex line, NomadIndex column, const NomadString& format_string):
+FormatStringLiteral::FormatStringLiteral(NomadIndex line, NomadIndex column, const NomadString& formatString):
     Expression(line, column),
-    m_format_string(format_string) {
+    m_formatString(formatString) {
 }
 
-void FormatStringLiteral::on_parse(Compiler* compiler, Script* script) {
-    set_type(compiler->get_runtime()->get_string_type());
+void FormatStringLiteral::onParse(Compiler* compiler, Script* script) {
+    setType(compiler->getRuntime()->getStringType());
 }
 
-void FormatStringLiteral::on_compile(Compiler* compiler, Script* script) {
-    NomadId script_id = script->get_id();
+void FormatStringLiteral::onCompile(Compiler* compiler, Script* script) {
+    NomadId scriptId = script->getId();
 
-    auto format_string_id = compiler->get_runtime()->get_format_string_id(m_format_string, script_id);
+    auto formatStringId = compiler->getRuntime()->getFormatStringId(m_formatString, scriptId);
 
-    if (format_string_id == NOMAD_INVALID_ID) {
-        format_string_id = compiler->get_runtime()->register_format_string(m_format_string, script_id);
+    if (formatStringId == NOMAD_INVALID_ID) {
+        formatStringId = compiler->getRuntime()->registerFormatString(m_formatString, scriptId);
 
-        auto format_string = compiler->get_runtime()->get_format_string(format_string_id);
+        auto format_string = compiler->getRuntime()->getFormatString(formatStringId);
 
-        compile_format_string(compiler, script, m_format_string, format_string);
+        compileFormatString(compiler, script, m_formatString, format_string);
     }
 
-    compiler->add_op_code(OpCodes::op_format_string_execute);
-    compiler->add_id(format_string_id);
+    compiler->addOpCode(OpCodes::op_format_string_execute);
+    compiler->addId(formatStringId);
 }
 
 
@@ -434,100 +401,95 @@ IdentifierExpression::IdentifierExpression(NomadIndex line, NomadIndex column, c
     m_identifier(identifier)
 {
 }
-void IdentifierExpression::on_parse(nomad::Compiler* compiler, Script* script) {
-    compiler->get_identifier_definition(m_identifier, script, m_identifier_definition);
+void IdentifierExpression::onParse(nomad::Compiler* compiler, Script* script) {
+    compiler->getIdentifierDefinition(m_identifier, script, m_identifierDefinition);
 
     // Check for invalid identifier type.
-    switch (m_identifier_definition.identifier_type) {
+    switch (m_identifierDefinition.identifierType) {
         case IdentifierType::Unknown:
             // Unknown identifier type
-            compiler->report_error("Unknown identifier: " + m_identifier);
+            compiler->reportError("Unknown identifier: " + m_identifier);
 
         case IdentifierType::Script:
-            compiler->report_error("Cannot use script as identifier: "+ m_identifier);
+            compiler->reportError("Cannot use script as identifier: "+ m_identifier);
 
         case IdentifierType::Command:
-            compiler->report_error("Cannot use command as identifier: "+ m_identifier);
+            compiler->reportError("Cannot use command as identifier: "+ m_identifier);
 
         case IdentifierType::Keyword:
-            compiler->report_error("Cannot use keyword as identifier: "+ m_identifier);
+            compiler->reportError("Cannot use keyword as identifier: "+ m_identifier);
 
         case IdentifierType::Statement:
-            compiler->report_error("Cannot use statement as identifier: "+ m_identifier);
+            compiler->reportError("Cannot use statement as identifier: "+ m_identifier);
 
         default:
             // Valid identifier type. Ignore
             break; 
     }
 
-    if (m_identifier_definition.identifier_type == IdentifierType::ContextVariable) {
-        auto context_id = compiler->get_runtime()->get_variable_context_id_by_prefix(m_identifier);
+    if (m_identifierDefinition.identifierType == IdentifierType::ContextVariable) {
+        auto contextId = compiler->getRuntime()->getVariableContextIdByPrefix(m_identifier);
 
-        if (context_id == NOMAD_INVALID_ID) {
-            compiler->report_error("Unknown context for identifier: " + m_identifier);
+        if (contextId == NOMAD_INVALID_ID) {
+            compiler->reportError("Unknown context for identifier: " + m_identifier);
         }
 
-        auto context = compiler->get_runtime()->get_variable_context(context_id);
+        auto context = compiler->getRuntime()->getVariableContext(contextId);
 
-        context->register_variable(m_identifier, m_identifier_definition.value_type);
+        context->registerVariable(m_identifier, m_identifierDefinition.valueType);
     }
 
-    if (m_identifier_definition.identifier_type == IdentifierType::ScriptVariable) {
-        script->register_variable(m_identifier, m_identifier_definition.value_type);
+    if (m_identifierDefinition.identifierType == IdentifierType::ScriptVariable) {
+        script->registerVariable(m_identifier, m_identifierDefinition.valueType);
     }
 
-    // if (m_identifier_definition.value_type == nullptr) {
-    //     compiler->report_error("Unknown type for identifier `" + m_identifier + "`. Was it assigned a value?");
-    // }
-
-    set_type(m_identifier_definition.value_type);
+    setType(m_identifierDefinition.valueType);
 }
 
-void IdentifierExpression::on_compile(Compiler* compiler, Script* script) {
-    switch (m_identifier_definition.identifier_type) {
+void IdentifierExpression::onCompile(Compiler* compiler, Script* script) {
+    switch (m_identifierDefinition.identifierType) {
         case IdentifierType::ScriptVariable:
-            compiler->add_op_code(OpCodes::op_script_variable_get);
-            compiler->add_id(m_identifier_definition.variable_id);
+            compiler->addOpCode(OpCodes::op_script_variable_get);
+            compiler->addId(m_identifierDefinition.variableId);
             break;
 
         case IdentifierType::DynamicVariable:
-            compiler->add_op_code(OpCodes::op_dynamic_variable_get);
-            compiler->add_id(m_identifier_definition.variable_id);
+            compiler->addOpCode(OpCodes::op_dynamic_variable_get);
+            compiler->addId(m_identifierDefinition.variableId);
             break;
 
         case IdentifierType::ContextVariable: {
-            auto context_id = compiler->get_runtime()->get_variable_context_id_by_prefix(m_identifier);
+            auto contextId = compiler->getRuntime()->getVariableContextIdByPrefix(m_identifier);
 
-            if (context_id == NOMAD_INVALID_ID) {
-                compiler->report_error("Unknown context for identifier: " + m_identifier);
+            if (contextId == NOMAD_INVALID_ID) {
+                compiler->reportError("Unknown context for identifier: " + m_identifier);
             }
 
-            auto context = compiler->get_runtime()->get_variable_context(context_id);
+            auto context = compiler->getRuntime()->getVariableContext(contextId);
 
-            context->register_variable(m_identifier, m_identifier_definition.value_type);
+            context->registerVariable(m_identifier, m_identifierDefinition.valueType);
 
-            compiler->add_op_code(OpCodes::op_context_variable_get);
-            compiler->add_id(m_identifier_definition.context_id);
-            compiler->add_id(m_identifier_definition.variable_id);
+            compiler->addOpCode(OpCodes::op_context_variable_get);
+            compiler->addId(m_identifierDefinition.contextId);
+            compiler->addId(m_identifierDefinition.variableId);
             break;
         }
 
         case IdentifierType::Parameter:
-            if (m_identifier_definition.value_type == nullptr) {
-                compiler->report_error("Unknown type for parameter: " + m_identifier);
+            if (m_identifierDefinition.valueType == nullptr) {
+                compiler->reportError("Unknown type for parameter: " + m_identifier);
             }
 
-            if (m_identifier_definition.value_type == compiler->get_runtime()->get_string_type()) {
-                compiler->add_op_code(OpCodes::op_string_parameter_load_r);
+            if (m_identifierDefinition.valueType == compiler->getRuntime()->getStringType()) {
+                compiler->addOpCode(OpCodes::op_string_parameter_load_r);
             } else {
-                compiler->add_op_code(OpCodes::op_parameter_load_r);
+                compiler->addOpCode(OpCodes::op_parameter_load_r);
             }
-//            compiler->add_op_code(OpCodes::op_parameter_get);
-            compiler->add_id(m_identifier_definition.variable_id);
+            compiler->addId(m_identifierDefinition.variableId);
             break;
 
         default:
-            raise_exception("Invalid identifier type");
+            raiseException("Invalid identifier type");
     }
 }
 

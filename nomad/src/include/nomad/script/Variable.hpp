@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_VARIABLE_HPP
-#define NOMAD_VARIABLE_HPP
+#pragma once
 
 #include "nomad/script/Type.hpp"
 
@@ -17,9 +16,9 @@ class VariableDefinition {
 public:
     VariableDefinition(const NomadString& name, const Type* type);
 
-    [[nodiscard]] const NomadString& get_name() const;
-    void set_type(const Type* type);
-    [[nodiscard]] const Type* get_type() const;
+    [[nodiscard]] const NomadString& getName() const;
+    void setType(const Type* type);
+    [[nodiscard]] const Type* getType() const;
 
 private:
     NomadString m_name;
@@ -30,34 +29,32 @@ class VariableMap {
 public:
     VariableMap() = default;
 
-    NomadId register_variable(const NomadString& name, const Type* type);
-    [[nodiscard]] NomadId get_variable_id(const NomadString& name) const;
-    [[nodiscard]] const NomadString& get_variable_name(NomadId variable_id) const;
-    void set_variable_type(NomadId variable_id, const Type* type);
-    [[nodiscard]] const Type* get_variable_type(NomadId variable_id) const;
-    [[nodiscard]] NomadIndex get_variable_count() const;
+    NomadId registerVariable(const NomadString& name, const Type* type);
+    [[nodiscard]] NomadId getVariableId(const NomadString& name) const;
+    [[nodiscard]] const NomadString& getVariableName(NomadId variableId) const;
+    void setVariableType(NomadId variableId, const Type* type);
+    [[nodiscard]] const Type* getVariableType(NomadId variableId) const;
+    [[nodiscard]] NomadIndex getVariableCount() const;
 private:
     std::vector<VariableDefinition> m_variables;
 };
 
 class VariableList {
 public:
-    explicit VariableList(const VariableMap* variable_map);
+    explicit VariableList(const VariableMap* variableMap);
     ~VariableList();
 
-    [[nodiscard]] NomadId get_variable_id(const NomadString& name) const;
-    [[nodiscard]] const NomadString& get_variable_name(NomadId variable_id) const;
-    [[nodiscard]] const Type* get_variable_type(NomadId variable_id) const;
-    [[nodiscard]] NomadIndex get_variable_count() const;
+    [[nodiscard]] NomadId getVariableId(const NomadString& name) const;
+    [[nodiscard]] const NomadString& getVariableName(NomadId variableId) const;
+    [[nodiscard]] const Type* getVariableType(NomadId variableId) const;
+    [[nodiscard]] NomadIndex getVariableCount() const;
 
-    void set_variable_value(NomadId variable_id, const ScriptValue& value);
-    void get_variable_value(NomadId variable_id, ScriptValue& value) const;
+    void setVariableValue(NomadId variableId, const ScriptValue& value);
+    void getVariableValue(NomadId variableId, ScriptValue& value) const;
 
 private:
-    const VariableMap m_variable_map;
-    std::vector<ScriptValue> m_variable_values;
+    const VariableMap m_variableMap;
+    std::vector<ScriptValue> m_variableValues;
 };
 
 } // nomad
-
-#endif //NOMAD_VARIABLE_HPP

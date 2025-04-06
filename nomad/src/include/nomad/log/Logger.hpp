@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-04.
 //
 
-#ifndef NOMAD_LOGGER_HPP
-#define NOMAD_LOGGER_HPP
+#pragma once
 
 #include <chrono>
 #include <string>
@@ -50,8 +49,8 @@ public:
 
     ~Logger();
 
-    void set_log_level(LogLevel level);
-    [[nodiscard]] LogLevel get_log_level() const;
+    void setLogLevel(LogLevel level);
+    [[nodiscard]] LogLevel getLogLevel() const;
 
     void debug(const NomadString& message);
     void info(const NomadString& message);
@@ -59,15 +58,15 @@ public:
     void error(const NomadString& message);
     void fatal(const NomadString& message);
 
-    void add_sink(LogSink* sink);
-    void remove_sink(LogSink* sink);
+    void addSink(LogSink* sink);
+    void removeSink(LogSink* sink);
 
     void flush();
 
 private:
     void log(LogLevel level, const NomadString& message);
 
-    LogLevel m_log_level;
+    LogLevel m_logLevel;
     std::vector<LogSink*> m_sinks;
     std::vector<LogEntry> m_entries;
 };
@@ -86,4 +85,3 @@ void flush();
 
 } // namespace nomad
 
-#endif //NOMAD_LOGGER_HPP

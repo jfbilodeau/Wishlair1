@@ -10,15 +10,13 @@
 
 #include <algorithm>
 #include <chrono>
-#include <iomanip>
-#include <sstream>
 #include <memory_resource>
 #include <ctime>
 
 namespace nomad {
 
 Logger::Logger(LogSink* sink) {
-    add_sink(sink);
+    addSink(sink);
 
     info("Logger initialized.");
 }
@@ -29,12 +27,12 @@ Logger::~Logger() {
     flush();
 }
 
-void Logger::set_log_level(LogLevel level) {
-    m_log_level = level;
+void Logger::setLogLevel(LogLevel level) {
+    m_logLevel = level;
 }
 
-LogLevel Logger::get_log_level() const {
-    return m_log_level;
+LogLevel Logger::getLogLevel() const {
+    return m_logLevel;
 }
 
 void Logger::debug(const NomadString& message) {
@@ -66,11 +64,11 @@ void Logger::fatal(const NomadString& message) {
     exit(1);
 }
 
-void Logger::add_sink(LogSink* sink) {
+void Logger::addSink(LogSink* sink) {
     m_sinks.push_back(sink);
 }
 
-void Logger::remove_sink(LogSink* sink) {
+void Logger::removeSink(LogSink* sink) {
     m_sinks.erase(std::remove(m_sinks.begin(), m_sinks.end(), sink), m_sinks.end());
 }
 
@@ -90,49 +88,37 @@ void Logger::flush() {
 }
 
 void Logger::log(LogLevel level, const NomadString& message) {
-    if (level < m_log_level) {
+    if (level < m_logLevel) {
         // Skip!
         return;
     }
 
-    NomadString log_level_name;
+    NomadString logLevelName;
 
     switch (level) {
         case LogLevel::Debug:
-            log_level_name = "DEBUG";
+            logLevelName = "DEBUG";
             break;
         case LogLevel::Info:
-            log_level_name = "INFO";
+            logLevelName = "INFO";
             break;
         case LogLevel::Warning:
-            log_level_name = "WARNING";
+            logLevelName = "WARNING";
             break;
         case LogLevel::Error:
-            log_level_name = "ERROR";
+            logLevelName = "ERROR";
             break;
         case LogLevel::Fatal:
-            log_level_name = "FATAL";
+            logLevelName = "FATAL";
             break;
         default:
-            log_level_name = "UNKNOWN";
+            logLevelName = "UNKNOWN";
             break;
     }
 
-    // time_t time = std::time(nullptr);
-    // std::stringstream ss;
-    // tm tm;
-    //
-    // gmtime(&time);
-    //
-    // ss
-    //     << std::put_time(&tm, "%Y-%m-%dT%H:%M:%S")
-    //     << " ["
-    //     << log_level_name
-    //     << "] "
-    //     << message;
     auto time = std::chrono::system_clock::now();
 
-    auto line = std::format("{0:%F}T{0:%T} [{1}] {2}", time, log_level_name, message);
+    auto line = std::format("{0:%F}T{0:%T} [{1}] {2}", time, logLevelName, message);
 
     m_entries.emplace_back(LogEntry{
         time,

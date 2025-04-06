@@ -14,82 +14,82 @@
 
 namespace nomad {
 
-void Game::init_game_commands() {
+void Game::initGameCommands() {
     log::debug("Initializing game commands");
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "game.createScene",
         [this](Interpreter* interpreter) {
-            NomadString script_name = interpreter->get_string_parameter(0);
+            NomadString script_name = interpreter->getStringParameter(0);
 
-            const auto scene = create_scene();
+            const auto scene = createScene();
 
-            const auto script_id = get_script_id(script_name);
+            const auto script_id = getScriptId(script_name);
 
             if (script_id == NOMAD_INVALID_ID) {
                 log::error("Script for scene '" + script_name + "' not found");
                 return;
             }
 
-            execute_script_in_new_context(script_id, scene, nullptr);
+            executeScriptInNewContext(script_id, scene, nullptr);
         }, {
-            def_parameter(
-                "scriptName", m_runtime->get_string_type(),
+            defParameter(
+                "scriptName", m_runtime->getStringType(),
                 NomadParamDoc("Name of the script to execute to initialize the scene.")
             )
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Creates a new scene.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "game.loadSpriteAtlas",
         [this](Interpreter* interpreter) {
-            auto atlas_name = interpreter->get_string_parameter(0);
+            auto atlas_name = interpreter->getStringParameter(0);
 
-            m_resource_manager->load_sprite_atlas(atlas_name);
+            m_resourceManager->loadSpriteAtlas(atlas_name);
         }, {
-            def_parameter(
-                "atlasName", m_runtime->get_string_type(), NomadParamDoc("Name of the sprite atlas to load.")
+            defParameter(
+                "atlasName", m_runtime->getStringType(), NomadParamDoc("Name of the sprite atlas to load.")
             ),
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Loads a sprite atlas from a file.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "game.loadFont",
         [this](Interpreter* interpreter) {
-            auto font_name = interpreter->get_string_parameter(0);
-            auto font_size = interpreter->get_integer_parameter(1);
+            auto font_name = interpreter->getStringParameter(0);
+            auto font_size = interpreter->getIntegerParameter(1);
 
-            auto font_id = m_resource_manager->get_fonts()->register_font(font_name, static_cast<int>(font_size));
+            auto font_id = m_resourceManager->getFonts()->registerFont(font_name, static_cast<int>(font_size));
 
-            interpreter->set_id_result(font_id);
+            interpreter->setIdResult(font_id);
         }, {
-            def_parameter("fontName", m_runtime->get_string_type(), NomadParamDoc("Name of the font to load.")),
-            def_parameter(
-                "fontSize", m_runtime->get_integer_type(), NomadParamDoc("Size of the font in point to load.")
+            defParameter("fontName", m_runtime->getStringType(), NomadParamDoc("Name of the font to load.")),
+            defParameter(
+                "fontSize", m_runtime->getIntegerType(), NomadParamDoc("Size of the font in point to load.")
             )
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Loads a font from a file.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "game.loadImage",
         [this](Interpreter* interpreter) {
-            NomadString texture_name = interpreter->get_string_parameter(0);
+            NomadString texture_name = interpreter->getStringParameter(0);
 
             auto texture_file_name = texture_name + ".png";
 
-            auto font_id = m_resource_manager->get_textures()->register_texture(texture_file_name);
+            auto font_id = m_resourceManager->getTextures()->registerTexture(texture_file_name);
 
-            interpreter->set_id_result(font_id);
+            interpreter->setIdResult(font_id);
         }, {
-            def_parameter("imageName", m_runtime->get_string_type(), NomadParamDoc("Name of the image to load.")),
+            defParameter("imageName", m_runtime->getStringType(), NomadParamDoc("Name of the image to load.")),
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Loads a font from a file.")
     );
 }

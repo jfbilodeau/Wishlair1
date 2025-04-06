@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-17.
 //
 
-#ifndef NOMAD_SPRITEATLAS_H
-#define NOMAD_SPRITEATLAS_H
+#pragma once
 
 #include "nomad/geometry/Rectangle.hpp"
 
@@ -15,8 +14,7 @@ class SpriteAtlas {
 
 };
 
-void load_sprite_atlas(ResourceManager* resource_manager, const NomadString& resource_name);
+void loadSpriteAtlas(ResourceManager* resourceManager, const NomadString& resourceName);
 
 } // nomad
 
-#endif //NOMAD_SPRITEATLAS_H

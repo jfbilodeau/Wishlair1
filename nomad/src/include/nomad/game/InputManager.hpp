@@ -366,12 +366,12 @@ struct InputEvent {
 //    bool held = false;  // true if the input is currently held
 //};
 
-NomadString get_input_code_name(InputCode code);
-InputCode get_input_code(const NomadString& name);
+NomadString getInputCodeName(InputCode code);
+InputCode getInputCode(const NomadString& name);
 
-void map_sdl_keyboard_event(SDL_KeyboardEvent& event, InputEvent& input_event);
-void map_sdl_mouse_event(SDL_MouseButtonEvent& event, InputEvent& input_event);
-void map_sdl_controller_button_event(SDL_ControllerButtonEvent& event, InputEvent& input_event);
+void mapSdlKeyboardEvent(SDL_KeyboardEvent& event, InputEvent& inputEvent);
+void mapSdlMouseEvent(SDL_MouseButtonEvent& event, InputEvent& inputEvent);
+void mapSdlControllerButtonEvent(SDL_ControllerButtonEvent& event, InputEvent& inputEvent);
 void map_sdl_controller_axis_event(SDL_ControllerAxisEvent& event, InputEvent& input_event);
 
 //class InputManager {

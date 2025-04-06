@@ -132,9 +132,9 @@ struct LineGrammar : boost::spirit::qi::grammar<Iterator, std::vector<Token>()> 
     qi::rule<Iterator, std::vector<Token>()> start = *token >> qi::eoi;
 };
 
-TokenizerException::TokenizerException(const NomadString& message, NomadIndex line_index, NomadIndex character) :
+TokenizerException::TokenizerException(const NomadString& message, NomadIndex lineIndex, NomadIndex character) :
     NomadException(message),
-    m_line_index(line_index),
+    m_lineIndex(lineIndex),
     m_character(character) {}
 
 Tokenizer::Tokenizer(Runtime* runtime, const NomadString& source) :
@@ -148,24 +148,24 @@ Tokenizer::Tokenizer(Runtime* runtime, const NomadString& source) :
         m_lines.push_back(line);
     }
 
-    m_end_of_file = m_lines.empty();
+    m_endOfFile = m_lines.empty();
 
-    if (!end_of_file()) {
-        parse_line();
+    if (!isEndOfFile()) {
+        parseLine();
     }
 }
 
-Runtime* Tokenizer::get_runtime() const {
+Runtime* Tokenizer::getRuntime() const {
     return m_runtime;
 }
 
 void Tokenizer::reset() {
-    m_line_index = 0;
-    m_token_index = 0;
-    m_end_of_file = false;
+    m_lineIndex = 0;
+    m_tokenIndex = 0;
+    m_endOfFile = false;
 }
 
-const NomadString& Tokenizer::get_source() const {
+const NomadString& Tokenizer::getSource() const {
     return m_source;
 }
 
@@ -173,149 +173,149 @@ const NomadString& Tokenizer::get_source() const {
 //    return m_script->get_path();
 //}
 
-bool Tokenizer::end_of_file() const {
+bool Tokenizer::isEndOfFile() const {
 //    return m_line_index >= (int) m_lines.size();
-    return m_end_of_file;
+    return m_endOfFile;
 }
 
-bool Tokenizer::next_line() {
+bool Tokenizer::nextLine() {
     m_tokens.clear();
-    m_token_index = 0;
+    m_tokenIndex = 0;
 
     do {
-        if (m_line_index >= m_lines.size()) {
-            m_end_of_file = true;
+        if (m_lineIndex >= m_lines.size()) {
+            m_endOfFile = true;
 
             return false;
         }
 
-        parse_line();
+        parseLine();
 
-        m_line_index++;
+        m_lineIndex++;
 
-        if (get_token_count() != 0) {
+        if (getTokenCount() != 0) {
             return true;
         }
-    } while (!end_of_file());
+    } while (!isEndOfFile());
 
     return false;
 }
 
-bool Tokenizer::token_is(const NomadString& token) const {
-    return !end_of_line() && current_token().text_value == token;
+bool Tokenizer::tokenIs(const NomadString& token) const {
+    return !endOfLine() && currentToken().textValue == token;
 }
 
-bool Tokenizer::token_is(TokenType type) const {
-    if (end_of_line()) {
+bool Tokenizer::tokenIs(TokenType type) const {
+    if (endOfLine()) {
         return false;
     }
 
-    return current_token().type == type;
+    return currentToken().type == type;
 }
 
 void Tokenizer::expect(const NomadString& token) {
-    if (!token_is(token)) {
-        throw_error("Expected '" + token + "'");
+    if (!tokenIs(token)) {
+        throwError("Expected '" + token + "'");
     }
 
-    next_token();
+    nextToken();
 }
 
 void Tokenizer::expect(TokenType type) {
-    if (!token_is(type)) {
-        throw_error("Expected '" + to_string(type) + "'");
+    if (!tokenIs(type)) {
+        throwError("Expected '" + toString(type) + "'");
     }
 }
 
-NomadIndex Tokenizer::get_line_index() const {
-    return m_line_index;
+NomadIndex Tokenizer::getLineIndex() const {
+    return m_lineIndex;
 }
 
-NomadIndex Tokenizer::get_column_index() const {
+NomadIndex Tokenizer::getColumnIndex() const {
     return 0; // TODO: Implement
 }
 
-const NomadString& Tokenizer::get_line() const {
-    return m_lines[m_line_index-1];
+const NomadString& Tokenizer::getLine() const {
+    return m_lines[m_lineIndex-1];
 }
 
-NomadIndex Tokenizer::get_line_count() const {
+NomadIndex Tokenizer::getLineCount() const {
     return m_lines.size();
 }
 
-const NomadString& Tokenizer::get_token_at(NomadIndex index) const {
-    return m_tokens[index].text_value;
+const NomadString& Tokenizer::getTokenAt(NomadIndex index) const {
+    return m_tokens[index].textValue;
 }
 
-TokenType Tokenizer::get_token_type_at(NomadIndex index) const {
+TokenType Tokenizer::getTokenTypeAt(NomadIndex index) const {
     return m_tokens[index].type;
 }
 
-NomadInteger Tokenizer::get_integer_token_at(NomadIndex index) const {
-    return m_tokens[index].integer_value;
+NomadInteger Tokenizer::getIntegerTokenAt(NomadIndex index) const {
+    return m_tokens[index].integerValue;
 }
 
-NomadFloat Tokenizer::get_float_token_at(NomadIndex index) const {
-    return m_tokens[index].float_value;
+NomadFloat Tokenizer::getFloatTokenAt(NomadIndex index) const {
+    return m_tokens[index].floatValue;
 }
 
 
-const Token& Tokenizer::current_token() const {
-    return m_tokens[m_token_index];
+const Token& Tokenizer::currentToken() const {
+    return m_tokens[m_tokenIndex];
 }
 
-const Token& Tokenizer::next_token() {
-    return m_tokens[m_token_index++];
+const Token& Tokenizer::nextToken() {
+    return m_tokens[m_tokenIndex++];
 }
 
-const NomadString& Tokenizer::next_identifier() {
+const NomadString& Tokenizer::nextIdentifier() {
     expect(TokenType::Identifier);
 
-    return next_token().text_value;
+    return nextToken().textValue;
 }
 
-void Tokenizer::next_identifier(NomadString& identifier) {
+void Tokenizer::nextIdentifier(NomadString& identifier) {
     expect(TokenType::Identifier);
 
-    identifier = next_token().text_value;
+    identifier = nextToken().textValue;
 }
 
-void Tokenizer::next_operator(NomadString& operator_text) {
+void Tokenizer::nextOperator(NomadString& operator_text) {
     expect(TokenType::Operator);
 
-    operator_text = next_token().text_value;
+    operator_text = nextToken().textValue;
 }
 
-NomadInteger Tokenizer::next_integer() {
+NomadInteger Tokenizer::nextInteger() {
     expect(TokenType::Integer);
 
-    return next_token().integer_value;
+    return nextToken().integerValue;
 }
 
-NomadFloat Tokenizer::next_float() {
+NomadFloat Tokenizer::nextFloat() {
     expect(TokenType::Float);
 
-    return next_token().float_value;
+    return nextToken().floatValue;
 }
 
-NomadIndex Tokenizer::get_token_count() const {
+NomadIndex Tokenizer::getTokenCount() const {
     return m_tokens.size();
 }
 
-bool Tokenizer::end_of_line() const {
-    return m_token_index >= m_tokens.size();
+bool Tokenizer::endOfLine() const {
+    return m_tokenIndex >= m_tokens.size();
 }
 
-void Tokenizer::expect_end_of_line() {
-    if (!end_of_line()) {
-        throw_error("Expected end of line.");
+void Tokenizer::expectEndOfLine() {
+    if (!endOfLine()) {
+        throwError("Expected end of line.");
     }
 
-    next_line();
+    nextLine();
 }
 
-void Tokenizer::parse_line() {
-    auto& line = m_lines[m_line_index];
+void Tokenizer::parseLine() {
+    auto& line = m_lines[m_lineIndex];
 
     const LineGrammar<NomadString::iterator> line_grammar;
 
@@ -324,19 +324,19 @@ void Tokenizer::parse_line() {
     const auto success = qi::phrase_parse(first, line.end(), line_grammar, line_grammar.skipper, m_tokens);
 
     if (!success) {
-        throw_error("Failed to parse line: `" + line + "`");
+        throwError("Failed to parse line: `" + line + "`");
     }
 }
 
-void Tokenizer::skip_white_space(const NomadString& line, int& i) {
+void Tokenizer::skipWhiteSpace(const NomadString& line, int& i) {
     while (i < line.size() && line[i] == ' ') {
         i++;
     }
 }
 
 [[noreturn]]
-void Tokenizer::throw_error(const NomadString& message) {
-    throw TokenizerException(message, m_line_index, m_token_index);
+void Tokenizer::throwError(const NomadString& message) {
+    throw TokenizerException(message, m_lineIndex, m_tokenIndex);
 }
 
 } // nomad

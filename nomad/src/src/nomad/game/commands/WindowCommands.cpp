@@ -14,66 +14,66 @@
 
 namespace nomad {
 
-void Game::init_window_commands() {
+void Game::initWindowCommands() {
     log::debug("Initializing windows commands");
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "window.setResolution",
         [this](Interpreter* interpreter) {
-            auto resolutionX = int(interpreter->get_integer_parameter(0));
-            auto resolutionY = int(interpreter->get_integer_parameter(1));
+            auto resolutionX = int(interpreter->getIntegerParameter(0));
+            auto resolutionY = int(interpreter->getIntegerParameter(1));
 
             m_resolution.set(resolutionX, resolutionY);
 
-            SDL_RenderSetLogicalSize(m_renderer, m_resolution.x(), m_resolution.y());
+            SDL_RenderSetLogicalSize(m_renderer, m_resolution.getX(), m_resolution.getY());
         }, {
-            def_parameter("resolutionWidth", m_runtime->get_integer_type(), NomadParamDoc("Resolution width.")),
-            def_parameter("resolutionHeight", m_runtime->get_integer_type(), NomadParamDoc("Resolution height."))
+            defParameter("resolutionWidth", m_runtime->getIntegerType(), NomadParamDoc("Resolution width.")),
+            defParameter("resolutionHeight", m_runtime->getIntegerType(), NomadParamDoc("Resolution height."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Sets the resolution of the game window.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "window.setSize",
         [this](Interpreter* interpreter) {
-            auto width = int(interpreter->get_integer_parameter(0));
-            auto height = int(interpreter->get_integer_parameter(1));
+            auto width = int(interpreter->getIntegerParameter(0));
+            auto height = int(interpreter->getIntegerParameter(1));
 
-            m_window_size.set(width, height);
+            m_windowSize.set(width, height);
 
-            SDL_SetWindowSize(m_window, m_window_size.x(), m_window_size.y());
+            SDL_SetWindowSize(m_window, m_windowSize.getX(), m_windowSize.getY());
         }, {
-            def_parameter("windowWidth", m_runtime->get_integer_type(), NomadParamDoc("Window width.")),
-            def_parameter("windowHeight", m_runtime->get_integer_type(), NomadParamDoc("Window height."))
+            defParameter("windowWidth", m_runtime->getIntegerType(), NomadParamDoc("Window width.")),
+            defParameter("windowHeight", m_runtime->getIntegerType(), NomadParamDoc("Window height."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Sets the size of the game window.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "window.setFps",
         [this](Interpreter* interpreter) {
-            auto fps = int(interpreter->get_integer_parameter(0));
+            auto fps = int(interpreter->getIntegerParameter(0));
 
             m_fps = fps;
         }, {
-            def_parameter("framesPerSecond", m_runtime->get_integer_type(), NomadParamDoc("Frames per second."))
+            defParameter("framesPerSecond", m_runtime->getIntegerType(), NomadParamDoc("Frames per second."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Sets the frames per seconds (FPS) of the game.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "window.setTitle",
         [this](Interpreter* interpreter) {
-            auto title = interpreter->get_string_parameter(0);
+            auto title = interpreter->getStringParameter(0);
 
             SDL_SetWindowTitle(m_window, title);
         }, {
-            def_parameter("windowTitle", m_runtime->get_string_type(), NomadParamDoc("Title of the game window.")),
+            defParameter("windowTitle", m_runtime->getStringType(), NomadParamDoc("Title of the game window.")),
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Set the title of the game window.")
     );
 }

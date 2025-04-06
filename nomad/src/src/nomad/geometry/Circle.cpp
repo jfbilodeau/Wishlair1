@@ -12,47 +12,47 @@ Circle::Circle(NomadInteger x, NomadInteger y, NomadInteger radius):
 {
 }
 
-NomadInteger Circle::get_x() const {
-    return m_center.x();
+NomadInteger Circle::getX() const {
+    return m_center.getX();
 }
 
-NomadInteger Circle::get_y() const {
-    return m_center.y();
+NomadInteger Circle::getY() const {
+    return m_center.getY();
 }
 
-NomadInteger Circle::get_radius() const {
+NomadInteger Circle::getRadius() const {
     return m_radius;
 }
 
-const Point& Circle::get_center() const {
+const Point& Circle::getCenter() const {
     return m_center;
 }
 
-NomadInteger Circle::get_left() const {
-    return m_center.x() - m_radius;
+NomadInteger Circle::getLeft() const {
+    return m_center.getX() - m_radius;
 }
 
-NomadInteger Circle::get_right() const {
-    return m_center.x() + m_radius;
+NomadInteger Circle::getRight() const {
+    return m_center.getX() + m_radius;
 }
 
-NomadInteger Circle::get_top() const {
-    return m_center.y() - m_radius;
+NomadInteger Circle::getTop() const {
+    return m_center.getY() - m_radius;
 }
 
-NomadInteger Circle::get_bottom() const {
-    return m_center.y() + m_radius;
+NomadInteger Circle::getBottom() const {
+    return m_center.getY() + m_radius;
 }
 
-void Circle::set_x(NomadInteger x) {
-    m_center.set_x(x);
+void Circle::setX(NomadInteger x) {
+    m_center.setX(x);
 }
 
-void Circle::set_y(NomadInteger y) {
-    m_center.set_y(y);
+void Circle::setY(NomadInteger y) {
+    m_center.setY(y);
 }
 
-void Circle::set_radius(NomadInteger radius) {
+void Circle::setRadius(NomadInteger radius) {
     m_radius = radius;
 }
 

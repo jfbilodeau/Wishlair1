@@ -38,34 +38,34 @@ ScriptValue::ScriptValue(NomadId value) {
 
 ScriptValue::ScriptValue(const NomadString& value) {
     m_string_value = nullptr;
-    set_string_value(value);
+    setStringValue(value);
 }
 
-void ScriptValue::set_float_value(NomadFloat value) {
+void ScriptValue::setFloatValue(NomadFloat value) {
     m_float_value = value;
 }
 
-void ScriptValue::set_integer_value(NomadInteger value) {
+void ScriptValue::setIntegerValue(NomadInteger value) {
     m_integer_value = value;
 }
 
-void ScriptValue::set_index_value(NomadIndex value) {
+void ScriptValue::setIndexValue(NomadIndex value) {
     m_index_value = value;
 }
 
-void ScriptValue::set_boolean_value(NomadBoolean value) {
+void ScriptValue::setBooleanValue(NomadBoolean value) {
     m_boolean_value = value;
 }
 
-void ScriptValue::set_string_value(const NomadString& value) {
-    set_string_value(value.c_str());
+void ScriptValue::setStringValue(const NomadString& value) {
+    setStringValue(value.c_str());
 }
 
-void ScriptValue::set_id_value(NomadId value) {
+void ScriptValue::setIdValue(NomadId value) {
     m_id_value = value;
 }
 
-void ScriptValue::set_string_value(const NomadChar* value) {
+void ScriptValue::setStringValue(const NomadChar* value) {
     if (value == nullptr) {
         m_string_value = nullptr;
         return;
@@ -81,26 +81,26 @@ void ScriptValue::set_string_value(const NomadChar* value) {
 }
 
 void ScriptValue::set(NomadFloat value) {
-    set_float_value(value);
+    setFloatValue(value);
 }
 
 void ScriptValue::set(NomadInteger value) {
-    set_integer_value(value);
+    setIntegerValue(value);
 }
 
 void ScriptValue::set(NomadBoolean value) {
-    set_boolean_value(value);
+    setBooleanValue(value);
 }
 
 void ScriptValue::set(const NomadChar* value) {
-    set_string_value(value);
+    setStringValue(value);
 }
 
-NomadFloat ScriptValue::get_float_value() const {
+NomadFloat ScriptValue::getFloatValue() const {
     return m_float_value;
 }
 
-NomadInteger ScriptValue::get_integer_value() const {
+NomadInteger ScriptValue::getIntegerValue() const {
     return m_integer_value;
 }
 
@@ -108,24 +108,24 @@ NomadIndex ScriptValue::get_index_value() const {
     return m_index_value;
 }
 
-NomadBoolean ScriptValue::get_boolean_value() const {
+NomadBoolean ScriptValue::getBooleanValue() const {
     return m_boolean_value;
 }
 
-NomadId ScriptValue::get_id_value() const {
+NomadId ScriptValue::getIdValue() const {
     return m_id_value;
 }
 
-const NomadChar* ScriptValue::get_string_value() const {
+const NomadChar* ScriptValue::getStringValue() const {
     return m_string_value;
 }
 
-void ScriptValue::init_string_value() {
+void ScriptValue::initStringValue() {
     m_string_value = nullptr;
 }
 
-void ScriptValue::init_string_value(const NomadString& value) {
-    set_string_value(value);
+void ScriptValue::initStringValue(const NomadString& value) {
+    setStringValue(value);
 }
 
 void ScriptValue::move_string_value(ScriptValue& other) {
@@ -135,7 +135,7 @@ void ScriptValue::move_string_value(ScriptValue& other) {
 #endif
 }
 
-void ScriptValue::free_string_value() const {
+void ScriptValue::freeStringValue() const {
     delete m_string_value;
 }
 

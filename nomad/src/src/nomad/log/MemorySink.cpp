@@ -10,7 +10,7 @@ void MemorySink::log(const LogEntry* entry) {
     m_entries.push_back(*entry);
 }
 
-const std::vector<LogEntry>& MemorySink::get_entries() const {
+const std::vector<LogEntry>& MemorySink::getEntries() const {
     return m_entries;
 }
 

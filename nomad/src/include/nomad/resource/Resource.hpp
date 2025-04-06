@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-17.
 //
 
-#ifndef NOMAD_RESOURCE_H
-#define NOMAD_RESOURCE_H
+#pragma once
 
 #include "nomad/system/String.hpp"
 
@@ -17,7 +16,7 @@ public:
     Resource(const Resource& other) = delete;
     virtual ~Resource() = default;
 
-    [[nodiscard]] const NomadString& get_name() const { return m_name; }
+    [[nodiscard]] const NomadString& getName() const { return m_name; }
 
 private:
     NomadString m_name;
@@ -25,4 +24,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_RESOURCE_H

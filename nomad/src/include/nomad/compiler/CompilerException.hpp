@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-16.
 //
 
-#ifndef NOMAD_COMPILEREXCEPTION_HPP
-#define NOMAD_COMPILEREXCEPTION_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -15,5 +14,3 @@ public:
 };
 
 }
-
-#endif //NOMAD_COMPILEREXCEPTION_HPP

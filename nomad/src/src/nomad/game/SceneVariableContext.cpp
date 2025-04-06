@@ -13,21 +13,21 @@ SceneVariableContext::SceneVariableContext(Game* game):
 {
 }
 
-void SceneVariableContext::set_value(NomadId variable_id, const ScriptValue& value) {
-    auto scene = m_game->get_current_context()->get_scene();
+void SceneVariableContext::setValue(NomadId variable_id, const ScriptValue& value) {
+    auto scene = m_game->getCurrentContext()->getScene();
 
     if (scene) {
-        scene->set_variable_value(variable_id, value);
+        scene->setVariableValue(variable_id, value);
     } else {
         log::error("SceneVariableContext::set_value: No scene in current context");
     }
 }
 
-void SceneVariableContext::get_value(NomadId variable_id, ScriptValue& value) {
-    const auto scene = m_game->get_current_context()->get_scene();
+void SceneVariableContext::getValue(NomadId variable_id, ScriptValue& value) {
+    const auto scene = m_game->getCurrentContext()->getScene();
 
     if (scene) {
-        scene->get_variable_value(variable_id, value);
+        scene->getVariableValue(variable_id, value);
     } else {
        log::error("SceneVariableContext::set_value: No scene in current context");
     }

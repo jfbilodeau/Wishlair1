@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-09-30.
 //
 
-#ifndef NOMAD_SYNTAXTREE_HPP
-#define NOMAD_SYNTAXTREE_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -38,8 +37,8 @@ class AstException : public NomadException {
 public:
     explicit AstException(const NomadString& message, NomadIndex line, NomadIndex column);
 
-    [[nodiscard]] NomadIndex get_line() const;
-    [[nodiscard]] NomadIndex get_column() const;
+    [[nodiscard]] NomadIndex getLine() const;
+    [[nodiscard]] NomadIndex getColumn() const;
 
 private:
     NomadIndex m_line;
@@ -55,11 +54,11 @@ public:
     AstNode(const AstNode&) = delete;
     virtual ~AstNode() = default;
 
-    [[nodiscard]] NomadIndex get_line() const;
-    [[nodiscard]] NomadIndex get_column() const;
+    [[nodiscard]] NomadIndex getLine() const;
+    [[nodiscard]] NomadIndex getColumn() const;
 
 protected:
-    [[noreturn]] void raise_exception(const NomadString& message) const;
+    [[noreturn]] void raiseException(const NomadString& message) const;
 
 private:
     NomadIndex m_line;
@@ -76,24 +75,24 @@ public:
     void parse(Compiler* compiler, Script* script);
     void compile(Compiler* compiler, Script* script);
 
-    [[nodiscard]] const Type* get_type() const;
-    [[nodiscard]] const ScriptValue& get_value() const;
-    [[nodiscard]] bool has_type() const;
-    [[nodiscard]] bool has_value() const;
-    [[nodiscard]] bool is_parsed() const;
+    [[nodiscard]] const Type* getType() const;
+    [[nodiscard]] const ScriptValue& getValue() const;
+    [[nodiscard]] bool hasType() const;
+    [[nodiscard]] bool hasValue() const;
+    [[nodiscard]] bool isParsed() const;
 
 protected:
-    void set_resolved(const ScriptValue& value, const Type* type);
-    void set_type(const Type* type);
-    void set_value(const ScriptValue& value);
+    void setResolved(const ScriptValue& value, const Type* type);
+    void setType(const Type* type);
+    void setValue(const ScriptValue& value);
 
-    virtual void on_parse(Compiler* compiler, Script* script) = 0;
-    virtual void on_compile(Compiler* compiler, Script* script) = 0;
+    virtual void onParse(Compiler* compiler, Script* script) = 0;
+    virtual void onCompile(Compiler* compiler, Script* script) = 0;
 
 private:
     ScriptValue m_value;
     const Type* m_type = nullptr;
-    bool m_has_value = false;
+    bool m_hasValue = false;
 };
 
 class ArgumentList {
@@ -121,8 +120,8 @@ public:
     void compile(Compiler* compiler, Script* script);
 
 protected:
-    virtual void on_parse(Compiler* compiler, Script* script);
-    virtual void on_compile(Compiler* compiler, Script* script);
+    virtual void onParse(Compiler* compiler, Script* script);
+    virtual void onCompile(Compiler* compiler, Script* script);
 };
 
 class NullStatementNode : public StatementNode {
@@ -130,7 +129,7 @@ public:
     NullStatementNode(NomadIndex line, NomadIndex column);
 
 protected:
-    void on_compile(Compiler* compiler, Script* script) override;
+    void onCompile(Compiler* compiler, Script* script) override;
 };
 
 class AssignmentStatementNode : public StatementNode {
@@ -138,8 +137,8 @@ public:
     AssignmentStatementNode(NomadIndex line, NomadIndex column, NomadString identifier, std::unique_ptr<Expression> expression);
 
 protected:
-    void on_parse(Compiler* compiler, Script* script) override;
-    void on_compile(Compiler* compiler, Script* script) override;
+    void onParse(Compiler* compiler, Script* script) override;
+    void onCompile(Compiler* compiler, Script* script) override;
 
 private:
     NomadString m_identifier;
@@ -150,12 +149,12 @@ class CommandStatementNode : public StatementNode {
 public:
     CommandStatementNode(NomadIndex line, NomadIndex column, NomadString name);
 
-    void add_argument(std::unique_ptr<Argument> argument);
+    void addArgument(std::unique_ptr<Argument> argument);
 
-    [[nodiscard]] ArgumentList* get_arguments();
+    [[nodiscard]] ArgumentList* getArguments();
 
 protected:
-    void on_compile(Compiler* compiler, Script* script) override;
+    void onCompile(Compiler* compiler, Script* script) override;
 
 private:
     NomadString m_name;
@@ -166,12 +165,12 @@ class ScriptCallStatementNode : public StatementNode {
 public:
     ScriptCallStatementNode(NomadIndex line, NomadIndex column, NomadString name);
 
-    void add_argument(std::unique_ptr<Argument> argument);
+    void addArgument(std::unique_ptr<Argument> argument);
 
-    [[nodiscard]] ArgumentList* get_arguments();
+    [[nodiscard]] ArgumentList* getArguments();
 
 protected:
-    void on_compile(Compiler* compiler, Script* script) override;
+    void onCompile(Compiler* compiler, Script* script) override;
 
 private:
     NomadString m_name;
@@ -191,10 +190,10 @@ public:
     void parse(Compiler* compiler, Script* script);
     void compile(Compiler* compiler, Script* script);
 
-    void add_statement(std::unique_ptr<StatementNode> statement);
+    void addStatement(std::unique_ptr<StatementNode> statement);
 
-    [[nodiscard]] NomadIndex get_statement_count() const;
-    [[nodiscard]] NomadIndex is_empty() const;
+    [[nodiscard]] NomadIndex getStatementCount() const;
+    [[nodiscard]] NomadIndex isEmpty() const;
 
 private:
     std::vector<std::unique_ptr<StatementNode>> m_statements;
@@ -211,8 +210,8 @@ public:
     void parse(Compiler* compiler, Script* script);
     void compile(Compiler* compiler, Script* script);
 
-    void add_statement(std::unique_ptr<StatementNode> statement);
-    [[nodiscard]] StatementList* get_statements();
+    void addStatement(std::unique_ptr<StatementNode> statement);
+    [[nodiscard]] StatementList* getStatements();
 
 private:
     StatementList m_statements;
@@ -220,4 +219,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_SYNTAXTREE_HPP

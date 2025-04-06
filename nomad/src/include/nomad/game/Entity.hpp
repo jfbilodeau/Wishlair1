@@ -38,215 +38,215 @@ public:
     void update(Scene* scene);
     void render(Canvas* canvas);
 
-    [[nodiscard]] NomadId get_id() const;
+    [[nodiscard]] NomadId getId() const;
 
-    [[nodiscard]] Scene* get_scene() const;
+    [[nodiscard]] Scene* getScene() const;
 
-    void set_name(const NomadString& name);
-    [[nodiscard]] const NomadString& get_name() const;
+    void setName(const NomadString& name);
+    [[nodiscard]] const NomadString& getName() const;
 
-    void set_script_name(const NomadString& script_name);
-    [[nodiscard]] const NomadString& get_script_name() const;
+    void setScriptName(const NomadString& scriptName);
+    [[nodiscard]] const NomadString& getScriptName() const;
 
-    void set_x(NomadFloat x);
-    [[nodiscard]] NomadFloat get_x() const;
+    void setX(NomadFloat x);
+    [[nodiscard]] NomadFloat getX() const;
 
-    void set_y(NomadFloat y);
-    [[nodiscard]] NomadFloat get_y() const;
+    void setY(NomadFloat y);
+    [[nodiscard]] NomadFloat getY() const;
 
-    void set_z(NomadFloat z);
-    [[nodiscard]] NomadFloat get_z() const;
+    void setZ(NomadFloat z);
+    [[nodiscard]] NomadFloat getZ() const;
 
-    void set_location(NomadFloat x, NomadFloat y);
-    void set_location(const PointF& location);
-    [[nodiscard]] const PointF& get_location() const;
+    void setLocation(NomadFloat x, NomadFloat y);
+    void setLocation(const PointF& location);
+    [[nodiscard]] const PointF& getLocation() const;
 
-    void set_size(NomadFloat width, NomadFloat height);
-    void set_width(NomadFloat width);
+    void setSize(NomadFloat width, NomadFloat height);
+    void setWidth(NomadFloat width);
     [[nodiscard]]
-    NomadFloat get_width() const;
-    void set_height(NomadFloat height);
+    NomadFloat getWidth() const;
+    void setHeight(NomadFloat height);
     [[nodiscard]]
-    NomadFloat get_height() const;
+    NomadFloat getHeight() const;
     [[nodiscard]]
-    PointF get_size() const;
+    PointF getSize() const;
 
     void pause();
     void unpause();
-    void set_pause(bool pause);
-    [[nodiscard]] bool is_paused() const;
+    void setPause(bool pause);
+    [[nodiscard]] bool isPaused() const;
 
     void hide();
     void show();
-    void set_visible(bool visible);
-    [[nodiscard]] bool is_visible() const;
-    [[nodiscard]] bool is_hidden() const;
+    void setVisible(bool visible);
+    [[nodiscard]] bool isVisible() const;
+    [[nodiscard]] bool isHidden() const;
 
-    void stop_moving();
+    void stopMoving();
     void move(const PointF& velocity);
     void move(NomadFloat x, NomadFloat y);
-    void start_moving_in_direction(NomadFloat angle, NomadFloat speed);
-    void move_to(const PointF& destination, NomadFloat speed, NomadId on_arrive_at_destination = NOMAD_INVALID_ID);
-    void move_to(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId on_arrive_at_destination = NOMAD_INVALID_ID);
+    void startMovingInDirection(NomadFloat angle, NomadFloat speed);
+    void moveTo(const PointF& destination, NomadFloat speed, NomadId onArriveAtDestination = NOMAD_INVALID_ID);
+    void moveTo(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId onArriveAtDestination = NOMAD_INVALID_ID);
     [[nodiscard]]
-    bool is_moving() const;
+    bool isMoving() const;
 
-    void set_velocity(NomadFloat x, NomadFloat y);
-    void set_velocity(const PointF& velocity);
-    void set_velocity(Cardinal direction, NomadFloat speed);
-    void set_velocity_x(NomadFloat x);
-    void set_velocity_y(NomadFloat y);
-    [[nodiscard]] const PointF& get_velocity() const;
+    void setVelocity(NomadFloat x, NomadFloat y);
+    void setVelocity(const PointF& velocity);
+    void setVelocity(Cardinal direction, NomadFloat speed);
+    void setVelocityX(NomadFloat x);
+    void setVelocityY(NomadFloat y);
+    [[nodiscard]] const PointF& getVelocity() const;
 
-    void set_destination(NomadFloat x, NomadFloat y);
-    void set_destination(const PointF& destination);
-    [[nodiscard]] const PointF& get_destination() const;
+    void setDestination(NomadFloat x, NomadFloat y);
+    void setDestination(const PointF& destination);
+    [[nodiscard]] const PointF& getDestination() const;
 
-    void set_destination_x(NomadFloat x);
+    void setDestinationX(NomadFloat x);
     [[nodiscard]] NomadFloat get_destination_x() const;
 
     void set_destination_y(NomadFloat y);
-    [[nodiscard]] NomadFloat get_destination_y() const;
+    [[nodiscard]] NomadFloat getDestinationY() const;
 
-    void set_speed(NomadFloat speed);
-    [[nodiscard]] NomadFloat get_speed() const;
+    void setSpeed(NomadFloat speed);
+    [[nodiscard]] NomadFloat getSpeed() const;
 
-    void set_mask(NomadInteger mask);
-    [[nodiscard]] NomadInteger get_mask() const;
+    void setMask(NomadInteger mask);
+    [[nodiscard]] NomadInteger getMask() const;
 
-    void set_collision_mask(NomadInteger collision_mask);
-    [[nodiscard]] NomadInteger get_collision_mask() const;
+    void setCollisionMask(NomadInteger collisionMask);
+    [[nodiscard]] NomadInteger getCollisionMask() const;
 
-    void set_sensor(bool is_sensor);
-    [[nodiscard]] bool is_sensor() const;
+    void setSensor(bool isSensor);
+    [[nodiscard]] bool isSensor() const;
 
-    void set_no_body();
-    void set_circle_body(BodyType body_type, NomadFloat radius);
-    void set_rectangle_body(BodyType body_type, NomadFloat width, NomadFloat height);
+    void setNoBody();
+    void setCircleBody(BodyType body_type, NomadFloat radius);
+    void setRectangleBody(BodyType body_type, NomadFloat width, NomadFloat height);
 
-    [[nodiscard]] BodyType get_body_type() const;
-    [[nodiscard]] BodyShape get_body_shape() const;
-    [[nodiscard]] NomadFloat get_body_width() const;
-    [[nodiscard]] NomadFloat get_body_height() const;
-    [[nodiscard]] NomadFloat get_body_radius() const;
+    [[nodiscard]] BodyType getBodyType() const;
+    [[nodiscard]] BodyShape getBodyShape() const;
+    [[nodiscard]] NomadFloat getBodyWidth() const;
+    [[nodiscard]] NomadFloat getBodyHeight() const;
+    [[nodiscard]] NomadFloat getBodyRadius() const;
 
-    [[nodiscard]] bool is_touching(const RectangleF& rectangle) const;
-    [[nodiscard]] bool is_touching(const CircleF& circle) const;
-    [[nodiscard]] bool is_touching(const Entity* entity) const;
+    [[nodiscard]] bool isTouching(const RectangleF& rectangle) const;
+    [[nodiscard]] bool isTouching(const CircleF& circle) const;
+    [[nodiscard]] bool isTouching(const Entity* entity) const;
 
-    RectangleF& get_bounding_box(RectangleF& rectangle) const;
+    RectangleF& getBoundingBox(RectangleF& rectangle) const;
 
     // Notify the entity that it has entered the camera frame.
-    void enter_camera();
+    void enterCamera();
     // Notify the entity that it has exited the camera frame.
-    void exit_camera();
+    void exitCamera();
 
     // Script to execute when the entity enters the camera frame.
-    void set_on_enter_camera(NomadId script_id);
-    [[nodiscard]] NomadId get_on_enter_camera() const;
+    void setOnEnterCamera(NomadId scriptId);
+    [[nodiscard]] NomadId getOnEnterCamera() const;
 
     // Script to execute when the entity exits the camera frame.
-    void set_on_exit_camera(NomadId script_id);
-    [[nodiscard]] NomadId get_on_exit_camera() const;
+    void setOnExitCamera(NomadId scriptId);
+    [[nodiscard]] NomadId getOnExitCamera() const;
 
-    [[nodiscard]] bool is_in_camera() const;
+    [[nodiscard]] bool isInCamera() const;
 
-    void invalidate_physics_body();
-    void before_simulation_update(b2WorldId world);
-    void after_simulation_update(b2WorldId world);
+    void invalidatePhysicsBody();
+    void beforeSimulationUpdate(b2WorldId world);
+    void afterSimulationUpdate(b2WorldId world);
 
-    void set_layer(NomadInteger layer);
-    [[nodiscard]] NomadInteger get_layer() const;
+    void setLayer(NomadInteger layer);
+    [[nodiscard]] NomadInteger getLayer() const;
 
-    void set_sprite_name(const NomadString& sprite_name);
-    [[nodiscard]] const NomadString& get_sprite_name() const;
+    void setSpriteName(const NomadString& spriteName);
+    [[nodiscard]] const NomadString& getSpriteName() const;
 
-    void set_sprite(const Sprite* sprite);
-    [[nodiscard]] const Sprite* get_sprite() const;
+    void setSprite(const Sprite* sprite);
+    [[nodiscard]] const Sprite* getSprite() const;
 
-    void set_sprite_x(NomadFloat x);
-    [[nodiscard]] NomadFloat get_sprite_x() const;
+    void setSpriteX(NomadFloat x);
+    [[nodiscard]] NomadFloat getSpriteX() const;
 
-    void set_sprite_y(NomadFloat y);
-    [[nodiscard]] NomadFloat get_sprite_y() const;
+    void setSpriteY(NomadFloat y);
+    [[nodiscard]] NomadFloat getSpriteY() const;
 
-    void set_sprite_anchor(const PointF& anchor);
-    void set_sprite_anchor(NomadFloat x, NomadFloat y);
-    [[nodiscard]] const PointF& get_sprite_anchor() const;
+    void setSpriteAnchor(const PointF& anchor);
+    void setSpriteAnchor(NomadFloat x, NomadFloat y);
+    [[nodiscard]] const PointF& getSpriteAnchor() const;
 
-    void set_animation(const Animation* animation);
-    [[nodiscard]] const Animation* get_animation() const;
+    void setAnimation(const Animation* animation);
+    [[nodiscard]] const Animation* getAnimation() const;
 
-    void set_animation_name(const NomadString& animation_name);
-    [[nodiscard]] const NomadString& get_animation_name() const;
+    void setAnimationName(const NomadString& animationName);
+    [[nodiscard]] const NomadString& getAnimationName() const;
 
-    void set_animation_variant(const NomadString& animation_variant);
-    [[nodiscard]] const NomadString& get_animation_variant() const;
+    void setAnimationVariant(const NomadString& animationVariant);
+    [[nodiscard]] const NomadString& getAnimationVariant() const;
 
-    void set_animation_direction(const NomadString& animation_direction);
-    [[nodiscard]] const NomadString& get_animation_direction() const;
+    void setAnimationDirection(const NomadString& animationDirection);
+    [[nodiscard]] const NomadString& getAnimationDirection() const;
 
-    void set_animation_duration(NomadInteger speed);
-    [[nodiscard]] NomadInteger get_animation_duration() const;
+    void setAnimationDuration(NomadInteger speed);
+    [[nodiscard]] NomadInteger getAnimationDuration() const;
 
-    void set_animation_repeat(bool repeat);
-    [[nodiscard]] bool get_animation_repeat() const;
+    void setAnimationRepeat(bool repeat);
+    [[nodiscard]] bool getAnimationRepeat() const;
 
-    void set_animation_reverse(bool reverse);
-    [[nodiscard]] bool get_animation_reverse() const;
+    void setAnimationReverse(bool reverse);
+    [[nodiscard]] bool getAnimationReverse() const;
 
-    void set_text(const NomadString& text);
-    [[nodiscard]] const NomadString& get_text();
+    void setText(const NomadString& text);
+    [[nodiscard]] const NomadString& getText();
 
-    void set_text_alignment(Alignment alignment);
-    [[nodiscard]] Alignment get_text_alignment() const;
+    void setTextAlignment(Alignment alignment);
+    [[nodiscard]] Alignment getTextAlignment() const;
 
-    void set_text_position(NomadFloat x, NomadFloat y);
-    void set_text_position(const PointF& position);
-    [[nodiscard]] const PointF& get_text_position() const;
+    void setTextPosition(NomadFloat x, NomadFloat y);
+    void setTextPosition(const PointF& position);
+    [[nodiscard]] const PointF& getTextPosition() const;
 
-    void set_text_x(NomadFloat x);
-    [[nodiscard]] NomadFloat get_text_x() const;
+    void setTextX(NomadFloat x);
+    [[nodiscard]] NomadFloat getTextX() const;
 
-    void set_text_y(NomadFloat y);
-    [[nodiscard]] NomadFloat get_text_y() const;
+    void setTextY(NomadFloat y);
+    [[nodiscard]] NomadFloat getTextY() const;
 
-    void set_text_width(NomadFloat width);
-    [[nodiscard]] NomadFloat get_text_width() const;
+    void setTextWidth(NomadFloat width);
+    [[nodiscard]] NomadFloat getTextWidth() const;
 
-    void set_text_height(NomadFloat height);
-    [[nodiscard]] NomadFloat get_text_height() const;
+    void setTextHeight(NomadFloat height);
+    [[nodiscard]] NomadFloat getTextHeight() const;
 
-    void set_text_line_spacing(NomadFloat line_spacing);
-    [[nodiscard]] NomadFloat get_text_line_spacing() const;
+    void setTextLineSpacing(NomadFloat lineSpacing);
+    [[nodiscard]] NomadFloat getTextLineSpacing() const;
 
-    void set_text_color(const Color& color);
-    [[nodiscard]] Color get_text_color() const;
+    void setTextColor(const Color& color);
+    [[nodiscard]] Color getTextColor() const;
 
-    void set_font_by_id(NomadId font_id);
-    [[nodiscard]] NomadId get_font_id() const;
+    void setFontById(NomadId fontId);
+    [[nodiscard]] NomadId getFontId() const;
 
-    void set_variable_value(NomadId variable_id, const ScriptValue& value);
-    void get_variable_value(NomadId variable_id, ScriptValue& value) const;
+    void setVariableValue(NomadId variableId, const ScriptValue& value);
+    void getVariableValue(NomadId variableId, ScriptValue& value) const;
 
-    void add_event(const NomadString& name, NomadId script_id);
-    void remove_event(const NomadString& name);
+    void addEvent(const NomadString& name, NomadId scriptId);
+    void removeEvent(const NomadString& name);
 
-    GameExecutionContext* get_execution_context();
+    GameExecutionContext* getExecutionContext();
 
-    [[nodiscard]] NomadId get_on_frame() const;
-    void set_on_frame(NomadId script_id);
+    [[nodiscard]] NomadId getOnFrame() const;
+    void setOnFrame(NomadId scriptId);
 
-    [[nodiscard]] NomadId get_on_collision_begin() const;
-    void set_on_collision_begin(NomadId script_id);
+    [[nodiscard]] NomadId getOnCollisionBegin() const;
+    void setOnCollisionBegin(NomadId scriptId);
 
-    [[nodiscard]] NomadId get_on_collision_end() const;
-    void set_on_collision_end(NomadId script_id);
+    [[nodiscard]] NomadId getOnCollisionEnd() const;
+    void setOnCollisionEnd(NomadId scriptId);
 
 private:
     NomadId m_id = NOMAD_INVALID_ID;
     Scene* m_scene;
-    NomadString m_script_name;
+    NomadString m_scriptName;
     NomadString m_name;
 
     // World position
@@ -261,71 +261,71 @@ private:
 
     // Movement
     PointF m_velocity = {};
-    bool m_move_to_destination = false;
+    bool m_moveToDestination = false;
     PointF m_destination = {};
     NomadFloat m_speed = 0;
-    NomadId m_on_arrive_at_destination = NOMAD_INVALID_ID;
+    NomadId m_onArriveAtDestination = NOMAD_INVALID_ID;
 
     // Mask, body and collision
-    BodyShape m_body_shape = BodyShape::None;
-    BodyType m_body_type = BodyType::Static;
-    NomadBoolean m_is_sensor = false;
-    NomadFloat m_body_width = 0;
-    NomadFloat m_body_height = 0;
-    NomadFloat m_body_radius = 0;
-    b2BodyId m_b2_body = {};
-    b2ShapeId m_b2_shape = {};
-    b2Filter m_b2_filter = b2DefaultFilter();
-    NomadBoolean m_has_body = false;
-    NomadBoolean m_body_invalidated = true;
-    NomadBoolean m_position_invalidated = true;
-    NomadBoolean m_velocity_invalidated = true;
+    BodyShape m_bodyShape = BodyShape::None;
+    BodyType m_bodyType = BodyType::Static;
+    NomadBoolean m_isSensor = false;
+    NomadFloat m_bodyWidth = 0;
+    NomadFloat m_bodyHeight = 0;
+    NomadFloat m_bodyRadius = 0;
+    b2BodyId m_b2Body = {};
+    b2ShapeId m_b2Shape = {};
+    b2Filter m_b2Filter = b2DefaultFilter();
+    NomadBoolean m_hasBody = false;
+    NomadBoolean m_bodyInvalidated = true;
+    NomadBoolean m_positionInvalidated = true;
+    NomadBoolean m_velocityInvalidated = true;
 
     // Camera
-    bool m_in_camera = false;
+    bool m_inCamera = false;
 
     // Visuals
-    PointF m_sprite_anchor;  // Sprite image anchor point
+    PointF m_spriteAnchor;  // Sprite image anchor point
     const Sprite* m_sprite = nullptr;
     const Animation* m_animation = nullptr;
-    NomadInteger m_current_frame = 0;
-    NomadInteger m_frame_count = 0;
+    NomadInteger m_currentFrame = 0;
+    NomadInteger m_frameCount = 0;
 
     // Animation
-    NomadString m_animation_name;
-    NomadString m_animation_variant = "idle";
-    NomadString m_animation_direction = "south";
-    NomadInteger m_animation_duration = 1;
-    NomadBoolean m_animation_repeat = true;
-    NomadBoolean m_animation_reverse = false;
-    bool m_animation_dirty = false;
+    NomadString m_animationName;
+    NomadString m_animationVariant = "idle";
+    NomadString m_animationDirection = "south";
+    NomadInteger m_animationDuration = 1;
+    NomadBoolean m_animationRepeat = true;
+    NomadBoolean m_animationReverse = false;
+    bool m_animationDirty = false;
 
     // Text
     NomadString m_text;
-    NomadString m_wrapped_text;
-    Alignment m_text_alignment = Alignment::CenterMiddle;
-    PointF m_text_position;
-    NomadFloat m_text_width = 0;
-    NomadFloat m_text_height = 0;
-    NomadFloat m_text_line_spacing = 0;
-    NomadId m_font_id = NOMAD_INVALID_ID;
-    Color m_text_color = Colors::Black;
-    Texture* m_text_texture = nullptr;
+    NomadString m_wrappedText;
+    Alignment m_textAlignment = Alignment::CenterMiddle;
+    PointF m_textPosition;
+    NomadFloat m_textWidth = 0;
+    NomadFloat m_textHeight = 0;
+    NomadFloat m_textLineSpacing = 0;
+    NomadId m_fontId = NOMAD_INVALID_ID;
+    Color m_textColor = Colors::Black;
+    Texture* m_textTexture = nullptr;
 
     // Variable / Script
     VariableList m_variables;
     EventManager m_events;
-    GameExecutionContext m_execution_context;
+    GameExecutionContext m_executionContext;
 
     // Events
-    NomadId m_on_frame = NOMAD_INVALID_ID;
-    NomadId m_on_collision_begin = NOMAD_INVALID_ID;
-    NomadId m_on_collision_end = NOMAD_INVALID_ID;
-    NomadId m_on_enter_camera = NOMAD_INVALID_ID;
-    NomadId m_on_exit_camera = NOMAD_INVALID_ID;
+    NomadId m_onFrame = NOMAD_INVALID_ID;
+    NomadId m_onCollisionBegin = NOMAD_INVALID_ID;
+    NomadId m_onCollisionEnd = NOMAD_INVALID_ID;
+    NomadId m_onEnterCamera = NOMAD_INVALID_ID;
+    NomadId m_onExitCamera = NOMAD_INVALID_ID;
 
-    void invalidate_text_texture();
-    void generate_text_texture(Canvas* canvas);
+    void invalidateTextTexture();
+    void generateTextTexture(Canvas* canvas);
 };
 
 using EntityList = std::vector<Entity*>;

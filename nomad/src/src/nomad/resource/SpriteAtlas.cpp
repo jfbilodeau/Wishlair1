@@ -22,7 +22,7 @@ void sprite_atlas_resource_factory(ResourceManager* resource_manager, const Noma
     try {
         log::debug("Loading sprite atlas: '" + resource_name + "'");
 
-        NomadString path = resource_manager->make_resource_path(resource_name);
+        NomadString path = resource_manager->makeResourcePath(resource_name);
 
         std::ifstream file(path);
 
@@ -40,7 +40,7 @@ void sprite_atlas_resource_factory(ResourceManager* resource_manager, const Noma
         // Texture name is the resource name but with the extension replaced by .png
         NomadString texture_name = resource_name.substr(0, resource_name.find_last_of('.')) + ".png";
 
-        auto texture = resource_manager->get_textures()->get_texture_by_name(texture_name);
+        auto texture = resource_manager->getTextures()->getTextureByName(texture_name);
 
         auto sprites = json.at("sprites").as_array();
 
@@ -63,7 +63,7 @@ void sprite_atlas_resource_factory(ResourceManager* resource_manager, const Noma
 
             log::debug("Loading sprite: '" + name + "'");
 
-            auto sprite_id = resource_manager->get_sprites()->register_sprite(
+            auto sprite_id = resource_manager->getSprites()->registerSprite(
                 name,
                 texture,
                 source,

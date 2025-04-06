@@ -27,95 +27,95 @@ Entity::Entity(Scene* scene, const VariableMap* variableMap, NomadId id, NomadFl
     m_position(x, y),
     m_layer(layer)
 {
-    m_execution_context.reset(scene, this);
+    m_executionContext.reset(scene, this);
 }
 
 Entity::~Entity() {
-    invalidate_text_texture(); // Clear the text texture if it exists
+    invalidateTextTexture(); // Clear the text texture if it exists
 }
 
-Scene* Entity::get_scene() const {
+Scene* Entity::getScene() const {
     return m_scene;
 }
 
-void Entity::set_name(const NomadString& name) {
+void Entity::setName(const NomadString& name) {
     m_name = name;
 }
 
-const NomadString& Entity::get_name() const {
+const NomadString& Entity::getName() const {
     return m_name;
 }
 
-void Entity::set_script_name(const NomadString& script_name) {
-    m_script_name = script_name;
+void Entity::setScriptName(const NomadString& scriptName) {
+    m_scriptName = scriptName;
 }
 
-const NomadString& Entity::get_script_name() const {
-    return m_script_name;
+const NomadString& Entity::getScriptName() const {
+    return m_scriptName;
 }
 
-void Entity::set_x(const NomadFloat x) {
-    m_position.set_x(x);
-    m_destination.set_x(x);
-    m_position_invalidated = true;
+void Entity::setX(const NomadFloat x) {
+    m_position.setX(x);
+    m_destination.setX(x);
+    m_positionInvalidated = true;
 }
 
-NomadFloat Entity::get_x() const {
-    return m_position.x();
+NomadFloat Entity::getX() const {
+    return m_position.getX();
 }
 
-void Entity::set_y(NomadFloat y) {
-    m_position.set_y(y);
-    m_destination.set_y(y);
-    m_position_invalidated = true;
+void Entity::setY(NomadFloat y) {
+    m_position.setY(y);
+    m_destination.setY(y);
+    m_positionInvalidated = true;
 }
 
-NomadFloat Entity::get_y() const {
-    return m_position.y();
+NomadFloat Entity::getY() const {
+    return m_position.getY();
 }
 
-void Entity::set_z(NomadFloat z) {
+void Entity::setZ(NomadFloat z) {
     m_z = z;
 }
 
-NomadFloat Entity::get_z() const {
+NomadFloat Entity::getZ() const {
     return m_z;
 }
 
-void Entity::set_location(NomadFloat x, NomadFloat y) {
+void Entity::setLocation(NomadFloat x, NomadFloat y) {
     m_position.set(x, y);
-    m_position_invalidated = true;
+    m_positionInvalidated = true;
 }
 
-void Entity::set_location(const PointF& location) {
+void Entity::setLocation(const PointF& location) {
     m_position.set(location);
 }
 
-const PointF& Entity::get_location() const {
+const PointF& Entity::getLocation() const {
     return m_position;
 }
 
-void Entity::set_size(NomadFloat width, NomadFloat height) {
+void Entity::setSize(NomadFloat width, NomadFloat height) {
     m_size.set(width, height);
 }
 
-void Entity::set_width(NomadFloat width) {
-    m_size.set_y(width);
+void Entity::setWidth(NomadFloat width) {
+    m_size.setY(width);
 }
 
-NomadFloat Entity::get_width() const {
-    return m_size.y();
+NomadFloat Entity::getWidth() const {
+    return m_size.getY();
 }
 
-void Entity::set_height(NomadFloat height) {
-    m_size.set_x(height);
+void Entity::setHeight(NomadFloat height) {
+    m_size.setX(height);
 }
 
-NomadFloat Entity::get_height() const {
-    return m_size.x();
+NomadFloat Entity::getHeight() const {
+    return m_size.getX();
 }
 
-PointF Entity::get_size() const {
+PointF Entity::getSize() const {
     return m_size;
 }
 
@@ -127,11 +127,11 @@ void Entity::unpause() {
     m_paused = false;
 }
 
-void Entity::set_pause(bool pause) {
+void Entity::setPause(bool pause) {
     m_paused = pause;
 }
 
-bool Entity::is_paused() const {
+bool Entity::isPaused() const {
     return m_paused;
 }
 
@@ -143,71 +143,71 @@ void Entity::show() {
     m_visible = true;
 }
 
-void Entity::set_visible(bool visible) {
+void Entity::setVisible(bool visible) {
     m_visible = visible;
 }
 
-bool Entity::is_visible() const {
+bool Entity::isVisible() const {
     return m_visible;
 }
 
-bool Entity::is_hidden() const {
+bool Entity::isHidden() const {
     return !m_visible;
 }
 
-void Entity::stop_moving() {
+void Entity::stopMoving() {
     m_velocity.zero();
-    m_velocity_invalidated = true;
-    m_move_to_destination = false;
+    m_velocityInvalidated = true;
+    m_moveToDestination = false;
 }
 
 void Entity::move(const PointF& velocity) {
     m_velocity.set(velocity);
-    m_velocity_invalidated = true;
-    m_move_to_destination = false;
+    m_velocityInvalidated = true;
+    m_moveToDestination = false;
 }
 
 void Entity::move(NomadFloat x, NomadFloat y) {
     m_velocity.set(x, y);
-    m_velocity_invalidated = true;
-    m_move_to_destination = false;
+    m_velocityInvalidated = true;
+    m_moveToDestination = false;
 }
 
-void Entity::start_moving_in_direction(NomadFloat angle, NomadFloat speed) {
+void Entity::startMovingInDirection(NomadFloat angle, NomadFloat speed) {
     m_velocity.set(
         std::cos(angle) * speed,
         std::sin(angle) * speed
     );
-    m_velocity_invalidated = true;
-    m_move_to_destination = false;
+    m_velocityInvalidated = true;
+    m_moveToDestination = false;
 }
 
-void Entity::move_to(const PointF& destination, NomadFloat speed, NomadId on_arrive_at_destination) {
-    move_to(destination.x(), destination.y(), speed, on_arrive_at_destination);
+void Entity::moveTo(const PointF& destination, NomadFloat speed, NomadId onArriveAtDestination) {
+    moveTo(destination.getX(), destination.getY(), speed, onArriveAtDestination);
 }
 
-void Entity::move_to(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId on_arrive_at_destination) {
+void Entity::moveTo(NomadFloat x, NomadFloat y, NomadFloat speed, NomadId onArriveAtDestination) {
     m_destination.set(x, y);
     m_speed = speed;
-    m_velocity_invalidated = true;
-    m_move_to_destination = true;
-    m_on_arrive_at_destination = on_arrive_at_destination;
+    m_velocityInvalidated = true;
+    m_moveToDestination = true;
+    m_onArriveAtDestination = onArriveAtDestination;
 }
 
-bool Entity::is_moving() const {
+bool Entity::isMoving() const {
     return m_velocity.is_zero();
 }
 
-void Entity::set_velocity(NomadFloat x, NomadFloat y) {
-    set_velocity({x, y});
+void Entity::setVelocity(NomadFloat x, NomadFloat y) {
+    setVelocity({x, y});
 }
 
-void Entity::set_velocity(const PointF& velocity) {
+void Entity::setVelocity(const PointF& velocity) {
     m_velocity.set(velocity);
-    m_velocity_invalidated = true;
+    m_velocityInvalidated = true;
 }
 
-void Entity::set_velocity(Cardinal direction, NomadFloat speed) {
+void Entity::setVelocity(Cardinal direction, NomadFloat speed) {
     switch (direction) {
         case Cardinal::North:
             m_velocity.set(0.0, -speed);
@@ -229,318 +229,318 @@ void Entity::set_velocity(Cardinal direction, NomadFloat speed) {
             m_velocity.set(0, 0);
             break;
     }
-    m_velocity_invalidated = true;
+    m_velocityInvalidated = true;
 }
 
-void Entity::set_velocity_x(NomadFloat x) {
-    m_velocity.set_x(x);
-    m_velocity_invalidated = true;
+void Entity::setVelocityX(NomadFloat x) {
+    m_velocity.setX(x);
+    m_velocityInvalidated = true;
 }
 
-void Entity::set_velocity_y(NomadFloat y) {
-    m_velocity.set_y(y);
-    m_velocity_invalidated = true;
+void Entity::setVelocityY(NomadFloat y) {
+    m_velocity.setY(y);
+    m_velocityInvalidated = true;
 }
 
-const PointF& Entity::get_velocity() const {
+const PointF& Entity::getVelocity() const {
     return m_velocity;
 }
 
-void Entity::set_destination(NomadFloat x, NomadFloat y) {
+void Entity::setDestination(NomadFloat x, NomadFloat y) {
     m_destination.set(x, y);
 }
 
-void Entity::set_destination(const PointF& destination) {
+void Entity::setDestination(const PointF& destination) {
     m_destination.set(destination);
 }
 
-const PointF& Entity::get_destination() const {
+const PointF& Entity::getDestination() const {
     return m_destination;
 }
 
-void Entity::set_destination_x(NomadFloat x) {
-    m_destination.set_x(x);
+void Entity::setDestinationX(NomadFloat x) {
+    m_destination.setX(x);
 }
 
 NomadFloat Entity::get_destination_x() const {
-    return m_destination.x();
+    return m_destination.getX();
 }
 
 void Entity::set_destination_y(NomadFloat y) {
-    m_destination.set_y(y);
+    m_destination.setY(y);
 }
 
-NomadFloat Entity::get_destination_y() const {
-    return m_destination.y();
+NomadFloat Entity::getDestinationY() const {
+    return m_destination.getY();
 }
 
-void Entity::set_speed(NomadFloat speed) {
+void Entity::setSpeed(NomadFloat speed) {
     m_speed = speed;
 }
 
-NomadFloat Entity::get_speed() const {
+NomadFloat Entity::getSpeed() const {
     return m_speed;
 }
 
-void Entity::set_mask(const NomadInteger mask) {
+void Entity::setMask(const NomadInteger mask) {
 //    m_mask = mask;
-    m_b2_filter.categoryBits = mask;
+    m_b2Filter.categoryBits = mask;
 }
 
-NomadInteger Entity::get_mask() const {
-    return m_b2_filter.categoryBits;
+NomadInteger Entity::getMask() const {
+    return m_b2Filter.categoryBits;
 }
 
-void Entity::set_collision_mask(const NomadInteger collision_mask) {
-    m_b2_filter.maskBits = collision_mask;
+void Entity::setCollisionMask(const NomadInteger collisionMask) {
+    m_b2Filter.maskBits = collisionMask;
 }
 
-[[nodiscard]] NomadInteger Entity::get_collision_mask() const {
-    return m_b2_filter.maskBits;
+[[nodiscard]] NomadInteger Entity::getCollisionMask() const {
+    return m_b2Filter.maskBits;
 }
 
-void Entity::set_sensor(bool is_sensor) {
-    m_is_sensor = is_sensor;
+void Entity::setSensor(bool isSensor) {
+    m_isSensor = isSensor;
 
-    invalidate_physics_body();
+    invalidatePhysicsBody();
 }
 
-bool Entity::is_sensor() const {
-    return m_is_sensor;
+bool Entity::isSensor() const {
+    return m_isSensor;
 }
 
-void Entity::set_no_body() {
-    invalidate_physics_body();
+void Entity::setNoBody() {
+    invalidatePhysicsBody();
 
-    m_body_shape = BodyShape::None;
+    m_bodyShape = BodyShape::None;
 }
 
-void Entity::set_circle_body(BodyType body_type, NomadFloat radius) {
-    invalidate_physics_body();
+void Entity::setCircleBody(BodyType body_type, NomadFloat radius) {
+    invalidatePhysicsBody();
 
-    m_body_shape = BodyShape::Circle;
-    m_body_type = body_type;
-    m_body_radius = radius;
+    m_bodyShape = BodyShape::Circle;
+    m_bodyType = body_type;
+    m_bodyRadius = radius;
 }
 
-void Entity::set_rectangle_body(BodyType body_type, NomadFloat width, NomadFloat height) {
-    invalidate_physics_body();
+void Entity::setRectangleBody(BodyType body_type, NomadFloat width, NomadFloat height) {
+    invalidatePhysicsBody();
 
-    m_body_shape = BodyShape::Rectangle;
-    m_body_type = body_type;
-    m_body_width = width;
-    m_body_height = height;
+    m_bodyShape = BodyShape::Rectangle;
+    m_bodyType = body_type;
+    m_bodyWidth = width;
+    m_bodyHeight = height;
 }
 
-BodyType Entity::get_body_type() const {
-    return m_body_type;
+BodyType Entity::getBodyType() const {
+    return m_bodyType;
 }
 
-BodyShape Entity::get_body_shape() const {
-    return m_body_shape;
+BodyShape Entity::getBodyShape() const {
+    return m_bodyShape;
 }
 
-NomadFloat Entity::get_body_width() const {
-    return m_body_width;
+NomadFloat Entity::getBodyWidth() const {
+    return m_bodyWidth;
 }
 
-NomadFloat Entity::get_body_height() const {
-    return m_body_height;
+NomadFloat Entity::getBodyHeight() const {
+    return m_bodyHeight;
 }
 
-NomadFloat Entity::get_body_radius() const {
-    return m_body_radius;
+NomadFloat Entity::getBodyRadius() const {
+    return m_bodyRadius;
 }
 
-bool Entity::is_touching(const RectangleF& rectangle) const {
-    if (m_body_shape == BodyShape::Rectangle) {
+bool Entity::isTouching(const RectangleF& rectangle) const {
+    if (m_bodyShape == BodyShape::Rectangle) {
         auto entity_rectangle = RectangleF(
-            m_position.x() - m_body_width / 2,
-            m_position.y() - m_body_height / 2,
-            m_body_width,
-            m_body_height
+            m_position.getX() - m_bodyWidth / 2,
+            m_position.getY() - m_bodyHeight / 2,
+            m_bodyWidth,
+            m_bodyHeight
         );
 
-        return rectangle_rectangle_intersect(entity_rectangle, rectangle);
-    } else if (m_body_shape == BodyShape::Circle) {
+        return rectangleRectangleIntersect(entity_rectangle, rectangle);
+    } else if (m_bodyShape == BodyShape::Circle) {
         auto entity_circle = CircleF(
-            m_position.x(),
-            m_position.y(),
-            m_body_radius
+            m_position.getX(),
+            m_position.getY(),
+            m_bodyRadius
         );
 
-        return circle_rectangle_intersect(entity_circle, rectangle);
+        return circleRectangleIntersect(entity_circle, rectangle);
     }
 
     return false;
 }
 
-bool Entity::is_touching(const CircleF& circle) const {
-    if (m_body_shape == BodyShape::Rectangle) {
+bool Entity::isTouching(const CircleF& circle) const {
+    if (m_bodyShape == BodyShape::Rectangle) {
         auto entity_rectangle = RectangleF(
-            m_position.x() - m_body_width / 2,
-            m_position.y() - m_body_height / 2,
-            m_body_width,
-            m_body_height
+            m_position.getX() - m_bodyWidth / 2,
+            m_position.getY() - m_bodyHeight / 2,
+            m_bodyWidth,
+            m_bodyHeight
         );
 
-        return circle_rectangle_intersect(circle, entity_rectangle);
-    } else if (m_body_shape == BodyShape::Circle) {
+        return circleRectangleIntersect(circle, entity_rectangle);
+    } else if (m_bodyShape == BodyShape::Circle) {
         auto entity_circle = CircleF(
-            m_position.x(),
-            m_position.y(),
-            m_body_radius
+            m_position.getX(),
+            m_position.getY(),
+            m_bodyRadius
         );
 
-        return circle_circle_intersect(entity_circle, circle);
+        return circleCircleIntersect(entity_circle, circle);
     }
 
     return false;
 }
 
-bool Entity::is_touching(const Entity* entity) const {
-    auto entity_body_shape = entity->get_body_shape();
+bool Entity::isTouching(const Entity* entity) const {
+    auto entity_body_shape = entity->getBodyShape();
 
     if (entity_body_shape == BodyShape::Rectangle) {
         auto entity_rectangle = RectangleF(
-            entity->get_x() - entity->get_body_width() / 2,
-            entity->get_y() - entity->get_body_height() / 2,
-            entity->get_body_width(),
-            entity->get_body_height()
+            entity->getX() - entity->getBodyWidth() / 2,
+            entity->getY() - entity->getBodyHeight() / 2,
+            entity->getBodyWidth(),
+            entity->getBodyHeight()
         );
 
-        return is_touching(entity_rectangle);
+        return isTouching(entity_rectangle);
     } else if (entity_body_shape == BodyShape::Circle) {
         auto entity_circle = CircleF(
-            entity->get_x(),
-            entity->get_y(),
-            entity->get_body_radius()
+            entity->getX(),
+            entity->getY(),
+            entity->getBodyRadius()
         );
 
-        return is_touching(entity_circle);
+        return isTouching(entity_circle);
     }
 
     return false;
 }
 
-RectangleF& Entity::get_bounding_box(RectangleF &bounding_box) const {
+RectangleF& Entity::getBoundingBox(RectangleF &bounding_box) const {
     bounding_box = RectangleF{
-        m_position.x(),
-        m_position.y(),
+        m_position.getX(),
+        m_position.getY(),
         0.0f,
         0.0f
     };
 
-    if (auto sprite = get_sprite()) {
-        bounding_box = sprite->get_frame().to_rectanglef();
+    if (auto sprite = getSprite()) {
+        bounding_box = sprite->getFrame().toRectanglef();
     }
 
-    switch (m_body_shape) {
+    switch (m_bodyShape) {
         case BodyShape::None:
             // Ignore
             break;
         case BodyShape::Rectangle:
-            bounding_box = bounding_box.union_rect({
-                m_position.x() - m_body_width / 2,
-                m_position.y() - m_body_height / 2,
-                m_body_width,
-                m_body_height
+            bounding_box = bounding_box.unionRect({
+                m_position.getX() - m_bodyWidth / 2,
+                m_position.getY() - m_bodyHeight / 2,
+                m_bodyWidth,
+                m_bodyHeight
             });
             break;
         case BodyShape::Circle:
-            bounding_box = bounding_box.union_rect({
-                m_position.x() - m_body_width / 2,
-                m_position.y() - m_body_height / 2,
-                m_body_radius,
-                m_body_radius
+            bounding_box = bounding_box.unionRect({
+                m_position.getX() - m_bodyWidth / 2,
+                m_position.getY() - m_bodyHeight / 2,
+                m_bodyRadius,
+                m_bodyRadius
             });
             break;
         default:
-            log::error("[Entity::get_bounding_box] Invalid body shape: " + to_string(static_cast<int>(m_body_shape)));
+            log::error("[Entity::get_bounding_box] Invalid body shape: " + toString(static_cast<int>(m_bodyShape)));
     }
 
     return bounding_box;
 }
 
-void Entity::enter_camera() {
-    if (m_in_camera) {
+void Entity::enterCamera() {
+    if (m_inCamera) {
         return;
     }
 
-    if (m_on_enter_camera != NOMAD_INVALID_ID) {
-        m_scene->get_game()->execute_script_in_context(m_on_enter_camera, &m_execution_context);
+    if (m_onEnterCamera != NOMAD_INVALID_ID) {
+        m_scene->getGame()->executeScriptInContext(m_onEnterCamera, &m_executionContext);
     }
 }
 
-void Entity::exit_camera() {
-    if (!m_in_camera) {
+void Entity::exitCamera() {
+    if (!m_inCamera) {
         return;
     }
 
-    if (m_on_exit_camera != NOMAD_INVALID_ID) {
-        m_scene->get_game()->execute_script_in_context(m_on_exit_camera, &m_execution_context);
+    if (m_onExitCamera != NOMAD_INVALID_ID) {
+        m_scene->getGame()->executeScriptInContext(m_onExitCamera, &m_executionContext);
     }
 }
 
-void Entity::set_on_enter_camera(NomadId script_id) {
-    m_on_enter_camera = script_id;
+void Entity::setOnEnterCamera(NomadId scriptId) {
+    m_onEnterCamera = scriptId;
 }
 
-NomadId Entity::get_on_enter_camera() const {
-    return m_on_enter_camera;
+NomadId Entity::getOnEnterCamera() const {
+    return m_onEnterCamera;
 }
 
-void Entity::set_on_exit_camera(NomadId script_id) {
-    m_on_exit_camera = script_id;
+void Entity::setOnExitCamera(NomadId scriptId) {
+    m_onExitCamera = scriptId;
 }
 
-NomadId Entity::get_on_exit_camera() const {
-    return m_on_exit_camera;
+NomadId Entity::getOnExitCamera() const {
+    return m_onExitCamera;
 }
 
-bool Entity::is_in_camera() const {
-    return m_in_camera;
+bool Entity::isInCamera() const {
+    return m_inCamera;
 }
 
-void Entity::invalidate_physics_body() {
-    m_body_invalidated = true;
+void Entity::invalidatePhysicsBody() {
+    m_bodyInvalidated = true;
 }
 
-void Entity::before_simulation_update(b2WorldId world) {
-    if (m_body_invalidated) {
-        if (m_has_body) {
-            b2DestroyBody(m_b2_body);
-            m_has_body = false;
+void Entity::beforeSimulationUpdate(b2WorldId world) {
+    if (m_bodyInvalidated) {
+        if (m_hasBody) {
+            b2DestroyBody(m_b2Body);
+            m_hasBody = false;
         }
 
-        m_body_invalidated = false;
+        m_bodyInvalidated = false;
     
-        if (m_body_shape != BodyShape::None) {
+        if (m_bodyShape != BodyShape::None) {
             b2BodyDef body_def = b2DefaultBodyDef();
             body_def.userData = this;
 
-            if (m_is_sensor) {
-                if (m_body_type != BodyType::Static) {
+            if (m_isSensor) {
+                if (m_bodyType != BodyType::Static) {
                     log::warning("Sensors must be static bodies");
                 }
 
                 body_def.type = b2_staticBody;
-            } else if (m_body_type == BodyType::Static) {
+            } else if (m_bodyType == BodyType::Static) {
                 body_def.type = b2_staticBody;
-            } else if (m_body_type == BodyType::Dynamic) {
+            } else if (m_bodyType == BodyType::Dynamic) {
                 body_def.type = b2_dynamicBody;
-            } else if (m_body_type == BodyType::Kinematic) {
+            } else if (m_bodyType == BodyType::Kinematic) {
                 body_def.type = b2_kinematicBody;
             } else {
-                log::error("Invalid body type: " + to_string(static_cast<int>(m_body_type)));
+                log::error("Invalid body type: " + toString(static_cast<int>(m_bodyType)));
                 return;
             }
 
             // Create collision body.
-            m_b2_body = b2CreateBody(world, &body_def);
+            m_b2Body = b2CreateBody(world, &body_def);
 
-            if (b2Body_IsValid(m_b2_body)) {
-                m_has_body = true;
+            if (b2Body_IsValid(m_b2Body)) {
+                m_hasBody = true;
             } else {
                 log::error("Failed to create body");
                 return;
@@ -549,58 +549,58 @@ void Entity::before_simulation_update(b2WorldId world) {
             b2ShapeDef shape_def = b2DefaultShapeDef();
 
             shape_def.userData = this;
-            shape_def.isSensor = m_is_sensor;
-            shape_def.filter = m_b2_filter;
+            shape_def.isSensor = m_isSensor;
+            shape_def.filter = m_b2Filter;
 
-            if (m_body_shape == BodyShape::Rectangle) {
+            if (m_bodyShape == BodyShape::Rectangle) {
                 b2Polygon rectangle = b2MakeBox(
-                    static_cast<float>(m_body_width) / 2.0f,
-                    static_cast<float>(m_body_height) / 2.0f
+                    static_cast<float>(m_bodyWidth) / 2.0f,
+                    static_cast<float>(m_bodyHeight) / 2.0f
                 );
-                m_b2_shape = b2CreatePolygonShape(m_b2_body, &shape_def, &rectangle);
-            } else if (m_body_shape == BodyShape::Circle) {
+                m_b2Shape = b2CreatePolygonShape(m_b2Body, &shape_def, &rectangle);
+            } else if (m_bodyShape == BodyShape::Circle) {
                 b2Circle circle = {
                     {0.0f, 0.0f},
-                    static_cast<float>(m_body_radius)
+                    static_cast<float>(m_bodyRadius)
                 };
-                m_b2_shape = b2CreateCircleShape(m_b2_body, &shape_def, &circle);
+                m_b2Shape = b2CreateCircleShape(m_b2Body, &shape_def, &circle);
             } else {
-                log::error("Invalid body shape: " + to_string(static_cast<int>(m_body_shape)));
+                log::error("Invalid body shape: " + toString(static_cast<int>(m_bodyShape)));
                 return;
             }
 
-            if (b2Shape_IsValid(m_b2_shape) == false) {
+            if (b2Shape_IsValid(m_b2Shape) == false) {
                 log::error("Failed to create shape");
                 return;
             }
         }
     }
 
-    if (m_has_body) {
-        if (m_position_invalidated) {
+    if (m_hasBody) {
+        if (m_positionInvalidated) {
             // Make sure body is at the same position as the entity
-            b2Body_SetTransform(m_b2_body, b2Vec2{
-                static_cast<float>(m_position.x()),
-                static_cast<float>(m_position.y())
+            b2Body_SetTransform(m_b2Body, b2Vec2{
+                static_cast<float>(m_position.getX()),
+                static_cast<float>(m_position.getY())
             }, b2Rot_identity);
         }
 
-        if  (m_velocity_invalidated) {
-            b2Body_SetLinearVelocity(m_b2_body, b2Vec2{
-                static_cast<float>(m_velocity.x()),
-                static_cast<float>(m_velocity.y())
+        if  (m_velocityInvalidated) {
+            b2Body_SetLinearVelocity(m_b2Body, b2Vec2{
+                static_cast<float>(m_velocity.getX()),
+                static_cast<float>(m_velocity.getY())
             });
         }
     }
 
-    m_position_invalidated = false;
-    m_velocity_invalidated = false;
+    m_positionInvalidated = false;
+    m_velocityInvalidated = false;
 }
 
-void Entity::after_simulation_update(b2WorldId world) {
+void Entity::afterSimulationUpdate(b2WorldId world) {
     // Update entity position based on physics body.
-    if (m_has_body) {
-        auto position = b2Body_GetPosition(m_b2_body);
+    if (m_hasBody) {
+        auto position = b2Body_GetPosition(m_b2Body);
         m_position.set(position.x, position.y);
     } else {
         // Manually update velocity.
@@ -608,116 +608,116 @@ void Entity::after_simulation_update(b2WorldId world) {
     }
 }
 
-void Entity::set_layer(const NomadInteger layer) {
+void Entity::setLayer(const NomadInteger layer) {
     m_layer = layer;
-    invalidate_physics_body();
+    invalidatePhysicsBody();
 }
 
-NomadInteger Entity::get_layer() const {
+NomadInteger Entity::getLayer() const {
     return m_layer;
 }
 
-void Entity::set_sprite_name(const NomadString& sprite_name) {
-    auto sprite = m_scene->get_game()->get_resources()->get_sprites()->get_sprite_by_name(sprite_name);
+void Entity::setSpriteName(const NomadString& spriteName) {
+    auto sprite = m_scene->getGame()->getResources()->getSprites()->getSpriteByName(spriteName);
 
     if (sprite == nullptr) {
-        log::warning("Sprite '" + sprite_name + "' not found");
+        log::warning("Sprite '" + spriteName + "' not found");
         return;
     }
 
-    set_sprite(sprite);
+    setSprite(sprite);
 }
 
-const NomadString& Entity::get_sprite_name() const {
+const NomadString& Entity::getSpriteName() const {
     if (m_sprite == nullptr) {
         return NOMAD_EMPTY_STRING;
     }
 
-    return m_sprite->get_name();
+    return m_sprite->getName();
 }
 
 void Entity::update(Scene* scene) {
-    auto game = scene->get_game();
+    auto game = scene->getGame();
 
-    if (m_on_frame != NOMAD_INVALID_ID) {
-        game->execute_script_in_context(m_on_frame, &m_execution_context);
+    if (m_onFrame != NOMAD_INVALID_ID) {
+        game->executeScriptInContext(m_onFrame, &m_executionContext);
     }
 
     // Update movement.
-    if (m_move_to_destination) {
-        auto distance = m_position.distance_to(m_destination);
-        auto speed = m_speed / m_scene->get_game()->get_fps();
+    if (m_moveToDestination) {
+        auto distance = m_position.distanceTo(m_destination);
+        auto speed = m_speed / m_scene->getGame()->getFps();
 
         if (distance > speed) {
-            auto angle = m_position.angle_to(m_destination);
+            auto angle = m_position.angleTo(m_destination);
 
             auto velocity_x = std::cos(angle) * speed;
             auto velocity_y = std::sin(angle) * speed;
 
-            set_velocity(velocity_x, velocity_y);
+            setVelocity(velocity_x, velocity_y);
         } else {
-            set_location(m_destination);
-            set_velocity(0, 0);
-            m_move_to_destination = false;
+            setLocation(m_destination);
+            setVelocity(0, 0);
+            m_moveToDestination = false;
 
-            if (m_on_arrive_at_destination != NOMAD_INVALID_ID) {
-                game->execute_script_in_context(m_on_arrive_at_destination, &m_execution_context);
+            if (m_onArriveAtDestination != NOMAD_INVALID_ID) {
+                game->executeScriptInContext(m_onArriveAtDestination, &m_executionContext);
             }
         }
     }
 
     // Do we need to select new animation?
-    if (m_animation_dirty) {
-        m_animation_dirty = false;
+    if (m_animationDirty) {
+        m_animationDirty = false;
 
-        auto animation = game->get_resources()->get_animations()->get_animation(
-            m_animation_name,
-            m_animation_variant,
-            m_animation_direction
+        auto animation = game->getResources()->getAnimations()->getAnimation(
+            m_animationName,
+            m_animationVariant,
+            m_animationDirection
         );
 
         if (animation == nullptr) {
             log::warning(
-                "Animation '" + m_animation_name + "_" + m_animation_variant + "_" + m_animation_direction +
+                "Animation '" + m_animationName + "_" + m_animationVariant + "_" + m_animationDirection +
                 "' not found"
             );
         }
 
-        set_animation(animation);
+        setAnimation(animation);
     }
 
     // Update animation
     if (m_animation) {
-        m_frame_count--;
+        m_frameCount--;
 
-        if (m_frame_count <= 0) {
-            if (m_animation_reverse) {
-                m_current_frame--;
+        if (m_frameCount <= 0) {
+            if (m_animationReverse) {
+                m_currentFrame--;
 
-                if (m_current_frame <= 0) {
-                    if (m_animation_repeat) {
-                        m_current_frame = m_animation->get_frame_count() - 1;
+                if (m_currentFrame <= 0) {
+                    if (m_animationRepeat) {
+                        m_currentFrame = m_animation->getFrameCount() - 1;
                     } else {
-                        m_current_frame = 0;
+                        m_currentFrame = 0;
                     }
                 }
             } else {
-                m_current_frame++;
+                m_currentFrame++;
 
-                if (m_current_frame >= m_animation->get_frame_count()) {
-                    if (m_animation_repeat) {
-                        m_current_frame = 0;
+                if (m_currentFrame >= m_animation->getFrameCount()) {
+                    if (m_animationRepeat) {
+                        m_currentFrame = 0;
                     } else {
-                        m_current_frame = m_animation->get_frame_count() - 1;
+                        m_currentFrame = m_animation->getFrameCount() - 1;
                     }
                 }
             }
 
-            m_frame_count = m_animation_duration;
+            m_frameCount = m_animationDuration;
 
-            const auto sprite = m_animation->get_frame(m_current_frame);
+            const auto sprite = m_animation->getFrame(m_currentFrame);
 
-            set_sprite(sprite);
+            setSprite(sprite);
         }
     }
 }
@@ -727,30 +727,30 @@ void Entity::render(Canvas* canvas) {
         return;
     }
 
-    NomadFloat entity_x = get_x();
-    NomadFloat entity_y = get_y();
+    NomadFloat entity_x = getX();
+    NomadFloat entity_y = getY();
 
     if (m_sprite != nullptr) {
-        auto sprite_x = entity_x - get_sprite_x();
-        auto sprite_y = entity_y - get_sprite_y();
+        auto sprite_x = entity_x - getSpriteX();
+        auto sprite_y = entity_y - getSpriteY();
 
-        canvas->render_sprite(m_sprite, sprite_x, sprite_y);
+        canvas->renderSprite(m_sprite, sprite_x, sprite_y);
     }
 
-    if (m_text_texture == nullptr && !m_text.empty()) {
-        generate_text_texture(canvas);
+    if (m_textTexture == nullptr && !m_text.empty()) {
+        generateTextTexture(canvas);
     }
 
-    if (m_text_texture != nullptr) {
+    if (m_textTexture != nullptr) {
         Point anchor;
 
-        const auto text_x = static_cast<int>(m_text_position.x());
-        const auto text_y = static_cast<int>(m_text_position.y());
+        const auto text_x = static_cast<int>(m_textPosition.getX());
+        const auto text_y = static_cast<int>(m_textPosition.getY());
 
-        const int text_width = m_text_texture->get_width();
-        const int text_height = m_text_texture->get_height();
+        const int text_width = m_textTexture->getWidth();
+        const int text_height = m_textTexture->getHeight();
 
-        switch (m_text_alignment) {
+        switch (m_textAlignment) {
             case Alignment::TopLeft:
                 anchor.set(text_x, text_y);
                 break;
@@ -790,7 +790,7 @@ void Entity::render(Canvas* canvas) {
             default:
                 log::warning(
                     "Invalid text alignment " +
-                    to_string(static_cast<int>(m_text_alignment)) +
+                    toString(static_cast<int>(m_textAlignment)) +
                     " for entity '" +
                     m_name +
                     "'"
@@ -805,21 +805,21 @@ void Entity::render(Canvas* canvas) {
         };
 
         auto destination = Rectangle{
-            anchor.x() + static_cast<int>(entity_x + m_text_position.x()),
-            anchor.y() + static_cast<int>(entity_y + m_text_position.y()),
+            anchor.getX() + static_cast<int>(entity_x + m_textPosition.getX()),
+            anchor.getY() + static_cast<int>(entity_y + m_textPosition.getY()),
             text_width,
             text_height
         };
 
-        canvas->render_texture(m_text_texture, source, destination);
+        canvas->renderTexture(m_textTexture, source, destination);
     }
 }
 
-NomadId Entity::get_id() const {
+NomadId Entity::getId() const {
     return m_id;
 }
 
-void Entity::set_sprite(const Sprite* sprite) {
+void Entity::setSprite(const Sprite* sprite) {
     if (sprite == m_sprite) {
         return;
     }
@@ -827,326 +827,326 @@ void Entity::set_sprite(const Sprite* sprite) {
     m_sprite = sprite;
 }
 
-const Sprite* Entity::get_sprite() const {
+const Sprite* Entity::getSprite() const {
     return m_sprite;
 }
 
-void Entity::set_sprite_x(NomadFloat x) {
-    m_sprite_anchor.set_x(x);
+void Entity::setSpriteX(NomadFloat x) {
+    m_spriteAnchor.setX(x);
 }
 
-NomadFloat Entity::get_sprite_x() const {
-    return m_sprite_anchor.x();
+NomadFloat Entity::getSpriteX() const {
+    return m_spriteAnchor.getX();
 }
 
-void Entity::set_sprite_y(NomadFloat y) {
-    m_sprite_anchor.set_y(y);
+void Entity::setSpriteY(NomadFloat y) {
+    m_spriteAnchor.setY(y);
 }
 
-NomadFloat Entity::get_sprite_y() const {
-    return m_sprite_anchor.y();
+NomadFloat Entity::getSpriteY() const {
+    return m_spriteAnchor.getY();
 }
 
-void Entity::set_sprite_anchor(const PointF& anchor) {
-    m_sprite_anchor = anchor;
+void Entity::setSpriteAnchor(const PointF& anchor) {
+    m_spriteAnchor = anchor;
 }
 
-void Entity::set_sprite_anchor(NomadFloat x, NomadFloat y) {
-    m_sprite_anchor.set(x, y);
+void Entity::setSpriteAnchor(NomadFloat x, NomadFloat y) {
+    m_spriteAnchor.set(x, y);
 }
 
-const PointF& Entity::get_sprite_anchor() const {
-    return m_sprite_anchor;
+const PointF& Entity::getSpriteAnchor() const {
+    return m_spriteAnchor;
 }
 
-void Entity::set_animation(const Animation* animation) {
+void Entity::setAnimation(const Animation* animation) {
     if (animation == m_animation) {
         return;
     }
 
     m_animation = animation;
-    m_frame_count = 0;
+    m_frameCount = 0;
 
     if (m_animation == nullptr) {
-        set_sprite(nullptr);
+        setSprite(nullptr);
         return;
     }
 
-    if (m_animation_reverse) {
-        set_sprite(m_animation->get_last_frame());
+    if (m_animationReverse) {
+        setSprite(m_animation->getLastFrame());
     } else {
-        set_sprite(m_animation->get_frame(0));
+        setSprite(m_animation->getFrame(0));
     }
 }
 
-[[nodiscard]] const Animation* Entity::get_animation() const {
+[[nodiscard]] const Animation* Entity::getAnimation() const {
     return m_animation;
 }
 
-void Entity::set_animation_name(const NomadString& animation_name) {
-    if (animation_name == m_animation_name) {
+void Entity::setAnimationName(const NomadString& animationName) {
+    if (animationName == m_animationName) {
         return;
     }
 
-    m_animation_name = animation_name;
-    m_animation_dirty = true;
+    m_animationName = animationName;
+    m_animationDirty = true;
 }
 
-const NomadString& Entity::get_animation_name() const {
-    return m_animation_name;
+const NomadString& Entity::getAnimationName() const {
+    return m_animationName;
 }
 
-void Entity::set_animation_variant(const NomadString& animation_variant) {
-    if (animation_variant == m_animation_variant) {
+void Entity::setAnimationVariant(const NomadString& animationVariant) {
+    if (animationVariant == m_animationVariant) {
         return;
     }
 
-    m_animation_variant = animation_variant;
-    m_animation_dirty = true;
+    m_animationVariant = animationVariant;
+    m_animationDirty = true;
 }
 
-const NomadString& Entity::get_animation_variant() const {
-    return m_animation_variant;
+const NomadString& Entity::getAnimationVariant() const {
+    return m_animationVariant;
 }
 
-void Entity::set_animation_direction(const NomadString& animation_direction) {
-    if (animation_direction == m_animation_direction) {
+void Entity::setAnimationDirection(const NomadString& animationDirection) {
+    if (animationDirection == m_animationDirection) {
         return;
     }
 
-    m_animation_direction = animation_direction;
-    m_animation_dirty = true;
+    m_animationDirection = animationDirection;
+    m_animationDirty = true;
 }
 
-const NomadString& Entity::get_animation_direction() const {
-    return m_animation_direction;
+const NomadString& Entity::getAnimationDirection() const {
+    return m_animationDirection;
 }
 
-void Entity::set_animation_duration(NomadInteger speed) {
-    if (speed == m_animation_duration) {
+void Entity::setAnimationDuration(NomadInteger speed) {
+    if (speed == m_animationDuration) {
         return;
     }
 
-    m_animation_duration = speed;
+    m_animationDuration = speed;
 }
 
-NomadInteger Entity::get_animation_duration() const {
-    return m_animation_duration;
+NomadInteger Entity::getAnimationDuration() const {
+    return m_animationDuration;
 }
 
-void Entity::set_animation_repeat(bool repeat) {
-    if (repeat == m_animation_repeat) {
+void Entity::setAnimationRepeat(bool repeat) {
+    if (repeat == m_animationRepeat) {
         return;
     }
 
-    m_animation_repeat = repeat;
+    m_animationRepeat = repeat;
 }
 
-bool Entity::get_animation_repeat() const {
-    return m_animation_repeat;
+bool Entity::getAnimationRepeat() const {
+    return m_animationRepeat;
 }
 
-void Entity::set_animation_reverse(bool reverse) {
-    if (reverse == m_animation_reverse) {
+void Entity::setAnimationReverse(bool reverse) {
+    if (reverse == m_animationReverse) {
         return;
     }
 
-    m_animation_reverse = reverse;
+    m_animationReverse = reverse;
 }
 
-bool Entity::get_animation_reverse() const {
-    return m_animation_reverse;
+bool Entity::getAnimationReverse() const {
+    return m_animationReverse;
 }
 
-void Entity::set_text(const NomadString& text) {
+void Entity::setText(const NomadString& text) {
     if (text != m_text) {
         m_text = text;
 
-        invalidate_text_texture();
+        invalidateTextTexture();
     }
 }
 
-const NomadString& Entity::get_text() {
+const NomadString& Entity::getText() {
     return m_text;
 }
 
-void Entity::set_text_alignment(Alignment alignment) {
-    m_text_alignment = alignment;
+void Entity::setTextAlignment(Alignment alignment) {
+    m_textAlignment = alignment;
 }
 
-Alignment Entity::get_text_alignment() const {
-    return m_text_alignment;
+Alignment Entity::getTextAlignment() const {
+    return m_textAlignment;
 }
 
-void Entity::set_text_position(NomadFloat x, NomadFloat y) {
-    m_text_position = { x, y };
+void Entity::setTextPosition(NomadFloat x, NomadFloat y) {
+    m_textPosition = { x, y };
 }
 
-void Entity::set_text_position(const PointF &position) {
-    m_text_position = position;
+void Entity::setTextPosition(const PointF &position) {
+    m_textPosition = position;
 }
 
-const PointF & Entity::get_text_position() const {
-    return m_text_position;
+const PointF & Entity::getTextPosition() const {
+    return m_textPosition;
 }
 
-void Entity::set_text_x(NomadFloat x) {
-    m_text_position.set_x(x);
+void Entity::setTextX(NomadFloat x) {
+    m_textPosition.setX(x);
 }
 
-NomadFloat Entity::get_text_x() const {
-    return m_text_position.x();
+NomadFloat Entity::getTextX() const {
+    return m_textPosition.getX();
 }
 
-void Entity::set_text_y(NomadFloat y) {
-    m_text_position.set_y(y);
+void Entity::setTextY(NomadFloat y) {
+    m_textPosition.setY(y);
 }
 
-NomadFloat Entity::get_text_y() const {
-    return m_text_position.y();
+NomadFloat Entity::getTextY() const {
+    return m_textPosition.getY();
 }
 
-void Entity::set_text_width(NomadFloat width) {
-    if (width == m_text_width) {
+void Entity::setTextWidth(NomadFloat width) {
+    if (width == m_textWidth) {
         return;
     }
 
-    m_text_width = width;
+    m_textWidth = width;
 
-    invalidate_text_texture();
+    invalidateTextTexture();
 }
 
-NomadFloat Entity::get_text_width() const {
-    return m_text_width;
+NomadFloat Entity::getTextWidth() const {
+    return m_textWidth;
 }
 
-void Entity::set_text_height(NomadFloat height) {
-    if (height == m_text_height) {
+void Entity::setTextHeight(NomadFloat height) {
+    if (height == m_textHeight) {
         return;
     }
 
-    m_text_height = height;
+    m_textHeight = height;
 
-    invalidate_text_texture();
+    invalidateTextTexture();
 }
 
-NomadFloat Entity::get_text_height() const {
-    return m_text_height;
+NomadFloat Entity::getTextHeight() const {
+    return m_textHeight;
 }
 
-void Entity::set_text_line_spacing(NomadFloat line_spacing) {
-    if (line_spacing == m_text_line_spacing) {
+void Entity::setTextLineSpacing(NomadFloat lineSpacing) {
+    if (lineSpacing == m_textLineSpacing) {
         return;
     }
 
-    m_text_line_spacing = line_spacing;
+    m_textLineSpacing = lineSpacing;
 
-    invalidate_text_texture();
+    invalidateTextTexture();
 }
 
-NomadFloat Entity::get_text_line_spacing() const {
-    return m_text_line_spacing;
+NomadFloat Entity::getTextLineSpacing() const {
+    return m_textLineSpacing;
 }
 
-void Entity::set_text_color(const Color& color) {
-    if (color == m_text_color) {
+void Entity::setTextColor(const Color& color) {
+    if (color == m_textColor) {
         return;
     }
-    m_text_color = color;
+    m_textColor = color;
 
-    invalidate_text_texture();
+    invalidateTextTexture();
 }
 
-Color Entity::get_text_color() const {
-    return m_text_color;
+Color Entity::getTextColor() const {
+    return m_textColor;
 }
 
-void Entity::set_font_by_id(NomadId font_id) {
-    if (font_id == m_font_id) {
+void Entity::setFontById(NomadId fontId) {
+    if (fontId == m_fontId) {
         return;
     }
 
-    m_font_id = font_id;
+    m_fontId = fontId;
 
-    invalidate_text_texture();
+    invalidateTextTexture();
 }
 
-NomadId Entity::get_font_id() const {
-    return m_font_id;
+NomadId Entity::getFontId() const {
+    return m_fontId;
 }
 
-void Entity::set_variable_value(NomadId variable_id, const ScriptValue& value) {
-    m_variables.set_variable_value(variable_id, value);
+void Entity::setVariableValue(NomadId variableId, const ScriptValue& value) {
+    m_variables.setVariableValue(variableId, value);
 }
 
-void Entity::get_variable_value(NomadId variable_id, ScriptValue& value) const {
-    m_variables.get_variable_value(variable_id, value);
+void Entity::getVariableValue(NomadId variableId, ScriptValue& value) const {
+    m_variables.getVariableValue(variableId, value);
 }
 
-void Entity::add_event(const NomadString& name, NomadId script_id) {
-    m_events.add_event(name, script_id);
+void Entity::addEvent(const NomadString& name, NomadId scriptId) {
+    m_events.addEvent(name, scriptId);
 }
 
-void Entity::remove_event(const NomadString& name) {
-    m_events.remove_event(name);
+void Entity::removeEvent(const NomadString& name) {
+    m_events.removeEvent(name);
 }
 
-GameExecutionContext* Entity::get_execution_context() {
-    return &m_execution_context;
+GameExecutionContext* Entity::getExecutionContext() {
+    return &m_executionContext;
 }
 
-NomadId Entity::get_on_frame() const {
-    return m_on_frame;
+NomadId Entity::getOnFrame() const {
+    return m_onFrame;
 }
 
-void Entity::set_on_frame(NomadId script_id) {
-    m_on_frame = script_id;
+void Entity::setOnFrame(NomadId scriptId) {
+    m_onFrame = scriptId;
 }
 
-NomadId Entity::get_on_collision_begin() const {
-    return m_on_collision_begin;
+NomadId Entity::getOnCollisionBegin() const {
+    return m_onCollisionBegin;
 }
 
-void Entity::set_on_collision_begin(NomadId script_id) {
-    m_on_collision_begin = script_id;
+void Entity::setOnCollisionBegin(NomadId scriptId) {
+    m_onCollisionBegin = scriptId;
 }
 
-NomadId Entity::get_on_collision_end() const {
-    return m_on_collision_end;
+NomadId Entity::getOnCollisionEnd() const {
+    return m_onCollisionEnd;
 }
 
-void Entity::set_on_collision_end(NomadId script_id) {
-    m_on_collision_end = script_id;
+void Entity::setOnCollisionEnd(NomadId scriptId) {
+    m_onCollisionEnd = scriptId;
 }
 
-void Entity::invalidate_text_texture() {
-    if (m_text_texture) {
-        delete m_text_texture;
+void Entity::invalidateTextTexture() {
+    if (m_textTexture) {
+        delete m_textTexture;
 
-        m_text_texture = nullptr;
+        m_textTexture = nullptr;
     }
 }
 
-void Entity::generate_text_texture(Canvas* canvas) {
-    if (m_text_texture) {
-        delete m_text_texture;
+void Entity::generateTextTexture(Canvas* canvas) {
+    if (m_textTexture) {
+        delete m_textTexture;
 
-        m_text_texture = nullptr;
+        m_textTexture = nullptr;
     }
 
-    if (m_font_id == NOMAD_INVALID_ID) {
+    if (m_fontId == NOMAD_INVALID_ID) {
         log::warning("No font set for entity '" + m_name + "'");
     } else {
-        auto font = canvas->get_game()->get_resources()->get_fonts()->get_font(m_font_id);
+        auto font = canvas->getGame()->getResources()->getFonts()->getFont(m_fontId);
 
-        m_text_texture = font->generate_texture(
+        m_textTexture = font->generateTexture(
             canvas,
             m_text,
-            m_text_color,
-            get_horizontal_alignment(m_text_alignment),
-            static_cast<NomadInteger>(m_text_width),
-            static_cast<NomadInteger>(m_text_height),
-            static_cast<NomadInteger>(m_text_line_spacing)
+            m_textColor,
+            getHorizontalAlignment(m_textAlignment),
+            static_cast<NomadInteger>(m_textWidth),
+            static_cast<NomadInteger>(m_textHeight),
+            static_cast<NomadInteger>(m_textLineSpacing)
         );
     }
 }

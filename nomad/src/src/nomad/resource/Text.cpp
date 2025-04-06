@@ -16,8 +16,8 @@
 
 namespace nomad {
 
-void TextManager::load_text_from_csv(const NomadString& path) {
-    m_language_codes.clear();
+void TextManager::loadTextFromCsv(const NomadString& path) {
+    m_languageCodes.clear();
     m_texts.clear();
 
     std::ifstream file(path);
@@ -43,7 +43,7 @@ void TextManager::load_text_from_csv(const NomadString& path) {
                 continue;
             }
 
-            m_language_codes.push_back(token);
+            m_languageCodes.push_back(token);
         }
     }
 
@@ -63,39 +63,39 @@ void TextManager::load_text_from_csv(const NomadString& path) {
                 continue;
             }
 
-            auto language_code = m_language_codes.at(column_index - 1);
+            auto language_code = m_languageCodes.at(column_index - 1);
 
             m_texts[language_code][key] = token;
         }
     }
 }
 
-bool TextManager::has_language(const NomadString& language_code) const {
-    return m_texts.find(language_code) != m_texts.end();
+bool TextManager::hasLanguage(const NomadString& languageCode) const {
+    return m_texts.find(languageCode) != m_texts.end();
 }
 
-const std::vector<NomadString>& TextManager::get_language_codes() const {
-    return m_language_codes;
+const std::vector<NomadString>& TextManager::getLanguageCodes() const {
+    return m_languageCodes;
 }
 
-bool TextManager::has_text(const NomadString& language_code, const NomadString& key) const {
+bool TextManager::hasText(const NomadString& languageCode, const NomadString& key) const {
     return
-        m_texts.find(language_code) != m_texts.end() &&
-        m_texts.at(language_code).find(key) != m_texts.at(language_code).end();
+        m_texts.find(languageCode) != m_texts.end() &&
+        m_texts.at(languageCode).find(key) != m_texts.at(languageCode).end();
 }
 
-NomadString& TextManager::get_text(const NomadString& language_code, const NomadString& key, NomadString& text) const {
-    if (has_text(language_code, key)) {
-        text = m_texts.at(language_code).at(key);
+NomadString& TextManager::getText(const NomadString& languageCode, const NomadString& key, NomadString& text) const {
+    if (hasText(languageCode, key)) {
+        text = m_texts.at(languageCode).at(key);
     } else {
-        text = "[" + language_code + ":" + key + "]";
+        text = "[" + languageCode + ":" + key + "]";
     }
 
     return text;
 }
 
-void TextManager::get_all_text(const NomadString& language_code, std::unordered_map<NomadString, NomadString>& texts) const {
-    texts = m_texts.at(language_code);
+void TextManager::getAllText(const NomadString& languageCode, std::unordered_map<NomadString, NomadString>& texts) const {
+    texts = m_texts.at(languageCode);
 }
 
 } // namespace nomad

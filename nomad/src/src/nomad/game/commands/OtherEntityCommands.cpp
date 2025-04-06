@@ -19,35 +19,35 @@ namespace nomad {
 #define VARIABLE_NAME_PREFIX "other"
 
 #define START_ENTITY_BLOCK(message) \
-        get_current_context()->for_each_other_entities([&,this](Entity* entity) {
+        getCurrentContext()->forEachOtherEntities([&,this](Entity* entity) {
 
 #define END_ENTITY_BLOCK \
         });
 
 #define START_SINGLE_ENTITY_BLOCK(message) \
-        auto current_context = get_current_context(); \
+        auto currentContext = getCurrentContext(); \
         \
-        if (current_context->get_other_entity_count()) {\
-            get_current_context()->for_each_other_entities([&,this](Entity* entity) {
+        if (currentContext->getOtherEntityCount()) {\
+            currentContext->forEachOtherEntities([&,this](Entity* entity) {
 
-#define END_SINGLE_ENTITY_BLOCK(default_value) \
+#define END_SINGLE_ENTITY_BLOCK(defaultValue) \
             }); \
         } else { \
-            interpreter->set_result(ScriptValue(default_value)); \
+            interpreter->setResult(ScriptValue(defaultValue)); \
         }
 
-void Game::init_other_entity_commands() {
+void Game::initOtherEntityCommands() {
     log::debug("Initializing other entity commands");
 
 #include "_EntityCommands.inl"
 
     // Custom commands
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "other.pauseOthers",
         [this](Interpreter *interpreter) {
-            auto context = get_current_context();
+            auto context = getCurrentContext();
 
-            auto scene = context->get_scene();
+            auto scene = context->getScene();
 
             if (scene == nullptr) {
                 log::info("{other.pauseOthers} No scene in current context");
@@ -55,10 +55,10 @@ void Game::init_other_entity_commands() {
                 return;
             }
 
-            scene->pause_other_entities(context->get_other_entities());
+            scene->pauseOtherEntities(context->getOtherEntities());
         },
         {},
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Pauses all other entities in the scene")
     );
 }

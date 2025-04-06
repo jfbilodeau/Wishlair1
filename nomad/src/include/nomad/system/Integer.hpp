@@ -2,8 +2,7 @@
 // Created by jbilodeau on 2024-09-17.
 //
 
-#ifndef NOMAD_INTEGER_HPP
-#define NOMAD_INTEGER_HPP
+#pragma once
 
 #include "nomad/system/String.hpp"
 
@@ -14,82 +13,81 @@
 namespace nomad {
 
 // Integer operations
-inline NomadInteger integer_absolute(NomadInteger a) {
+inline NomadInteger integerAbsolute(NomadInteger a) {
     return std::abs(a);
 }
 
-inline NomadInteger integer_negate(NomadInteger a) {
+inline NomadInteger integerNegate(NomadInteger a) {
     return -a;
 }
 
-inline NomadInteger integer_add(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerAdd(NomadInteger a, NomadInteger b) {
     return a + b;
 }
 
-inline NomadInteger integer_subtract(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerSubtract(NomadInteger a, NomadInteger b) {
     return a - b;
 }
 
-inline NomadInteger integer_multiply(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerMultiply(NomadInteger a, NomadInteger b) {
     return a * b;
 }
 
-inline NomadInteger integer_divide(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerDivide(NomadInteger a, NomadInteger b) {
     return a / b;
 }
 
-inline NomadInteger integer_modulo(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerModulo(NomadInteger a, NomadInteger b) {
     return a % b;
 }
 
-inline NomadInteger integer_power(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerPower(NomadInteger a, NomadInteger b) {
     return static_cast<NomadInteger>(std::pow(a, b));
 }
 
-inline NomadInteger integer_and(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerAnd(NomadInteger a, NomadInteger b) {
     return a & b;
 }
 
-inline NomadInteger integer_or(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerOr(NomadInteger a, NomadInteger b) {
     return a | b;
 }
 
-inline NomadInteger integer_xor(NomadInteger a, NomadInteger b) {
+inline NomadInteger integerXor(NomadInteger a, NomadInteger b) {
     return a ^ b;
 }
 
-inline NomadBoolean integer_equal_to(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerEqualTo(NomadInteger a, NomadInteger b) {
     return a == b;
 }
 
-inline NomadBoolean integer_not_equal_to(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerNotEqualTo(NomadInteger a, NomadInteger b) {
     return a != b;
 }
 
-inline NomadBoolean integer_less_than(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerLessThan(NomadInteger a, NomadInteger b) {
     return a < b;
 }
 
-inline NomadBoolean integer_less_than_or_equal(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerLessThanOrEqual(NomadInteger a, NomadInteger b) {
     return a <= b;
 }
 
-inline NomadBoolean integer_greater_than(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerGreaterThan(NomadInteger a, NomadInteger b) {
     return a > b;
 }
 
-inline NomadBoolean integer_greater_than_or_equal(NomadInteger a, NomadInteger b) {
+inline NomadBoolean integerGreaterThanOrEqual(NomadInteger a, NomadInteger b) {
     return a >= b;
 }
 
-inline NomadFloat integer_to_float(NomadInteger a) {
+inline NomadFloat integerToFloat(NomadInteger a) {
     return static_cast<NomadFloat>(a);
 }
 
-inline NomadString integer_to_string(NomadInteger a) {
-    return to_string(a);
+inline NomadString integerToString(NomadInteger a) {
+    return toString(a);
 }
 
 } // nomad
 
-#endif // NOMAD_INTEGER_HPP

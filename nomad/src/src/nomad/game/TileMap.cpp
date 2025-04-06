@@ -16,8 +16,8 @@ Tile::Tile(NomadInteger mask):
 
 ///////////////////////////////////////////////////////////////////////////////
 // TileSet
-TileSet::TileSet(NomadIndex tile_count) {
-    m_tiles.resize(tile_count);
+TileSet::TileSet(NomadIndex tileCount) {
+    m_tiles.resize(tileCount);
 }
 
 TileSet::~TileSet() {
@@ -26,59 +26,59 @@ TileSet::~TileSet() {
 
 ///////////////////////////////////////////////////////////////////////////////
 // EntityDefinition
-EntityDefinition::EntityDefinition(NomadId entity_id, NomadString script_name):
-    m_entity_id(entity_id),
-    m_script_name(std::move(script_name))
+EntityDefinition::EntityDefinition(NomadId entityId, NomadString scriptName):
+    m_entityId(entityId),
+    m_scriptName(std::move(scriptName))
 {}
 
-NomadId EntityDefinition::get_entity_id() const {
-    return m_entity_id;
+NomadId EntityDefinition::getEntityId() const {
+    return m_entityId;
 }
 
-const NomadString& EntityDefinition::get_script_name() const {
-    return m_script_name;
+const NomadString& EntityDefinition::getScriptName() const {
+    return m_scriptName;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // EntitySet
-EntitySet::EntitySet(NomadIndex entity_count) {
-    m_entities.reserve(entity_count);
+EntitySet::EntitySet(NomadIndex entityCount) {
+    m_entities.reserve(entityCount);
 }
 
-NomadId EntitySet::register_entity(NomadId entity_id, const NomadString& name) {
+NomadId EntitySet::registerEntity(NomadId entityId, const NomadString& name) {
     auto id = to_nomad_id(m_entities.size());
 
     m_entities.emplace_back(
-        entity_id,
+        entityId,
         name
     );
 
     return id;
 }
 
-const EntityDefinition* EntitySet::get_entity(NomadIndex index) const {
+const EntityDefinition* EntitySet::getEntity(NomadIndex index) const {
     return &m_entities[index];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // TileLayer
-TileLayer::TileLayer(NomadIndex width, NomadIndex height, TileSet* tile_set):
+TileLayer::TileLayer(NomadIndex width, NomadIndex height, TileSet* tileSet):
     m_width(width),
     m_height(height),
-    m_tile_set(tile_set)
+    m_tileSet(tileSet)
 {
     m_tiles.resize(width * height);
 }
 
-NomadIndex TileLayer::get_width() const {
+NomadIndex TileLayer::getWidth() const {
     return m_width;
 }
 
-NomadIndex TileLayer::get_height() const {
+NomadIndex TileLayer::getHeight() const {
     return m_height;
 }
 
-const Tile& TileLayer::get_tile(NomadIndex x, NomadIndex y) const {
+const Tile& TileLayer::getTile(NomadIndex x, NomadIndex y) const {
     if (x >= m_width || y >= m_height) {
         return m_tiles[y * m_width + x];
     }
@@ -87,7 +87,7 @@ const Tile& TileLayer::get_tile(NomadIndex x, NomadIndex y) const {
     return m_tiles[0];
 }
 
-void TileLayer::set_tile(NomadIndex x, NomadIndex y, const Tile& tile) {
+void TileLayer::setTile(NomadIndex x, NomadIndex y, const Tile& tile) {
     if (x >= m_width || y >= m_height) {
         return;
     }
@@ -95,43 +95,43 @@ void TileLayer::set_tile(NomadIndex x, NomadIndex y, const Tile& tile) {
     m_tiles[y * m_width + x] = tile;
 }
 
-const TileSet* TileLayer::get_tile_set() const {
-    return m_tile_set;
+const TileSet* TileLayer::getTileSet() const {
+    return m_tileSet;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // EntityInstance
 EntityInstance::EntityInstance(
-    NomadString entity_id,
-    NomadString  script_name,
+    NomadString entityId,
+    NomadString  scriptName,
     NomadInteger layer,
     const PointF& location
 ):
-    m_entity_id(std::move(entity_id)),
-    m_script_name(std::move(script_name)),
+    m_entityId(std::move(entityId)),
+    m_scriptName(std::move(scriptName)),
     m_layer(layer),
     m_location(location)
 {
 }
 
-const NomadString& EntityInstance::get_entity_id() const {
-    return m_entity_id;
+const NomadString& EntityInstance::getEntityId() const {
+    return m_entityId;
 }
 
-const NomadString& EntityInstance::get_script_name() const {
-    return m_script_name;
+const NomadString& EntityInstance::getScriptName() const {
+    return m_scriptName;
 }
 
-const PointF& EntityInstance::get_location() const {
+const PointF& EntityInstance::getLocation() const {
     return m_location;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // TileMap
-TileMap::TileMap(NomadIndex width, NomadIndex height, NomadIndex layer_count):
+TileMap::TileMap(NomadIndex width, NomadIndex height, NomadIndex layerCount):
     m_width(width),
     m_height(height)
 {
-    m_layers.reserve(layer_count);
+    m_layers.reserve(layerCount);
 }
 } // namespace nomad

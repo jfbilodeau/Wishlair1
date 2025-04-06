@@ -19,7 +19,7 @@ namespace nomad {
 #define VARIABLE_NAME_PREFIX "this"
 
 #define START_ENTITY_BLOCK(message) \
-    auto entity = get_current_context()->get_this_entity(); \
+    auto entity = getCurrentContext()->getThisEntity(); \
     if (entity == nullptr) { \
         log::error(message);  \
         return; \
@@ -32,19 +32,19 @@ namespace nomad {
 
 #define END_SINGLE_ENTITY_BLOCK(default_value)
 
-void Game::init_this_entity_commands() {
+void Game::initThisEntityCommands() {
     log::debug("Initializing this entity commands");
 
     #include "_EntityCommands.inl"
 
     // Custom commands
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "this.pauseOthers",
         [this](Interpreter *interpreter) {
-            auto context = get_current_context();
+            auto context = getCurrentContext();
 
-            auto entity = context->get_this_entity();
-            auto scene = context->get_scene();
+            auto entity = context->getThisEntity();
+            auto scene = context->getScene();
 
             if (entity == nullptr) {
                 log::info("{this.pauseOthers}: No entity in current context");
@@ -58,10 +58,10 @@ void Game::init_this_entity_commands() {
                 return;
             }
 
-            scene->pause_other_entities(entity);
+            scene->pauseOtherEntities(entity);
         },
         {},
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Pauses all other entities in the scene except `this`.")
     );
 }

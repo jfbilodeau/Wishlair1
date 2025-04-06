@@ -24,9 +24,9 @@ void debug_draw_polygon(
 ) {
     auto canvas = static_cast<Canvas*>(context);
 
-    auto offset = canvas->get_offset();
+    auto offset = canvas->getOffset();
 
-    auto temp_vertices = create_temp_vector<SDL_FPoint>();
+    auto temp_vertices = createTempVector<SDL_FPoint>();
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -34,18 +34,18 @@ void debug_draw_polygon(
         auto& v = vertices[i];
 
         temp_vertices.push_back(SDL_FPoint{
-            v.x + static_cast<float>(offset.x()),
-            v.y + static_cast<float>(offset.y()),
+            v.x + static_cast<float>(offset.getX()),
+            v.y + static_cast<float>(offset.getY()),
         });
     }
 
     // Close polygon
     temp_vertices.push_back(SDL_FPoint{
-        vertices[0].x + static_cast<float>(offset.x()),
-        vertices[0].y  + static_cast<float>(offset.y())
+        vertices[0].x + static_cast<float>(offset.getX()),
+        vertices[0].y  + static_cast<float>(offset.getY())
     });
 
-    auto renderer = canvas->get_sdl_renderer();
+    auto renderer = canvas->getSdlRenderer();
 
     SDL_SetRenderDrawColor(
         renderer,
@@ -72,9 +72,9 @@ void debug_draw_solid_polygon(
 ) {
     auto canvas = static_cast<Canvas*>(context);
 
-    auto offset = canvas->get_offset();
+    auto offset = canvas->getOffset();
 
-    auto temp_vertices = create_temp_vector<SDL_Vertex>();
+    auto temp_vertices = createTempVector<SDL_Vertex>();
 
     SDL_Color& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -83,8 +83,8 @@ void debug_draw_solid_polygon(
 
         temp_vertices.push_back(SDL_Vertex{
             {
-                v.x + static_cast<float>(offset.x()),
-                v.y + static_cast<float>(offset.y())
+                v.x + static_cast<float>(offset.getX()),
+                v.y + static_cast<float>(offset.getY())
             },
             sdl_color,
             {0, 0}  // Texture coordinates
@@ -92,7 +92,7 @@ void debug_draw_solid_polygon(
     }
 
     SDL_RenderGeometry(
-        canvas->get_sdl_renderer(),
+        canvas->getSdlRenderer(),
         nullptr, // No texture
         temp_vertices.data(),
         temp_vertices.size(),
@@ -109,17 +109,17 @@ void debug_draw_circle(
 ) {
     const auto canvas = static_cast<Canvas*>(context);
 
-    auto offset = canvas->get_offset();
+    auto offset = canvas->getOffset();
 
-    const auto renderer = canvas->get_sdl_renderer();
+    const auto renderer = canvas->getSdlRenderer();
     const auto& [r, g, b, a] = reinterpret_cast<SDL_Color&>(color);
 
     constexpr auto vertex_count = 32;
 
-    auto temp_vertices = create_temp_vector<SDL_FPoint>();
+    auto temp_vertices = createTempVector<SDL_FPoint>();
 
-    center.x += static_cast<float>(offset.x());
-    center.y += static_cast<float>(offset.y());
+    center.x += static_cast<float>(offset.getX());
+    center.y += static_cast<float>(offset.getY());
 
     for (int i = 0; i <= vertex_count; ++i) {  // Using '<=' (+1) to close the circle
         const auto angle = 2.0f * static_cast<float>(M_PI) * i / vertex_count;
@@ -171,9 +171,9 @@ void debug_draw_segment(
 ) {
     auto canvas = static_cast<Canvas*>(context);
 
-    auto offset = canvas->get_offset();
+    auto offset = canvas->getOffset();
 
-    auto renderer = canvas->get_sdl_renderer();
+    auto renderer = canvas->getSdlRenderer();
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
     SDL_SetRenderDrawColor(
@@ -186,8 +186,8 @@ void debug_draw_segment(
 
     SDL_RenderDrawLineF(
         renderer,
-        p1.x + static_cast<float>(offset.x()), p1.y + static_cast<float>(offset.y()),
-        p2.x + static_cast<float>(offset.x()), p2.y + static_cast<float>(offset.y())
+        p1.x + static_cast<float>(offset.getX()), p1.y + static_cast<float>(offset.getY()),
+        p2.x + static_cast<float>(offset.getX()), p2.y + static_cast<float>(offset.getY())
     );
 }
 
@@ -206,9 +206,9 @@ void debug_draw_point(
 ) {
     auto canvas = static_cast<Canvas*>(context);
 
-    auto offset = canvas->get_offset();
+    auto offset = canvas->getOffset();
 
-    auto renderer = canvas->get_sdl_renderer();
+    auto renderer = canvas->getSdlRenderer();
 
     auto& sdl_color = reinterpret_cast<SDL_Color&>(color);
 
@@ -222,8 +222,8 @@ void debug_draw_point(
 
     SDL_RenderDrawPointF(
         renderer,
-        p.x + static_cast<float>(offset.x()),
-        p.y + static_cast<float>(offset.y())
+        p.x + static_cast<float>(offset.getX()),
+        p.y + static_cast<float>(offset.getY())
     );
 }
 
@@ -245,32 +245,32 @@ void bounds(
 
 } // namespace (anonymous)
 
-void create_debug_draw(Canvas* canvas, b2DebugDraw* debug_draw) {
-    debug_draw->DrawPolygon = debug_draw_polygon;
-    debug_draw->DrawSolidPolygon = debug_draw_solid_polygon;
-    debug_draw->DrawCircle = debug_draw_circle;
-    debug_draw->DrawSolidCircle = debug_draw_solid_circle;
-    debug_draw->DrawSolidCapsule = debug_draw_solid_capsule;
-    debug_draw->DrawSegment = debug_draw_segment;
-    debug_draw->DrawTransform = debug_draw_transform;
-    debug_draw->DrawPoint = debug_draw_point;
-    debug_draw->DrawString = debug_draw_string;
-    debug_draw->drawingBounds = {
+void createDebugDraw(Canvas* canvas, b2DebugDraw* debugDraw) {
+    debugDraw->DrawPolygon = debug_draw_polygon;
+    debugDraw->DrawSolidPolygon = debug_draw_solid_polygon;
+    debugDraw->DrawCircle = debug_draw_circle;
+    debugDraw->DrawSolidCircle = debug_draw_solid_circle;
+    debugDraw->DrawSolidCapsule = debug_draw_solid_capsule;
+    debugDraw->DrawSegment = debug_draw_segment;
+    debugDraw->DrawTransform = debug_draw_transform;
+    debugDraw->DrawPoint = debug_draw_point;
+    debugDraw->DrawString = debug_draw_string;
+    debugDraw->drawingBounds = {
         {0, 0},
         {0, 0}
     };
-    debug_draw->useDrawingBounds = false;
-    debug_draw->drawShapes = true;
-    debug_draw->drawJoints = true;
-    debug_draw->drawJointExtras = false;
-    debug_draw->drawAABBs = true;
-    debug_draw->drawMass = false;
-    debug_draw->drawContacts = false;
-    debug_draw->drawGraphColors = false;
-    debug_draw->drawContactNormals = false;
-    debug_draw->drawContactImpulses = false;
-    debug_draw->drawFrictionImpulses = false;
-    debug_draw->context = canvas;
+    debugDraw->useDrawingBounds = false;
+    debugDraw->drawShapes = true;
+    debugDraw->drawJoints = true;
+    debugDraw->drawJointExtras = false;
+    debugDraw->drawAABBs = true;
+    debugDraw->drawMass = false;
+    debugDraw->drawContacts = false;
+    debugDraw->drawGraphColors = false;
+    debugDraw->drawContactNormals = false;
+    debugDraw->drawContactImpulses = false;
+    debugDraw->drawFrictionImpulses = false;
+    debugDraw->context = canvas;
 }
 
 } // namespace nomad

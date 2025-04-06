@@ -16,6 +16,6 @@ public:
     virtual void deallocate(void* ptr) noexcept = 0;
 };
 
-Allocator* get_default_allocator();
+Allocator* getDefaultAllocator();
 
 } // namespace nomad

@@ -17,297 +17,331 @@
 namespace nomad {
 
 #define CHECK_SCENE_NOT_NULL(message) \
-    auto scene = get_current_context()->get_scene(); \
+    auto scene = getCurrentContext()->getScene(); \
     if (scene == nullptr) { \
         log::error(message); \
         return; \
     }
 
-void Game::init_scene_commands() {
+void Game::initSceneCommands() {
     log::debug("Initializing scene commands");
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.camera.follow",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot set camera position outside of a scene")
 
-            auto entity_id = interpreter->get_id_parameter(0);
+            auto entityId = interpreter->getIdParameter(0);
 
-            scene->camera_start_follow_entity(entity_id);
+            scene->cameraStartFollowEntity(entityId);
         }, {
-            def_parameter("entityId", m_runtime->get_integer_type(), NomadParamDoc("ID of the entity to follow."))
+            defParameter("entityId", m_runtime->getIntegerType(), NomadParamDoc("ID of the entity to follow."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Makes the camera follow the specified entity.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.camera.setPosition",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot set camera position outside of a scene")
 
-            auto x = interpreter->get_float_parameter(0);
-            auto y = interpreter->get_float_parameter(1);
+            auto x = interpreter->getFloatParameter(0);
+            auto y = interpreter->getFloatParameter(1);
 
-            scene->set_camera_position(x, y);
+            scene->setCameraPosition(x, y);
         }, {
-            def_parameter("x", m_runtime->get_float_type(), NomadParamDoc("X position of the camera.")),
-            def_parameter("y", m_runtime->get_float_type(), NomadParamDoc("Y position of the camera."))
+            defParameter("x", m_runtime->getFloatType(), NomadParamDoc("X position of the camera.")),
+            defParameter("y", m_runtime->getFloatType(), NomadParamDoc("Y position of the camera."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Sets the camera position.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.createEntity",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot create entity outside of a scene")
 
-            auto init_script_name = interpreter->get_string_parameter(0);
-            const auto entity_x = interpreter->get_float_parameter(1);
-            const auto entity_y = interpreter->get_float_parameter(2);
-            const auto layer = interpreter->get_integer_parameter(3);
+            auto initScriptName = interpreter->getStringParameter(0);
+            const auto entityX = interpreter->getFloatParameter(1);
+            const auto entityY = interpreter->getFloatParameter(2);
+            const auto layer = interpreter->getIntegerParameter(3);
 
 
-            scene->create_entity(init_script_name, entity_x, entity_y, layer);
+            scene->createEntity(initScriptName, entityX, entityY, layer);
         }, {
-            def_parameter(
-                "scriptName", m_runtime->get_string_type(),
+            defParameter(
+                "scriptName", m_runtime->getStringType(),
                 NomadParamDoc("Name of the script to execute to initialize the entity.")
             ),
-            def_parameter("x", m_runtime->get_float_type(), NomadParamDoc("X position of the entity.")),
-            def_parameter("y", m_runtime->get_float_type(), NomadParamDoc("Y position of the entity.")),
-            def_parameter("layer", m_runtime->get_integer_type(), NomadParamDoc("Layer of the entity."))
+            defParameter("x", m_runtime->getFloatType(), NomadParamDoc("X position of the entity.")),
+            defParameter("y", m_runtime->getFloatType(), NomadParamDoc("Y position of the entity.")),
+            defParameter("layer", m_runtime->getIntegerType(), NomadParamDoc("Layer of the entity."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Creates a new entity for this scene.")
     );
 
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.loadInputMapping",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            auto mapping_name = interpreter->get_string_parameter(0);
+            auto mappingName = interpreter->getStringParameter(0);
 
-            scene->load_action_mapping(mapping_name);
+            scene->loadActionMapping(mappingName);
         }, {
-            def_parameter(
-                "mappingName", m_runtime->get_string_type(), NomadParamDoc("Name of the input mapping to load.")
+            defParameter(
+                "mappingName", m_runtime->getStringType(), NomadParamDoc("Name of the input mapping to load.")
             )
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Load an input mapping for this scene.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.loadMap",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            NomadString map_name = interpreter->get_string_parameter(0);
-            NomadString tile_set_texture = interpreter->get_string_parameter(1);
+            NomadString mapName = interpreter->getStringParameter(0);
+            NomadString tileSetTexture = interpreter->getStringParameter(1);
 
-            auto map_file_name = map_name + ".tmj";
-            auto tile_set_texture_file_name = tile_set_texture + ".png";
+            auto mapFileName = mapName + ".tmj";
+            auto tileSetTextureFileName = tileSetTexture + ".png";
 
-            scene->load_tile_map(map_file_name, tile_set_texture_file_name);
+            scene->loadTileMap(mapFileName, tileSetTextureFileName);
         }, {
-            def_parameter("mapName", m_runtime->get_string_type(), NomadParamDoc("Name of the map to load.")),
-            def_parameter("tileSetTexture", m_runtime->get_string_type(), NomadParamDoc("Name of the tile set texture to load."))
+            defParameter("mapName", m_runtime->getStringType(), NomadParamDoc("Name of the map to load.")),
+            defParameter("tileSetTexture", m_runtime->getStringType(), NomadParamDoc("Name of the tile set texture to load."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Loads a map for this scene.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.pauseAll",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot pause entities outside of a scene")
 
-            scene->pause_all_entities();
+            scene->pauseAllEntities();
         },
         {},
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Pauses all entities in this scene.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "scene.unpauseAll",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot unpause entities outside of a scene")
 
-            scene->unpause_all_entities();
+            scene->unpauseAllEntities();
         },
         {},
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Unpauses all entities in this scene.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "select",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            auto predicate_id = interpreter->get_id_parameter(0);
+            auto predicateId = interpreter->getIdParameter(0);
 
-            auto execution_context = get_current_context();
-            auto this_entity = execution_context->get_this_entity();
+            auto executionContext = getCurrentContext();
+            auto thisEntity = executionContext->getThisEntity();
 
-            auto other_entities = create_temp_vector<Entity*>();
+            auto otherEntities = createTempVector<Entity*>();
 
-            NomadInteger layer_index = this_entity->get_layer();
+            NomadInteger layerIndex = thisEntity->getLayer();
 
-            scene->for_each_entity_by_layer(
-                layer_index,
+            scene->forEachEntityByLayer(
+                layerIndex,
                 [&](Entity* entity) {
-                    if (entity != this_entity) {
-                        execution_context->clear_other_entities_and_add(entity);
+                    if (entity != thisEntity) {
+                        executionContext->clearOtherEntitiesAndAdd(entity);
 
-                        auto result = execute_predicate(predicate_id);
+                        auto result = executePredicate(predicateId);
 
                         if (result) {
-                            other_entities.push_back(entity);
+                            otherEntities.push_back(entity);
                         }
                     }
                 }
             );
 
-            execution_context->set_other_entities(other_entities);
+            executionContext->setOtherEntities(otherEntities);
         }, {
-            def_parameter(
-                "predicate", m_runtime->get_predicate_type(),
+            defParameter(
+                "predicate", m_runtime->getPredicateType(),
                 NomadParamDoc("The predicate used to select other entities")
             ),
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Select entities in the same layer as the `this` entity that match the predicate.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "select.all",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            auto predicate_id = interpreter->get_id_parameter(0);
+            auto predicateId = interpreter->getIdParameter(0);
 
-            auto execution_context = get_current_context();
-            auto this_entity = execution_context->get_this_entity();
+            auto executionContext = getCurrentContext();
+            auto thisEntity = executionContext->getThisEntity();
 
-            auto other_entities = create_temp_vector<Entity*>();
+            auto otherEntities = createTempVector<Entity*>();
 
-            execution_context->clear_other_entities();
+            executionContext->clearOtherEntities();
 
-            scene->for_each_entities(
+            scene->forEachEntities(
                 [&](Entity* entity) {
-                    if (entity != this_entity) {
-                        execution_context->clear_other_entities_and_add(entity);
+                    if (entity != thisEntity) {
+                        executionContext->clearOtherEntitiesAndAdd(entity);
 
-                        auto result = execute_predicate(predicate_id);
+                        auto result = executePredicate(predicateId);
 
                         if (result) {
-                            other_entities.push_back(entity);
+                            otherEntities.push_back(entity);
                         }
                     }
                 }
             );
 
-            execution_context->set_other_entities(other_entities);
+            executionContext->setOtherEntities(otherEntities);
         }, {
-            def_parameter(
-                "predicate", m_runtime->get_predicate_type(),
+            defParameter(
+                "predicate", m_runtime->getPredicateType(),
                 NomadParamDoc("The predicate used to select other entities")
             ),
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Select entities in all layers that match the predicate.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "select.byName",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            auto name = interpreter->get_string_parameter(0);
+            auto name = interpreter->getStringParameter(0);
 
-            auto execution_context = get_current_context();
-            auto this_entity = execution_context->get_this_entity();
+            auto executionContext = getCurrentContext();
+            auto thisEntity = executionContext->getThisEntity();
 
-            auto layer_index = this_entity->get_layer();
+            auto layerIndex = thisEntity->getLayer();
 
-            execution_context->clear_other_entities();
+            executionContext->clearOtherEntities();
 
-            scene->for_each_entity_by_layer(
-                layer_index,
+            scene->forEachEntityByLayer(
+                layerIndex,
                 [&](Entity* entity) {
-                    if (entity->get_name() == name) {
-                        execution_context->add_other_entity(entity);
+                    if (entity->getName() == name) {
+                        executionContext->addOtherEntity(entity);
                     }
                 }
             );
         }, {
-            def_parameter("name", m_runtime->get_string_type(), NomadParamDoc("The name of the entity to select")),
+            defParameter("name", m_runtime->getStringType(), NomadParamDoc("The name of the entity to select")),
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Select entities in the same layer as the `this` entity that have the given name.")
     );
 
-    m_runtime->register_command(
+    m_runtime->registerCommand(
         "select.all.byName",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
 
-            auto name = interpreter->get_string_parameter(0);
+            auto name = interpreter->getStringParameter(0);
 
-            auto execution_context = get_current_context();
+            auto executionContext = getCurrentContext();
 
-            execution_context->clear_other_entities();
+            executionContext->clearOtherEntities();
 
-            scene->for_each_entities(
+            scene->forEachEntities(
                 [&](Entity* entity) {
-                    if (entity->get_name() == name) {
-                        execution_context->add_other_entity(entity);
+                    if (entity->getName() == name) {
+                        executionContext->addOtherEntity(entity);
                     }
                 }
             );
         }, {
-            def_parameter("name", m_runtime->get_string_type(), NomadParamDoc("The name of the entity to select")),
+            defParameter("name", m_runtime->getStringType(), NomadParamDoc("The name of the entity to select")),
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Select entities across all layers that have the given name.")
     );
 
-    m_runtime->register_command(
-        "scene.trigger.layer",
+    m_runtime->registerCommand(
+        "select.this",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot load input mapping outside of a scene")
+
+            auto executionContext = getCurrentContext();
+            auto thisEntity = executionContext->getThisEntity();
+
+            executionContext->clearOtherEntities();
+            executionContext->addOtherEntity(thisEntity);
+        },
+        { },
+        m_runtime->getVoidType(),
+        NomadDoc("Select the `this` as `other` entity. Useful to pass the `this` entity to a function that takes `other` entities.")
+    );
+
+    m_runtime->registerCommand(
+        "scene.events.trigger.layer",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot trigger event outside of a scene")
 
-            auto event_name = interpreter->get_string_parameter(0);
-            auto layer_id = interpreter->get_integer_parameter(1);
+            auto eventName = interpreter->getStringParameter(0);
+            auto layerId = interpreter->getIntegerParameter(1);
 
-            scene->trigger_event_layer(event_name, layer_id);
+            scene->triggerEventLayer(eventName, layerId);
         }, {
-            def_parameter("eventName", m_runtime->get_string_type(), NomadParamDoc("Name of the event to trigger.")),
-            def_parameter("layerId", m_runtime->get_integer_type(), NomadParamDoc("Layer ID to trigger the event on."))
+            defParameter("eventName", m_runtime->getStringType(), NomadParamDoc("Name of the event to trigger.")),
+            defParameter("layerId", m_runtime->getIntegerType(), NomadParamDoc("Layer ID to trigger the event on."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Trigger an event for all entities on the specified layer.")
     );
 
-    m_runtime->register_command(
-        "scene.trigger",
+    m_runtime->registerCommand(
+        "scene.events.trigger",
         [this](Interpreter* interpreter) {
             CHECK_SCENE_NOT_NULL("Cannot trigger event outside of a scene")
 
-            auto event_name = interpreter->get_string_parameter(0);
+            auto eventName = interpreter->getStringParameter(0);
 
-            scene->trigger_event(event_name);
+            scene->scheduleEvent(eventName, 0);
         }, {
-            def_parameter("eventName", m_runtime->get_string_type(), NomadParamDoc("Name of the event to trigger."))
+            defParameter("eventName", m_runtime->getStringType(), NomadParamDoc("Name of the event to trigger."))
         },
-        m_runtime->get_void_type(),
+        m_runtime->getVoidType(),
         NomadDoc("Trigger an event for all entities on this scene.")
+    );
+
+    m_runtime->registerCommand(
+        "scene.events.queue",
+        [this](Interpreter* interpreter) {
+            CHECK_SCENE_NOT_NULL("Cannot trigger event outside of a scene")
+
+            auto eventName = interpreter->getStringParameter(1);
+            auto frameCount = interpreter->getIntegerParameter(0);
+
+            scene->scheduleEvent(eventName, frameCount);
+        },
+        {
+            defParameter("frameCount", m_runtime->getIntegerType(), NomadParamDoc("Number of frames to wait before triggering the event.")),
+            defParameter("eventName", m_runtime->getStringType(), NomadParamDoc("Name of the event to trigger."))
+        },
+        m_runtime->getVoidType(),
+        NomadDoc("Trigger an event after a specified number of frames.")
     );
 }
 

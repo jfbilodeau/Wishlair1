@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-10-26.
 //
 
-#ifndef NOMAD_CARDINAL_HPP
-#define NOMAD_CARDINAL_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -25,9 +24,7 @@ const NomadString East = "east";
 const NomadString West = "west";
 }
 
-const NomadString& to_string(Cardinal cardinal);
-Cardinal from_string(const NomadString& cardinal_name);
+const NomadString& toString(NomadString cardinal);
+Cardinal fromString(const NomadString& cardinal_name);
 
 } // namespace nomad
-
-#endif //NOMAD_CARDINAL_HPP

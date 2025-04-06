@@ -16,7 +16,7 @@ namespace nomad {
 #define VARIABLE_NAME_PREFIX "this"
 
 #define START_ENTITY_BLOCK(message) \
-    auto entity = get_current_context()->get_this_entity(); \
+    auto entity = getCurrentContext()->getThisEntity(); \
     if (entity == nullptr) { \
         log::error(message);  \
         return; \
@@ -29,20 +29,20 @@ namespace nomad {
 
 #define END_SINGLE_ENTITY_BLOCK(default_value)
 
-void Game::init_this_dynamic_variables() {
+void Game::initThisDynamicVariables() {
     log::debug("Initializing this dynamic variables");
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "this",
         nullptr,
         [this](Interpreter* interpreter, ScriptValue& value) {
             START_ENTITY_BLOCK("Cannot access 'this' outside of an entity")
 
-            value.set_integer_value(entity->get_id());
+            value.setIntegerValue(entity->getId());
 
             END_SINGLE_ENTITY_BLOCK(NOMAD_INVALID_ID)
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         "Get the ID of the `this` entity."
     );
 

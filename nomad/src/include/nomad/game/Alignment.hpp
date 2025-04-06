@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-12-23.
 //
 
-#ifndef NOMAD_ALIGNMENT_HPP
-#define NOMAD_ALIGNMENT_HPP
+#pragma once
 
 namespace nomad {
 
@@ -33,11 +32,10 @@ enum class Alignment {
     BottomRight  = 0b01000100
 };
 
-HorizontalAlignment get_horizontal_alignment(Alignment alignment);
-VerticalAlignment get_vertical_alignment(Alignment alignment);
+HorizontalAlignment getHorizontalAlignment(Alignment alignment);
+VerticalAlignment getVerticalAlignment(Alignment alignment);
 
-Alignment get_alignment(HorizontalAlignment horizontal, VerticalAlignment vertical);
+Alignment getAlignment(HorizontalAlignment horizontal, VerticalAlignment vertical);
 
 } // namespace nomad
 
-#endif //NOMAD_ALIGNMENT_HPP

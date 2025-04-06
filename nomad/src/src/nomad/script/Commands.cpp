@@ -9,26 +9,26 @@
 
 namespace nomad {
 
-void command_log_info(Interpreter* interpreter) {
-    auto message = interpreter->get_string_parameter(0);
+void commandLogInfo(Interpreter* interpreter) {
+    auto message = interpreter->getStringParameter(0);
 
     log::info(message);
 }
 
-void command_to_float(Interpreter* interpreter) {
-    auto value = interpreter->get_integer_parameter(0);
+void commandToFloat(Interpreter* interpreter) {
+    auto value = interpreter->getIntegerParameter(0);
 
     auto converted_value = static_cast<NomadFloat>(value);
 
-    interpreter->set_float_result(converted_value);
+    interpreter->setFloatResult(converted_value);
 }
 
-void command_to_integer(Interpreter* interpreter) {
-    auto value = interpreter->get_float_parameter(0);
+void commandToInteger(Interpreter* interpreter) {
+    auto value = interpreter->getFloatParameter(0);
 
     auto converted_value = static_cast<NomadInteger>(value);
 
-    interpreter->set_integer_result(converted_value);
+    interpreter->setIntegerResult(converted_value);
 }
 
 } // nomad

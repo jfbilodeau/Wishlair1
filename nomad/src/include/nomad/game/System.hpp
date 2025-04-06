@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-09-19.
 //
 
-#ifndef NOMAD_SYSTEM_HPP
-#define NOMAD_SYSTEM_HPP
+#pragma once
 
 #include "nomad/log/Logger.hpp"
 
@@ -18,7 +17,7 @@ public:
     System(const System&) = delete;
     ~System();
 
-    [[nodiscard]] std::shared_ptr<Logger> get_logger() const;
+    [[nodiscard]] std::shared_ptr<Logger> getLogger() const;
 
 private:
     std::shared_ptr<Logger> m_logger;
@@ -27,4 +26,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_SYSTEM_HPP

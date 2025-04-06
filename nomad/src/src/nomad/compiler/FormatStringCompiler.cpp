@@ -8,7 +8,7 @@
 
 namespace nomad {
 
-bool compile_format_string(Compiler* compiler, Script* script, const NomadString& format, FormatString* format_string) {
+bool compileFormatString(Compiler* compiler, Script* script, const NomadString& format, FormatString* formatString) {
     NomadIndex index = 0;
     NomadIndex length = format.length();
 
@@ -20,7 +20,7 @@ bool compile_format_string(Compiler* compiler, Script* script, const NomadString
         }
 
         if (index > start) {
-            format_string->add_literal(format.substr(start, index - start));
+            formatString->addLiteral(format.substr(start, index - start));
         }
 
         if (index < length && format[index] == '{') {
@@ -37,13 +37,13 @@ bool compile_format_string(Compiler* compiler, Script* script, const NomadString
                 throw FormatStringException("Missing '}' in format string");
             }
 
-            auto variable_name = format.substr(start, end - start);
+            auto variableName = format.substr(start, end - start);
 
             IdentifierDefinition identifier{};
 
-            compiler->get_identifier_definition(variable_name, script, identifier);
+            compiler->getIdentifierDefinition(variableName, script, identifier);
 
-            switch (identifier.identifier_type) {
+            switch (identifier.identifierType) {
                 case IdentifierType::Constant:
                 case IdentifierType::Script:
                 case IdentifierType::DynamicVariable:
@@ -54,23 +54,23 @@ bool compile_format_string(Compiler* compiler, Script* script, const NomadString
                     break;
 
                 case IdentifierType::Keyword:
-                    throw FormatStringException("Cannot use keyword in format string: " + variable_name);
+                    throw FormatStringException("Cannot use keyword in format string: " + variableName);
 
                 case IdentifierType::Command:
-                    throw FormatStringException("Cannot use command in format string: " + variable_name);
+                    throw FormatStringException("Cannot use command in format string: " + variableName);
 
                 case IdentifierType::Statement:
-                    throw FormatStringException("Cannot use statement in format string: " + variable_name);
+                    throw FormatStringException("Cannot use statement in format string: " + variableName);
 
                 default:
-                    throw FormatStringException("Unknown identifier in format string: " + variable_name);
+                    throw FormatStringException("Unknown identifier in format string: " + variableName);
             }
 
-            format_string->add_variable(
-                identifier.identifier_type,
-                identifier.value_type,
-                identifier.context_id,
-                identifier.variable_id
+            formatString->addVariable(
+                identifier.identifierType,
+                identifier.valueType,
+                identifier.contextId,
+                identifier.variableId
             );
 
             index = end + 1;

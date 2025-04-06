@@ -9,48 +9,48 @@
 
 namespace nomad {
 
-bool circle_circle_intersect(const CircleF& a, const CircleF& b) {
-    auto dx = a.get_x() - b.get_x();
-    auto dy = a.get_y() - b.get_y();
+bool circleCircleIntersect(const CircleF& a, const CircleF& b) {
+    auto dx = a.getX() - b.getX();
+    auto dy = a.getY() - b.getY();
     auto distance_squared = dx * dx + dy * dy;
-    auto radius_sum = a.get_radius() + b.get_radius();
+    auto radius_sum = a.getRadius() + b.getRadius();
     auto radius_sum_squared = radius_sum * radius_sum;
 
     return distance_squared < radius_sum_squared;
 }
 
-bool circle_rectangle_intersect(const CircleF& circle, const RectangleF& rectangle) {
-    auto circle_x = circle.get_x();
-    auto circle_y = circle.get_y();
+bool circleRectangleIntersect(const CircleF& circle, const RectangleF& rectangle) {
+    auto circle_x = circle.getX();
+    auto circle_y = circle.getY();
 
-    auto closest_x = std::clamp(circle_x, rectangle.get_left(), rectangle.get_right());
-    auto closest_y = std::clamp(circle_y, rectangle.get_top(), rectangle.get_bottom());
+    auto closest_x = std::clamp(circle_x, rectangle.getLeft(), rectangle.getRight());
+    auto closest_y = std::clamp(circle_y, rectangle.getTop(), rectangle.getBottom());
 
     auto dx = circle_x - closest_x;
     auto dy = circle_y - closest_y;
 
-    return dx * dx + dy * dy < circle.get_radius() * circle.get_radius();}
+    return dx * dx + dy * dy < circle.getRadius() * circle.getRadius();}
 
-bool rectangle_rectangle_intersect(const RectangleF& a, const RectangleF& b) {
-    return a.get_left() < b.get_right() &&
-           a.get_right() > b.get_left() &&
-           a.get_top() < b.get_bottom() &&
-           a.get_bottom() > b.get_top();
+bool rectangleRectangleIntersect(const RectangleF& a, const RectangleF& b) {
+    return a.getLeft() < b.getRight() &&
+           a.getRight() > b.getLeft() &&
+           a.getTop() < b.getBottom() &&
+           a.getBottom() > b.getTop();
 }
 
-bool point_in_circle(const CircleF& circle, const PointF& point) {
-    auto dx = circle.get_x() - point.x();
-    auto dy = circle.get_y() - point.y();
+bool pointInCircle(const CircleF& circle, const PointF& point) {
+    auto dx = circle.getX() - point.getX();
+    auto dy = circle.getY() - point.getY();
 
     auto distance_squared = dx * dx + dy * dy;
-    return distance_squared < circle.get_radius() * circle.get_radius();
+    return distance_squared < circle.getRadius() * circle.getRadius();
 }
 
-bool point_in_rectangle(const RectangleF& rectangle, const PointF& point) {
-    return point.x() >= rectangle.get_left() &&
-           point.x() <= rectangle.get_right() &&
-           point.y() >= rectangle.get_top() &&
-           point.y() <= rectangle.get_bottom();
+bool pointInRectangle(const RectangleF& rectangle, const PointF& point) {
+    return point.getX() >= rectangle.getLeft() &&
+           point.getX() <= rectangle.getRight() &&
+           point.getY() >= rectangle.getTop() &&
+           point.getY() <= rectangle.getBottom();
 }
 
 } // namespace nomad

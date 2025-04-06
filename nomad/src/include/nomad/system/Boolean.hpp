@@ -10,23 +10,23 @@
 namespace nomad {
 
 // Boolean operations
-inline NomadBoolean boolean_and(NomadBoolean a, NomadBoolean b) {
+inline NomadBoolean booleanAnd(NomadBoolean a, NomadBoolean b) {
     return a && b;
 }
 
-inline NomadBoolean boolean_or(NomadBoolean a, NomadBoolean b) {
+inline NomadBoolean booleanOr(NomadBoolean a, NomadBoolean b) {
     return a || b;
 }
 
-inline NomadBoolean boolean_not(NomadBoolean a) {
+inline NomadBoolean booleanNot(NomadBoolean a) {
     return !a;
 }
 
-inline NomadBoolean boolean_equal_to(NomadBoolean a, NomadBoolean b) {
+inline NomadBoolean booleanEqualTo(NomadBoolean a, NomadBoolean b) {
     return a == b;
 }
 
-inline NomadBoolean boolean_not_equal_to(NomadBoolean a, NomadBoolean b) {
+inline NomadBoolean booleanNotEqualTo(NomadBoolean a, NomadBoolean b) {
     return a != b;
 }
 

@@ -6,7 +6,7 @@
 
 namespace nomad {
 
-HorizontalAlignment get_horizontal_alignment(Alignment alignment) {
+HorizontalAlignment getHorizontalAlignment(Alignment alignment) {
     int bits = static_cast<int>(alignment);
 
     if (bits & 0b001) {
@@ -20,7 +20,7 @@ HorizontalAlignment get_horizontal_alignment(Alignment alignment) {
     }
 }
 
-VerticalAlignment get_vertical_alignment(Alignment alignment) {
+VerticalAlignment getVerticalAlignment(Alignment alignment) {
     int bits = static_cast<int>(alignment);
 
     if (bits & 0b0001000) {
@@ -34,7 +34,7 @@ VerticalAlignment get_vertical_alignment(Alignment alignment) {
     }
 }
 
-Alignment get_alignment(HorizontalAlignment horizontal, VerticalAlignment vertical) {
+Alignment getAlignment(HorizontalAlignment horizontal, VerticalAlignment vertical) {
     int bits = 0;
 
     switch (horizontal) {

@@ -2,8 +2,7 @@
 // Created by jbilodeau on 2024-09-17.
 //
 
-#ifndef NOMAD_OPCODE_HPP
-#define NOMAD_OPCODE_HPP
+#pragma once
 
 namespace nomad {
 
@@ -150,4 +149,3 @@ DECLARE_OP_CODE(op_assert)
 
 } // namespace nomad
 
-#endif // namespace NOMAD_OPCODE_HPP

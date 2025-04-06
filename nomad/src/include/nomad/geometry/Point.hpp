@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_POINT_HPP
-#define NOMAD_POINT_HPP
+#pragma once
 
 #include <SDL2/SDL_rect.h>
 
@@ -21,19 +20,19 @@ public:
     Point& operator=(const Point& other) = default;
     Point& operator=(Point&& other) noexcept = default;
 
-    [[nodiscard]] int x() const {
+    [[nodiscard]] int getX() const {
         return m_x;
     }
 
-    [[nodiscard]] int y() const {
+    [[nodiscard]] int getY() const {
         return m_y;
     }
 
-    void set_x(int x) {
+    void setX(int x) {
         m_x = x;
     }
 
-    void set_y(int y) {
+    void setY(int y) {
         m_y = y;
     }
 
@@ -57,12 +56,12 @@ public:
         m_y += delta.m_y;
     }
 
-    [[nodiscard]] PointF to_pointf() const;
-    PointF& to_pointf(PointF& point) const;
-    [[nodiscard]] SDL_Point to_sdl_point() const;
-    SDL_Point& to_sdl_point(SDL_Point& point) const;
-    [[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
-    SDL_FPoint& to_sdl_fpoint(SDL_FPoint& point) const;
+    [[nodiscard]] PointF toPointf() const;
+    PointF& toPointf(PointF& point) const;
+    [[nodiscard]] SDL_Point toSdlPoint() const;
+    SDL_Point& toSdlPoint(SDL_Point& point) const;
+    [[nodiscard]] SDL_FPoint toSdlFpoint() const;
+    SDL_FPoint& toSdlFpoint(SDL_FPoint& point) const;
 
 private:
     int m_x;
@@ -70,7 +69,7 @@ private:
 };
 
 static bool operator==(const Point& lhs, const Point& rhs) {
-    return lhs.x() == rhs.x() && lhs.y() == rhs.y();
+    return lhs.getX() == rhs.getX() && lhs.getY() == rhs.getY();
 }
 
 static bool operator!=(const Point& lhs, const Point& rhs) {
@@ -79,4 +78,3 @@ static bool operator!=(const Point& lhs, const Point& rhs) {
 
 } // nomad
 
-#endif //NOMAD_POINT_HPP

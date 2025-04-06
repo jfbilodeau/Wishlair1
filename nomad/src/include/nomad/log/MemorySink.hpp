@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-09-27.
 //
 
-#ifndef NOMAD_MEMORYSINK_HPP
-#define NOMAD_MEMORYSINK_HPP
+#pragma once
 
 #include "nomad/log/Logger.hpp"
 
@@ -17,7 +16,7 @@ public:
 
     void log(const LogEntry* entry) override;
 
-    [[nodiscard]] const std::vector<LogEntry>& get_entries() const;
+    [[nodiscard]] const std::vector<LogEntry>& getEntries() const;
 
     void clear();
 
@@ -27,4 +26,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_MEMORYSINK_HPP

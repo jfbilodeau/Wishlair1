@@ -22,13 +22,13 @@ public:
     explicit ScriptValue(NomadId value);
     explicit ScriptValue(const NomadString& value);
 
-    void set_float_value(NomadFloat value);
-    void set_integer_value(NomadInteger value);
-    void set_index_value(NomadIndex value);
-    void set_boolean_value(NomadBoolean value);
-    void set_string_value(const NomadString& value);
-    void set_id_value(NomadId value);
-    void set_string_value(const NomadChar* value);
+    void setFloatValue(NomadFloat value);
+    void setIntegerValue(NomadInteger value);
+    void setIndexValue(NomadIndex value);
+    void setBooleanValue(NomadBoolean value);
+    void setStringValue(const NomadString& value);
+    void setIdValue(NomadId value);
+    void setStringValue(const NomadChar* value);
 
     // Overloaded setter
     void set(NomadFloat value);
@@ -38,19 +38,19 @@ public:
 
     // Overloaded getter
 
-    [[nodiscard]] NomadFloat get_float_value() const;
-    [[nodiscard]] NomadInteger get_integer_value() const;
+    [[nodiscard]] NomadFloat getFloatValue() const;
+    [[nodiscard]] NomadInteger getIntegerValue() const;
     [[nodiscard]] NomadIndex get_index_value() const;
-    [[nodiscard]] NomadBoolean get_boolean_value() const;
-    [[nodiscard]] NomadId get_id_value() const;
-    [[nodiscard]] const NomadChar* get_string_value() const;
+    [[nodiscard]] NomadBoolean getBooleanValue() const;
+    [[nodiscard]] NomadId getIdValue() const;
+    [[nodiscard]] const NomadChar* getStringValue() const;
 
-    void init_string_value();
-    void init_string_value(const NomadString& value);
+    void initStringValue();
+    void initStringValue(const NomadString& value);
 
     void move_string_value(ScriptValue& other);
 
-    void free_string_value() const;
+    void freeStringValue() const;
 
 private:
     union {

@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-13.
 //
 
-#ifndef NOMAD_COMMANDS_HPP
-#define NOMAD_COMMANDS_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -11,10 +10,9 @@
 
 namespace nomad {
 
-void command_log_info(Interpreter* interpreter);
-void command_to_float(Interpreter* interpreter);
-void command_to_integer(Interpreter* interpreter);
+void commandLogInfo(Interpreter* interpreter);
+void commandToFloat(Interpreter* interpreter);
+void commandToInteger(Interpreter* interpreter);
 
 } // nomad
 
-#endif //NOMAD_COMMANDS_HPP

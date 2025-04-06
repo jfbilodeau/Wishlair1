@@ -7,7 +7,6 @@
 #include "nomad/nomad.hpp"
 
 #include <memory_resource>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -18,43 +17,43 @@ template<typename T>
 using TempVector = std::vector<T, std::pmr::polymorphic_allocator<T>>;
 using TempStringVector = TempVector<TempString>;
 
-std::pmr::monotonic_buffer_resource* get_temp_buffer();
+std::pmr::monotonic_buffer_resource* getTempBuffer();
 
-void fast_temp_heap_reset();
+void fastTempHeapReset();
 
 template<typename T>
-TempVector<T> create_temp_vector() {
-    return TempVector<T>(get_temp_buffer());
+TempVector<T> createTempVector() {
+    return TempVector<T>(getTempBuffer());
 }
 
 template<typename T>
-TempVector<T> create_temp_vector(std::vector<T>& vector) {
-    return TempVector<T>(vector.begin(), vector.end(), get_temp_buffer());
+TempVector<T> createTempVector(std::vector<T>& vector) {
+    return TempVector<T>(vector.begin(), vector.end(), getTempBuffer());
 }
 
 template<typename T>
-TempVector<T> create_temp_vector(const std::vector<T>& vector) {
-    return TempVector<T>(vector.begin(), vector.end(), get_temp_buffer());
+TempVector<T> createTempVector(const std::vector<T>& vector) {
+    return TempVector<T>(vector.begin(), vector.end(), getTempBuffer());
 }
 
-inline TempString create_temp_string() {
+inline TempString createTempString() {
     return TempString();
 }
 
-inline TempString create_temp_string(const NomadString& string) {
-    return TempString(string, get_temp_buffer());
+inline TempString createTempString(const NomadString& string) {
+    return TempString(string, getTempBuffer());
 }
 
-inline TempString create_temp_string(const NomadChar* string) {
-    return TempString(string, get_temp_buffer());
+inline TempString createTempString(const NomadChar* string) {
+    return TempString(string, getTempBuffer());
 }
 
-inline TempStringVector create_temp_string_vector() {
-    return TempStringVector(get_temp_buffer());
+inline TempStringVector createTempStringVector() {
+    return TempStringVector(getTempBuffer());
 }
 
-inline TempStringVector create_temp_string_vector(const std::vector<NomadString>& strings) {
-    return TempStringVector(strings.begin(), strings.end(), get_temp_buffer());
+inline TempStringVector createTempStringVector(const std::vector<NomadString>& strings) {
+    return TempStringVector(strings.begin(), strings.end(), getTempBuffer());
 }
 
 } // namespace nomad

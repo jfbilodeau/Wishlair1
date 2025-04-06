@@ -12,50 +12,50 @@
 
 namespace nomad {
 
-void Game::init_input_dynamic_variables() {
+void Game::initInputDynamicVariables() {
     log::debug("Initializing input dynamic variables");
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "input.mouse.x",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_mouse_position.set_x(value.get_float_value());
+            m_mousePosition.setX(value.getFloatValue());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_float_value(m_mouse_position.x());
+            value.setFloatValue(m_mousePosition.getX());
         },
-        m_runtime->get_float_type(),
+        m_runtime->getFloatType(),
         NomadDoc("The x position of the mouse.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "input.mouse.y",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_mouse_position.set_y(value.get_float_value());
+            m_mousePosition.setY(value.getFloatValue());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_float_value(m_mouse_position.y());
+            value.setFloatValue(m_mousePosition.getY());
         },
-        m_runtime->get_float_type(),
+        m_runtime->getFloatType(),
         NomadDoc("The y position of the mouse.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "input.mouse.deltaX",
         nullptr,
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_float_value(m_mouse_last_position.x() - m_mouse_position.x());
+            value.setFloatValue(m_mouseLastPosition.getX() - m_mousePosition.getX());
         },
-        m_runtime->get_float_type(),
+        m_runtime->getFloatType(),
         NomadDoc("The change in x position of the mouse since last frame.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "input.mouse.deltaY",
         nullptr,
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_float_value(m_mouse_last_position.y() - m_mouse_position.y());
+            value.setFloatValue(m_mouseLastPosition.getY() - m_mousePosition.getY());
         },
-        m_runtime->get_float_type(),
+        m_runtime->getFloatType(),
         NomadDoc("The change in y position of the mouse since last frame.")
     );
 }

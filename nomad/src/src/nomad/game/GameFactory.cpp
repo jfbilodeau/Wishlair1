@@ -31,11 +31,11 @@ enum class ParseCommandLineResult {
 
 struct Configuration {
     ParseCommandLineResult result = ParseCommandLineResult::Unknown;  // Result of parsing command line
-    NomadString resource_path;
+    NomadString resourcePath;
     bool debug;
 };
 
-void parse_command_line(const std::shared_ptr<Logger>& logger, int argc, char** argv, Configuration* configuration) {
+void parseCommandLine(const std::shared_ptr<Logger>& logger, int argc, char** argv, Configuration* configuration) {
     configuration->result = ParseCommandLineResult::Run;
 
     boost::program_options::options_description desc("Allowed options");
@@ -47,7 +47,7 @@ void parse_command_line(const std::shared_ptr<Logger>& logger, int argc, char** 
         ("keywords", "Write keywords to 'nomad-keywords.txt' and exit")
 #endif
         ("debug", "Enable debug mode")
-        ("resource-path", boost::program_options::value<NomadString>(&configuration->resource_path), "Path to resource directory");
+        ("resource-path", boost::program_options::value<NomadString>(&configuration->resourcePath), "Path to resource directory");
 
     boost::program_options::variables_map vm;
     boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
@@ -68,28 +68,28 @@ void parse_command_line(const std::shared_ptr<Logger>& logger, int argc, char** 
 #endif
     if (vm.count("debug")) {
         logger->info("Debug mode enabled");
-        logger->set_log_level(LogLevel::Debug);
+        logger->setLogLevel(LogLevel::Debug);
         configuration->debug = true;
     } else {
-        logger->set_log_level(LogLevel::Info);
+        logger->setLogLevel(LogLevel::Info);
         configuration->debug = false;
     }
 
-    if (configuration->resource_path.empty()) {
-        configuration->resource_path = NomadString(SDL_GetBasePath());
+    if (configuration->resourcePath.empty()) {
+        configuration->resourcePath = NomadString(SDL_GetBasePath());
     }
 }
 
 int run(int argc, char** argv) {
-    ConsoleSink console_sink;
-    auto logger = std::make_shared<Logger>(&console_sink);
+    ConsoleSink consoleSink;
+    auto logger = std::make_shared<Logger>(&consoleSink);
 
     try {
         Configuration configuration;
 
-        parse_command_line(logger, argc, argv, &configuration);
+        parseCommandLine(logger, argc, argv, &configuration);
 
-        Game game(configuration.resource_path, configuration.debug);
+        Game game(configuration.resourcePath, configuration.debug);
 
         switch (configuration.result) {
             case ParseCommandLineResult::Run:
@@ -97,13 +97,13 @@ int run(int argc, char** argv) {
                 break;
 #if defined(NOMAD_SCRIPT_DOC)
             case ParseCommandLineResult::ScriptDoc: {
-                auto doc_out = std::ofstream("nomad-doc.json");
-                generate_documentation(game.get_runtime(), doc_out);
+                auto docOut = std::ofstream("nomad-doc.json");
+                generateDocumentation(game.getRuntime(), docOut);
                 break;
             }
             case ParseCommandLineResult::Keywords: {
-                auto keywords_out = std::ofstream("nomad-keywords.txt");
-                generate_keywords(game.get_runtime(), keywords_out);
+                auto keywordsOut = std::ofstream("nomad-keywords.txt");
+                generateKeywords(game.getRuntime(), keywordsOut);
                 break;
             }
 #endif
@@ -123,7 +123,7 @@ int run(int argc, char** argv) {
     }
 
     logger->debug("Removing console sink");
-    logger->remove_sink(&console_sink);
+    logger->removeSink(&consoleSink);
 
     logger->flush();
 

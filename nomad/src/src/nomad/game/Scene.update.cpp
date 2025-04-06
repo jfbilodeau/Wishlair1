@@ -16,51 +16,71 @@ namespace nomad {
 
 // Scene tick update
 void Scene::update(Game* game) {
-    const auto script_id = m_events.get_script_id_for_event("update");
+    const auto script_id = m_events.getScriptIdForEvent("update");
 
     if (script_id != NOMAD_INVALID_ID) {
-        game->execute_script_in_context(script_id, &m_execution_context);
+        game->executeScriptInContext(script_id, &m_executionContext);
     }
 
     for (const auto entity : m_entities) {
-        if (!entity->is_paused()) {
+        if (!entity->isPaused()) {
             entity->update(this);
         }
     }
 
     // Remove entities
-    for (const auto entity : m_removed_entities) {
-        const auto it = std::find(m_entities.begin(), m_entities.end(), entity);
-
-        if (it != m_entities.end()) {
-            m_entities.erase(it);
-        }
-    }
-    m_removed_entities.clear();
+    processRemoveEntities();
 
     // Update layers physics
-    update_physics();
+    updatePhysics();
 
     // Update camera
-    update_camera();
+    updateCamera();
 
-    // Process added and removed entities
-    process_add_remove_entities();
+    // Process added entities
+    processAddEntities();
+
+    // Update scheduled events
+    updateScheduledEvents();
+
+    // Make sure entities are in the right layer
+    updateEntityLayers();
+
+    // Sort entities by 'z'
+    for (auto& layer : m_layers) {
+        std::sort(layer.entities.begin(), layer.entities.end(), [](auto a, auto b) {
+            return a->getZ() < b->getZ();
+        });
+    }
 
     // Clear 'pressed' and 'released' flags on action mapping
-    for (auto& map : m_action_mapping) {
+    for (auto& map : m_actionMapping) {
         map.pressed = false;
         map.released = false;
     }
+
+    // Increment frame number
+    ++m_frameNumber;
 }
 
-void Scene::update_physics() {
-    auto time_step = 1.0f / static_cast<float>(m_game->get_fps());
+void Scene::updateScheduledEvents() {
+    auto current_frame = getFrameNumber();
+    auto it = m_scheduledEvents.begin();
+
+    while (it != m_scheduledEvents.end() && it->frameNumber <= current_frame) {
+        triggerEvent(it->name);
+
+        it = m_scheduledEvents.erase(it);
+    }
+}
+
+void Scene::updatePhysics() {
+    auto time_step = 1.0f / static_cast<float>(m_game->getFps());
 
     for (auto& layer : m_layers) {
         // Check for invalidated walls.
-        if (layer.walls_invalidated) {
-            layer.walls_invalidated = false;
+        if (layer.wallsInvalidated) {
+            layer.wallsInvalidated = false;
 
             // Destroy existing walls.
             for (auto& wall : layer.walls) {
@@ -68,21 +88,21 @@ void Scene::update_physics() {
             }
 
             // Re-create walls
-            auto tile_half_width = static_cast<float>(m_tile_width) / 2.0f;
-            auto tile_half_height = static_cast<float>(m_tile_height) / 2.0f;
+            auto tile_half_width = static_cast<float>(m_tileWidth) / 2.0f;
+            auto tile_half_height = static_cast<float>(m_tileHeight) / 2.0f;
 
-            for (auto y = 0; y < m_tile_map_height; ++y) {
-                for (auto x = 0; x < m_tile_map_width; ++x) {
-                    auto tile_index = layer.wall_tile_map[y * m_tile_map_width + x];
+            for (auto y = 0; y < m_tileMapHeight; ++y) {
+                for (auto x = 0; x < m_tileMapWidth; ++x) {
+                    auto tile_index = layer.wallTileMap[y * m_tileMapWidth + x];
 
                     if (tile_index == 0) {
                         continue;
                     }
 
-                    auto x1 = x * m_tile_width;
-                    auto y1 = y * m_tile_height;
-                    auto x2 = x1 + m_tile_width;
-                    auto y2 = y1 + m_tile_height;
+                    auto x1 = x * m_tileWidth;
+                    auto y1 = y * m_tileHeight;
+                    auto x2 = x1 + m_tileWidth;
+                    auto y2 = y1 + m_tileHeight;
 
                     auto body_def = b2DefaultBodyDef();
 
@@ -92,7 +112,7 @@ void Scene::update_physics() {
                         static_cast<float>(y1) + tile_half_height
                     };
 
-                    auto body_id = b2CreateBody(layer.world_id, &body_def);
+                    auto body_id = b2CreateBody(layer.worldId, &body_def);
 
                     b2Polygon rectangle = b2MakeBox(
                         tile_half_width,
@@ -100,7 +120,7 @@ void Scene::update_physics() {
                     );
 
                     b2ShapeDef shape_def = b2DefaultShapeDef();
-                    shape_def.filter = m_wall_filter;
+                    shape_def.filter = m_wallFilter;
                     b2CreatePolygonShape(body_id, &shape_def, &rectangle);
 
                     layer.walls.push_back(body_id);
@@ -108,10 +128,10 @@ void Scene::update_physics() {
             }
         }
 
-        auto world_id = layer.world_id;
+        auto world_id = layer.worldId;
 
         for (auto entity : layer.entities) {
-            entity->before_simulation_update(world_id);
+            entity->beforeSimulationUpdate(world_id);
         }
 
         b2World_Step(world_id, time_step, 4);
@@ -129,13 +149,13 @@ void Scene::update_physics() {
             auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
             auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
 
-            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_begin() : NOMAD_INVALID_ID;
+            auto script_id_sensor = entity_sensor ? entity_sensor->getOnCollisionBegin() : NOMAD_INVALID_ID;
 
             if (script_id_sensor != NOMAD_INVALID_ID) {
                 if (entity_visitor) {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
+                    m_game->executeScriptInNewContext(script_id_sensor, this, entity_sensor, entity_visitor);
                 } else {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
+                    m_game->executeScriptInNewContext(script_id_sensor, this, entity_sensor);
                 }
             }
         }
@@ -151,13 +171,13 @@ void Scene::update_physics() {
             auto entity_sensor = static_cast<Entity*>(b2Body_GetUserData(body_id_sensor));
             auto entity_visitor = static_cast<Entity*>(b2Body_GetUserData(body_id_visitor));
 
-            auto script_id_sensor = entity_sensor ? entity_sensor->get_on_collision_end() : NOMAD_INVALID_ID;
+            auto script_id_sensor = entity_sensor ? entity_sensor->getOnCollisionEnd() : NOMAD_INVALID_ID;
 
             if (script_id_sensor != NOMAD_INVALID_ID) {
                 if (entity_visitor) {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor, entity_visitor);
+                    m_game->executeScriptInNewContext(script_id_sensor, this, entity_sensor, entity_visitor);
                 } else {
-                    m_game->execute_script_in_new_context(script_id_sensor, this, entity_sensor);
+                    m_game->executeScriptInNewContext(script_id_sensor, this, entity_sensor);
                 }
             }
         }
@@ -176,15 +196,15 @@ void Scene::update_physics() {
             auto entity_a = static_cast<Entity*>(b2Body_GetUserData(body_id_a));
             auto entity_b = static_cast<Entity*>(b2Body_GetUserData(body_id_b));
 
-            auto script_id_a = entity_a ? entity_a->get_on_collision_begin() : NOMAD_INVALID_ID;
-            auto script_id_b = entity_b ? entity_b->get_on_collision_begin() : NOMAD_INVALID_ID;
+            auto script_id_a = entity_a ? entity_a->getOnCollisionBegin() : NOMAD_INVALID_ID;
+            auto script_id_b = entity_b ? entity_b->getOnCollisionBegin() : NOMAD_INVALID_ID;
 
             if (script_id_a != NOMAD_INVALID_ID && entity_b) {
-                m_game->execute_script_in_new_context(script_id_a, this, entity_a, entity_b);
+                m_game->executeScriptInNewContext(script_id_a, this, entity_a, entity_b);
             }
 
             if (script_id_b != NOMAD_INVALID_ID && entity_a) {
-                m_game->execute_script_in_new_context(script_id_b, this, entity_b, entity_a);
+                m_game->executeScriptInNewContext(script_id_b, this, entity_b, entity_a);
             }
         }
 
@@ -200,33 +220,33 @@ void Scene::update_physics() {
             auto entity_a = static_cast<Entity*>(b2Body_GetUserData(body_id_a));
             auto entity_b = static_cast<Entity*>(b2Body_GetUserData(body_id_b));
 
-            auto script_id_a = entity_a ? entity_a->get_on_collision_end() : NOMAD_INVALID_ID;
-            auto script_id_b = entity_b ? entity_b->get_on_collision_end() : NOMAD_INVALID_ID;
+            auto script_id_a = entity_a ? entity_a->getOnCollisionEnd() : NOMAD_INVALID_ID;
+            auto script_id_b = entity_b ? entity_b->getOnCollisionEnd() : NOMAD_INVALID_ID;
 
             if (script_id_a != NOMAD_INVALID_ID) {
                 if (entity_b) {
-                    m_game->execute_script_in_new_context(script_id_a, this, entity_a, entity_b);
+                    m_game->executeScriptInNewContext(script_id_a, this, entity_a, entity_b);
                 } else {
-                    m_game->execute_script_in_new_context(script_id_a, this, entity_a);
+                    m_game->executeScriptInNewContext(script_id_a, this, entity_a);
                 }
             }
 
             if (script_id_b != NOMAD_INVALID_ID) {
                 if (entity_a) {
-                    m_game->execute_script_in_new_context(script_id_b, this, entity_b, entity_a);
+                    m_game->executeScriptInNewContext(script_id_b, this, entity_b, entity_a);
                 } else {
-                    m_game->execute_script_in_new_context(script_id_b, this, entity_b);
+                    m_game->executeScriptInNewContext(script_id_b, this, entity_b);
                 }
             }
         }
 
         for (auto entity : layer.entities) {
-            entity->after_simulation_update(world_id);
+            entity->afterSimulationUpdate(world_id);
         }
     }
 }
 
-void Scene::update_entity_layers() {
+void Scene::updateEntityLayers() {
     for (NomadIndex layer_index = 0; layer_index < m_layers.size(); ++layer_index) {
         auto layer = &m_layers[layer_index];
 
@@ -235,15 +255,15 @@ void Scene::update_entity_layers() {
 
         while (entity_index < layer->entities.size()) {
             auto entity = layer->entities[entity_index];
-            auto entity_layer = entity->get_layer();
+            auto entity_layer = entity->getLayer();
             if (entity_layer != layer_index) {
                 if (entity_layer < 0 || entity_layer >= m_layers.size()) {
-                    log::warning("Entity '" + entity->get_name() + "' has an invalid layer: " + std::to_string(entity_layer));
+                    log::warning("Entity '" + entity->getName() + "' has an invalid layer: " + std::to_string(entity_layer));
                     log::warning("Defaulting to layer 0");
 
                     entity_layer = 0;
 
-                    entity->set_layer(entity_layer);
+                    entity->setLayer(entity_layer);
 
                     if (layer_index == 0) {
                         // Already in the right layer
@@ -265,104 +285,114 @@ void Scene::update_entity_layers() {
     }
 }
 
-void Scene::update_camera() {
-    if (m_camera_follow_entity_id != NOMAD_INVALID_ID) {
-        auto entity = get_entity_by_id(m_camera_follow_entity_id);
+void Scene::updateCamera() {
+    if (m_cameraFollowEntityId != NOMAD_INVALID_ID) {
+        auto entity = getEntityById(m_cameraFollowEntityId);
 
         if (entity) {
-            m_camera_position.set(entity->get_location());
+            m_cameraPosition.set(entity->getLocation());
         } else {
             // Entity no longer exists, stop following
-            m_camera_follow_entity_id = NOMAD_INVALID_ID;
+            m_cameraFollowEntityId = NOMAD_INVALID_ID;
         }
     }
 
     // Update which entities are in the camera view
-    auto resolution = m_game->get_resolution().to_pointf();
+    auto resolution = m_game->getResolution().toPointf();
 
     auto camera_rectangle = RectangleF{
-        m_camera_position.x() - resolution.x() / 2,
-        m_camera_position.y() - resolution.y() / 2,
-        resolution.x(),
-        resolution.y()
+        m_cameraPosition.getX() - resolution.getX() / 2,
+        m_cameraPosition.getY() - resolution.getY() / 2,
+        resolution.getX(),
+        resolution.getY()
     };
 
     for (auto& entity : m_entities) {
         RectangleF bounding_box;
 
-        entity->get_bounding_box(bounding_box);
+        entity->getBoundingBox(bounding_box);
 
         if (camera_rectangle.intersects(bounding_box)) {
-            entity->enter_camera();
+            entity->enterCamera();
         } else {
-            entity->exit_camera();
+            entity->exitCamera();
         }
     }
 }
 
-void Scene::process_add_remove_entities() {
-    // While entities are added, their `init` script will run. Some entities
-    // may create new entities which invalidates the `added_entities` list.
-    // To address this, let's create a new, temporary list of added entities
-    auto temp_added_entities = create_temp_vector(m_added_entities);
+void Scene::processRemoveEntities() {
+    if (!m_removedEntities.empty()) {
+        // Presently, there are no scripts executed when removing entities.
+        // But to play it safe, let's copy the list of removed entities to a temporary list
+        auto temp_removed_entities = createTempVector(m_removedEntities);
 
-    // Add entities
-    for (const auto& added_entity : temp_added_entities) {
-        auto entity_id = added_entity.id;
+        m_removedEntities.clear();
 
-        if (entity_id == NOMAD_INVALID_ID) {
-            entity_id = get_next_entity_id();
+        for (const auto entity : temp_removed_entities) {
+            const auto it = std::ranges::find(m_entities, entity);
 
-            if (entity_id == NOMAD_INVALID_ID) {
-                // Hopefully, should never happen
-                log::error("Could not create entity: no more entity IDs available");
-                continue; // skip!
+            if (it != m_entities.end()) {
+                m_entities.erase(it);
             }
         }
-
-        const auto entity = new Entity(this, m_game->get_entity_variables(), entity_id, added_entity.x, added_entity.y, added_entity.layer);
-
-        if (!added_entity.text_id.empty()) {
-            NomadString text;
-            m_game->get_text(added_entity.text_id, text);
-            entity->set_text(text);
-        }
-
-        ScriptValue return_value;
-
-        auto script = m_game->get_runtime()->get_script(added_entity.init_script_id);
-
-        entity->set_name(script->get_name()); // Set default name to the script.
-        entity->set_script_name(script->get_name());
-
-        m_game->execute_script_in_new_context(added_entity.init_script_id, this, entity, return_value);
-
-        m_entities.push_back(entity);
-
-        // Add entity to layer
-        auto entity_layer = entity->get_layer();
-
-        if (entity_layer < 0 || entity_layer >= m_layers.size()) {
-            log::warning("Entity '" + entity->get_name() + "' has an invalid layer id: " + std::to_string(entity_layer) + ". Defaulting to layer 0");
-
-            entity_layer = 0;
-        }
-
-        entity->set_layer(entity_layer);
-
-        m_layers[entity_layer].entities.push_back(entity);
     }
+}
 
-    m_added_entities.clear();
+void Scene::processAddEntities() {
+    if (!m_addedEntities.empty()) {
+        // While entities are added, their `init` script will run. Some entities
+        // may create new entities which invalidates the `added_entities` list.
+        // To address this, let's create a new, temporary list of added entities
+        auto temp_added_entities = createTempVector(m_addedEntities);
 
-    // Make sure entities are in the right layer
-    update_entity_layers();
+        m_addedEntities.clear();
 
-    // Sort entities by 'z'
-    for (auto& layer : m_layers) {
-        std::sort(layer.entities.begin(), layer.entities.end(), [](auto a, auto b) {
-            return a->get_z() < b->get_z();
-        });
+        // Add entities
+        for (const auto& added_entity : temp_added_entities) {
+            auto entity_id = added_entity.id;
+
+            if (entity_id == NOMAD_INVALID_ID) {
+                entity_id = getNextEntityId();
+
+                if (entity_id == NOMAD_INVALID_ID) {
+                    // Hopefully, should never happen
+                    log::error("Could not create entity: no more entity IDs available");
+                    continue; // skip!
+                }
+            }
+
+            const auto entity = new Entity(this, m_game->getEntityVariables(), entity_id, added_entity.x, added_entity.y, added_entity.layer);
+
+            if (!added_entity.textId.empty()) {
+                NomadString text;
+                m_game->getText(added_entity.textId, text);
+                entity->setText(text);
+            }
+
+            ScriptValue return_value;
+
+            auto script = m_game->getRuntime()->getScript(added_entity.initScriptId);
+
+            entity->setName(script->getName()); // Set default name to the script.
+            entity->setScriptName(script->getName());
+
+            m_game->executeScriptInNewContext(added_entity.initScriptId, this, entity, return_value);
+
+            m_entities.push_back(entity);
+
+            // Add entity to layer
+            auto entity_layer = entity->getLayer();
+
+            if (entity_layer < 0 || entity_layer >= m_layers.size()) {
+                log::warning("Entity '" + entity->getName() + "' has an invalid layer id: " + std::to_string(entity_layer) + ". Defaulting to layer 0");
+
+                entity_layer = 0;
+            }
+
+            entity->setLayer(entity_layer);
+
+            m_layers[entity_layer].entities.push_back(entity);
+        }
     }
 }
 

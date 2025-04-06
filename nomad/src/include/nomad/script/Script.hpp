@@ -29,31 +29,31 @@ public:
 
     ~Script();
 
-    [[nodiscard]] NomadId get_id() const { return m_id; }
-    [[nodiscard]] const NomadString& get_name() const { return m_name; }
-    [[nodiscard]] const NomadString& get_path() const { return m_path; }
-    [[nodiscard]] const NomadString& get_source() const { return m_source; }
+    [[nodiscard]] NomadId getId() const { return m_id; }
+    [[nodiscard]] const NomadString& getName() const { return m_name; }
+    [[nodiscard]] const NomadString& getPath() const { return m_path; }
+    [[nodiscard]] const NomadString& getSource() const { return m_source; }
 
     void add_parameter(const NomadString& parameter_name, const Type* type);
-    [[nodiscard]] NomadId get_parameter_id(const NomadString& parameter_name) const;
-    [[nodiscard]] const NomadString& get_parameter_name(NomadId parameter_id) const;
-    [[nodiscard]] const Type* get_parameter_type(NomadId parameter_id) const;
-    [[nodiscard]] NomadIndex get_parameter_count() const;
+    [[nodiscard]] NomadId getParameterId(const NomadString& parameter_name) const;
+    [[nodiscard]] const NomadString& getParameterName(NomadId parameter_id) const;
+    [[nodiscard]] const Type* getParameterType(NomadId parameter_id) const;
+    [[nodiscard]] NomadIndex getParameterCount() const;
 
-    NomadId register_variable(const NomadString& variable_name, const Type* type);
-    [[nodiscard]] NomadId get_variable_id(const NomadString& variable_name) const;
+    NomadId registerVariable(const NomadString& variable_name, const Type* type);
+    [[nodiscard]] NomadId getVariableId(const NomadString& variable_name) const;
     [[nodiscard]] const NomadString& get_variable_name(NomadId variable_id) const;
     void set_variable_type(NomadId variable_id, const Type* type);
-    [[nodiscard]] const Type* get_variable_type(NomadId variable_id) const;
-    [[nodiscard]] NomadIndex get_variable_count() const;
+    [[nodiscard]] const Type* getVariableType(NomadId variable_id) const;
+    [[nodiscard]] NomadIndex getVariableCount() const;
 
-    void set_return_type(const Type* return_type);
-    [[nodiscard]] const Type* get_return_type() const;
+    void setReturnType(const Type* return_type);
+    [[nodiscard]] const Type* getReturnType() const;
 
-    void set_script_start(NomadIndex script_start_index);
-    [[nodiscard]] NomadIndex get_script_start() const;
+    void setScriptStart(NomadIndex script_start_index);
+    [[nodiscard]] NomadIndex getScriptStart() const;
 
-    void set_script_end(NomadIndex script_end_index);
+    void setScriptEnd(NomadIndex script_end_index);
     [[nodiscard]] NomadIndex get_script_end() const;
 
     [[nodiscard]] NomadIndex get_script_length() const;

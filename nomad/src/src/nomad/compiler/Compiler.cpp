@@ -20,7 +20,7 @@
 namespace nomad {
 
 // Utility to concatenate directory / filename
-NomadString concat_path(const NomadString& directory, const NomadString& filename) {
+NomadString concatPath(const NomadString& directory, const NomadString& filename) {
     if (filename.empty() && directory.empty()) {
         // I feel like this should be an error...
         return "";
@@ -49,104 +49,95 @@ Compiler::Compiler(Runtime *runtime, std::vector<Instruction>& instructions):
 {
     if (m_instructions.empty()) {
         // Add op_stop instruction so that the return of a script is a stop instruction
-        add_op_code(OpCodes::op_stop);
+        addOpCode(OpCodes::op_stop);
     }
 
-    register_parse_statement_fn("const", nullptr, pre_parse_const_statement);
-    register_parse_statement_fn("fun", parse_fun_statement, pre_parse_fun_statement);
-    register_parse_statement_fn("assert", parse_assert_statement);
-//    register_parse_statement_fn("assert_string", parse_string_assert_statement);
-    register_parse_statement_fn("if", parse_if_statement);
-    register_parse_statement_fn("params", nullptr, pre_parse_params_statement);
-    register_parse_statement_fn("return", parse_return_statement);
+    registerParseStatementFn("const", nullptr, preParseConstStatement);
+    registerParseStatementFn("fun", parseFunStatement, preParseFunStatement);
+    registerParseStatementFn("assert", parseAssertStatement);
+    registerParseStatementFn("if", parseIfStatement);
+    registerParseStatementFn("params", nullptr, preParseParamsStatement);
+    registerParseStatementFn("return", parseReturnStatement);
 
-    auto type_boolean = runtime->get_boolean_type();
-    auto type_integer = runtime->get_integer_type();
-    auto type_float = runtime->get_float_type();
-    auto type_string = runtime->get_string_type();
+    auto typeBoolean = runtime->getBooleanType();
+    auto typeInteger = runtime->getIntegerType();
+    auto typeFloat = runtime->getFloatType();
+    auto typeString = runtime->getStringType();
 
-    register_unary_operator(UnaryOperator::Bang, type_boolean, type_boolean, OpCodes::op_boolean_not, fold_boolean_unary_bang);
+    registerUnaryOperator(UnaryOperator::Bang, typeBoolean, typeBoolean, OpCodes::op_boolean_not, foldBooleanUnaryBang);
 
-    register_unary_operator(UnaryOperator::Plus, type_integer,  type_integer, OpCodes::op_integer_absolute, fold_integer_unary_plus);
-    register_unary_operator(UnaryOperator::Minus, type_integer, type_integer, OpCodes::op_integer_negate, fold_integer_unary_minus);
+    registerUnaryOperator(UnaryOperator::Plus, typeInteger,  typeInteger, OpCodes::op_integer_absolute, foldIntegerUnaryPlus);
+    registerUnaryOperator(UnaryOperator::Minus, typeInteger, typeInteger, OpCodes::op_integer_negate, foldIntegerUnaryMinus);
 
-    register_unary_operator(UnaryOperator::Plus, type_float, type_float, OpCodes::op_float_absolute, fold_float_unary_plus);
-    register_unary_operator(UnaryOperator::Minus, type_float, type_float, OpCodes::op_float_negate, fold_float_unary_minus);
-    register_unary_operator(UnaryOperator::Sin, type_float, type_float, OpCodes::op_float_sin, fold_float_unary_sin);
-    register_unary_operator(UnaryOperator::Cos, type_float, type_float, OpCodes::op_float_cosine, fold_float_unary_cos);
-    register_unary_operator(UnaryOperator::Tan, type_float, type_float, OpCodes::op_float_tangent, fold_float_unary_tan);
+    registerUnaryOperator(UnaryOperator::Plus, typeFloat, typeFloat, OpCodes::op_float_absolute, foldFloatUnaryPlus);
+    registerUnaryOperator(UnaryOperator::Minus, typeFloat, typeFloat, OpCodes::op_float_negate, foldFloatUnaryMinus);
+    registerUnaryOperator(UnaryOperator::Sin, typeFloat, typeFloat, OpCodes::op_float_sin, foldFloatUnarySin);
+    registerUnaryOperator(UnaryOperator::Cos, typeFloat, typeFloat, OpCodes::op_float_cosine, foldFloatUnaryCos);
+    registerUnaryOperator(UnaryOperator::Tan, typeFloat, typeFloat, OpCodes::op_float_tangent, foldFloatUnaryTan);
 
-    register_binary_operator(BinaryOperator::EqualEqual, type_boolean, type_boolean, type_boolean, OpCodes::op_boolean_equal, fold_boolean_binary_and_and);
-    register_binary_operator(BinaryOperator::BangEqual, type_boolean, type_boolean, type_boolean, OpCodes::op_boolean_not_equal, fold_boolean_binary_pipe_pipe);
+    registerBinaryOperator(BinaryOperator::EqualEqual, typeBoolean, typeBoolean, typeBoolean, OpCodes::op_boolean_equal, foldBooleanBinaryAndAnd);
+    registerBinaryOperator(BinaryOperator::BangEqual, typeBoolean, typeBoolean, typeBoolean, OpCodes::op_boolean_not_equal, foldBooleanBinaryPipePipe);
 
-    register_binary_operator(BinaryOperator::Plus, type_integer, type_integer, type_integer, OpCodes::op_integer_add, fold_integer_binary_plus);
-    register_binary_operator(BinaryOperator::Minus, type_integer, type_integer, type_integer, OpCodes::op_integer_subtract, fold_integer_binary_minus);
-    register_binary_operator(BinaryOperator::Star, type_integer, type_integer, type_integer, OpCodes::op_integer_multiply, fold_integer_binary_star);
-    register_binary_operator(BinaryOperator::Slash, type_integer, type_integer, type_integer, OpCodes::op_integer_divide, fold_integer_binary_slash);
-    register_binary_operator(BinaryOperator::Percent, type_integer, type_integer, type_integer, OpCodes::op_integer_modulo, fold_integer_binary_percent);
-    register_binary_operator(BinaryOperator::Caret, type_integer, type_integer, type_integer, OpCodes::op_integer_xor, fold_integer_binary_caret);
-    register_binary_operator(BinaryOperator::And, type_integer, type_integer, type_integer, OpCodes::op_integer_and, fold_integer_and);
-    register_binary_operator(BinaryOperator::Pipe, type_integer, type_integer, type_integer, OpCodes::op_integer_or, fold_integer_pipe);
-    register_binary_operator(BinaryOperator::EqualEqual, type_integer, type_integer, type_boolean, OpCodes::op_integer_equal, fold_integer_binary_equal_equal);
-    register_binary_operator(BinaryOperator::BangEqual, type_integer, type_integer, type_boolean, OpCodes::op_integer_not_equal, fold_integer_binary_bang_equal);
-    register_binary_operator(BinaryOperator::LessThan, type_integer, type_integer, type_boolean, OpCodes::op_integer_less_than, fold_integer_binary_less_than);
-    register_binary_operator(BinaryOperator::LessThanEqual, type_integer, type_integer, type_boolean, OpCodes::op_integer_less_than_or_equal, fold_integer_binary_less_than_equal);
-    register_binary_operator(BinaryOperator::GreaterThan, type_integer, type_integer, type_boolean, OpCodes::op_integer_greater_than, fold_integer_binary_greater_than);
-    register_binary_operator(BinaryOperator::GreaterThanEqual, type_integer, type_integer, type_boolean, OpCodes::op_integer_greater_than_or_equal, fold_integer_binary_greater_than_equal);
+    registerBinaryOperator(BinaryOperator::Plus, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_add, foldIntegerBinaryPlus);
+    registerBinaryOperator(BinaryOperator::Minus, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_subtract, foldIntegerBinaryMinus);
+    registerBinaryOperator(BinaryOperator::Star, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_multiply, foldIntegerBinaryStar);
+    registerBinaryOperator(BinaryOperator::Slash, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_divide, foldIntegerBinarySlash);
+    registerBinaryOperator(BinaryOperator::Percent, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_modulo, foldIntegerBinaryPercent);
+    registerBinaryOperator(BinaryOperator::Caret, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_xor, foldIntegerBinaryCaret);
+    registerBinaryOperator(BinaryOperator::And, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_and, foldIntegerAnd);
+    registerBinaryOperator(BinaryOperator::Pipe, typeInteger, typeInteger, typeInteger, OpCodes::op_integer_or, foldIntegerPipe);
+    registerBinaryOperator(BinaryOperator::EqualEqual, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_equal, foldIntegerBinaryEqualEqual);
+    registerBinaryOperator(BinaryOperator::BangEqual, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_not_equal, foldIntegerBinaryBangEqual);
+    registerBinaryOperator(BinaryOperator::LessThan, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_less_than, foldIntegerBinaryLessThan);
+    registerBinaryOperator(BinaryOperator::LessThanEqual, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_less_than_or_equal, foldIntegerBinaryLessThanEqual);
+    registerBinaryOperator(BinaryOperator::GreaterThan, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_greater_than, foldIntegerBinaryGreaterThan);
+    registerBinaryOperator(BinaryOperator::GreaterThanEqual, typeInteger, typeInteger, typeBoolean, OpCodes::op_integer_greater_than_or_equal, foldIntegerBinaryGreaterThanEqual);
 
-    register_binary_operator(BinaryOperator::Plus, type_float, type_float, type_float, OpCodes::op_float_add, fold_float_binary_plus);
-    register_binary_operator(BinaryOperator::Minus, type_float, type_float, type_float, OpCodes::op_float_subtract, fold_float_binary_minus);
-    register_binary_operator(BinaryOperator::Star, type_float, type_float, type_float, OpCodes::op_float_multiply, fold_float_binary_star);
-    register_binary_operator(BinaryOperator::Slash, type_float, type_float, type_float, OpCodes::op_float_divide, fold_float_binary_slash);
-    register_binary_operator(BinaryOperator::EqualEqual, type_float, type_float, type_boolean, OpCodes::op_float_equal, fold_boolean_binary_and_and);
-    register_binary_operator(BinaryOperator::BangEqual, type_float, type_float, type_boolean, OpCodes::op_float_not_equal, fold_boolean_binary_pipe_pipe);
-    register_binary_operator(BinaryOperator::LessThan, type_float, type_float, type_boolean, OpCodes::op_float_less_than, fold_boolean_binary_pipe_pipe);
-    register_binary_operator(BinaryOperator::LessThanEqual, type_float, type_float, type_boolean, OpCodes::op_float_less_than_or_equal, fold_boolean_binary_pipe_pipe);
-    register_binary_operator(BinaryOperator::GreaterThan, type_float, type_float, type_boolean, OpCodes::op_float_greater_than, fold_boolean_binary_pipe_pipe);
-    register_binary_operator(BinaryOperator::GreaterThanEqual, type_float, type_float, type_boolean, OpCodes::op_float_greater_than_or_equal, fold_boolean_binary_pipe_pipe);
+    registerBinaryOperator(BinaryOperator::Plus, typeFloat, typeFloat, typeFloat, OpCodes::op_float_add, foldFloatBinaryPlus);
+    registerBinaryOperator(BinaryOperator::Minus, typeFloat, typeFloat, typeFloat, OpCodes::op_float_subtract, foldFloatBinaryMinus);
+    registerBinaryOperator(BinaryOperator::Star, typeFloat, typeFloat, typeFloat, OpCodes::op_float_multiply, foldFloatBinaryStar);
+    registerBinaryOperator(BinaryOperator::Slash, typeFloat, typeFloat, typeFloat, OpCodes::op_float_divide, foldFloatBinarySlash);
+    registerBinaryOperator(BinaryOperator::EqualEqual, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_equal, foldBooleanBinaryAndAnd);
+    registerBinaryOperator(BinaryOperator::BangEqual, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_not_equal, foldBooleanBinaryPipePipe);
+    registerBinaryOperator(BinaryOperator::LessThan, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_less_than, foldBooleanBinaryPipePipe);
+    registerBinaryOperator(BinaryOperator::LessThanEqual, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_less_than_or_equal, foldBooleanBinaryPipePipe);
+    registerBinaryOperator(BinaryOperator::GreaterThan, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_greater_than, foldBooleanBinaryPipePipe);
+    registerBinaryOperator(BinaryOperator::GreaterThanEqual, typeFloat, typeFloat, typeBoolean, OpCodes::op_float_greater_than_or_equal, foldBooleanBinaryPipePipe);
 }
 
 Compiler::~Compiler() = default;
 
-Runtime* Compiler::get_runtime() const {
+Runtime* Compiler::getRuntime() const {
     return m_runtime;
 }
 
-void Compiler::report_error(const NomadString& message) {
+void Compiler::reportError(const NomadString& message) {
     throw CompilerException(message);
 }
 
-void Compiler::report_error(const NomadString& message, Script* script, Tokenizer* tokenizer) {
-    report_error(message, script->get_name(), tokenizer->get_line_index(), tokenizer->get_column_index());
+void Compiler::reportError(const NomadString& message, Script* script, Tokenizer* tokenizer) {
+    reportError(message, script->getName(), tokenizer->getLineIndex(), tokenizer->getColumnIndex());
 }
 
-void Compiler::report_error(const NomadString& message, const NomadString& script_name, NomadIndex line, NomadIndex column) {
-    auto error_message = message + ": '" + script_name + "' at line " + to_string(line) + ", column " + to_string(column);
+void Compiler::reportError(const NomadString& message, const NomadString& scriptName, NomadIndex line, NomadIndex column) {
+    auto errorMessage = message + ": '" + scriptName + "' at line " + toString(line) + ", column " + toString(column);
 
-    report_error(error_message);
+    reportError(errorMessage);
 }
 
-void Compiler::report_internal_error(const NomadString& message) {
+void Compiler::reportInternalError(const NomadString& message) {
     throw CompilerException("Internal error: " + message);
 }
-//
-//void Compiler::set_current_script(Script* current_script) {
-//    m_current_script = current_script;
-//}
-//
-//Script* Compiler::get_current_script() const {
-//    return m_current_script;
-//}
 
-void Compiler::register_parse_statement_fn(const NomadString& name, ParseStatementFn fn, PreParseStatementFn pre_fn) {
-    m_statements.emplace(name, ParseStatementFnRegistration{ pre_fn, fn });
+void Compiler::registerParseStatementFn(const NomadString& name, ParseStatementFn fn, PreParseStatementFn preFn) {
+    m_statements.emplace(name, ParseStatementFnRegistration{ preFn, fn });
 }
 
-bool Compiler::is_statement(const NomadString& name) const {
+bool Compiler::isStatement(const NomadString& name) const {
     return m_statements.find(name) != m_statements.end();
 }
 
-bool Compiler::get_parse_statement_fn(const NomadString& name, ParseStatementFn& fn) const {
+bool Compiler::getParseStatementFn(const NomadString& name, ParseStatementFn& fn) const {
     auto it = m_statements.find(name);
 
     if (it != m_statements.end()) {
@@ -158,11 +149,11 @@ bool Compiler::get_parse_statement_fn(const NomadString& name, ParseStatementFn&
     return false;
 }
 
-bool Compiler::get_pre_parse_statement_fn(const NomadString& name, PreParseStatementFn& fn) const {
+bool Compiler::getGetPreParseStatementFn(const NomadString& name, PreParseStatementFn& fn) const {
     auto it = m_statements.find(name);
 
     if (it != m_statements.end()) {
-        fn = it->second.pre_fn;
+        fn = it->second.preFn;
 
         return true;
     }
@@ -170,74 +161,74 @@ bool Compiler::get_pre_parse_statement_fn(const NomadString& name, PreParseState
     return false;
 }
 
-void Compiler::get_registered_statements(std::vector<NomadString>& parsers) const {
+void Compiler::getRegisteredStatements(std::vector<NomadString>& parsers) const {
     for (auto& statement: m_statements) {
         parsers.push_back(statement.first);
     }
 }
 
-void Compiler::register_unary_operator(
+void Compiler::registerUnaryOperator(
     UnaryOperator op,
     const Type* operand,
     const Type* result,
-    const NomadString& op_code_name,
+    const NomadString& opCodeName,
     UnaryFoldingFn fn
 ) {
     // Sanity check
-    if (m_runtime->get_instruction_id(op_code_name) == NOMAD_INVALID_ID) {
-        report_internal_error("[Compiler::register_unary_operator]: Unknown op code '" + op_code_name + "'");
+    if (m_runtime->getInstructionId(opCodeName) == NOMAD_INVALID_ID) {
+        reportInternalError("[Compiler::registerUnaryOperator]: Unknown op code '" + opCodeName + "'");
     }
 
     // Make sure the operator with the same and type doesn't already exist
-    for (auto& definition: m_unary_operators) {
+    for (auto& definition: m_unaryOperators) {
         if (definition.op == op && definition.operand == operand) {
-            report_internal_error("[Compiler::register_unary_operator]: Unary operator '" + op_code_name + "' already registered for type '" + operand->get_name() + "'");
+            reportInternalError("[Compiler::registerUnaryOperator]: Unary operator '" + opCodeName + "' already registered for type '" + operand->getName() + "'");
         }
     }
 
-    auto op_code_id = m_runtime->get_instruction_id(op_code_name);
+    auto opCodeId = m_runtime->getInstructionId(opCodeName);
 
     // Sanity check
-    if (op_code_id == NOMAD_INVALID_ID) {
-        report_internal_error("[Compiler::register_unary_operator]: Unknown op code '" + op_code_name + "'");
+    if (opCodeId == NOMAD_INVALID_ID) {
+        reportInternalError("[Compiler::registerUnaryOperator]: Unknown op code '" + opCodeName + "'");
     }
 
-    m_unary_operators.emplace_back(UnaryOperatorRegistration{op, operand, result, op_code_id, fn});
+    m_unaryOperators.emplace_back(UnaryOperatorRegistration{op, operand, result, opCodeId, fn});
 }
 
-void Compiler::register_binary_operator(
+void Compiler::registerBinaryOperator(
     BinaryOperator op,
     const Type* lhs,
     const Type* rhs,
     const Type* result,
-    const NomadString& op_code_name,
+    const NomadString& opCodeName,
     BinaryFoldingFn fn
 ) {
     // Sanity check
-    if (m_runtime->get_instruction_id(op_code_name) == NOMAD_INVALID_ID) {
-        report_internal_error("[Compiler::register_binary_operator]: Unknown op code '" + op_code_name + "'");
+    if (m_runtime->getInstructionId(opCodeName) == NOMAD_INVALID_ID) {
+        reportInternalError("[Compiler::registerBinaryOperator]: Unknown op code '" + opCodeName + "'");
     }
 
     // Make sure the operator with the same and type doesn't already exist
-    for (auto& definition: m_binary_operators) {
+    for (auto& definition: m_binaryOperators) {
         if (definition.op == op && definition.lhs == lhs && definition.rhs == rhs) {
-            report_internal_error("[Compiler::register_binary_operator]: Binary operator '" + op_code_name + "' already registered for types '" + lhs->get_name() + "' and '" + rhs->get_name() + "'");
+            reportInternalError("[Compiler::registerBinaryOperator]: Binary operator '" + opCodeName + "' already registered for types '" + lhs->getName() + "' and '" + rhs->getName() + "'");
         }
     }
 
-    auto op_code_id = m_runtime->get_instruction_id(op_code_name);
+    auto opCodeId = m_runtime->getInstructionId(opCodeName);
 
     // Sanity check
-    if (op_code_id == NOMAD_INVALID_ID) {
-        report_internal_error("[Compiler::register_binary_operator]: Unknown op code '" + op_code_name + "'");
+    if (opCodeId == NOMAD_INVALID_ID) {
+        reportInternalError("[Compiler::registerBinaryOperator]: Unknown op code '" + opCodeName + "'");
     }
 
-    m_binary_operators.emplace_back(BinaryOperatorRegistration{op, lhs, rhs, result, op_code_id, fn});
+    m_binaryOperators.emplace_back(BinaryOperatorRegistration{op, lhs, rhs, result, opCodeId, fn});
 }
 
-const Type* Compiler::get_unary_operator_result_type(UnaryOperator op, const Type* operand_type) const {
-    for (auto& definition: m_unary_operators) {
-        if (definition.op == op && definition.operand == operand_type) {
+const Type* Compiler::getUnaryOperatorResultType(UnaryOperator op, const Type* operandType) const {
+    for (auto& definition: m_unaryOperators) {
+        if (definition.op == op && definition.operand == operandType) {
             return definition.result;
         }
     }
@@ -245,9 +236,9 @@ const Type* Compiler::get_unary_operator_result_type(UnaryOperator op, const Typ
     return nullptr;
 }
 
-const Type* Compiler::get_binary_operator_result_type(BinaryOperator op, const Type* lhs_type, const Type* rhs_type) const {
-    for (auto& definition: m_binary_operators) {
-        if (definition.op == op && definition.lhs == lhs_type && definition.rhs == rhs_type) {
+const Type* Compiler::getBinaryOperatorResultType(BinaryOperator op, const Type* lhsType, const Type* rhsType) const {
+    for (auto& definition: m_binaryOperators) {
+        if (definition.op == op && definition.lhs == lhsType && definition.rhs == rhsType) {
             return definition.result;
         }
     }
@@ -255,34 +246,34 @@ const Type* Compiler::get_binary_operator_result_type(BinaryOperator op, const T
     return nullptr;
 }
 
-NomadId Compiler::get_unary_operator_op_code_id(UnaryOperator op, const Type* operand) const {
-    for (auto& definition: m_unary_operators) {
+NomadId Compiler::getUnaryOperatorOpCodeId(UnaryOperator op, const Type* operand) const {
+    for (auto& definition: m_unaryOperators) {
         if (definition.op == op && definition.operand == operand) {
-            return definition.op_code_id;
+            return definition.opCodeId;
         }
     }
 
     return NOMAD_INVALID_ID;
 }
 
-NomadId Compiler::get_binary_operator_op_code_id(BinaryOperator op, const Type* lhs, const Type* rhs) const {
-    for (auto& definition: m_binary_operators) {
+NomadId Compiler::getBinaryOperatorOpCodeId(BinaryOperator op, const Type* lhs, const Type* rhs) const {
+    for (auto& definition: m_binaryOperators) {
         if (definition.op == op && definition.lhs == lhs && definition.rhs == rhs) {
-            return definition.op_code_id;
+            return definition.opCodeId;
         }
     }
 
     return NOMAD_INVALID_ID;
 }
 
-bool Compiler::fold_unary(
+bool Compiler::foldUnary(
     UnaryOperator op,
-    const Type* operand_type,
+    const Type* operandType,
     const ScriptValue& value,
     ScriptValue& result
 ) const {
-    for (auto& fn: m_unary_operators) {
-        if (fn.op == op && fn.operand == operand_type) {
+    for (auto& fn: m_unaryOperators) {
+        if (fn.op == op && fn.operand == operandType) {
             fn.fn(value, result);
 
             return true;
@@ -292,16 +283,16 @@ bool Compiler::fold_unary(
     return false;
 }
 
-bool Compiler::fold_binary(
+bool Compiler::foldBinary(
     BinaryOperator op,
-    const Type* lhs_type,
+    const Type* lhsType,
     const ScriptValue& lhs,
-    const Type* rhs_type,
+    const Type* rhsType,
     const ScriptValue& rhs,
     ScriptValue& result
 ) const {
-    for (auto& fn: m_binary_operators) {
-        if (fn.op == op && fn.lhs == lhs_type && fn.rhs == rhs_type) {
+    for (auto& fn: m_binaryOperators) {
+        if (fn.op == op && fn.lhs == lhsType && fn.rhs == rhsType) {
             fn.fn(lhs, rhs, result);
 
             return true;
@@ -311,149 +302,149 @@ bool Compiler::fold_binary(
     return false;
 }
 
-IdentifierType Compiler::get_identifier_type(const NomadString& name, Script* script) {
-    if (m_runtime->get_keyword_id(name) != NOMAD_INVALID_ID) {
+IdentifierType Compiler::getIdentifierType(const NomadString& name, Script* script) {
+    if (m_runtime->getKeywordId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Keyword;
     }
 
-    if (is_statement(name)) {
+    if (isStatement(name)) {
         return IdentifierType::Statement;
     }
 
     CommandDefinition commandDefinition;
 
-    if (m_runtime->get_command_definition(name, commandDefinition)) {
+    if (m_runtime->getCommandDefinition(name, commandDefinition)) {
         return IdentifierType::Command;
     }
 
-    if (m_runtime->get_constant_id(name) != NOMAD_INVALID_ID) {
+    if (m_runtime->getConstantId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Constant;
     }
 
-    if (m_runtime->get_script_id(name) != NOMAD_INVALID_ID) {
+    if (m_runtime->getScriptId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Script;
     }
 
-    if (m_runtime->get_dynamic_variable_id(name) != NOMAD_INVALID_ID) {
+    if (m_runtime->getDynamicVariableId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::DynamicVariable;
     }
 
-    if (m_runtime->get_variable_context_id_by_prefix(name) != NOMAD_INVALID_ID) {
+    if (m_runtime->getVariableContextIdByPrefix(name) != NOMAD_INVALID_ID) {
         return IdentifierType::ContextVariable;
     }
 
-    if (script->get_variable_id(name) != NOMAD_INVALID_ID) {
+    if (script->getVariableId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::ScriptVariable;
     }
 
     return IdentifierType::Unknown;
 }
 
-void Compiler::get_identifier_definition(const NomadString& name, Script* script, IdentifierDefinition& definition) {
+void Compiler::getIdentifierDefinition(const NomadString& name, Script* script, IdentifierDefinition& definition) {
     if (name.empty()) {
-        definition.identifier_type = IdentifierType::Unknown;
+        definition.identifierType = IdentifierType::Unknown;
 
         return;
     }
 
-    char first_character = name[0];
-    if (!(std::isalnum(first_character) || first_character != '_')) {
-        definition.identifier_type = IdentifierType::Unknown;
+    char firstCharacter = name[0];
+    if (!(std::isalnum(firstCharacter) || firstCharacter != '_')) {
+        definition.identifierType = IdentifierType::Unknown;
 
         return;
     }
 
-    definition.identifier_type = get_identifier_type(name, script);
+    definition.identifierType = getIdentifierType(name, script);
 
-    NomadId command_id = m_runtime->get_command_id(name);
+    NomadId commandId = m_runtime->getCommandId(name);
 
-    if (command_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::Command;
+    if (commandId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::Command;
 
-        CommandDefinition command_definition;
+        CommandDefinition commandDefinition;
 
-        m_runtime->get_command_definition(command_id, command_definition);
+        m_runtime->getCommandDefinition(commandId, commandDefinition);
 
-        definition.command_id = command_id;
-        definition.value_type = command_definition.return_type;
-
-        return;
-    }
-
-    NomadId script_id = m_runtime->get_script_id(name);
-
-    if (script_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::Script;
-        definition.variable_id = script_id;
-        definition.value_type = m_runtime->get_script(script_id)->get_return_type();
+        definition.commandId = commandId;
+        definition.valueType = commandDefinition.returnType;
 
         return;
     }
 
-    NomadId constant_id = m_runtime->get_constant_id(name);
+    NomadId scriptId = m_runtime->getScriptId(name);
 
-    if (constant_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::Constant;
-        definition.variable_id = constant_id;
-        definition.value_type = m_runtime->get_constant_type(constant_id);
-
-        return;
-    }
-
-    NomadId dynamic_variable_id = m_runtime->get_dynamic_variable_id(name);
-
-    if (dynamic_variable_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::DynamicVariable;
-        definition.variable_id = dynamic_variable_id;
-        definition.value_type = m_runtime->get_dynamic_variable_type(dynamic_variable_id);
+    if (scriptId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::Script;
+        definition.variableId = scriptId;
+        definition.valueType = m_runtime->getScript(scriptId)->getReturnType();
 
         return;
     }
 
-    NomadId context_id = m_runtime->get_variable_context_id_by_prefix(name);
+    NomadId constantId = m_runtime->getConstantId(name);
 
-    if (context_id != NOMAD_INVALID_ID) {
-        auto variable_id = m_runtime->get_context_variable_id(context_id, name);
-        definition.context_id = context_id;
-        definition.variable_id = variable_id;
-        definition.value_type = m_runtime->get_context_variable_type(context_id, variable_id);
-
-        return;
-    }
-
-    NomadId variable_id = script->get_variable_id(name);
-
-    if (variable_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::ScriptVariable;
-        definition.variable_id = variable_id;
-        definition.value_type = script->get_variable_type(variable_id);
+    if (constantId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::Constant;
+        definition.variableId = constantId;
+        definition.valueType = m_runtime->getConstantType(constantId);
 
         return;
     }
 
-    NomadId parameter_id = script->get_parameter_id(name);
+    NomadId dynamicVariableId = m_runtime->getDynamicVariableId(name);
 
-    if (parameter_id != NOMAD_INVALID_ID) {
-        definition.identifier_type = IdentifierType::Parameter;
-        definition.variable_id = parameter_id;
-        definition.value_type = script->get_parameter_type(parameter_id);
+    if (dynamicVariableId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::DynamicVariable;
+        definition.variableId = dynamicVariableId;
+        definition.valueType = m_runtime->getDynamicVariableType(dynamicVariableId);
 
         return;
     }
 
-    definition.identifier_type = IdentifierType::Unknown;
+    NomadId contextId = m_runtime->getVariableContextIdByPrefix(name);
+
+    if (contextId != NOMAD_INVALID_ID) {
+        auto variableId = m_runtime->getContextVariableId(contextId, name);
+        definition.contextId = contextId;
+        definition.variableId = variableId;
+        definition.valueType = m_runtime->getContextVariableType(contextId, variableId);
+
+        return;
+    }
+
+    NomadId variableId = script->getVariableId(name);
+
+    if (variableId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::ScriptVariable;
+        definition.variableId = variableId;
+        definition.valueType = script->getVariableType(variableId);
+
+        return;
+    }
+
+    NomadId parameterId = script->getParameterId(name);
+
+    if (parameterId != NOMAD_INVALID_ID) {
+        definition.identifierType = IdentifierType::Parameter;
+        definition.variableId = parameterId;
+        definition.valueType = script->getParameterType(parameterId);
+
+        return;
+    }
+
+    definition.identifierType = IdentifierType::Unknown;
 }
 
 
-NomadIndex Compiler::get_op_code_size() const {
+NomadIndex Compiler::getOpCodeSize() const {
     return m_instructions.size();
 }
 
-NomadIndex Compiler::add_op_code(NomadId op_code) {
-    auto fn = m_runtime->get_instruction_fn(op_code);
+NomadIndex Compiler::addOpCode(NomadId opCode) {
+    auto fn = m_runtime->getInstructionFn(opCode);
 
     if (fn == nullptr) {
-        report_internal_error("[Compiler::add_op_code] Unknown op code: " + to_string(op_code));
+        reportInternalError("[Compiler::addOpCode] Unknown op code: " + toString(opCode));
     }
 
     m_instructions.emplace_back(fn);
@@ -461,17 +452,17 @@ NomadIndex Compiler::add_op_code(NomadId op_code) {
     return m_instructions.size() - 1;
 }
 
-NomadIndex Compiler::add_op_code(const NomadString& op_code_name) {
-    auto op_code_id = m_runtime->get_instruction_id(op_code_name);
+NomadIndex Compiler::addOpCode(const NomadString& opCodeName) {
+    auto opCodeId = m_runtime->getInstructionId(opCodeName);
 
-    if (op_code_id == NOMAD_INVALID_ID) {
-        report_error("[Compiler::add_op_code] Unknown instruction: " + op_code_name);
+    if (opCodeId == NOMAD_INVALID_ID) {
+        reportError("[Compiler::addOpCode] Unknown instruction: " + opCodeName);
     }
 
-    return add_op_code(op_code_id);
+    return addOpCode(opCodeId);
 }
 
-NomadIndex Compiler::add_id(NomadId id) {
+NomadIndex Compiler::addId(NomadId id) {
     auto index = m_instructions.size();
 
     m_instructions.emplace_back(ScriptValue(id));
@@ -479,7 +470,7 @@ NomadIndex Compiler::add_id(NomadId id) {
     return index;
 }
 
-NomadIndex Compiler::add_index(NomadIndex index) {
+NomadIndex Compiler::addIndex(NomadIndex index) {
     auto instruction = m_instructions.size();
 
     m_instructions.emplace_back(ScriptValue(index));
@@ -487,7 +478,7 @@ NomadIndex Compiler::add_index(NomadIndex index) {
     return instruction;
 }
 
-NomadIndex Compiler::add_integer(NomadInteger value) {
+NomadIndex Compiler::addInteger(NomadInteger value) {
     auto instruction = m_instructions.size();
 
     m_instructions.emplace_back(ScriptValue(value));
@@ -495,7 +486,7 @@ NomadIndex Compiler::add_integer(NomadInteger value) {
     return instruction;
 }
 
-NomadIndex Compiler::add_float(NomadFloat value) {
+NomadIndex Compiler::addFloat(NomadFloat value) {
     auto instruction = m_instructions.size();
 
     m_instructions.emplace_back(ScriptValue(value));
@@ -503,240 +494,224 @@ NomadIndex Compiler::add_float(NomadFloat value) {
     return instruction;
 }
 
-NomadIndex Compiler::add_load_value(const Type* type, const ScriptValue& value) {
-    if (type == get_runtime()->get_boolean_type()) {
-        return add_load_boolean_value(value.get_boolean_value());
-    } else if (type == get_runtime()->get_integer_type()) {
-        return add_load_integer_value(value.get_integer_value());
-    } else if (type == get_runtime()->get_float_type()) {
-        return add_load_float_value(value.get_float_value());
-    } else if (type == get_runtime()->get_string_type()) {
-        return add_load_string_value(value.get_string_value());
+NomadIndex Compiler::addLoadValue(const Type* type, const ScriptValue& value) {
+    if (type == getRuntime()->getBooleanType()) {
+        return addLoadBooleanValue(value.getBooleanValue());
+    } else if (type == getRuntime()->getIntegerType()) {
+        return addLoadIntegerValue(value.getIntegerValue());
+    } else if (type == getRuntime()->getFloatType()) {
+        return addLoadFloatValue(value.getFloatValue());
+    } else if (type == getRuntime()->getStringType()) {
+        return addLoadStringValue(value.getStringValue());
     }
 
-    report_internal_error("[ScriptBuilder::add_load_value] Unknown type: " + type->get_name());
+    reportInternalError("[Compiler::addLoadValue] Unknown type: " + type->getName());
 
     return NOMAD_INVALID_INDEX;
 }
 
-NomadIndex Compiler::add_load_boolean_value(bool value) {
+NomadIndex Compiler::addLoadBooleanValue(bool value) {
     if (value) {
-        return add_op_code(OpCodes::op_boolean_load_true_r);
+        return addOpCode(OpCodes::op_boolean_load_true_r);
     } else {
-        return add_op_code(OpCodes::op_boolean_load_false_r);
+        return addOpCode(OpCodes::op_boolean_load_false_r);
     }
 }
 
-NomadIndex Compiler::add_load_integer_value(NomadInteger value) {
+NomadIndex Compiler::addLoadIntegerValue(NomadInteger value) {
     if (value == 0) {
-        return add_op_code(OpCodes::op_integer_load_zero_r);
+        return addOpCode(OpCodes::op_integer_load_zero_r);
     } else if (value == 1) {
-        return add_op_code(OpCodes::op_integer_load_one_r);
+        return addOpCode(OpCodes::op_integer_load_one_r);
     } else {
-        add_op_code(OpCodes::op_integer_load_r);
+        addOpCode(OpCodes::op_integer_load_r);
 
-        return add_integer(value);
+        return addInteger(value);
     }
 }
 
-NomadIndex Compiler::add_load_float_value(NomadFloat value) {
+NomadIndex Compiler::addLoadFloatValue(NomadFloat value) {
     if (value == 0) {
-        return add_op_code(OpCodes::op_float_load_zero_r);
+        return addOpCode(OpCodes::op_float_load_zero_r);
     } else if (value == 1) {
-        return add_op_code(OpCodes::op_float_load_one_r);
+        return addOpCode(OpCodes::op_float_load_one_r);
     } else {
-        add_op_code(OpCodes::op_float_load_r);
-        return add_float(value);
+        addOpCode(OpCodes::op_float_load_r);
+        return addFloat(value);
     }
 }
 
-NomadIndex Compiler::add_load_string_value(const NomadString& value) {
-    auto string_id = get_runtime()->register_string(value);
+NomadIndex Compiler::addLoadStringValue(const NomadString& value) {
+    auto stringId = getRuntime()->registerString(value);
 
-    add_op_code(OpCodes::op_string_load_r);
+    addOpCode(OpCodes::op_string_load_r);
 
-    return add_id(string_id);
+    return addId(stringId);
 }
 
-NomadIndex Compiler::add_push_result(const Type* type) {
-    if (type == get_runtime()->get_string_type()) {
-        return add_op_code(OpCodes::op_string_push_r);
+NomadIndex Compiler::addPushResult(const Type* type) {
+    if (type == getRuntime()->getStringType()) {
+        return addOpCode(OpCodes::op_string_push_r);
     }
 
-    return add_op_code(OpCodes::op_push_r);
+    return addOpCode(OpCodes::op_push_r);
 }
 
-NomadIndex Compiler::add_pop_intermediate(const Type* type) {
-    if (type == get_runtime()->get_string_type()) {
-        return add_op_code(OpCodes::op_string_pop_i);
+NomadIndex Compiler::addPopIntermediate(const Type* type) {
+    if (type == getRuntime()->getStringType()) {
+        return addOpCode(OpCodes::op_string_pop_i);
     }
 
-    return add_op_code(OpCodes::op_pop_i);
+    return addOpCode(OpCodes::op_pop_i);
 }
 
-NomadIndex Compiler::add_script_call(NomadId target_script_id) {
-    auto script = get_runtime()->get_script(target_script_id);
+NomadIndex Compiler::addScriptCall(NomadId targetScriptId) {
+    auto script = getRuntime()->getScript(targetScriptId);
 
     if (script == nullptr) {
-        report_internal_error("[ScriptBuilder::add_script_call] Unknown script id: " + to_string(target_script_id));
+        reportInternalError("[Compiler::addScriptCall] Unknown script id: " + toString(targetScriptId));
     }
     
-    add_op_code(OpCodes::op_call_script);
+    addOpCode(OpCodes::op_call_script);
 
-    if (script->get_script_start() == NOMAD_INVALID_INDEX) {
-        add_script_link(target_script_id, m_instructions.size());
+    if (script->getScriptStart() == NOMAD_INVALID_INDEX) {
+        addScriptLink(targetScriptId, m_instructions.size());
 
-        add_index(NOMAD_INVALID_ID); // Placeholder for script jump index
+        addIndex(NOMAD_INVALID_ID); // Placeholder for script jump index
     } else {
-        add_index(script->get_script_start());
+        addIndex(script->getScriptStart());
     }
 
-//    // Free string parameters
-//    if (script->get_parameter_count() != 0) {
-//        for (auto i = 0; i < script->get_parameter_count(); i++) {
-//            if (script->get_parameter_type(i) == get_runtime()->get_string_type()) {
-//                add_op_code(OpCodes::op_string_free_stack);
-//                add_index(i);
-//            }
-//        }
-//    }
+    NomadIndex parameterCount = script->getParameterCount();
 
-    NomadIndex parameter_count = script->get_parameter_count();
+    if (parameterCount != 0) {
+        for (auto i = 0; i < parameterCount; i++) {
+            auto parameterType = script->getParameterType(i);
 
-    if (parameter_count != 0) {
-        for (auto i = 0; i < parameter_count; i++) {
-            auto parameter_type = script->get_parameter_type(i);
-
-            if (parameter_type == get_runtime()->get_string_type()) {
-                add_op_code(OpCodes::op_string_free_stack);
-                add_index(i);
+            if (parameterType == getRuntime()->getStringType()) {
+                addOpCode(OpCodes::op_string_free_stack);
+                addIndex(i);
             }
         }
 
-        add_op_code(OpCodes::op_pop_n);
-        add_index(parameter_count);
+        addOpCode(OpCodes::op_pop_n);
+        addIndex(parameterCount);
     }
 
     return m_instructions.size() - 1;
 }
 
-NomadIndex Compiler::add_command_call(NomadId command_id) {
+NomadIndex Compiler::addCommandCall(NomadId commandId) {
     CommandDefinition command;
 
-    auto result = m_runtime->get_command_definition(command_id, command);
+    auto result = m_runtime->getCommandDefinition(commandId, command);
 
     if (result == false) {
-        report_internal_error("[ScriptBuilder::add_command_call] Unknown command: " + to_string(command_id));
+        reportInternalError("[Compiler::addCommandCall] Unknown command: " + toString(commandId));
     }
 
-    add_op_code(OpCodes::op_call_command);
-    add_index(command_id);
+    addOpCode(OpCodes::op_call_command);
+    addIndex(commandId);
 
     if (!command.parameters.empty()) {
         for (auto i = 0; i < command.parameters.size(); i++) {
             auto& parameter = command.parameters[i];
 
-            if (parameter.type == get_runtime()->get_string_type()) {
-                add_op_code(OpCodes::op_string_free_stack);
-                add_index(i);
+            if (parameter.type == getRuntime()->getStringType()) {
+                addOpCode(OpCodes::op_string_free_stack);
+                addIndex(i);
             }
         }
 
-        add_op_code(OpCodes::op_pop_n);
-        add_index(command.parameters.size());
+        addOpCode(OpCodes::op_pop_n);
+        addIndex(command.parameters.size());
     }
 
     return m_instructions.size() - 1;
 }
 
-void Compiler::set_op_code(NomadIndex index, const NomadString& op_code_name) {
-    NomadId op_code_id = m_runtime->get_instruction_id(op_code_name);
+void Compiler::setOpCode(NomadIndex index, const NomadString& opCodeName) {
+    NomadId opCodeId = m_runtime->getInstructionId(opCodeName);
 
-    if (op_code_id == NOMAD_INVALID_ID) {
-        report_internal_error("[ScriptBuilder::set_op_code] Unknown op code: " + op_code_name);
+    if (opCodeId == NOMAD_INVALID_ID) {
+        reportInternalError("[Compiler::setOpCode] Unknown op code: " + opCodeName);
     }
 
-    set_op_code(index, op_code_id);
+    setOpCode(index, opCodeId);
 }
 
-void Compiler::set_op_code(NomadIndex index, NomadId op_code_id) {
-    auto fn = m_runtime->get_instruction_fn(op_code_id);
+void Compiler::setOpCode(NomadIndex index, NomadId opCodeId) {
+    auto fn = m_runtime->getInstructionFn(opCodeId);
 
     if (fn == nullptr) {
-        report_internal_error("[ScriptBuilder::set_op_code] Unknown op code: " + to_string(op_code_id));
+        reportInternalError("[Compiler::setOpCode] Unknown op code: " + toString(opCodeId));
     }
 
     m_instructions[index].fn = fn;
 }
 
 
-void Compiler::set_id(size_t index, NomadId id) {
-    m_instructions[index].value.set_id_value(id);
+void Compiler::setId(NomadIndex index, NomadId id) {
+    m_instructions[index].value.setIdValue(id);
 }
 
-void Compiler::set_index(NomadIndex index, NomadIndex value) {
-    m_instructions[index].value.set_index_value(value);
+void Compiler::setIndex(NomadIndex index, NomadIndex value) {
+    m_instructions[index].value.setIndexValue(value);
 }
 
-void Compiler::pre_parse_script(ScriptFile& script_file) {
-    auto& tokens = script_file.tokens;
+void Compiler::preParseScript(ScriptFile& scriptFile) {
+    auto& tokens = scriptFile.tokens;
 
     tokens.reset();
 
-    while (tokens.next_line()) {
-        auto& statement = tokens.next_token();
+    while (tokens.nextLine()) {
+        auto& statement = tokens.nextToken();
 
-        PreParseStatementFn pre_parse_statement_fn;
+        PreParseStatementFn preParseStatementFn;
 
-        auto script = m_runtime->get_script(script_file.script_id);
+        auto script = m_runtime->getScript(scriptFile.scriptId);
 
-        if (get_pre_parse_statement_fn(statement.text_value, pre_parse_statement_fn) && pre_parse_statement_fn) {
-            pre_parse_statement_fn(this, script, &tokens);
+        if (getGetPreParseStatementFn(statement.textValue, preParseStatementFn) && preParseStatementFn) {
+            preParseStatementFn(this, script, &tokens);
         }
     }
 }
 
 
-void Compiler::parse_script(ScriptFile& file) {
-//    auto script_id = m_runtime->register_script(script_file.script_name, script_file.file_name, script_file.source);
-
-//    auto script_id = register_script_source(script_file.script_name, script_file.file_name, script_file.source);
-//
-//    auto script = m_runtime->get_script(script_id);
-
+void Compiler::parseScript(ScriptFile& file) {
     auto ast = std::make_unique<ScriptNode>(0, 0);
     auto& tokens = file.tokens;
 
     tokens.reset();
 
-    while (tokens.next_line()) {
-        auto script = m_runtime->get_script(file.script_id);
+    while (tokens.nextLine()) {
+        auto script = m_runtime->getScript(file.scriptId);
 
-        auto statement = parser::parse_line(this, script, &tokens);
+        auto statement = parser::parseLine(this, script, &tokens);
 
         if (statement) {
-            ast->add_statement(std::move(statement));
+            ast->addStatement(std::move(statement));
         }
     }
 
-    set_script_node(file.script_id, std::move(ast));
+    setScriptNode(file.scriptId, std::move(ast));
 }
 
-void Compiler::compile_script(ScriptSource& source) {
+void Compiler::compileScript(ScriptSource& source) {
     Script* script = source.script;
 
-    script->set_script_start(m_instructions.size());
+    script->setScriptStart(m_instructions.size());
 
     // Initialize string variables.
-    NomadIndex variable_count = script->get_variable_count();
+    NomadIndex variableCount = script->getVariableCount();
 
-    if (variable_count != 0) {
-        add_op_code(OpCodes::op_push_n);
-        add_index(variable_count);
-        for (auto i = 0; i < variable_count; i++) {
-            if (script->get_variable_type(i) == get_runtime()->get_string_type()) {
-                add_op_code(OpCodes::op_string_init);
-                add_index(i);
+    if (variableCount != 0) {
+        addOpCode(OpCodes::op_push_n);
+        addIndex(variableCount);
+        for (auto i = 0; i < variableCount; i++) {
+            if (script->getVariableType(i) == getRuntime()->getStringType()) {
+                addOpCode(OpCodes::op_string_init);
+                addIndex(i);
             }
         }
     }
@@ -744,109 +719,109 @@ void Compiler::compile_script(ScriptSource& source) {
     source.ast->compile(this, script);
 
     // Free string variables.
-    if (variable_count != 0) {
-        for (auto i = 0; i < variable_count; i++) {
-            if (script->get_variable_type(i) == get_runtime()->get_string_type()) {
-                add_op_code(OpCodes::op_string_free_variable);
-                add_index(i);
+    if (variableCount != 0) {
+        for (auto i = 0; i < variableCount; i++) {
+            if (script->getVariableType(i) == getRuntime()->getStringType()) {
+                addOpCode(OpCodes::op_string_free_variable);
+                addIndex(i);
             }
 
         }
-        add_op_code(OpCodes::op_return_n);
-        add_index(variable_count);
+        addOpCode(OpCodes::op_return_n);
+        addIndex(variableCount);
     } else {
-        add_op_code(OpCodes::op_return);
+        addOpCode(OpCodes::op_return);
     }
 
 
-    script->set_script_end(m_instructions.size());
+    script->setScriptEnd(m_instructions.size());
 }
 
-NomadId Compiler::register_script_file(
-    const NomadString& script_name,
-    const NomadString& file_name,
+NomadId Compiler::registerScriptFile(
+    const NomadString& scriptName,
+    const NomadString& fileName,
     const NomadString& source
 ) {
-    auto script_file = ScriptFile {
-        script_name,
-        file_name,
+    auto scriptFile = ScriptFile {
+        scriptName,
+        fileName,
         source,
         {m_runtime, source},
     };
 
     // Also register script so it is available for linking
-    script_file.script_id = register_script_source(script_name, file_name, source);
+    scriptFile.scriptId = registerScriptSource(scriptName, fileName, source);
 
-    m_files.emplace_back(std::move(script_file));
+    m_files.emplace_back(std::move(scriptFile));
 
     // Sort scripts alphabetically to ensure consistent order in compiling across systems.
     std::sort(m_files.begin(), m_files.end(), [](const ScriptFile& a, const ScriptFile& b) {
-        return a.script_name < b.script_name;
+        return a.scriptName < b.scriptName;
     });
 
-    return script_file.script_id;
+    return scriptFile.scriptId;
 }
 
-NomadId Compiler::register_script_source(
-    const NomadString& script_name,
-    const NomadString& file_name,
+NomadId Compiler::registerScriptSource(
+    const NomadString& scriptName,
+    const NomadString& fileName,
     const NomadString& source
 ) {
-    auto script_id = m_runtime->register_script(script_name, file_name, source);
+    auto scriptId = m_runtime->registerScript(scriptName, fileName, source);
 
-    if (script_id == NOMAD_INVALID_ID) {
-        report_error("Could not register script '" + script_name + "' (" + file_name + ")");
+    if (scriptId == NOMAD_INVALID_ID) {
+        reportError("Could not register script '" + scriptName + "' (" + fileName + ")");
     }
 
-    auto script = m_runtime->get_script(script_id);
+    auto script = m_runtime->getScript(scriptId);
 
     m_sources.emplace_back(ScriptSource {
-        script_name,
+        scriptName,
         {},
         script
     });
 
-    return script_id;
+    return scriptId;
 }
 
-void Compiler::set_script_node(NomadId script_id, std::unique_ptr<ScriptNode> ast) {
+void Compiler::setScriptNode(NomadId scriptId, std::unique_ptr<ScriptNode> ast) {
     for (auto& source: m_sources) {
-        if (source.script->get_id() == script_id) {
+        if (source.script->getId() == scriptId) {
             source.ast = std::move(ast);
 
             return;
         }
     }
 
-    report_internal_error("[Compiler::set_script_node] Unknown script id: " + to_string(script_id));
+    reportInternalError("[Compiler::setScriptNode] Unknown script id: " + toString(scriptId));
 }
 
-void Compiler::load_scripts_from_path(const NomadString& path) {
-    scan_directory_for_scripts(path, "", 10);
+void Compiler::loadScriptsFromPath(const NomadString& path) {
+    scanDirectoryForScripts(path, "", 10);
 }
 
-void Compiler::compile_scripts() {
+void Compiler::compileScripts() {
     log::info("Pre-Parsing scripts");
 
-    for (auto& script_file: m_files) {
+    for (auto& scriptFile: m_files) {
         try {
-            log::debug("Pre-Parsing '" + script_file.script_name + "' (" + script_file.file_name + ")");
+            log::debug("Pre-Parsing '" + scriptFile.scriptName + "' (" + scriptFile.fileName + ")");
 
-            pre_parse_script(script_file);
+            preParseScript(scriptFile);
         } catch (std::exception& e) {
-            report_error("Failed to pre-parse script '" + script_file.script_name + "' (" + script_file.file_name + "): " + e.what());
+            reportError("Failed to pre-parse script '" + scriptFile.scriptName + "' (" + scriptFile.fileName + "): " + e.what());
         }
     }
 
     log::info("Parsing scripts");
 
-    for (auto& script_file: m_files) {
+    for (auto& scriptFile: m_files) {
         try {
-            log::debug("Parsing '" + script_file.script_name + "' (" + script_file.file_name + ")");
+            log::debug("Parsing '" + scriptFile.scriptName + "' (" + scriptFile.fileName + ")");
 
-            parse_script(script_file);
+            parseScript(scriptFile);
         } catch (std::exception& e) {
-            report_error("Failed to parse script '" + script_file.script_name + "' (" + script_file.file_name + "): " + e.what());
+            reportError("Failed to parse script '" + scriptFile.scriptName + "' (" + scriptFile.fileName + "): " + e.what());
         }
     }
 
@@ -854,11 +829,11 @@ void Compiler::compile_scripts() {
 
     for (auto& source: m_sources) {
         try {
-            log::debug("Syntax checking script '" + source.script->get_name() + "' (" + source.script->get_path() + ")");
+            log::debug("Syntax checking script '" + source.script->getName() + "' (" + source.script->getPath() + ")");
 
             source.ast->parse(this, source.script);
         } catch (std::exception& e) {
-            report_error("Failed to syntax check script '" + source.script->get_name() + "' (" + source.script->get_path() + "): " + e.what());
+            reportError("Failed to syntax check script '" + source.script->getName() + "' (" + source.script->getPath() + "): " + e.what());
         }
     }
 
@@ -866,43 +841,43 @@ void Compiler::compile_scripts() {
 
     for (auto& source: m_sources) {
         try {
-            log::debug("Compiling script '" + source.script->get_name() + "' (" + source.script->get_path() + ")");
+            log::debug("Compiling script '" + source.script->getName() + "' (" + source.script->getPath() + ")");
 
-            compile_script(source);
+            compileScript(source);
         } catch (std::exception& e) {
-            report_error("Failed to compile script '" + source.script->get_name() + "' (" + source.script->get_path() + "): " + e.what());
+            reportError("Failed to compile script '" + source.script->getName() + "' (" + source.script->getPath() + "): " + e.what());
         }
     }
 
     log::info("Linking scripts");
 
-    link_scripts();
+    linkScripts();
 
-    m_script_links.clear();
+    m_scriptLinks.clear();
 
     log::info("Scripts compiled");
 }
 
-void Compiler::add_script_link(NomadId script_id, NomadIndex call_index) {
-    m_script_links.emplace_back(ScriptLink{script_id, call_index});
+void Compiler::addScriptLink(NomadId scriptId, NomadIndex callIndex) {
+    m_scriptLinks.emplace_back(ScriptLink{scriptId, callIndex});
 }
 
-void Compiler::link_scripts() {
-    for (auto& link: m_script_links) {
-        auto script = m_runtime->get_script(link.script_id);
+void Compiler::linkScripts() {
+    for (auto& link: m_scriptLinks) {
+        auto script = m_runtime->getScript(link.scriptId);
 
         if (script == nullptr) {
-            report_error("[Compiler::link_scripts] Failed to link script '" + to_string(link.script_id) + "'");
+            reportError("[Compiler::linkScripts] Failed to link script '" + toString(link.scriptId) + "'");
         }
-        if (script->get_script_start() == NOMAD_INVALID_INDEX) {
-            report_error("[Compiler::link_scripts] Script '" + script->get_name() + "' has not been compiled");
+        if (script->getScriptStart() == NOMAD_INVALID_INDEX) {
+            reportError("[Compiler::linkScripts] Script '" + script->getName() + "' has not been compiled");
         }
 
-        set_index(link.call_index, script->get_script_start());
+        setIndex(link.callIndex, script->getScriptStart());
     }
 }
 
-void Compiler::scan_directory_for_scripts(const NomadString& base_path, const NomadString& sub_path, NomadIndex max_depth) {
+void Compiler::scanDirectoryForScripts(const NomadString& basePath, const NomadString& sub_path, NomadIndex max_depth) {
     if (max_depth == 0) {
         log::debug("Skipping directory '" + sub_path + "' (max depth reached)");
 
@@ -911,18 +886,18 @@ void Compiler::scan_directory_for_scripts(const NomadString& base_path, const No
 
     const NomadString extension = ".nomad";
 
-    auto path_string = concat_path(base_path, sub_path);
+    auto path_string = concatPath(basePath, sub_path);
     std::filesystem::path path{path_string};
 
     for (auto& entry: std::filesystem::directory_iterator(path)) {
         if (entry.is_directory()) {
             auto directory_name = NomadString(entry.path().filename().string());
-            auto new_sub_path = concat_path(sub_path, directory_name);
-            scan_directory_for_scripts(base_path, new_sub_path, max_depth - 1);
+            auto new_sub_path = concatPath(sub_path, directory_name);
+            scanDirectoryForScripts(basePath, new_sub_path, max_depth - 1);
         } else if (entry.is_regular_file() && entry.path().extension() == extension) {
-            auto file_name = base_path + "/" + sub_path + "/" + NomadString(entry.path().filename().string());
+            auto file_name = basePath + "/" + sub_path + "/" + NomadString(entry.path().filename().string());
 
-            auto start = base_path.length() + 1;
+            auto start = basePath.length() + 1;
             auto length = entry.path().string().length() - start - extension.length();
 
             auto script_name = NomadString(entry.path().string().substr(start, length));
@@ -932,29 +907,29 @@ void Compiler::scan_directory_for_scripts(const NomadString& base_path, const No
             // Read source
             std::ifstream file(file_name.c_str(), std::ios::in);
             if (!file.is_open()) {
-                report_error("Failed to open file '" + file_name + "'");
+                reportError("Failed to open file '" + file_name + "'");
             }
 
             NomadString source{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 
-            register_script_file(script_name, file_name, source);
+            registerScriptFile(script_name, file_name, source);
        }
     }
 }
 
-NomadString Compiler::generate_script_name(const NomadString& generated_name, const NomadString& host_script_name, NomadIndex line) {
-    NomadString generated_script_name;
+NomadString Compiler::generateScriptName(const NomadString& generatedName, const NomadString& hostScriptName, NomadIndex line) {
+    NomadString generatedScriptName;
     auto index = 0;
 
     do {
-        generated_script_name = SCRIPT_INTERNAL_NAME_PREFIX + generated_name + "_" + host_script_name + "_" + std::to_string(line);
-    } while (m_runtime->get_script_id(generated_script_name) != NOMAD_INVALID_ID);
+        generatedScriptName = SCRIPT_INTERNAL_NAME_PREFIX + generatedName + "_" + hostScriptName + "_" + std::to_string(line);
+    } while (m_runtime->getScriptId(generatedScriptName) != NOMAD_INVALID_ID);
 
-    return generated_script_name;
+    return generatedScriptName;
 }
 
-NomadString Compiler::generate_script_name(const NomadString& name, const Script* script, NomadIndex line) {
-    return generate_script_name(name, script->get_name(), line);
+NomadString Compiler::generateScriptName(const NomadString& name, const Script* script, NomadIndex line) {
+    return generateScriptName(name, script->getName(), line);
 }
 
 } // nomad

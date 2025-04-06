@@ -20,7 +20,7 @@ public:
 };
 
 
-Allocator * get_default_allocator() {
+Allocator * getDefaultAllocator() {
     static HeapAllocator default_allocator;
 
     return &default_allocator;

@@ -13,7 +13,7 @@
 
 namespace nomad {
 
-UnaryOperator get_unary_operator(const NomadString& symbol) {
+UnaryOperator getUnaryOperator(const NomadString& symbol) {
     if (symbol == "!") {
         return UnaryOperator::Bang;
     } else if (symbol == "+") {
@@ -31,7 +31,7 @@ UnaryOperator get_unary_operator(const NomadString& symbol) {
     return UnaryOperator::Unknown;
 }
 
-NomadString to_string(UnaryOperator op) {
+NomadString toString(UnaryOperator op) {
     switch (op) {
         case UnaryOperator::Bang:
             return "!";
@@ -50,7 +50,7 @@ NomadString to_string(UnaryOperator op) {
     }
 }
 
-BinaryOperator get_binary_operator(const NomadString& symbol) {
+BinaryOperator getBinaryOperator(const NomadString& symbol) {
     if (symbol == "+") {
         return BinaryOperator::Plus;
     } else if (symbol == "-") {
@@ -88,7 +88,7 @@ BinaryOperator get_binary_operator(const NomadString& symbol) {
     return BinaryOperator::Unknown;
 }
 
-NomadString to_string(BinaryOperator op) {
+NomadString toString(BinaryOperator op) {
     switch (op) {
         case BinaryOperator::Plus:
             return "+";
@@ -123,670 +123,347 @@ NomadString to_string(BinaryOperator op) {
     }
 }
 
-void fold_boolean_unary_bang(const ScriptValue& value, ScriptValue& result) {
-    auto boolean_value = value.get_boolean_value();
+void foldBooleanUnaryBang(const ScriptValue& value, ScriptValue& result) {
+    auto booleanValue = value.getBooleanValue();
 
-    auto boolean_result = boolean_not(boolean_value);
+    auto booleanResult = booleanNot(booleanValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_unary_plus(const ScriptValue& value, ScriptValue& result) {
-    auto integer_value = value.get_integer_value();
+void foldIntegerUnaryPlus(const ScriptValue& value, ScriptValue& result) {
+    auto integerValue = value.getIntegerValue();
 
-    auto integer_result = integer_absolute(integer_value);
+    auto integerResult = integerAbsolute(integerValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_unary_minus(const ScriptValue& value, ScriptValue& result) {
-    auto integer_value = value.get_integer_value();
+void foldIntegerUnaryMinus(const ScriptValue& value, ScriptValue& result) {
+    auto integerValue = value.getIntegerValue();
 
-    auto integer_result = integer_negate(integer_value);
+    auto integerResult = integerNegate(integerValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_float_unary_plus(const ScriptValue& value, ScriptValue& result) {
-    auto float_value = value.get_float_value();
+void foldFloatUnaryPlus(const ScriptValue& value, ScriptValue& result) {
+    auto floatValue = value.getFloatValue();
 
-    auto float_result = float_absolute(float_value);
+    auto floatResult = floatAbsolute(floatValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_unary_minus(const ScriptValue& value, ScriptValue& result) {
-    auto float_value = value.get_float_value();
+void foldFloatUnaryMinus(const ScriptValue& value, ScriptValue& result) {
+    auto floatValue = value.getFloatValue();
 
-    auto float_result = float_negate(float_value);
+    auto floatResult = floatNegate(floatValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_unary_sin(const ScriptValue& value, ScriptValue& result) {
-    auto float_value = value.get_float_value();
+void foldFloatUnarySin(const ScriptValue& value, ScriptValue& result) {
+    auto floatValue = value.getFloatValue();
 
-    auto float_result = float_sin(float_value);
+    auto floatResult = floatSin(floatValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_unary_cos(const ScriptValue& value, ScriptValue& result) {
-    auto float_value = value.get_float_value();
+void foldFloatUnaryCos(const ScriptValue& value, ScriptValue& result) {
+    auto floatValue = value.getFloatValue();
 
-    auto float_result = float_cosine(float_value);
+    auto floatResult = floatCosine(floatValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_unary_tan(const ScriptValue& value, ScriptValue& result) {
-    auto float_value = value.get_float_value();
+void foldFloatUnaryTan(const ScriptValue& value, ScriptValue& result) {
+    auto floatValue = value.getFloatValue();
 
-    auto float_result = float_tangent(float_value);
+    auto floatResult = floatTangent(floatValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_plus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryPlus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_add(lhs_value, rhs_value);
+    auto floatResult = floatAdd(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_minus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryMinus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_subtract(lhs_value, rhs_value);
+    auto floatResult = floatSubtract(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_star(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryStar(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_multiply(lhs_value, rhs_value);
+    auto floatResult = floatMultiply(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_slash(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinarySlash(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_divide(lhs_value, rhs_value);
+    auto floatResult = floatDivide(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_boolean_binary_and_and(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_boolean_value();
-    auto rhs_value = rhs.get_boolean_value();
+void foldBooleanBinaryAndAnd(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getBooleanValue();
+    auto rhsValue = rhs.getBooleanValue();
 
-    auto boolean_result = boolean_and(lhs_value, rhs_value);
+    auto booleanResult = booleanAnd(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_boolean_binary_pipe_pipe(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_boolean_value();
-    auto rhs_value = rhs.get_boolean_value();
+void foldBooleanBinaryPipePipe(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getBooleanValue();
+    auto rhsValue = rhs.getBooleanValue();
 
-    auto boolean_result = boolean_or(lhs_value, rhs_value);
+    auto booleanResult = booleanOr(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_plus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryPlus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_add(lhs_value, rhs_value);
+    auto integerResult = integerAdd(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_minus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryMinus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_subtract(lhs_value, rhs_value);
+    auto integerResult = integerSubtract(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_star(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryStar(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_multiply(lhs_value, rhs_value);
+    auto integerResult = integerMultiply(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_slash(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinarySlash(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_divide(lhs_value, rhs_value);
+    auto integerResult = integerDivide(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_percent(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryPercent(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_modulo(lhs_value, rhs_value);
+    auto integerResult = integerModulo(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_and(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerAnd(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_and(lhs_value, rhs_value);
+    auto integerResult = integerAnd(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_pipe(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerPipe(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_or(lhs_value, rhs_value);
+    auto integerResult = integerOr(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_caret(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryCaret(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto integer_result = integer_xor(lhs_value, rhs_value);
+    auto integerResult = integerXor(lhsValue, rhsValue);
 
-    result.set_integer_value(integer_result);
+    result.setIntegerValue(integerResult);
 }
 
-void fold_integer_binary_equal_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryEqualEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_equal_to(lhs_value, rhs_value);
+    auto booleanResult = integerEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_bang_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryBangEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_not_equal_to(lhs_value, rhs_value);
+    auto booleanResult = integerNotEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_less_than(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryLessThan(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_less_than(lhs_value, rhs_value);
+    auto booleanResult = integerLessThan(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_less_than_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryLessThanEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_less_than_or_equal(lhs_value, rhs_value);
+    auto booleanResult = integerLessThanOrEqual(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_greater_than(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryGreaterThan(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_greater_than(lhs_value, rhs_value);
+    auto booleanResult = integerGreaterThan(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_integer_binary_greater_than_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_integer_value();
-    auto rhs_value = rhs.get_integer_value();
+void foldIntegerBinaryGreaterThanEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getIntegerValue();
+    auto rhsValue = rhs.getIntegerValue();
 
-    auto boolean_result = integer_greater_than_or_equal(lhs_value, rhs_value);
+    auto booleanResult = integerGreaterThanOrEqual(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_percent(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryPercent(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_modulo(lhs_value, rhs_value);
+    auto floatResult = floatModulo(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_caret(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryCaret(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto float_result = float_power(lhs_value, rhs_value);
+    auto floatResult = floatPower(lhsValue, rhsValue);
 
-    result.set_float_value(float_result);
+    result.setFloatValue(floatResult);
 }
 
-void fold_float_binary_equal_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryEqualEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_equal_to(lhs_value, rhs_value);
+    auto booleanResult = floatEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_bang_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryBangEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_not_equal_to(lhs_value, rhs_value);
+    auto booleanResult = floatNotEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_less_than(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryLessThan(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_less_than(lhs_value, rhs_value);
+    auto booleanResult = floatLessThan(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_less_than_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryLessThanEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_less_than_or_equal(lhs_value, rhs_value);
+    auto booleanResult = floatLessThanOrEqual(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_greater_than(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryGreaterThan(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_greater_than(lhs_value, rhs_value);
+    auto booleanResult = floatGreaterThan(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_float_binary_greater_than_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_float_value();
-    auto rhs_value = rhs.get_float_value();
+void foldFloatBinaryGreaterThanEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getFloatValue();
+    auto rhsValue = rhs.getFloatValue();
 
-    auto boolean_result = float_greater_than_or_equal(lhs_value, rhs_value);
+    auto booleanResult = floatGreaterThanOrEqual(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_string_binary_plus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_string_value();
-    auto rhs_value = rhs.get_string_value();
+void foldStringBinaryPlus(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getStringValue();
+    auto rhsValue = rhs.getStringValue();
 
-    auto string_result = string_concatenate(lhs_value, rhs_value);
+    auto stringResult = stringConcatenate(lhsValue, rhsValue);
 
-    result.set_string_value(string_result);
+    result.setStringValue(stringResult);
 }
 
-void fold_string_binary_equal_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_string_value();
-    auto rhs_value = rhs.get_string_value();
+void foldStringBinaryEqualEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getStringValue();
+    auto rhsValue = rhs.getStringValue();
 
-    auto boolean_result = string_equal_to(lhs_value, rhs_value);
+    auto booleanResult = stringEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-void fold_string_binary_bang_equal(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
-    auto lhs_value = lhs.get_string_value();
-    auto rhs_value = rhs.get_string_value();
+void foldStringBinaryBangEqual(const ScriptValue& lhs, const ScriptValue& rhs, ScriptValue& result) {
+    auto lhsValue = lhs.getStringValue();
+    auto rhsValue = rhs.getStringValue();
 
-    auto boolean_result = string_not_equal_to(lhs_value, rhs_value);
+    auto booleanResult = stringNotEqualTo(lhsValue, rhsValue);
 
-    result.set_boolean_value(boolean_result);
+    result.setBooleanValue(booleanResult);
 }
 
-
-//
-// struct UnaryOperatorInfo {
-//     UnaryOperator op;
-//     NomadString name;
-//     UnaryOperatorFn* fn;
-//     NomadString opcode;
-// };
-//
-// const std::array<UnaryOperatorInfo, 6> unary_operators = {
-//     UnaryOperatorInfo{ UnaryOperator::Not, "!", op_not, "op_not" },
-//     UnaryOperatorInfo{ UnaryOperator::Plus, "+", op_plus, "op_unary_plus" },
-//     UnaryOperatorInfo{ UnaryOperator::Minus, "-", op_minus, "op_unary_minus" },
-//     UnaryOperatorInfo{ UnaryOperator::Sin, "sin", op_sin, "op_sin" },
-//     UnaryOperatorInfo{ UnaryOperator::Cos, "cos", op_cos, "op_cos" },
-//     UnaryOperatorInfo{ UnaryOperator::Tan, "tan", op_tan, "op_tan" },
-// };
-//
-// UnaryOperator from_string(const NomadString& operator_name, UnaryOperator& op) {
-//     for (auto& it : unary_operators) {
-//         if (it.name == operator_name) {
-//             op = it.op;
-//             return op;
-//         }
-//     }
-//
-//     op = UnaryOperator::Unknown;
-//     return op;
-// }
-//
-// NomadString to_string(UnaryOperator op) {
-//     for (auto& it : unary_operators) {
-//         if (it.op == op) {
-//             return it.name;
-//         }
-//     }
-//
-//     return "Unknown";
-// }
-//
-// UnaryOperatorFn* get_unary_operator_fn(UnaryOperator op) {
-//     for (auto& it : unary_operators) {
-//         if (it.op == op) {
-//             return it.fn;
-//         }
-//     }
-//
-//     return nullptr;
-// }
-//
-// NomadString get_opcode_name(UnaryOperator op) {
-//     for (auto& it : unary_operators) {
-//         if (it.op == op) {
-//             return it.opcode;
-//         }
-//     }
-//
-//     return "Unknown";
-// }
-//
-// struct BinaryOperatorInfo {
-//     BinaryOperator op;
-//     NomadString name;
-//     BinaryOperatorFn* fn;
-//     NomadString opcode;
-// };
-//
-// const std::array<BinaryOperatorInfo, 14> binary_operators = {
-//     BinaryOperatorInfo{ BinaryOperator::Add, "+", op_add, "op_add" },
-//     BinaryOperatorInfo{ BinaryOperator::Subtract, "-", op_sub, "op_sub" },
-//     BinaryOperatorInfo{ BinaryOperator::Multiply, "*", op_mul, "op_mul" },
-//     BinaryOperatorInfo{ BinaryOperator::Divide, "/", op_div, "op_div" },
-//     BinaryOperatorInfo{ BinaryOperator::Modulo, "%", op_mod, "op_mod" },
-//     BinaryOperatorInfo{ BinaryOperator::Power, "^", op_pow, "op_pow" },
-//     BinaryOperatorInfo{ BinaryOperator::Equal, "==", op_equal, "op_equal" },
-//     BinaryOperatorInfo{ BinaryOperator::NotEqual, "!=", op_not_equal, "op_not_equal" },
-//     BinaryOperatorInfo{ BinaryOperator::LessThan, "<", op_less_than, "op_less_than" },
-//     BinaryOperatorInfo{ BinaryOperator::LessThanOrEqual, "<=", op_less_than_or_equal, "op_less_than_or_equal" },
-//     BinaryOperatorInfo{ BinaryOperator::GreaterThan, ">", op_greater_than, "op_greater_than" },
-//     BinaryOperatorInfo{ BinaryOperator::GreaterThanOrEqual, ">=", op_greater_than_or_equal, "op_greater_than_or_equal" },
-//     BinaryOperatorInfo{BinaryOperator::LogicalAnd, "&&", op_and, "op_and" },
-//     BinaryOperatorInfo{BinaryOperator::LogicalOr, "||", op_or, "op_or" },
-// };
-//
-// BinaryOperator from_string(const NomadString& operator_name, BinaryOperator& op) {
-//     for (auto& it : binary_operators) {
-//         if (it.name == operator_name) {
-//             op = it.op;
-//             return op;
-//         }
-//     }
-//
-//     op = BinaryOperator::Unknown;
-//     return op;
-// }
-//
-// NomadString to_string(BinaryOperator op) {
-//     for (auto& it : binary_operators) {
-//         if (it.op == op) {
-//             return it.name;
-//         }
-//     }
-//
-//     return "Unknown";
-// }
-//
-// BinaryOperatorFn* get_binary_operator_fn(BinaryOperator op) {
-//     for (auto& it : binary_operators) {
-//         if (it.op == op) {
-//             return it.fn;
-//         }
-//     }
-//
-//     return nullptr;
-// }
-//
-// NomadString get_opcode_name(BinaryOperator op) {
-//     for (auto& it : binary_operators) {
-//         if (it.op == op) {
-//             return it.opcode;
-//         }
-//     }
-//
-//     return "Unknown";
-// }
-//
-// NomadValue operator_load_zero(Interpreter* interpreter) {
-//     return 0.0;
-// }
-//
-// NomadValue operator_load_one(Interpreter* interpreter) {
-//     return 1.0;
-// }
-//
-// NomadValue operator_load_double(Interpreter* interpreter) {
-//     return interpreter->next_double();
-// }
-//
-// NomadValue operator_load_constant(Interpreter* interpreter) {
-//     const auto constant_id = interpreter->next_id();
-//
-//     return interpreter->get_runtime()->get_constant_value(constant_id);
-// }
-//
-// NomadValue operator_call_command(Interpreter* interpreter) {
-//     const auto command_id = interpreter->next_id();
-//
-//     const auto command_fn = interpreter->get_runtime()->get_command_fn(command_id);
-//
-//     command_fn(interpreter);
-//
-//     return interpreter->get_result();
-// }
-//
-// NomadValue operator_call_script(Interpreter* interpreter) {
-//     const auto script_id = interpreter->next_id();
-//
-//     const auto script = interpreter->get_runtime()->get_script(script_id);
-//
-//     Interpreter script_interpreter(interpreter->get_runtime(), script);
-//
-//     return script_interpreter.run();
-// }
-//
-// NomadValue operator_load_dynamic_variable(Interpreter* interpreter) {
-//     const auto variable_id = interpreter->next_id();
-//
-//     return interpreter->get_runtime()->get_dynamic_variable_value(interpreter, variable_id);
-// }
-//
-// NomadValue operator_load_variable(Interpreter* interpreter) {
-//     const auto variable_context = interpreter->next_id();
-//     const auto variable_id = interpreter->next_id();
-//
-//     return interpreter->get_runtime()->get_context_variable_value(variable_context, variable_id);
-// }
-//
-// NomadValue operator_load_script_variable(Interpreter* interpreter) {
-//     const auto variable_id = interpreter->next_id();
-//
-//     return interpreter->get_script_variable_value(variable_id);
-// }
-//
-// NomadValue operator_load_string_id(Interpreter* interpreter) {
-//     const auto string_id = interpreter->next_id();
-//
-//     return string_id;
-// }
-//
-// NomadValue operator_not(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_not(value);
-// }
-//
-// NomadValue operator_sin(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_sin(value);
-// }
-//
-// NomadValue operator_cos(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_cos(value);
-// }
-//
-// NomadValue operator_tan(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_tan(value);
-// }
-//
-// NomadValue operator_unary_minus(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_minus(value);
-// }
-//
-// NomadValue operator_unary_plus(Interpreter* interpreter) {
-//     const auto value = interpreter->execute_expression();
-//
-//     return op_plus(value);
-// }
-//
-// NomadValue operator_add(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_add(left, right);
-// }
-//
-// NomadValue operator_sub(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_sub(left, right);
-// }
-//
-// NomadValue operator_mul(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_mul(left, right);
-// }
-//
-// NomadValue operator_div(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_div(left, right);
-// }
-//
-// NomadValue operator_mod(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_mod(left, right);
-// }
-//
-// NomadValue operator_pow(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_pow(left, right);
-// }
-//
-// NomadValue operator_equal(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_equal(left, right);
-// }
-//
-// NomadValue operator_not_equal(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_not_equal(left, right);
-// }
-//
-// NomadValue operator_less_than(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_less_than(left, right);
-// }
-//
-// NomadValue operator_less_than_or_equal(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_less_than_or_equal(left, right);
-// }
-//
-// NomadValue operator_greater_than(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_greater_than(left, right);
-// }
-//
-// NomadValue operator_greater_than_or_equal(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_greater_than_or_equal(left, right);
-// }
-//
-// NomadValue operator_and(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_and(left, right);
-// }
-//
-// NomadValue operator_or(Interpreter* interpreter) {
-//     const auto left = interpreter->execute_expression();
-//     const auto right = interpreter->execute_expression();
-//
-//     return op_or(left, right);
-// }
-//
 } // nomad

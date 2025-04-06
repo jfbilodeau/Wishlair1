@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-12-19.
 //
 
-#ifndef NOMAD_TEXT_HPP
-#define NOMAD_TEXT_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -18,21 +17,20 @@ public:
 
     ~TextManager() = default;
 
-    void load_text_from_csv(const NomadString& path);
+    void loadTextFromCsv(const NomadString& path);
 
-    bool has_language(const NomadString& language_code) const;
-    [[nodiscard]] const std::vector<NomadString>& get_language_codes() const;
+    bool hasLanguage(const NomadString& languageCode) const;
+    [[nodiscard]] const std::vector<NomadString>& getLanguageCodes() const;
 
-    [[nodiscard]] bool has_text(const NomadString& language_code, const NomadString& key) const;
-    NomadString& get_text(const NomadString& language_code, const NomadString& key, NomadString& text) const;
+    [[nodiscard]] bool hasText(const NomadString& languageCode, const NomadString& key) const;
+    NomadString& getText(const NomadString& languageCode, const NomadString& key, NomadString& text) const;
 
-    void get_all_text(const NomadString& language_code, std::unordered_map<NomadString, NomadString>& texts) const;
+    void getAllText(const NomadString& languageCode, std::unordered_map<NomadString, NomadString>& texts) const;
 
 private:
-    std::vector<NomadString> m_language_codes;
+    std::vector<NomadString> m_languageCodes;
     std::unordered_map<NomadString, std::unordered_map<NomadString, NomadString>> m_texts;
 };
 
 } // namespace nomad
 
-#endif //NOMAD_TEXT_HPP

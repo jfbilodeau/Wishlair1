@@ -6,7 +6,7 @@
 
 namespace nomad {
 
-CommandParameterDefinition def_parameter(const NomadString& name, const Type* type, NomadDocArg) {
+CommandParameterDefinition defParameter(const NomadString& name, const Type* type, NomadDocArg) {
     return {
         name,
         type,

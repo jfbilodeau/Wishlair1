@@ -18,7 +18,7 @@ System::~System() {
 
 }
 
-std::shared_ptr<Logger> System::get_logger() const {
+std::shared_ptr<Logger> System::getLogger() const {
     return m_logger;
 }
 

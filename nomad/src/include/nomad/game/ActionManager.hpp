@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-10-30.
 //
 
-#ifndef NOMAD_ACTIONMANAGER_HPP
-#define NOMAD_ACTIONMANAGER_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -21,15 +20,15 @@ public:
     ActionManager(const ActionManager&) = delete;
     ~ActionManager() = default;
 
-    void clear_mapping();
+    void clearMapping();
 
-    NomadId register_action(const NomadString& name, InputCode code1, InputCode code2);
+    NomadId registerAction(const NomadString& name, InputCode code1, InputCode code2);
 
-    bool get_action_name_for_input(InputCode code, NomadString& action_name) const;
+    bool getActionNameForInput(InputCode code, NomadString& action_name) const;
 
-    void load_mapping(Game* game, const NomadString& mapping_name);
-    void save_mapping(Game* game, const NomadString& mapping_name);
-    void reset_mapping_to_defaults(Game* game, const NomadString& mapping_name);
+    void loadMapping(Game* game, const NomadString& mappingName);
+    void saveMapping(Game* game, const NomadString& mappingName);
+    void resetMappingToDefaults(Game* game, const NomadString& mappingName);
 
 private:
     struct ActionMapping {
@@ -39,17 +38,16 @@ private:
         InputCode code2;
     };
 
-    [[nodiscard]] NomadString create_mapping_file_name(const NomadString& mapping_name) const;
-    [[nodiscard]] NomadString create_default_mapping_file_name(Game* game, const NomadString& mapping_name) const;
-    [[nodiscard]] NomadString create_custom_mapping_file_name(Game* game, const NomadString& mapping_name) const;
-    void load_mapping_from_file(Game* game, const NomadString& file_name);
-    void save_mapping_to_file(Game* game, const NomadString& file_name) const;
+    [[nodiscard]] NomadString createMappingFileName(const NomadString& mappingName) const;
+    [[nodiscard]] NomadString createDefaultMappingFileName(Game* game, const NomadString& mappingName) const;
+    [[nodiscard]] NomadString createCustomMappingFileName(Game* game, const NomadString& mappingName) const;
+    void loadMappingFromFile(Game* game, const NomadString& fileName);
+    void saveMappingToFile(Game* game, const NomadString& fileName) const;
 
-    ActionMapping* get_action_mapping(const NomadString& name);
+    ActionMapping* getActionMapping(const NomadString& name);
 
     std::vector<ActionMapping> m_mappings;
 };
 
 } // nomad
 
-#endif //NOMAD_ACTIONMANAGER_HPP

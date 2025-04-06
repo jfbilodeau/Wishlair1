@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_RECTANGLE_HPP
-#define NOMAD_RECTANGLE_HPP
+#pragma once
 
 #include <SDL.h>
 
@@ -24,60 +23,60 @@ public:
     Rectangle& operator=(const Rectangle& other) = default;
     Rectangle& operator=(Rectangle&& other) noexcept = default;
 
-    [[nodiscard]] NomadInteger get_left() const {
+    [[nodiscard]] NomadInteger getLeft() const {
         return m_x;
     }
 
-    [[nodiscard]] NomadInteger get_right() const {
+    [[nodiscard]] NomadInteger getRight() const {
         return m_x + m_width;
     }
 
-    [[nodiscard]] NomadInteger get_top() const {
+    [[nodiscard]] NomadInteger getTop() const {
         return m_y;
     }
 
-    [[nodiscard]] NomadInteger get_bottom() const {
+    [[nodiscard]] NomadInteger getBottom() const {
         return m_y + m_height;
     }
 
-    [[nodiscard]] NomadInteger get_width() const {
+    [[nodiscard]] NomadInteger getWidth() const {
         return m_width;
     }
 
-    [[nodiscard]] NomadInteger get_height() const {
+    [[nodiscard]] NomadInteger getHeight() const {
         return m_height;
     }
 
     [[nodiscard]] bool contains(const Point& point) const {
-        return point.x() >= get_left() && point.x() <= get_right() && point.y() >= get_top() && point.y() <=
-                                                                                                        get_bottom();
+        return point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <=
+                                                                                                        getBottom();
     }
 
     [[nodiscard]] bool Intersects(const Rectangle& other) const {
-        return get_left() < other.get_right() && get_right() > other.get_left() && get_top() < other.get_bottom() &&
-                get_bottom() >
-                                                                                                                 other.get_top();
+        return getLeft() < other.getRight() && getRight() > other.getLeft() && getTop() < other.getBottom() &&
+                getBottom() >
+                                                                                                                 other.getTop();
     }
 
-    [[nodiscard]] Rectangle NomadIntegerersection(const Rectangle& other) const {
+    [[nodiscard]] Rectangle intersectionRect(const Rectangle& other) const {
         if (!Intersects(other)) {
             return {};
         }
 
         return {
-            std::max(get_left(), other.get_left()),
-            std::max(get_top(), other.get_top()),
-            std::min(get_right(), other.get_right()) - std::max(get_left(), other.get_left()),
-            std::min(get_bottom(), other.get_bottom()) - std::max(get_top(), other.get_top())
+            std::max(getLeft(), other.getLeft()),
+            std::max(getTop(), other.getTop()),
+            std::min(getRight(), other.getRight()) - std::max(getLeft(), other.getLeft()),
+            std::min(getBottom(), other.getBottom()) - std::max(getTop(), other.getTop())
         };
     }
 
-    [[nodiscard]] Rectangle union_rect(const Rectangle& other) const {
+    [[nodiscard]] Rectangle unionRect(const Rectangle& other) const {
         return {
-            std::min(get_left(), other.get_left()),
-            std::min(get_top(), other.get_top()),
-            std::max(get_right(), other.get_right()) - std::min(get_left(), other.get_left()),
-            std::max(get_bottom(), other.get_bottom()) - std::min(get_top(), other.get_top())
+            std::min(getLeft(), other.getLeft()),
+            std::min(getTop(), other.getTop()),
+            std::max(getRight(), other.getRight()) - std::min(getLeft(), other.getLeft()),
+            std::max(getBottom(), other.getBottom()) - std::min(getTop(), other.getTop())
         };
     }
 
@@ -88,7 +87,7 @@ public:
     }
 
     Rectangle& move(const Point& point) {
-        return move(point.x(), point.y());
+        return move(point.getX(), point.getY());
     }
 
     Rectangle& resize(NomadInteger width, NomadInteger height) {
@@ -98,57 +97,57 @@ public:
     }
 
     Rectangle& resize(const Point& point) {
-        return resize(point.x(), point.y());
+        return resize(point.getX(), point.getY());
     }
 
-    Rectangle& set_left(NomadInteger left) {
+    Rectangle& setLeft(NomadInteger left) {
         m_x = left;
         return *this;
     }
 
-    Rectangle& set_right(NomadInteger right) {
+    Rectangle& setRight(NomadInteger right) {
         m_width = right - m_x;
         return *this;
     }
 
-    Rectangle& set_top(NomadInteger top) {
+    Rectangle& setTop(NomadInteger top) {
         m_y = top;
         return *this;
     }
 
-    Rectangle& set_bottom(NomadInteger bottom) {
+    Rectangle& setBottom(NomadInteger bottom) {
         m_height = bottom - m_y;
         return *this;
     }
 
-    Rectangle& set_width(NomadInteger width) {
+    Rectangle& setWidth(NomadInteger width) {
         m_width = width;
         return *this;
     }
 
-    Rectangle& set_height(NomadInteger height) {
+    Rectangle& setHeight(NomadInteger height) {
         m_height = height;
         return *this;
     }
 
-    Rectangle& set_position(NomadInteger x, NomadInteger y) {
+    Rectangle& setPosition(NomadInteger x, NomadInteger y) {
         m_x = x;
         m_y = y;
         return *this;
     }
 
-    Rectangle& set_position(const Point& point) {
-        return set_position(point.x(), point.y());
+    Rectangle& setPosition(const Point& point) {
+        return setPosition(point.getX(), point.getY());
     }
 
-    Rectangle& set_size(NomadInteger width, NomadInteger height) {
+    Rectangle& setSize(NomadInteger width, NomadInteger height) {
         m_width = width;
         m_height = height;
         return *this;
     }
 
-    Rectangle& set_size(const Point& point) {
-        return set_size(point.x(), point.y());
+    Rectangle& setSize(const Point& point) {
+        return setSize(point.getX(), point.getY());
     }
 
     Rectangle& set(NomadInteger x, NomadInteger y, NomadInteger width, NomadInteger height) {
@@ -160,7 +159,7 @@ public:
     }
 
     Rectangle& set(const Point& point, const Point& size) {
-        return set(point.x(), point.y(), size.x(), size.y());
+        return set(point.getX(), point.getY(), size.getX(), size.getY());
     }
 
     Rectangle& set(const Rectangle& other) {
@@ -173,9 +172,9 @@ public:
 
     Rectangle& set(const SDL_FRect& rect);
 
-    [[nodiscard]] RectangleF to_rectanglef() const;
-    [[nodiscard]] SDL_Rect to_sdl_rect() const;
-    [[nodiscard]] SDL_FRect to_sdl_frect() const;
+    [[nodiscard]] RectangleF toRectanglef() const;
+    [[nodiscard]] SDL_Rect toSdlRect() const;
+    [[nodiscard]] SDL_FRect toSdlFrect() const;
 
 private:
     NomadInteger m_x;
@@ -186,4 +185,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_RECTANGLE_HPP

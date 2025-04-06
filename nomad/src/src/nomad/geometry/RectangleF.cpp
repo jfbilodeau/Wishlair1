@@ -18,7 +18,7 @@ RectangleF::RectangleF(Coord x, Coord y, Coord width, Coord height):
     m_width(width),
     m_height(height) { }
 
-SDL_Rect RectangleF::to_sdl_rect() const {
+SDL_Rect RectangleF::toSdlRect() const {
     return SDL_Rect{
         int(m_x),
         int(m_y),
@@ -27,7 +27,7 @@ SDL_Rect RectangleF::to_sdl_rect() const {
     };
 }
 
-SDL_FRect RectangleF::to_sdl_frect() const {
+SDL_FRect RectangleF::toSdlFrect() const {
     return SDL_FRect{
         float(m_x),
         float(m_y),

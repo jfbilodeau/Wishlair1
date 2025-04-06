@@ -22,19 +22,19 @@ public:
     PointF& operator=(const PointF& other) = default;
     PointF& operator=(PointF&& other) noexcept = default;
 
-    [[nodiscard]] Coord x() const {
+    [[nodiscard]] Coord getX() const {
         return m_x;
     }
 
-    [[nodiscard]] Coord y() const {
+    [[nodiscard]] Coord getY() const {
         return m_y;
     }
 
-    void set_x(Coord x) {
+    void setX(Coord x) {
         m_x = x;
     }
 
-    void set_y(Coord y) {
+    void setY(Coord y) {
         m_y = y;
     }
 
@@ -78,7 +78,7 @@ public:
         return std::sqrt(m_x * m_x + m_y * m_y);
     }
 
-    [[nodiscard]] NomadFloat length_squared() const {
+    [[nodiscard]] NomadFloat lengthSquared() const {
         return m_x * m_x + m_y * m_y;
     }
 
@@ -103,7 +103,7 @@ public:
     }
 
     [[nodiscard]] PointF project(const PointF& other) const {
-        auto length_squared = other.length_squared();
+        auto length_squared = other.lengthSquared();
         if (length_squared == 0) {
             return {0, 0};
         }
@@ -112,13 +112,13 @@ public:
         return other * (dot_product / length_squared);
     }
 
-    [[nodiscard]] NomadFloat distance_to(const PointF& other) const;
-    [[nodiscard]] NomadFloat distance_to(Coord x, Coord y) const;
+    [[nodiscard]] NomadFloat distanceTo(const PointF& other) const;
+    [[nodiscard]] NomadFloat distanceTo(Coord x, Coord y) const;
 
-    [[nodiscard]] SDL_Point to_sdl_point() const;
-    SDL_Point& to_sdl_point(SDL_Point& point) const;
-    [[nodiscard]] SDL_FPoint to_sdl_fpoint() const;
-    SDL_FPoint& to_sdl_fpoint(SDL_FPoint& point) const;
+    [[nodiscard]] SDL_Point toSdlPoint() const;
+    SDL_Point& toSdlPoint(SDL_Point& point) const;
+    [[nodiscard]] SDL_FPoint toSdlFpoint() const;
+    SDL_FPoint& toSdlFpoint(SDL_FPoint& point) const;
 
     [[nodiscard]] PointF operator-() const {
         return {-m_x, -m_y};
@@ -141,10 +141,10 @@ public:
     }
 
     [[nodiscard]]
-    NomadFloat angle_to(PointF destination) const {
+    NomadFloat angleTo(PointF destination) const {
         // Calculate the angle between this point and `destination`
-        auto delta_x = destination.x() - x();
-        auto delta_y = destination.y() - y();
+        auto delta_x = destination.getX() - getX();
+        auto delta_y = destination.getY() - getY();
 
         return std::atan2(delta_y, delta_x);
     }
@@ -155,7 +155,7 @@ private:
 };
 
 static bool operator==(const PointF& lhs, const PointF& rhs) {
-    return lhs.x() == rhs.x() && lhs.y() == rhs.y();
+    return lhs.getX() == rhs.getX() && lhs.getY() == rhs.getY();
 }
 
 static bool operator!=(const PointF& lhs, const PointF& rhs) {
@@ -163,23 +163,23 @@ static bool operator!=(const PointF& lhs, const PointF& rhs) {
 }
 
 static PointF operator+(const PointF& lhs, const PointF& rhs) {
-    return {lhs.x() + rhs.x(), lhs.y() + rhs.y()};
+    return {lhs.getX() + rhs.getX(), lhs.getY() + rhs.getY()};
 }
 
 static PointF operator-(const PointF& lhs, const PointF& rhs) {
-    return {lhs.x() - rhs.x(), lhs.y() - rhs.y()};
+    return {lhs.getX() - rhs.getX(), lhs.getY() - rhs.getY()};
 }
 
 static PointF operator*(const PointF& lhs, NomadFloat scalar) {
-    return {lhs.x() * scalar, lhs.y() * scalar};
+    return {lhs.getX() * scalar, lhs.getY() * scalar};
 }
 
 static PointF operator*(NomadFloat scalar, const PointF& rhs) {
-    return { rhs.x() * scalar, rhs.y() * scalar };
+    return { rhs.getX() * scalar, rhs.getY() * scalar };
 }
 
 static PointF operator/(const PointF& lhs, NomadFloat scalar) {
-    return { lhs.x() / scalar, lhs.y() / scalar };
+    return { lhs.getX() / scalar, lhs.getY() / scalar };
 }
 
 } // nomad

@@ -12,34 +12,34 @@
 
 namespace nomad {
 
-void Game::init_game_dynamic_variables() {
+void Game::initGameDynamicVariables() {
     log::debug("Initializing game dynamic variables");
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "game.organization",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            NomadString organization = value.get_string_value();
+            NomadString organization = value.getStringValue();
 
             m_organization = organization;
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_string_value(m_organization);
+            value.setStringValue(m_organization);
         },
-        m_runtime->get_string_type(),
+        m_runtime->getStringType(),
         NomadDoc("The organization who made the game.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "game.name",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            NomadString name = value.get_string_value();
+            NomadString name = value.getStringValue();
 
             m_name = name;
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_string_value(m_name);
+            value.setStringValue(m_name);
         },
-        m_runtime->get_string_type(),
+        m_runtime->getStringType(),
         NomadDoc("The name of the game.")
     );
 }

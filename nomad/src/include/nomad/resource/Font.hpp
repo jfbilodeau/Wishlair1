@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-09-06.
 //
 
-#ifndef NOMAD_FONT_HPP
-#define NOMAD_FONT_HPP
+#pragma once
 
 #include "nomad/game/Alignment.hpp"
 #include "nomad/game/Color.hpp"
@@ -22,33 +21,33 @@ class Texture;
 ///////////////////////////////////////////////////////////////////////////////
 class Font {
 public:
-    explicit Font(const NomadString& name, const NomadString& file_name, int point_size);
+    explicit Font(const NomadString& name, const NomadString& fileName, int pointSize);
     Font(const Font& other) = delete;
     ~Font();
 
-    [[nodiscard]] const NomadString& get_name() const;
-    [[nodiscard]] int get_point_size() const;
-    [[nodiscard]] TTF_Font* get_ttf_font() const;
+    [[nodiscard]] const NomadString& getName() const;
+    [[nodiscard]] int getPointSize() const;
+    [[nodiscard]] TTF_Font* getTtfFont() const;
 
-    Texture* generate_texture(
+    Texture* generateTexture(
         Canvas* canvas,
         const NomadString& text,
         const Color& color,
         HorizontalAlignment alignment,
-        NomadInteger max_text_width_pixels,
-        NomadInteger max_text_height_pixels,
-        NomadInteger line_spacing
+        NomadInteger maxTextWidthPixels,
+        NomadInteger maxTextHeightPixels,
+        NomadInteger lineSpacing
     ) const;
 
-    [[nodiscard]] NomadInteger get_text_width(const NomadChar* text) const;
-    [[nodiscard]] NomadInteger get_text_width(const NomadString& text) const;
-    [[nodiscard]] NomadInteger get_text_height(const NomadString& text) const;
-    [[nodiscard]] NomadInteger get_font_height() const;
+    [[nodiscard]] NomadInteger getTextWidth(const NomadChar* text) const;
+    [[nodiscard]] NomadInteger getTextWidth(const NomadString& text) const;
+    [[nodiscard]] NomadInteger getTextHeight(const NomadString& text) const;
+    [[nodiscard]] NomadInteger getFontHeight() const;
 
 private:
     NomadString m_name;
     TTF_Font* m_font = nullptr;
-    int m_point_size = 0;
+    int m_pointSize = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,9 +57,9 @@ class FontManager {
 public:
     explicit FontManager(ResourceManager* resources);
 
-    [[nodiscard]] NomadId register_font(const NomadString& font_name, int point_size);
-    [[nodiscard]] const Font* get_font(NomadId font_id) const;
-    [[nodiscard]] const Font* get_font_by_name(const NomadString& font_name) const;
+    [[nodiscard]] NomadId registerFont(const NomadString& fontName, int pointSize);
+    [[nodiscard]] const Font* getFont(NomadId fontId) const;
+    [[nodiscard]] const Font* getFontByName(const NomadString& fontName) const;
 
 private:
     ResourceManager* m_resources;
@@ -69,4 +68,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_FONT_HPP

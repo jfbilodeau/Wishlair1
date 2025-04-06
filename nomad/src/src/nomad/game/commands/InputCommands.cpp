@@ -14,7 +14,7 @@
 
 namespace nomad {
 
-void Game::init_input_commands() {
+void Game::initInputCommands() {
     log::debug("Initializing input commands");
 
 //    m_runtime->register_command(

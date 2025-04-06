@@ -16,47 +16,47 @@ namespace nomad {
 #define VARIABLE_NAME_PREFIX "other"
 
 #define START_ENTITY_BLOCK(message) \
-    get_current_context()->for_each_other_entities([&,this](Entity* entity) {
+    getCurrentContext()->forEachOtherEntities([&,this](Entity* entity) {
 
 #define END_ENTITY_BLOCK \
     });
 
 #define START_SINGLE_ENTITY_BLOCK(message) \
-    auto current_context = get_current_context(); \
-    auto entity = current_context->get_first_other_entity(); \
+    auto currentContext = getCurrentContext(); \
+    auto entity = currentContext->getFirstOtherEntity(); \
     if (entity) {\
 
-#define END_SINGLE_ENTITY_BLOCK(default_value) \
+#define END_SINGLE_ENTITY_BLOCK(defaultValue) \
     } else { \
-        value.set(default_value); \
+        value.set(defaultValue); \
     }
 
-void Game::init_other_dynamic_variables() {
+void Game::initOtherDynamicVariables() {
     log::debug("Initializing this dynamic variables");
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "other",
         nullptr,
         [this](Interpreter* interpreter, ScriptValue& value) {
             START_SINGLE_ENTITY_BLOCK("Cannot access 'other' outside of an entity")
 
-            value.set_integer_value(entity->get_id());
+            value.setIntegerValue(entity->getId());
 
             END_SINGLE_ENTITY_BLOCK(static_cast<NomadInteger>(NOMAD_INVALID_ID))
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         "Get the ID of the `other` entity."
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "others.count",
         [this](Interpreter* interpreter, const ScriptValue& value) {
             log::error("Cannot set 'other.count'");
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(get_current_context()->get_other_entity_count());
+            value.setIntegerValue(getCurrentContext()->getOtherEntityCount());
         },
-        m_runtime->get_integer_type(),
+        m_runtime->getIntegerType(),
         NomadDoc("Returns the number of selected 'other' entities")
     );
 

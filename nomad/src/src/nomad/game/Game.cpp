@@ -34,36 +34,36 @@ namespace nomad {
 const auto SDL_INIT_FLAGS = SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_TIMER;
 
 Game::Game(NomadString resource_path, bool debug) :
-    m_resource_path(std::move(resource_path)),
+    m_resourcePath(std::move(resource_path)),
     m_debug(debug)
 {
-    init_sdl();
-    init_sdl_ttf();
-    init_resource_path();
-    init_runtime();
-    init_dynamic_variables();
-    init_variable_context();
-    init_commands();
-    init_resource_manager();
-    init_load_text();
-    init_constants();
+    initSdl();
+    initSdlTtf();
+    initResourcePath();
+    initRuntime();
+    initDynamicVariables();
+    initVariableContext();
+    initCommands();
+    initResourceManager();
+    initLoadText();
+    initConstants();
 
-    set_language("en");
+    setLanguage("en");
 
-    compile_scripts();
+    compileScripts();
 
     if (m_debug) {
         std::ofstream instruction_dump("instructions.txt");
-        m_runtime->dump_instructions(instruction_dump);
+        m_runtime->dumpInstructions(instruction_dump);
 
         std::ofstream documentation_dump("documentation.md");
-        m_runtime->dump_documentation(documentation_dump);
+        m_runtime->dumpDocumentation(documentation_dump);
     }
 
-    run_init_script();
+    runInitScript();
 
     // Debug console must be initialized after the init script has been run
-    init_debug_console();
+    initDebugConsole();
 
     log::info("Game initialized");
 
@@ -71,7 +71,7 @@ Game::Game(NomadString resource_path, bool debug) :
 }
 
 Game::~Game() {
-    delete m_resource_manager;
+    delete m_resourceManager;
 
     if (SDL_WasInit(SDL_INIT_FLAGS)) {
         if (m_window) {
@@ -88,62 +88,62 @@ Game::~Game() {
     delete m_runtime;
 }
 
-Runtime* Game::get_runtime() const {
+Runtime* Game::getRuntime() const {
     return m_runtime;
 }
 
-ResourceManager* Game::get_resources() const {
-    return m_resource_manager;
+ResourceManager* Game::getResources() const {
+    return m_resourceManager;
 }
 
-void Game::set_debug(bool debug) {
+void Game::setDebug(bool debug) {
     m_debug = debug;
 }
 
-bool Game::is_debug() const {
+bool Game::isDebug() const {
     return m_debug;
 }
 
-const VariableMap* Game::get_scene_variables() const {
-    return m_scene_variable_map;
+const VariableMap* Game::getSceneVariables() const {
+    return m_sceneVariableMap;
 }
 
-const VariableMap* Game::get_entity_variables() const {
-    return m_this_entity_variable_map;
+const VariableMap* Game::getEntityVariables() const {
+    return m_thisEntityVariableMap;
 }
 
-const Point& Game::get_resolution() const {
+const Point& Game::getResolution() const {
     return m_resolution;
 }
 
-void Game::set_fps(NomadInteger fps) {
+void Game::setFps(NomadInteger fps) {
     m_fps = fps;
 }
 
-NomadInteger Game::get_fps() const {
+NomadInteger Game::getFps() const {
     return m_fps;
 }
 
-const NomadString& Game::get_organization() const {
+const NomadString& Game::getOrganization() const {
     return m_organization;
 }
 
-void Game::set_organization(const NomadString& organization) {
+void Game::setOrganization(const NomadString& organization) {
     m_organization = organization;
 }
 
-const NomadString& Game::get_name() const {
+const NomadString& Game::getName() const {
     return m_name;
 }
-void Game::set_name(const NomadString& name) {
+void Game::setName(const NomadString& name) {
     m_name = name;
 }
 
-NomadString Game::get_resource_path() const {
-    return m_resource_path;
+NomadString Game::getResourcePath() const {
+    return m_resourcePath;
 }
 
-NomadString Game::get_state_path() const {
+NomadString Game::getStatePath() const {
     if (m_organization.empty()) {
         log::error("game.organization not set");
         return "";
@@ -169,61 +169,61 @@ NomadString Game::get_state_path() const {
     return state_path;
 }
 
-NomadString Game::get_save_path() const {
-    const auto path = get_state_path() + "saves";
+NomadString Game::getSavePath() const {
+    const auto path = getStatePath() + "saves";
 
     return path;
 }
 
-NomadString Game::get_settings_path() const {
-    const auto path = get_state_path() + "settings";
+NomadString Game::getSettingsPath() const {
+    const auto path = getStatePath() + "settings";
 
     return path;
 }
 
-NomadString Game::make_resource_path(const NomadString& resource_name) const {
-    const auto file_name = m_resource_path + resource_name;
+NomadString Game::makeResourcePath(const NomadString& resourceName) const {
+    const auto file_name = m_resourcePath + resourceName;
 
     return file_name;
 }
 
-NomadString Game::make_state_path(const NomadString& state_name) const {
-    const auto file_name = get_state_path() + state_name;
+NomadString Game::makeStatePath(const NomadString& stateName) const {
+    const auto file_name = getStatePath() + stateName;
 
-    create_path_to_file(file_name);
-
-    return file_name;
-}
-
-NomadString Game::make_save_path(const NomadString& save_name) const {
-    const auto file_name = get_save_path() + save_name;
-
-    create_path_to_file(file_name);
+    createPathToFile(file_name);
 
     return file_name;
 }
 
-NomadString Game::make_settings_path(const NomadString& settings_name) const {
-    const auto file_name = get_settings_path() + settings_name;
+NomadString Game::makeSavePath(const NomadString& saveName) const {
+    const auto file_name = getSavePath() + saveName;
 
-    create_path_to_file(file_name);
+    createPathToFile(file_name);
 
     return file_name;
 }
 
-bool Game::file_exists(const NomadString& file_name) const {
-    return std::filesystem::exists(file_name);
+NomadString Game::makeSettingsPath(const NomadString& settingsName) const {
+    const auto file_name = getSettingsPath() + settingsName;
+
+    createPathToFile(file_name);
+
+    return file_name;
 }
 
-void Game::delete_file(const NomadString& file_name) const {
-    std::filesystem::remove(file_name);
+bool Game::fileExists(const NomadString& fileName) const {
+    return std::filesystem::exists(fileName);
+}
+
+void Game::deleteFile(const NomadString& fileName) const {
+    std::filesystem::remove(fileName);
 }
 
 bool Game::running() const {
     return m_running;
 }
 
-bool Game::is_paused() const {
+bool Game::isPaused() const {
     return m_paused;
 }
 
@@ -244,7 +244,7 @@ void Game::run() {
         SDL_Event event{};
 
         while (SDL_PollEvent(&event) != 0) {
-            if (m_debug_console != nullptr) {
+            if (m_debugConsole != nullptr) {
 //                m_debug_console->process_event(event);
             }
 
@@ -265,21 +265,21 @@ void Game::run() {
 
                 case SDL_KEYDOWN:
                 case SDL_KEYUP:
-                    process_input(event.key);
+                    processInput(event.key);
                     break;
 
                 case SDL_MOUSEBUTTONDOWN:
                 case SDL_MOUSEBUTTONUP:
-                    process_input(event.button);
+                    processInput(event.button);
                     break;
 
                 case SDL_CONTROLLERBUTTONDOWN:
                 case SDL_CONTROLLERBUTTONUP:
-                    process_input(event.cbutton);
+                    processInput(event.cbutton);
                     break;
 
                 case SDL_MOUSEMOTION:
-                    m_mouse_position.set(event.motion.x, event.motion.y);
+                    m_mousePosition.set(event.motion.x, event.motion.y);
                     break;
 
                 default:
@@ -298,14 +298,14 @@ void Game::run() {
                 update();
 
                 // Clear pressed/released state
-                for (auto& button_state: m_mouse_button_state) {
+                for (auto& button_state: m_mouseButtonState) {
                     button_state.pressed = false;
                     button_state.released = false;
                 }
             }
 
             const auto update_end_time = SDL_GetTicks64();
-            m_update_duration = update_end_time - update_start_time;
+            m_updateDuration = update_end_time - update_start_time;
 
             const auto render_start_time = SDL_GetTicks64();
             render(m_canvas);
@@ -313,12 +313,12 @@ void Game::run() {
             SDL_RenderPresent(m_renderer);
 
             const auto render_end_time = SDL_GetTicks64();
-            m_render_duration = render_end_time - render_start_time;
+            m_renderDuration = render_end_time - render_start_time;
 
-            m_mouse_last_position = m_mouse_position;
+            m_mouseLastPosition = m_mousePosition;
         }
 
-        if (m_debug_console != nullptr) {
+        if (m_debugConsole != nullptr) {
 //            m_debug_console->render();
         }
 
@@ -330,135 +330,135 @@ void Game::quit() {
     m_running = false;
 }
 
-uint64_t Game::get_update_duration() const {
-    return m_update_duration;
+uint64_t Game::getUpdateDuration() const {
+    return m_updateDuration;
 }
 
-uint64_t Game::get_render_duration() const {
-    return m_render_duration;
+uint64_t Game::getRenderDuration() const {
+    return m_renderDuration;
 }
 
-Canvas* Game::get_canvas() {
+Canvas* Game::getCanvas() {
     return m_canvas;
 }
 
-NomadId Game::get_script_id(const NomadString& script_name) {
-    return m_runtime->get_script_id(script_name);
+NomadId Game::getScriptId(const NomadString& scriptName) {
+    return m_runtime->getScriptId(scriptName);
 }
 
-void Game::execute_script_in_current_context(NomadId script_id) {
-    m_runtime->execute_script(script_id);
+void Game::executeScriptInCurrentContext(NomadId scriptId) {
+    m_runtime->executeScript(scriptId);
 }
 
-void Game::execute_script_in_current_context(NomadId script_id, ScriptValue& return_value) {
-    m_runtime->execute_script(script_id, return_value);
+void Game::executeScriptInCurrentContext(NomadId scriptId, ScriptValue& returnValue) {
+    m_runtime->executeScript(scriptId, returnValue);
 }
 
-void Game::execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity) {
-    push_execution_context(scene, entity);
+void Game::executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity) {
+    pushExecutionContext(scene, entity);
 
-    m_runtime->execute_script(script_id);
+    m_runtime->executeScript(scriptId);
 
-    pop_execution_context();
+    popExecutionContext();
 }
 
-void Game::execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, Entity* other) {
-    push_execution_context(scene, entity, other);
+void Game::executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, Entity* other) {
+    pushExecutionContext(scene, entity, other);
 
-    m_runtime->execute_script(script_id);
+    m_runtime->executeScript(scriptId);
 
-    pop_execution_context();
+    popExecutionContext();
 }
 
-void Game::execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, const std::vector<Entity*>& other_entities) {
-    push_execution_context(scene, entity, other_entities);
+void Game::executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, const std::vector<Entity*>& other_entities) {
+    pushExecutionContext(scene, entity, other_entities);
 
-    m_runtime->execute_script(script_id);
+    m_runtime->executeScript(scriptId);
 
-    pop_execution_context();
+    popExecutionContext();
 }
 
-void Game::execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, ScriptValue& return_value) {
-    push_execution_context(scene, entity);
+void Game::executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, ScriptValue& returnValue) {
+    pushExecutionContext(scene, entity);
 
-    m_runtime->execute_script(script_id, return_value);
+    m_runtime->executeScript(scriptId, returnValue);
 
-    pop_execution_context();
+    popExecutionContext();
 }
 
-void Game::execute_script_in_context(NomadId script_id, GameExecutionContext* context) {
-    const auto previous_context = m_current_context;
+void Game::executeScriptInContext(NomadId scriptId, GameExecutionContext* context) {
+    const auto previous_context = m_currentContext;
 
-    m_current_context = context;
+    m_currentContext = context;
 
-    m_runtime->execute_script(script_id);
+    m_runtime->executeScript(scriptId);
 
-    m_current_context = previous_context;
+    m_currentContext = previous_context;
 }
 
-void Game::execute_script_in_context(NomadId script_id, GameExecutionContext* context, ScriptValue& return_value) {
-    const auto previous_context = m_current_context;
+void Game::executeScriptInContext(NomadId scriptId, GameExecutionContext* context, ScriptValue& returnValue) {
+    const auto previous_context = m_currentContext;
 
-    m_current_context = context;
+    m_currentContext = context;
 
-    m_runtime->execute_script(script_id, return_value);
+    m_runtime->executeScript(scriptId, returnValue);
 
-    m_current_context = previous_context;
+    m_currentContext = previous_context;
 }
 
-void Game::execute_script_by_name(const NomadString& script_name, Scene* scene, Entity* entity, ScriptValue& return_value) {
-    const auto script_id = get_script_id(script_name);
+void Game::executeScriptByName(const NomadString& scriptName, Scene* scene, Entity* entity, ScriptValue& returnValue) {
+    const auto script_id = getScriptId(scriptName);
 
     if (script_id == NOMAD_INVALID_ID) {
-        raise_error("Script '" + script_name + "' not found");
+        raiseError("Script '" + scriptName + "' not found");
     }
 
-    execute_script_in_new_context(script_id, scene, entity, return_value);
+    executeScriptInNewContext(script_id, scene, entity, returnValue);
 }
 
-bool Game::execute_predicate(NomadId script_id) {
+bool Game::executePredicate(NomadId script_id) {
     ScriptValue return_value;
 
-    m_runtime->execute_script(script_id, return_value);
+    m_runtime->executeScript(script_id, return_value);
 
-    return return_value.get_boolean_value();
+    return return_value.getBooleanValue();
 }
 
-Scene* Game::create_scene() {
+Scene* Game::createScene() {
     const auto scene = new Scene(this);
 
-    m_added_scenes.push_back(scene);
+    m_addedScenes.push_back(scene);
 
     return scene;
 }
 
-void Game::remove_scene(Scene* scene) {
-    m_removed_scenes.push_back(scene);
+void Game::removeScene(Scene* scene) {
+    m_removedScenes.push_back(scene);
 }
 
-void Game::raise_error(const NomadString& message) {
+void Game::raiseError(const NomadString& message) {
     log::error(message);
     throw GameException(message);
 }
 
-void Game::init_sdl() {
+void Game::initSdl() {
     log::info("Initializing SDL2");
 
     if (SDL_Init(SDL_INIT_FLAGS)) {
-        raise_error("Failed to initialize SDL2: " + NomadString(SDL_GetError()));
+        raiseError("Failed to initialize SDL2: " + NomadString(SDL_GetError()));
     }
 
     m_window = SDL_CreateWindow(
         m_title.c_str(),
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        m_window_size.x(),
-        m_window_size.y(),
+        m_windowSize.getX(),
+        m_windowSize.getY(),
         SDL_WINDOW_RESIZABLE
     );
 
     if (m_window == nullptr) {
-        raise_error("Failed to create SDL window. Reason: " + NomadString(SDL_GetError()));
+        raiseError("Failed to create SDL window. Reason: " + NomadString(SDL_GetError()));
     }
 
     m_renderer = SDL_CreateRenderer(
@@ -468,17 +468,17 @@ void Game::init_sdl() {
     );
 
     if (m_renderer == nullptr) {
-        raise_error("Failed to create SDL renderer. Reason: " + NomadString(SDL_GetError()));
+        raiseError("Failed to create SDL renderer. Reason: " + NomadString(SDL_GetError()));
     }
 
-    if (SDL_RenderSetLogicalSize(m_renderer, m_resolution.x(), m_resolution.y()) != 0) {
-        raise_error("Failed to set logical size: " + NomadString(SDL_GetError()));
+    if (SDL_RenderSetLogicalSize(m_renderer, m_resolution.getX(), m_resolution.getY()) != 0) {
+        raiseError("Failed to set logical size: " + NomadString(SDL_GetError()));
     }
 
     m_canvas = new Canvas(this, m_renderer);
 }
 
-void Game::init_sdl_ttf() {
+void Game::initSdlTtf() {
     const auto result = TTF_Init();
 
     if (result != 0) {
@@ -490,109 +490,109 @@ void Game::init_sdl_ttf() {
     }
 }
 
-void Game::init_resource_path() {
+void Game::initResourcePath() {
     // Get rid of the trailing backslash
-    if (m_resource_path[m_resource_path.size() - 1] == '\\') {
-        m_resource_path = m_resource_path.substr(0, m_resource_path.size() - 1);
+    if (m_resourcePath[m_resourcePath.size() - 1] == '\\') {
+        m_resourcePath = m_resourcePath.substr(0, m_resourcePath.size() - 1);
     }
 
     // Ensure non-empty resource path ends with a slash
-    auto resource_path_end = m_resource_path[m_resource_path.size() - 1];
+    auto resource_path_end = m_resourcePath[m_resourcePath.size() - 1];
     if (resource_path_end != '/') {
-        m_resource_path += '/';
+        m_resourcePath += '/';
     }
 
-    log::info("Resource path: " + m_resource_path);
+    log::info("Resource path: " + m_resourcePath);
 }
 
-void Game::init_runtime() {
+void Game::initRuntime() {
     log::info("Initializing script runtime");
 
     m_runtime = new Runtime();
 
-    m_runtime->set_debug(m_debug);
+    m_runtime->setDebug(m_debug);
 }
 
-void Game::init_commands() {
+void Game::initCommands() {
     log::info("Initializing commands");
 
-    init_game_commands();
-    init_input_commands();
-    init_other_entity_commands();
-    init_scene_commands();
-    init_this_entity_commands();
-    init_window_commands();
+    initGameCommands();
+    initInputCommands();
+    initOtherEntityCommands();
+    initSceneCommands();
+    initThisEntityCommands();
+    initWindowCommands();
 }
 
-void Game::init_dynamic_variables() {
+void Game::initDynamicVariables() {
     log::info("Initializing dynamic variables");
 
-    init_game_dynamic_variables();
-    init_input_dynamic_variables();
-    init_other_dynamic_variables();
-    init_scene_dynamic_variables();
-    init_this_dynamic_variables();
-    init_window_dynamic_variables();
+    initGameDynamicVariables();
+    initInputDynamicVariables();
+    initOtherDynamicVariables();
+    initSceneDynamicVariables();
+    initThisDynamicVariables();
+    initWindowDynamicVariables();
 }
 
-void Game::init_variable_context() {
+void Game::initVariableContext() {
     auto scene_variable_context = std::make_unique<SimpleVariableContext>();
     auto this_entity_variable_context = std::make_unique<ThisEntityVariableContext>(this);
     auto other_entity_variable_context = std::make_unique<OtherEntityVariableContext>(this_entity_variable_context.get());
 
-    m_scene_variable_map = scene_variable_context->get_variable_map();
-    m_this_entity_variable_map = this_entity_variable_context->get_this_variable_map();
-    m_other_entity_variable_map = this_entity_variable_context->get_other_variable_map();
+    m_sceneVariableMap = scene_variable_context->get_variable_map();
+    m_thisEntityVariableMap = this_entity_variable_context->getThisVariableMap();
+    m_otherEntityVariableMap = this_entity_variable_context->getOtherVariableMap();
 
-    auto scene_context_id = m_runtime->register_variable_context("scene", "scene.", std::move(scene_variable_context));
-    auto this_entity_context_id = m_runtime->register_variable_context(THIS_ENTITY_VARIABLE_CONTEXT, THIS_ENTITY_VARIABLE_PREFIX, std::move(this_entity_variable_context));
-    auto other_entity_context_id = m_runtime->register_variable_context(OTHER_ENTITY_VARIABLE_CONTEXT, OTHER_ENTITY_VARIABLE_PREFIX, std::move(other_entity_variable_context));
+    auto scene_context_id = m_runtime->registerVariableContext("scene", "scene.", std::move(scene_variable_context));
+    auto this_entity_context_id = m_runtime->registerVariableContext(THIS_ENTITY_VARIABLE_CONTEXT, THIS_ENTITY_VARIABLE_PREFIX, std::move(this_entity_variable_context));
+    auto other_entity_context_id = m_runtime->registerVariableContext(OTHER_ENTITY_VARIABLE_CONTEXT, OTHER_ENTITY_VARIABLE_PREFIX, std::move(other_entity_variable_context));
 }
 
-void Game::init_resource_manager() {
+void Game::initResourceManager() {
     log::info("Initializing resource manager");
 
-    m_resource_manager = new ResourceManager(this, m_resource_path);
+    m_resourceManager = new ResourceManager(this, m_resourcePath);
 }
 
-void Game::init_constants() {
+void Game::initConstants() {
     log::info("Initializing constants");
 
-    m_runtime->register_constant("alignment.topLeft", ScriptValue(static_cast<NomadInteger>(Alignment::TopLeft)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.topMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::TopMiddle)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.topRight", ScriptValue(static_cast<NomadInteger>(Alignment::TopRight)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.centerLeft", ScriptValue(static_cast<NomadInteger>(Alignment::CenterLeft)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.centerMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::CenterMiddle)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.centerRight", ScriptValue(static_cast<NomadInteger>(Alignment::CenterRight)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.bottomLeft", ScriptValue(static_cast<NomadInteger>(Alignment::BottomLeft)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.bottomMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::BottomMiddle)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.bottomRight", ScriptValue(static_cast<NomadInteger>(Alignment::BottomRight)), m_runtime->get_integer_type());
+    m_runtime->registerConstant("alignment.topLeft", ScriptValue(static_cast<NomadInteger>(Alignment::TopLeft)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.topMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::TopMiddle)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.topRight", ScriptValue(static_cast<NomadInteger>(Alignment::TopRight)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.centerLeft", ScriptValue(static_cast<NomadInteger>(Alignment::CenterLeft)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.centerMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::CenterMiddle)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.centerRight", ScriptValue(static_cast<NomadInteger>(Alignment::CenterRight)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.bottomLeft", ScriptValue(static_cast<NomadInteger>(Alignment::BottomLeft)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.bottomMiddle", ScriptValue(static_cast<NomadInteger>(Alignment::BottomMiddle)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.bottomRight", ScriptValue(static_cast<NomadInteger>(Alignment::BottomRight)), m_runtime->getIntegerType());
 
-    m_runtime->register_constant("alignment.left", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Left)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.middle", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Middle)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.right", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Right)), m_runtime->get_integer_type());
+    m_runtime->registerConstant("alignment.left", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Left)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.middle", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Middle)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.right", ScriptValue(static_cast<NomadInteger>(HorizontalAlignment::Right)), m_runtime->getIntegerType());
 
-    m_runtime->register_constant("alignment.top", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Top)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.center", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Center)), m_runtime->get_integer_type());
-    m_runtime->register_constant("alignment.bottom", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Bottom)), m_runtime->get_integer_type());
+    m_runtime->registerConstant("alignment.top", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Top)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.center", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Center)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("alignment.bottom", ScriptValue(static_cast<NomadInteger>(VerticalAlignment::Bottom)), m_runtime->getIntegerType());
 
-    m_runtime->register_constant("body.static", ScriptValue(static_cast<NomadInteger>(BodyType::Static)), m_runtime->get_integer_type());
-    m_runtime->register_constant("body.dynamic", ScriptValue(static_cast<NomadInteger>(BodyType::Dynamic)), m_runtime->get_integer_type());
-    m_runtime->register_constant("body.kinematic", ScriptValue(static_cast<NomadInteger>(BodyType::Kinematic)), m_runtime->get_integer_type());
+    m_runtime->registerConstant("body.static", ScriptValue(static_cast<NomadInteger>(BodyType::Static)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("body.dynamic", ScriptValue(static_cast<NomadInteger>(BodyType::Dynamic)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("body.kinematic", ScriptValue(static_cast<NomadInteger>(BodyType::Kinematic)), m_runtime->getIntegerType());
 
-    m_runtime->register_constant("cardinal.north", ScriptValue(static_cast<NomadInteger>(Cardinal::North)), m_runtime->get_integer_type());
-    m_runtime->register_constant("cardinal.east", ScriptValue(static_cast<NomadInteger>(Cardinal::East)), m_runtime->get_integer_type());
-    m_runtime->register_constant("cardinal.south", ScriptValue(static_cast<NomadInteger>(Cardinal::South)), m_runtime->get_integer_type());
-    m_runtime->register_constant("cardinal.west", ScriptValue(static_cast<NomadInteger>(Cardinal::West)), m_runtime->get_integer_type());
+    m_runtime->registerConstant("cardinal.north", ScriptValue(static_cast<NomadInteger>(Cardinal::North)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("cardinal.east", ScriptValue(static_cast<NomadInteger>(Cardinal::East)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("cardinal.south", ScriptValue(static_cast<NomadInteger>(Cardinal::South)), m_runtime->getIntegerType());
+    m_runtime->registerConstant("cardinal.west", ScriptValue(static_cast<NomadInteger>(Cardinal::West)), m_runtime->getIntegerType());
 }
 
-void Game::init_load_text() {
+void Game::initLoadText() {
     log::info("Loading text...");
 
-    m_resource_manager->get_text()->load_text_from_csv(m_resource_path + "text/text.csv");
+    m_resourceManager->getText()->loadTextFromCsv(m_resourcePath + "text/text.csv");
 }
 
-void Game::init_debug_console() {
+void Game::initDebugConsole() {
     // Move to lazy-init
     // log::info("Initializing debug console");
     //
@@ -601,52 +601,52 @@ void Game::init_debug_console() {
 }
 
 //NomadString Game::make_path(const NomadString& path) const {
-void Game::create_path_to_file(const NomadString& file_name) const {
-    const auto path = std::filesystem::path(file_name).parent_path();
+void Game::createPathToFile(const NomadString& fileName) const {
+    const auto path = std::filesystem::path(fileName).parent_path();
 
     if (!std::filesystem::exists(path)) {
         std::filesystem::create_directories(path);
     }
 }
 
-void Game::load_text_into_const(const NomadString& language_code) {
+void Game::loadTextIntoConst(const NomadString& languageCode) {
     std::unordered_map<NomadString, NomadString> text_map;
 
-    m_resource_manager->get_text()->get_all_text(language_code, text_map);
+    m_resourceManager->getText()->getAllText(languageCode, text_map);
 
-    auto constant_type = m_runtime->get_string_type();
+    auto constant_type = m_runtime->getStringType();
     auto constant_value = ScriptValue();
 
     for (const auto& [key, value]: text_map) {
         auto constant_name = "t." + key;
 
-        constant_value.set_string_value(value);
+        constant_value.setStringValue(value);
 
-        m_runtime->register_constant(constant_name, constant_value, constant_type);
+        m_runtime->registerConstant(constant_name, constant_value, constant_type);
     }
 }
 
-void Game::compile_scripts() {
+void Game::compileScripts() {
     log::info("Compiling scripts...");
 
     const auto start_ticks = SDL_GetTicks64();
 
-    auto compiler = m_runtime->create_compiler();
+    auto compiler = m_runtime->createCompiler();
 
     try {
-        compiler->load_scripts_from_path(m_resource_path + "scripts");
-        compiler->load_scripts_from_path(m_resource_path + "mods");
+        compiler->loadScriptsFromPath(m_resourcePath + "scripts");
+        compiler->loadScriptsFromPath(m_resourcePath + "mods");
 
-        compiler->compile_scripts();
+        compiler->compileScripts();
     } catch (NomadException& e) {
-        raise_error(NomadString("Failed to compile scripts: ") + e.what());
+        raiseError(NomadString("Failed to compile scripts: ") + e.what());
     } catch (std::exception& e) {
-        raise_error(NomadString("Unexpected exception while compiling scripts: ") + e.what());
+        raiseError(NomadString("Unexpected exception while compiling scripts: ") + e.what());
     }
 
     const auto end_ticks = SDL_GetTicks64();
     const auto elapsed_ticks = end_ticks - start_ticks;
-    const auto script_count = m_runtime->get_script_count();
+    const auto script_count = m_runtime->getScriptCount();
 
     const auto message =
         NomadString("Compiled ") +
@@ -658,76 +658,76 @@ void Game::compile_scripts() {
     log::info(message);
 }
 
-void Game::push_execution_context(Scene* scene, Entity* entity) {
-    m_context_index++;
+void Game::pushExecutionContext(Scene* scene, Entity* entity) {
+    m_contextIndex++;
 
-    if (m_context_index >= m_context_stack.size()) {
-        raise_error("Execution context stack overflow");
+    if (m_contextIndex >= m_contextStack.size()) {
+        raiseError("Execution context stack overflow");
     }
 
-    m_current_context = &m_context_stack[m_context_index];
-    m_current_context->reset(scene, entity);
+    m_currentContext = &m_contextStack[m_contextIndex];
+    m_currentContext->reset(scene, entity);
 }
 
-void Game::push_execution_context(Scene* scene, Entity* entity, Entity* other) {
-    m_context_index++;
+void Game::pushExecutionContext(Scene* scene, Entity* entity, Entity* other) {
+    m_contextIndex++;
 
-    if (m_context_index >= m_context_stack.size()) {
-        raise_error("Execution context stack overflow");
+    if (m_contextIndex >= m_contextStack.size()) {
+        raiseError("Execution context stack overflow");
     }
 
-    m_current_context = &m_context_stack[m_context_index];
-    m_current_context->reset(scene, entity);
-    m_current_context->add_other_entity(other);
+    m_currentContext = &m_contextStack[m_contextIndex];
+    m_currentContext->reset(scene, entity);
+    m_currentContext->addOtherEntity(other);
 }
 
-void Game::push_execution_context(Scene* scene, Entity* entity, const std::vector<Entity*>& other_entities) {
-    m_context_index++;
+void Game::pushExecutionContext(Scene* scene, Entity* entity, const std::vector<Entity*>& other_entities) {
+    m_contextIndex++;
 
-    if (m_context_index >= m_context_stack.size()) {
-        raise_error("Execution context stack overflow");
+    if (m_contextIndex >= m_contextStack.size()) {
+        raiseError("Execution context stack overflow");
     }
 
-    m_current_context = &m_context_stack[m_context_index];
-    m_current_context->reset(scene, entity);
-    m_current_context->set_other_entities(other_entities);
+    m_currentContext = &m_contextStack[m_contextIndex];
+    m_currentContext->reset(scene, entity);
+    m_currentContext->setOtherEntities(other_entities);
 }
 
-void Game::pop_execution_context() {
-    m_context_index--;
+void Game::popExecutionContext() {
+    m_contextIndex--;
 
-    if (m_context_index < 0) {
-        raise_error("Execution context stack underflow");
+    if (m_contextIndex < 0) {
+        raiseError("Execution context stack underflow");
     }
 
-    m_current_context = &m_context_stack[m_context_index];
+    m_currentContext = &m_contextStack[m_contextIndex];
 }
 
-GameExecutionContext* Game::get_current_context() {
+GameExecutionContext* Game::getCurrentContext() {
 //    return &m_context_stack[m_context_index];
-    return m_current_context;
+    return m_currentContext;
 }
 
-void Game::set_language(const NomadString& language_code) {
-    m_language = language_code;
+void Game::setLanguage(const NomadString& languageCode) {
+    m_language = languageCode;
 
-    load_text_into_const(language_code);
+    loadTextIntoConst(languageCode);
 }
 
-const NomadString& Game::get_language() const {
+const NomadString& Game::getLanguage() const {
     return m_language;
 }
 
-NomadString& Game::get_text(const NomadString& key, NomadString& text) const {
-    m_resource_manager->get_text()->get_text(m_language, key, text);
+NomadString& Game::getText(const NomadString& key, NomadString& text) const {
+    m_resourceManager->getText()->getText(m_language, key, text);
 
     return text;
 }
 
-void Game::run_init_script() {
+void Game::runInitScript() {
     log::info("Executing `init` script");
 
-    NomadId init_script_id = m_runtime->get_script_id("init");
+    NomadId init_script_id = m_runtime->getScriptId("init");
 
     if (init_script_id == NOMAD_INVALID_ID) {
         const char* message = "Fatal: No `init` script found";
@@ -738,9 +738,9 @@ void Game::run_init_script() {
     }
 
     try {
-        execute_script_in_current_context(init_script_id);
+        executeScriptInCurrentContext(init_script_id);
     } catch (std::exception& e) {
-        raise_error(NomadString("Failed to execute 'init' script: ") + e.what());
+        raiseError(NomadString("Failed to execute 'init' script: ") + e.what());
     }
 }
 
@@ -757,28 +757,28 @@ void Game::update() {
         scene->update(this);
     }
 
-    for (auto added_scene: m_added_scenes) {
+    for (auto added_scene: m_addedScenes) {
         m_scenes.push_back(added_scene);
     }
-    m_added_scenes.clear();
+    m_addedScenes.clear();
 
-    for (auto scene: m_removed_scenes) {
+    for (auto scene: m_removedScenes) {
         const auto it = std::find(m_scenes.begin(), m_scenes.end(), scene);
         if (it != m_scenes.end()) {
             m_scenes.erase(it);
         }
     }
-    m_removed_scenes.clear();
+    m_removedScenes.clear();
 
     // Sort scenes by layer
     std::sort(m_scenes.begin(), m_scenes.end(), [](Scene* a, Scene* b) {
-        return a->get_z() < b->get_z();
+        return a->getZ() < b->getZ();
     });
 
-    fast_temp_heap_reset();
+    fastTempHeapReset();
 }
 
-bool Game::process_system_input(SDL_KeyboardEvent& event) {
+bool Game::processSystemInput(SDL_KeyboardEvent& event) {
     switch (event.type) {
     case SDL_KEYUP:
         switch (event.keysym.sym) {
@@ -794,7 +794,7 @@ bool Game::process_system_input(SDL_KeyboardEvent& event) {
             // Debug console toggle
         case SDLK_F12:
             if (m_debug) {  // Only active in debug mode
-                if (m_debug_console == nullptr) {
+                if (m_debugConsole == nullptr) {
                     log::info("Initializing debug console");
 
 //                    m_debug_console = new DebugConsole(this);
@@ -813,57 +813,57 @@ bool Game::process_system_input(SDL_KeyboardEvent& event) {
     return false;
 }
 
-void Game::process_input(SDL_KeyboardEvent& event) {
+void Game::processInput(SDL_KeyboardEvent& event) {
     // Process system input.
-    if (process_system_input(event)) {
+    if (processSystemInput(event)) {
         return;
     }
 
     InputEvent input_event;
 
-    map_sdl_keyboard_event(event, input_event);
+    mapSdlKeyboardEvent(event, input_event);
 
-    dispatch_input_event(input_event);
+    dispatchInputEvent(input_event);
 }
 
-void Game::process_input(SDL_MouseButtonEvent& event) {
-    if (event.button <= m_mouse_button_state.size()) {
+void Game::processInput(SDL_MouseButtonEvent& event) {
+    if (event.button <= m_mouseButtonState.size()) {
         switch (event.type) {
             case SDL_MOUSEBUTTONDOWN:
-                m_mouse_button_state[event.button].pressed = true;
-                m_mouse_button_state[event.button].held = true;
+                m_mouseButtonState[event.button].pressed = true;
+                m_mouseButtonState[event.button].held = true;
                 break;
 
             case SDL_MOUSEBUTTONUP:
-                m_mouse_button_state[event.button].released = true;
-                m_mouse_button_state[event.button].held = false;
+                m_mouseButtonState[event.button].released = true;
+                m_mouseButtonState[event.button].held = false;
                 break;
         }
     }
 
     InputEvent input_event;
 
-    map_sdl_mouse_event(event, input_event);
+    mapSdlMouseEvent(event, input_event);
 
-    dispatch_input_event(input_event);
+    dispatchInputEvent(input_event);
 }
 
-void Game::process_input(SDL_ControllerButtonEvent& event) const {
+void Game::processInput(SDL_ControllerButtonEvent& event) const {
     InputEvent input_event;
 
-    map_sdl_controller_button_event(event, input_event);
+    mapSdlControllerButtonEvent(event, input_event);
 
-    dispatch_input_event(input_event);
+    dispatchInputEvent(input_event);
 }
 
-void Game::dispatch_input_event(const InputEvent& event) const {
+void Game::dispatchInputEvent(const InputEvent& event) const {
     for (const auto& scene: m_scenes) {
-        scene->process_input_event(event);
+        scene->processInputEvent(event);
     }
 }
 
-Scene* Game::get_current_scene() {
-    return get_current_context()->get_scene();
+Scene* Game::getCurrentScene() {
+    return getCurrentContext()->getScene();
 }
 
 } // nomad

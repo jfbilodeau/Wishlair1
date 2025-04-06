@@ -12,88 +12,88 @@
 
 namespace nomad {
 
-void Game::init_window_dynamic_variables() {
+void Game::initWindowDynamicVariables() {
     log::debug("Initializing window dynamic variables");
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.title",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            const auto title = value.get_string_value();
+            const auto title = value.getStringValue();
 
             SDL_SetWindowTitle(m_window, title);
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
             const auto title = SDL_GetWindowTitle(m_window);
 
-            interpreter->set_string_result(title);
+            interpreter->setStringResult(title);
         },
-        get_runtime()->get_string_type(),
+        getRuntime()->getStringType(),
         NomadDoc("Set the title of the game window.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.fps",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_fps = int(value.get_integer_value());
+            m_fps = int(value.getIntegerValue());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(m_fps);
+            value.setIntegerValue(m_fps);
         },
-        get_runtime()->get_integer_type(),
+        getRuntime()->getIntegerType(),
         NomadDoc("The frames per second (FPS) of the game.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.width",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_window_size.set_x(int(value.get_integer_value()));
+            m_windowSize.setX(int(value.getIntegerValue()));
 
-            SDL_SetWindowSize(m_window, m_window_size.x(), m_window_size.y());
+            SDL_SetWindowSize(m_window, m_windowSize.getX(), m_windowSize.getY());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(m_window_size.x());
+            value.setIntegerValue(m_windowSize.getX());
         },
-        get_runtime()->get_integer_type(),
+        getRuntime()->getIntegerType(),
         NomadDoc("The width of the game window.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.height",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_window_size.set_y(int(value.get_integer_value()));
+            m_windowSize.setY(int(value.getIntegerValue()));
 
-            SDL_SetWindowSize(m_window, m_window_size.x(), m_window_size.y());
+            SDL_SetWindowSize(m_window, m_windowSize.getX(), m_windowSize.getY());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(m_window_size.y());
+            value.setIntegerValue(m_windowSize.getY());
         },
-        get_runtime()->get_integer_type(),
+        getRuntime()->getIntegerType(),
         NomadDoc("The height of the game window.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.resolution.x",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_resolution.set_x(int(value.get_integer_value()));
-            SDL_RenderSetLogicalSize(m_renderer, m_resolution.x(), m_resolution.y());
+            m_resolution.setX(int(value.getIntegerValue()));
+            SDL_RenderSetLogicalSize(m_renderer, m_resolution.getX(), m_resolution.getY());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(m_resolution.x());
+            value.setIntegerValue(m_resolution.getX());
         },
-        get_runtime()->get_integer_type(),
+        getRuntime()->getIntegerType(),
         NomadDoc("The horizontal resolution of the game.")
     );
 
-    m_runtime->register_dynamic_variable(
+    m_runtime->registerDynamicVariable(
         "window.resolution.y",
         [this](Interpreter* interpreter, const ScriptValue& value) {
-            m_resolution.set_y(int(value.get_integer_value()));
-            SDL_RenderSetLogicalSize(m_renderer, m_resolution.x(), m_resolution.y());
+            m_resolution.setY(int(value.getIntegerValue()));
+            SDL_RenderSetLogicalSize(m_renderer, m_resolution.getX(), m_resolution.getY());
         },
         [this](Interpreter* interpreter, ScriptValue& value) {
-            value.set_integer_value(m_resolution.y());
+            value.setIntegerValue(m_resolution.getY());
         },
-        get_runtime()->get_integer_type(),
+        getRuntime()->getIntegerType(),
         NomadDoc("The vertical resolution of the game.")
     );
 }

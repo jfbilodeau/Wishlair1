@@ -23,31 +23,31 @@ public:
     GameExecutionContext(const GameExecutionContext&) = delete;
     ~GameExecutionContext() = default;
 
-    void reset(Scene* scene, Entity* this_entity);
+    void reset(Scene* scene, Entity* thisEntity);
 
-    void set_scene(Scene* scene);
+    void setScene(Scene* scene);
     [[nodiscard]]
-    Scene* get_scene() const;
+    Scene* getScene() const;
 
-    void set_this_entity(Entity* entity);
+    void setThisEntity(Entity* entity);
     [[nodiscard]]
-    Entity* get_this_entity() const;
+    Entity* getThisEntity() const;
 
-    void push_other_entity(Entity* entity);
+    void pushOtherEntity(Entity* entity);
     [[nodiscard]]
-    NomadIndex get_other_entity_count() const;
-    void clear_other_entities();
-    void add_other_entity(Entity* entity);
-    void clear_other_entities_and_add(Entity* entity);
-    void set_other_entities(const std::vector<Entity*>& entities);
-    void set_other_entities(const TempVector<Entity*>& entities);
+    NomadIndex getOtherEntityCount() const;
+    void clearOtherEntities();
+    void addOtherEntity(Entity* entity);
+    void clearOtherEntitiesAndAdd(Entity* entity);
+    void setOtherEntities(const std::vector<Entity*>& entities);
+    void setOtherEntities(const TempVector<Entity*>& entities);
     [[nodiscard]]
-    const std::vector<Entity*>& get_other_entities() const;
+    const std::vector<Entity*>& getOtherEntities() const;
 
-    Entity* get_first_other_entity() const;
+    Entity* getFirstOtherEntity() const;
 
-    void for_each_other_entities(const std::function<void(Entity*)>& callback) {
-        for (auto& entity : m_other_entities) {
+    void forEachOtherEntities(const std::function<void(Entity*)>& callback) {
+        for (auto& entity : m_otherEntities) {
             callback(entity);
         }
     }
@@ -55,7 +55,7 @@ public:
 private:
     Scene* m_scene = nullptr;
     Entity* m_entity = nullptr;
-    std::vector<Entity*> m_other_entities;
+    std::vector<Entity*> m_otherEntities;
 };
 
 } // nomad

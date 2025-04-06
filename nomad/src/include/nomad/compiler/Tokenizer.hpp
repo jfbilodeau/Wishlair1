@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-04.
 //
 
-#ifndef CPP_PARSER_HPP
-#define CPP_PARSER_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -20,10 +19,10 @@ class Script;
 
 class TokenizerException : public NomadException {
 public:
-    explicit TokenizerException(const NomadString& message, NomadIndex line_index, NomadIndex character);
+    explicit TokenizerException(const NomadString& message, NomadIndex lineIndex, NomadIndex character);
 
 private:
-    NomadIndex m_line_index;
+    NomadIndex m_lineIndex;
     NomadIndex m_character;
 };
 
@@ -41,40 +40,40 @@ enum class TokenType {
 
 struct Token {
     TokenType type = TokenType::Unknown;
-    NomadString text_value;
+    NomadString textValue;
     union {
-        NomadBoolean boolean_value = NOMAD_FALSE;
-        NomadInteger integer_value;
-        NomadFloat float_value;
+        NomadBoolean booleanValue = NOMAD_FALSE;
+        NomadInteger integerValue;
+        NomadFloat floatValue;
     };
 
     Token(TokenType type, NomadString text) :
         type(type),
-        text_value(std::move(text))
+        textValue(std::move(text))
     {}
 
-    Token(TokenType type, NomadString text, NomadBoolean boolean_value) :
+    Token(TokenType type, NomadString text, NomadBoolean booleanValue) :
         type(type),
-        text_value(std::move(text)),
-        boolean_value(boolean_value)
+        textValue(std::move(text)),
+        booleanValue(booleanValue)
     {}
 
-    Token(TokenType type, NomadString text, NomadInteger integer_value) :
+    Token(TokenType type, NomadString text, NomadInteger integerValue) :
         type(type),
-        text_value(std::move(text)),
-        integer_value(integer_value)
+        textValue(std::move(text)),
+        integerValue(integerValue)
     {}
 
-    Token(TokenType type, NomadString text, NomadFloat float_value) :
+    Token(TokenType type, NomadString text, NomadFloat floatValue) :
         type(type),
-        text_value(std::move(text)),
-        float_value(float_value)
+        textValue(std::move(text)),
+        floatValue(floatValue)
     {}
 
     Token() = default;
 };
 
-inline NomadString to_string(TokenType type) {
+inline NomadString toString(TokenType type) {
     switch (type) {
         case TokenType::Unknown:
             return "Unknown";
@@ -99,17 +98,17 @@ inline NomadString to_string(TokenType type) {
 }
 
 inline std::ostream& operator<<(std::ostream& os, const TokenType& type) {
-    os << to_string(type);
+    os << toString(type);
 
     return os;
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Token& token) {
     os << "Token(type: " << token.type
-       << ", text: " << token.text_value
-       << ", boolean: " << token.boolean_value
-       << ", integer: " << token.integer_value
-       << ", float: " << token.float_value
+       << ", text: " << token.textValue
+       << ", boolean: " << token.booleanValue
+       << ", integer: " << token.integerValue
+       << ", float: " << token.floatValue
        << ")";
     return os;
 }
@@ -124,73 +123,68 @@ public:
 
     void reset();
 
-    [[nodiscard]] Runtime* get_runtime() const;
-//    [[nodiscard]] Script* get_script() const;
+    [[nodiscard]] Runtime* getRuntime() const;
 
-    [[nodiscard]] const NomadString& get_source() const;
+    [[nodiscard]] const NomadString& getSource() const;
 
-//    [[nodiscard]] const NomadString& get_path() const;
+    [[nodiscard]] bool isEndOfFile() const;
 
-    [[nodiscard]] bool end_of_file() const;
+    bool nextLine();
 
-    bool next_line();
+    [[nodiscard]] NomadIndex getLineIndex() const;
 
-    [[nodiscard]] NomadIndex get_line_index() const;
+    [[nodiscard]] NomadIndex getColumnIndex() const;
 
-    [[nodiscard]] NomadIndex get_column_index() const;
+    [[nodiscard]] const NomadString& getLine() const;
 
-    [[nodiscard]] const NomadString& get_line() const;
+    [[nodiscard]] NomadIndex getLineCount() const;
 
-    [[nodiscard]] NomadIndex get_line_count() const;
+    [[nodiscard]] const NomadString& getTokenAt(NomadIndex index) const;
 
-    [[nodiscard]] const NomadString& get_token_at(NomadIndex index) const;
+    [[nodiscard]] TokenType getTokenTypeAt(NomadIndex index) const;
 
-    [[nodiscard]] TokenType get_token_type_at(NomadIndex index) const;
+    [[nodiscard]] NomadInteger getIntegerTokenAt(NomadIndex index) const;
+    [[nodiscard]] NomadFloat getFloatTokenAt(NomadIndex index) const;
 
-    [[nodiscard]] NomadInteger get_integer_token_at(NomadIndex index) const;
-    [[nodiscard]] NomadFloat get_float_token_at(NomadIndex index) const;
+    [[nodiscard]] const Token& currentToken() const;
 
-    [[nodiscard]] const Token& current_token() const;
+    const Token& nextToken();
+    const NomadString& nextIdentifier();
+    void nextIdentifier(NomadString& identifier);
+    void nextOperator(NomadString& operator_text);
+    NomadInteger nextInteger();
+    NomadFloat nextFloat();
 
-    const Token& next_token();
-    const NomadString& next_identifier();
-    void next_identifier(NomadString& identifier);
-    void next_operator(NomadString& operator_text);
-    NomadInteger next_integer();
-    NomadFloat next_float();
+    [[nodiscard]] NomadIndex getTokenCount() const;
 
-    [[nodiscard]] NomadIndex get_token_count() const;
+    [[nodiscard]] bool endOfLine() const;
 
-    [[nodiscard]] bool end_of_line() const;
+    [[nodiscard]] bool tokenIs(const NomadString& token) const;
 
-    [[nodiscard]] bool token_is(const NomadString& token) const;
-
-    [[nodiscard]] bool token_is(TokenType type) const;
+    [[nodiscard]] bool tokenIs(TokenType type) const;
 
     void expect(const NomadString& token);
 
     void expect(TokenType type);
 
-    void expect_end_of_line();
+    void expectEndOfLine();
 
 private:
-    void parse_line();
+    void parseLine();
 
-    void skip_white_space(const NomadString& line, int& i);
+    void skipWhiteSpace(const NomadString& line, int& i);
 
-    [[noreturn]] void throw_error(const NomadString& message);
+    [[noreturn]] void throwError(const NomadString& message);
 
     Runtime* m_runtime;
     NomadString m_source;
-//    Script* m_script;
 
-    int m_line_index = 0;
+    int m_lineIndex = 0;
     std::vector<NomadString> m_lines;
-    int m_token_index = 0;
+    int m_tokenIndex = 0;
     std::vector<Token> m_tokens;
-    bool m_end_of_file = false;
+    bool m_endOfFile = false;
 };
 
 } // nomad
 
-#endif //CPP_PARSER_HPP

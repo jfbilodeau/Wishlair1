@@ -21,10 +21,10 @@ class Type {
 public:
     virtual ~Type() = default;
 
-    [[nodiscard]] virtual NomadString get_name() const = 0;
+    [[nodiscard]] virtual NomadString getName() const = 0;
     virtual void init_value(ScriptValue& value) const;
-    virtual void free_value(ScriptValue& value) const;
-    virtual void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const = 0;
+    virtual void freeValue(ScriptValue& value) const;
+    virtual void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const = 0;
 
     // Convert value to string.
     virtual void to_string(const ScriptValue& value, NomadString& string) const = 0;
@@ -36,13 +36,13 @@ public:
     [[nodiscard]] bool need_copy() const;
 
     // Can the type hold a value or is it void?
-    [[nodiscard]] virtual bool is_void() const;
+    [[nodiscard]] virtual bool isVoid() const;
 
     // Determine if two types are the same
     [[nodiscard]] virtual bool same_type(const Type* other) const;
 
     // Return the type as a callback type or `nullptr` if it is not a callback
-    [[nodiscard]] virtual const ScriptType* as_callback() const;
+    [[nodiscard]] virtual const ScriptType* asCallback() const;
 
 protected:
     [[nodiscard]] virtual NomadId get_init_op_code() const;
@@ -53,34 +53,34 @@ protected:
 const NomadString VOID_TYPE_NAME = "void";
 class VoidType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 
-    [[nodiscard]] bool is_void() const override;
+    [[nodiscard]] bool isVoid() const override;
 };
 
 const NomadString ID_TYPE_NAME = "id";
 class IdType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 };
 
 const NomadString INTEGER_TYPE_NAME = "integer";
 class IntegerType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 };
 
 const NomadString FLOAT_TYPE_NAME = "float";
 class FloatType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 };
 
@@ -89,18 +89,18 @@ const NomadString BOOLEAN_TRUE_STRING = "true";
 const NomadString BOOLEAN_FALSE_STRING = "false";
 class BooleanType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 };
 
 const NomadString STRING_TYPE_NAME = "string";
 class StringType final : public Type {
 public:
-    [[nodiscard]] NomadString get_name() const override;
+    [[nodiscard]] NomadString getName() const override;
     void init_value(ScriptValue& value) const override;
-    void free_value(ScriptValue& value) const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    void freeValue(ScriptValue& value) const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
 };
 
@@ -109,8 +109,8 @@ class ScriptType final : public Type {
 public:
     ScriptType(const std::vector<const Type*>& parameter_types, const Type* return_type);
 
-    [[nodiscard]] NomadString get_name() const override;
-    void copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const override;
+    [[nodiscard]] NomadString getName() const override;
+    void copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const override;
     void to_string(const ScriptValue& value, NomadString& string) const override;
     [[nodiscard]] bool same_type(const Type* other) const override;
 
@@ -118,7 +118,7 @@ public:
     [[nodiscard]] const Type* get_parameter_type(NomadIndex index) const;
     [[nodiscard]] const Type* get_return_type() const;
 
-    [[nodiscard]] const ScriptType* as_callback() const override;
+    [[nodiscard]] const ScriptType* asCallback() const override;
 
 private:
     NomadString m_name;

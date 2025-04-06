@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-18.
 //
 
-#ifndef NOMAD_SPRITE_HPP
-#define NOMAD_SPRITE_HPP
+#pragma once
 
 #include "nomad/geometry/Point.hpp"
 #include "nomad/geometry/Rectangle.hpp"
@@ -19,15 +18,15 @@ class Texture;
 ///////////////////////////////////////////////////////////////////////////////
 class Sprite {
 public:
-    Sprite(const NomadString& sprite_name, const Texture* texture, const Rectangle& source, const Rectangle& frame);
+    Sprite(const NomadString& spriteName, const Texture* texture, const Rectangle& source, const Rectangle& frame);
 
-    [[nodiscard]] const NomadString& get_name() const;
-    [[nodiscard]] const Rectangle& get_source() const;
-    [[nodiscard]] const Rectangle& get_frame() const;
-    [[nodiscard]] const Texture* get_texture() const;
+    [[nodiscard]] const NomadString& getName() const;
+    [[nodiscard]] const Rectangle& getSource() const;
+    [[nodiscard]] const Rectangle& getFrame() const;
+    [[nodiscard]] const Texture* getTexture() const;
 
-    [[nodiscard]] NomadInteger get_width() const;
-    [[nodiscard]] NomadInteger get_height() const;
+    [[nodiscard]] NomadInteger getWidth() const;
+    [[nodiscard]] NomadInteger getHeight() const;
 
 private:
     NomadString m_name;
@@ -43,15 +42,15 @@ class SpriteManager {
 public:
     explicit SpriteManager(ResourceManager* resources);
 
-    [[nodiscard]] NomadId register_sprite(
+    [[nodiscard]] NomadId registerSprite(
         const NomadString& sprite_name,
         const Texture* texture,
         const Rectangle& source,
         const Rectangle& frame
     );
-    [[nodiscard]] const Sprite* get_sprite(NomadId sprite_id) const;
-    [[nodiscard]] const Sprite* get_sprite_by_name(const NomadString& name) const;
-    void get_sprites_by_prefix(const NomadString& prefix, std::vector<Sprite*>& sprites) const;
+    [[nodiscard]] const Sprite* getSprite(NomadId sprite_id) const;
+    [[nodiscard]] const Sprite* getSpriteByName(const NomadString& name) const;
+    void getSpritesByPrefix(const NomadString& prefix, std::vector<Sprite*>& sprites) const;
 
 private:
     ResourceManager* m_resources;
@@ -60,4 +59,3 @@ private:
 
 } // namespace nomad
 
-#endif //NOMAD_SPRITE_HPP

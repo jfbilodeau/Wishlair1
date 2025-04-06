@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-04.
 //
 
-#ifndef NOMAD_CONSOLESINK_HPP
-#define NOMAD_CONSOLESINK_HPP
+#pragma once
 
 #include "nomad/log/Logger.hpp"
 
@@ -21,4 +20,3 @@ namespace nomad {
 
 } // nomad
 
-#endif //NOMAD_CONSOLESINK_HPP

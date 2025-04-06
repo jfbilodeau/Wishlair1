@@ -28,18 +28,18 @@ public:
     Canvas(const Canvas& other) = delete;
     ~Canvas() = default;
 
-    [[nodiscard]] Game* get_game() const;
+    [[nodiscard]] Game* getGame() const;
 
-    [[nodiscard]] SDL_Renderer* get_sdl_renderer() const;
+    [[nodiscard]] SDL_Renderer* getSdlRenderer() const;
 
     void clear(const Color& color);
 
-    void set_offset(const PointF& offset);
-    void set_offset(Coord x, Coord y);
-    [[nodiscard]] const PointF& get_offset() const;
+    void setOffset(const PointF& offset);
+    void setOffset(Coord x, Coord y);
+    [[nodiscard]] const PointF& getOffset() const;
 
-    void render_sprite(const Sprite* sprite, Coord x, Coord y) const;
-    void render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const;
+    void renderSprite(const Sprite* sprite, Coord x, Coord y) const;
+    void renderTexture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const;
 
 private:
     Game* m_game;

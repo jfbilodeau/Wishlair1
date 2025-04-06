@@ -18,32 +18,32 @@ void op_nop(Interpreter* interpreter) {
 }
 
 void op_stop(Interpreter* interpreter) {
-    interpreter->stop(interpreter->get_result());
+    interpreter->stop(interpreter->getResult());
 }
 
 void op_yield(Interpreter* interpreter) {
-    interpreter->yield(interpreter->get_result());
+    interpreter->yield(interpreter->getResult());
 }
 
 void op_return(Interpreter* interpreter) {
-    interpreter->return_script(0);
+    interpreter->returnScript(0);
 }
 
 void op_return_n(Interpreter* interpreter) {
-    auto variable_count = interpreter->next_index();
+    auto variable_count = interpreter->nextIndex();
 
-    interpreter->return_script(variable_count);
+    interpreter->returnScript(variable_count);
 }
 
 void op_jump(Interpreter* interpreter) {
-    auto jump_index = interpreter->next_index();
+    auto jump_index = interpreter->nextIndex();
 
     interpreter->jump(jump_index);
 }
 
 void op_jump_if(Interpreter* interpreter) {
-    auto jump_index = interpreter->next_index();
-    auto condition = interpreter->get_boolean_result();
+    auto jump_index = interpreter->nextIndex();
+    auto condition = interpreter->getBooleanResult();
 
     if (condition) {
         interpreter->jump(jump_index);
@@ -51,8 +51,8 @@ void op_jump_if(Interpreter* interpreter) {
 }
 
 void op_jump_if_false(Interpreter* interpreter) {
-    auto jump_index = interpreter->next_index();
-    auto condition = interpreter->get_boolean_result();
+    auto jump_index = interpreter->nextIndex();
+    auto condition = interpreter->getBooleanResult();
 
     if (!condition) {
         interpreter->jump(jump_index);
@@ -60,673 +60,673 @@ void op_jump_if_false(Interpreter* interpreter) {
 }
 
 void op_push_r(Interpreter* interpreter) {
-    interpreter->push_result();
+    interpreter->pushResult();
 }
 
 void op_push_i(Interpreter* interpreter) {
-    interpreter->push_intermediate();
+    interpreter->pushIntermediate();
 }
 
 void op_push_n(Interpreter* interpreter) {
-    NomadInteger push_count = interpreter->next_integer();
+    NomadInteger push_count = interpreter->nextInteger();
 
-    interpreter->push_n(push_count);
+    interpreter->pushN(push_count);
 }
 
 void op_pop_r(Interpreter* interpreter) {
-    interpreter->pop_result();
+    interpreter->popResult();
 }
 
 void op_pop_i(Interpreter* interpreter) {
-    interpreter->pop_intermediate();
+    interpreter->popIntermediate();
 }
 
 void op_pop_n(Interpreter* interpreter) {
-    NomadInteger pop_count = interpreter->next_integer();
+    NomadInteger pop_count = interpreter->nextInteger();
 
-    interpreter->pop_n(pop_count);
+    interpreter->popN(pop_count);
 }
 
 void op_call_script(Interpreter* interpreter) {
-    auto jump_index = interpreter->next_index();
+    auto jump_index = interpreter->nextIndex();
 
-    interpreter->call_script(jump_index);
+    interpreter->callScript(jump_index);
 }
 
 void op_call_command(Interpreter* interpreter) {
-    auto command_id = interpreter->next_id();
+    auto command_id = interpreter->nextId();
 
-    interpreter->call_command(command_id);
+    interpreter->callCommand(command_id);
 }
 
 void op_parameter_load_r(Interpreter* interpreter) {
-    auto parameter_id = interpreter->next_id();
+    auto parameter_id = interpreter->nextId();
 
-    auto& value = interpreter->get_parameter(parameter_id);
+    auto& value = interpreter->getParameter(parameter_id);
 
-    interpreter->set_result(value);
+    interpreter->setResult(value);
 }
 
 void op_string_parameter_load_r(Interpreter* interpreter) {
-    auto parameter_id = interpreter->next_id();
+    auto parameter_id = interpreter->nextId();
 
-    auto value = interpreter->get_string_parameter(parameter_id);
+    auto value = interpreter->getStringParameter(parameter_id);
 
-    interpreter->set_string_result(value);
+    interpreter->setStringResult(value);
 }
 
 void op_script_variable_set(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->set_script_variable_value(variable_id, interpreter->get_result());
+    interpreter->setScriptVariableValue(variable_id, interpreter->getResult());
 }
 
 void op_script_variable_string_set(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->set_string_variable_value(variable_id, interpreter->get_result().get_string_value());
+    interpreter->setStringVariableValue(variable_id, interpreter->getResult().getStringValue());
 }
 
 void op_script_variable_get(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
     ScriptValue value;
-    interpreter->get_script_variable_value(variable_id, value);
+    interpreter->getScriptVariableValue(variable_id, value);
 
-    interpreter->set_result(value);
+    interpreter->setResult(value);
 }
 
 void op_script_variable_string_get(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
-    auto value = interpreter->get_script_string_variable_value(variable_id);
+    auto value = interpreter->getScriptStringVariableValue(variable_id);
 
-    interpreter->set_string_result(value);
+    interpreter->setStringResult(value);
 }
 
 void op_dynamic_variable_set(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->get_runtime()->set_dynamic_variable(interpreter, variable_id, interpreter->get_result());
+    interpreter->getRuntime()->setDynamicVariable(interpreter, variable_id, interpreter->getResult());
 }
 
 void op_dynamic_variable_string_set(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->get_runtime()->set_string_dynamic_variable(interpreter, variable_id, interpreter->get_result());
+    interpreter->getRuntime()->setStringDynamicVariable(interpreter, variable_id, interpreter->getResult());
 }
 
 void op_dynamic_variable_get(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
     ScriptValue value;
 
-    interpreter->get_runtime()->get_dynamic_variable_value(interpreter, variable_id, value);
+    interpreter->getRuntime()->getDynamicVariableValue(interpreter, variable_id, value);
 
-    interpreter->set_result(value);
+    interpreter->setResult(value);
 }
 
 void op_dynamic_variable_string_get(Interpreter* interpreter) {
-    auto variable_id = interpreter->next_id();
+    auto variable_id = interpreter->nextId();
 
     NomadString value;
 
-    interpreter->get_runtime()->get_string_dynamic_variable_value(interpreter, variable_id, value);
+    interpreter->getRuntime()->getStringDynamicVariableValue(interpreter, variable_id, value);
 
-    interpreter->set_string_result(value);
+    interpreter->setStringResult(value);
 }
 
 void op_context_variable_set(Interpreter* interpreter) {
-    auto context_id = interpreter->next_id();
-    auto variable_id = interpreter->next_id();
+    auto context_id = interpreter->nextId();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->get_runtime()->set_context_variable_value(context_id, variable_id, interpreter->get_result());
+    interpreter->getRuntime()->setContextVariableValue(context_id, variable_id, interpreter->getResult());
 }
 
 void op_context_variable_string_set(Interpreter* interpreter) {
-    auto context_id = interpreter->next_id();
-    auto variable_id = interpreter->next_id();
+    auto context_id = interpreter->nextId();
+    auto variable_id = interpreter->nextId();
 
-    interpreter->get_runtime()->set_string_context_variable_value(context_id, variable_id, interpreter->get_result().get_string_value());
+    interpreter->getRuntime()->setStringContextVariableValue(context_id, variable_id, interpreter->getResult().getStringValue());
 }
 
 void op_context_variable_get(Interpreter* interpreter) {
-    auto context_id = interpreter->next_id();
-    auto variable_id = interpreter->next_id();
+    auto context_id = interpreter->nextId();
+    auto variable_id = interpreter->nextId();
 
     ScriptValue value;
 
-    interpreter->get_runtime()->get_context_variable_value(context_id, variable_id, value);
+    interpreter->getRuntime()->getContextVariableValue(context_id, variable_id, value);
 
-    interpreter->set_result(value);
+    interpreter->setResult(value);
 }
 
 void op_context_variable_string_get(Interpreter* interpreter) {
-    auto context_id = interpreter->next_id();
-    auto variable_id = interpreter->next_id();
+    auto context_id = interpreter->nextId();
+    auto variable_id = interpreter->nextId();
 
     NomadString value;
 
-    interpreter->get_runtime()->get_string_context_variable_value(context_id, variable_id, value);
+    interpreter->getRuntime()->get_string_context_variable_value(context_id, variable_id, value);
 
-    interpreter->set_string_result(value);
+    interpreter->setStringResult(value);
 }
 
 void op_boolean_load_false_r(Interpreter* interpreter) {
-    interpreter->set_boolean_result(NOMAD_FALSE);
+    interpreter->setBooleanResult(NOMAD_FALSE);
 }
 
 void op_boolean_load_false_i(Interpreter* interpreter) {
-    interpreter->set_boolean_intermediate(NOMAD_FALSE);
+    interpreter->setBooleanIntermediate(NOMAD_FALSE);
 }
 
 void op_boolean_load_true_r(Interpreter* interpreter) {
-    interpreter->set_boolean_result(NOMAD_TRUE);
+    interpreter->setBooleanResult(NOMAD_TRUE);
 }
 
 void op_boolean_load_true_i(Interpreter* interpreter) {
-    interpreter->set_boolean_intermediate(NOMAD_TRUE);
+    interpreter->setBooleanIntermediate(NOMAD_TRUE);
 }
 
 void op_boolean_not(Interpreter* interpreter) {
-    auto a = interpreter->get_boolean_result();
+    auto a = interpreter->getBooleanResult();
 
-    auto result = boolean_not(a);
+    auto result = booleanNot(a);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_boolean_and(Interpreter* interpreter) {
-    auto a = interpreter->get_boolean_result();
-    auto b = interpreter->get_boolean_intermediate();
+    auto a = interpreter->getBooleanResult();
+    auto b = interpreter->getBooleanIntermediate();
 
-    auto result = boolean_and(a, b);
+    auto result = booleanAnd(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_boolean_or(Interpreter* interpreter) {
-    auto a = interpreter->get_boolean_result();
-    auto b = interpreter->get_boolean_intermediate();
+    auto a = interpreter->getBooleanResult();
+    auto b = interpreter->getBooleanIntermediate();
 
-    auto result = boolean_or(a, b);
+    auto result = booleanOr(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_boolean_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_boolean_result();
-    auto b = interpreter->get_boolean_intermediate();
+    auto a = interpreter->getBooleanResult();
+    auto b = interpreter->getBooleanIntermediate();
 
-    auto result = boolean_equal_to(a, b);
+    auto result = booleanEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_boolean_not_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_boolean_result();
-    auto b = interpreter->get_boolean_intermediate();
+    auto a = interpreter->getBooleanResult();
+    auto b = interpreter->getBooleanIntermediate();
 
-    auto result = boolean_not_equal_to(a, b);
+    auto result = booleanNotEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_load_zero_r(Interpreter* interpreter) {
-    interpreter->set_integer_result(0);
+    interpreter->setIntegerResult(0);
 }
 
 void op_integer_load_zero_i(Interpreter* interpreter) {
-    interpreter->set_integer_intermediate(0);
+    interpreter->setIntegerIntermediate(0);
 }
 
 void op_integer_load_one_r(Interpreter* interpreter) {
-    interpreter->set_integer_result(1);
+    interpreter->setIntegerResult(1);
 }
 
 void op_integer_load_one_i(Interpreter* interpreter) {
-    interpreter->set_integer_intermediate(1);
+    interpreter->setIntegerIntermediate(1);
 }
 
 void op_integer_load_r(Interpreter* interpreter) {
-    auto value = interpreter->next_integer();
+    auto value = interpreter->nextInteger();
 
-    interpreter->set_integer_result(value);
+    interpreter->setIntegerResult(value);
 }
 
 void op_integer_load_i(Interpreter* interpreter) {
-    auto value = interpreter->next_integer();
+    auto value = interpreter->nextInteger();
 
-    interpreter->set_integer_intermediate(value);
+    interpreter->setIntegerIntermediate(value);
 }
 
 void op_integer_absolute(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
+    auto a = interpreter->getIntegerResult();
 
-    auto result = integer_absolute(a);
+    auto result = integerAbsolute(a);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_negate(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
+    auto a = interpreter->getIntegerResult();
 
-    auto result = integer_negate(a);
+    auto result = integerNegate(a);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_add(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_add(a, b);
+    auto result = integerAdd(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_subtract(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_subtract(a, b);
+    auto result = integerSubtract(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_multiply(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_multiply(a, b);
+    auto result = integerMultiply(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_divide(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_divide(a, b);
+    auto result = integerDivide(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_modulo(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_modulo(a, b);
+    auto result = integerModulo(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_and(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_and(a, b);
+    auto result = integerAnd(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_or(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_or(a, b);
+    auto result = integerOr(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_xor(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_xor(a, b);
+    auto result = integerXor(a, b);
 
-    interpreter->set_integer_result(result);
+    interpreter->setIntegerResult(result);
 }
 
 void op_integer_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_equal_to(a, b);
+    auto result = integerEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_not_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_not_equal_to(a, b);
+    auto result = integerNotEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_less_than(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_less_than(a, b);
+    auto result = integerLessThan(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_less_than_or_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_less_than_or_equal(a, b);
+    auto result = integerLessThanOrEqual(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_greater_than(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_greater_than(a, b);
+    auto result = integerGreaterThan(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_integer_greater_than_or_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_integer_result();
-    auto b = interpreter->get_integer_intermediate();
+    auto a = interpreter->getIntegerResult();
+    auto b = interpreter->getIntegerIntermediate();
 
-    auto result = integer_greater_than_or_equal(a, b);
+    auto result = integerGreaterThanOrEqual(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_load_zero_r(Interpreter* interpreter) {
-    interpreter->set_float_result(0.0);
+    interpreter->setFloatResult(0.0);
 }
 
 void op_float_load_zero_i(Interpreter* interpreter) {
-    interpreter->set_float_intermediate(0.0);
+    interpreter->setFloatIntermediate(0.0);
 }
 
 void op_float_load_one_r(Interpreter* interpreter) {
-    interpreter->set_float_result(1.0);
+    interpreter->setFloatResult(1.0);
 }
 
 void op_float_load_one_i(Interpreter* interpreter) {
-    interpreter->set_float_intermediate(1.0);
+    interpreter->setFloatIntermediate(1.0);
 }
 
 void op_float_load_r(Interpreter* interpreter) {
-    auto value = interpreter->next_float();
+    auto value = interpreter->nextFloat();
 
-    interpreter->set_float_result(value);
+    interpreter->setFloatResult(value);
 }
 
 void op_float_load_i(Interpreter* interpreter) {
-    auto value = interpreter->next_float();
+    auto value = interpreter->nextFloat();
 
-    interpreter->set_float_intermediate(value);
+    interpreter->setFloatIntermediate(value);
 }
 
 void op_float_absolute(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
+    auto a = interpreter->getFloatResult();
 
-    auto result = float_absolute(a);
+    auto result = floatAbsolute(a);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_negate(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
+    auto a = interpreter->getFloatResult();
 
-    auto result = float_negate(a);
+    auto result = floatNegate(a);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_add(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_add(a, b);
+    auto result = floatAdd(a, b);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_subtract(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_subtract(a, b);
+    auto result = floatSubtract(a, b);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_multiply(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_multiply(a, b);
+    auto result = floatMultiply(a, b);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_divide(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_divide(a, b);
+    auto result = floatDivide(a, b);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_modulo(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_modulo(a, b);
+    auto result = floatModulo(a, b);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_sin(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
+    auto a = interpreter->getFloatResult();
 
-    auto result = float_sin(a);
+    auto result = floatSin(a);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_cosine(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
+    auto a = interpreter->getFloatResult();
 
-    auto result = float_cosine(a);
+    auto result = floatCosine(a);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_tangent(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
+    auto a = interpreter->getFloatResult();
 
-    auto result = float_tangent(a);
+    auto result = floatTangent(a);
 
-    interpreter->set_float_result(result);
+    interpreter->setFloatResult(result);
 }
 
 void op_float_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_equal_to(a, b);
+    auto result = floatEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_not_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_not_equal_to(a, b);
+    auto result = floatNotEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_less_than(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_less_than(a, b);
+    auto result = floatLessThan(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_less_than_or_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_less_than_or_equal(a, b);
+    auto result = floatLessThanOrEqual(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_greater_than(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_greater_than(a, b);
+    auto result = floatGreaterThan(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_float_greater_than_or_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_float_result();
-    auto b = interpreter->get_float_intermediate();
+    auto a = interpreter->getFloatResult();
+    auto b = interpreter->getFloatIntermediate();
 
-    auto result = float_greater_than_or_equal(a, b);
+    auto result = floatGreaterThanOrEqual(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_string_init(Interpreter* interpreter) {
-    auto string_index = interpreter->next_index();
+    auto string_index = interpreter->nextIndex();
 
-    interpreter->init_string_variable(string_index);
+    interpreter->initStringVariable(string_index);
 }
 
 void op_string_init_r(Interpreter* interpreter) {
-    interpreter->init_string_result();
+    interpreter->initStringResult();
 }
 
 void op_string_init_i(Interpreter* interpreter) {
-    interpreter->init_string_intermediate();
+    interpreter->initStringIntermediate();
 }
 
 void op_string_free_r(Interpreter* interpreter) {
-    interpreter->free_string_result();
+    interpreter->freeStringResult();
 }
 
 void op_string_free_i(Interpreter* interpreter) {
-    interpreter->free_string_intermediate();
+    interpreter->freeStringIntermediate();
 }
 
 void op_string_free_variable(Interpreter* interpreter) {
-    auto string_index = interpreter->next_index();
+    auto string_index = interpreter->nextIndex();
 
-    interpreter->free_string_variable(string_index);
+    interpreter->freeStringVariable(string_index);
 }
 
 void op_string_free_stack(Interpreter* interpreter) {
-    auto index = interpreter->next_index();
+    auto index = interpreter->nextIndex();
 
-    interpreter->free_string_stack(index);
+    interpreter->freeStringStack(index);
 }
 void op_string_push_r(Interpreter* interpreter) {
-    interpreter->push_string_result();
+    interpreter->pushStringResult();
 }
 
 void op_string_push_i(Interpreter* interpreter) {
-    interpreter->push_string_intermediate();
+    interpreter->pushStringIntermediate();
 }
 
 void op_string_pop_r(Interpreter* interpreter) {
-    interpreter->pop_string_result();
+    interpreter->popStringResult();
 }
 
 void op_string_pop_i(Interpreter* interpreter) {
-    interpreter->pop_string_intermediate();
+    interpreter->popStringIntermediate();
 }
 
 void op_string_load_r(Interpreter* interpreter) {
-    auto string_id = interpreter->next_id();
+    auto string_id = interpreter->nextId();
 
-    auto& string = interpreter->get_runtime()->get_string(string_id);
+    auto& string = interpreter->getRuntime()->getString(string_id);
 
-    interpreter->set_string_result(string);
+    interpreter->setStringResult(string);
 }
 
 void op_string_load_i(Interpreter* interpreter) {
-    auto string_id = interpreter->next_id();
+    auto string_id = interpreter->nextId();
 
-    auto string = interpreter->get_runtime()->get_string(string_id);
+    auto string = interpreter->getRuntime()->getString(string_id);
 
-    interpreter->set_string_intermediate(string);
+    interpreter->setStringIntermediate(string);
 }
 
 void op_string_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_result().get_string_value();
-    auto b = interpreter->get_intermediate().get_string_value();
+    auto a = interpreter->getResult().getStringValue();
+    auto b = interpreter->getIntermediate().getStringValue();
 
-    auto result = string_equal_to(a, b);
+    auto result = stringEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_string_not_equal(Interpreter* interpreter) {
-    auto a = interpreter->get_string_result();
-    auto b = interpreter->get_string_intermediate();
+    auto a = interpreter->getStringResult();
+    auto b = interpreter->getStringIntermediate();
 
-    auto result = string_not_equal_to(a, b);
+    auto result = stringNotEqualTo(a, b);
 
-    interpreter->set_boolean_result(result);
+    interpreter->setBooleanResult(result);
 }
 
 void op_format_string_execute(Interpreter* interpreter) {
-    auto format_string_id = interpreter->next_id();
+    auto format_string_id = interpreter->nextId();
 
-    auto format_string = interpreter->get_runtime()->get_format_string(format_string_id);
+    auto format_string = interpreter->getRuntime()->getFormatString(format_string_id);
 
     auto string = format_string->format(interpreter);
 
-    interpreter->set_string_result(string);
+    interpreter->setStringResult(string);
 }
 
 void op_id_push(Interpreter* interpreter) {
-    auto id = interpreter->next_id();
+    auto id = interpreter->nextId();
 
-    interpreter->push_id(id);
+    interpreter->pushId(id);
 }
 
 void op_id_load_r(Interpreter* interpreter) {
-    auto id = interpreter->next_id();
+    auto id = interpreter->nextId();
 
-    interpreter->set_id_result(id);
+    interpreter->setIdResult(id);
 }
 
 void op_id_load_i(Interpreter* interpreter) {
-    auto id = interpreter->next_id();
+    auto id = interpreter->nextId();
 
-    interpreter->set_id_intermediate(id);
+    interpreter->setIdIntermediate(id);
 }
 
 void op_assert(Interpreter* interpreter) {
-    auto assert_result = interpreter->get_boolean_result();
-    auto assert_message_id = interpreter->get_id_intermediate();
+    auto assert_result = interpreter->getBooleanResult();
+    auto assert_message_id = interpreter->getIdIntermediate();
 
     // Bitwise comparison
     if (assert_result) {
-        auto& assertion_message = interpreter->get_runtime()->get_string(assert_message_id);
+        auto& assertion_message = interpreter->getRuntime()->getString(assert_message_id);
 
         log::error(assertion_message);
 

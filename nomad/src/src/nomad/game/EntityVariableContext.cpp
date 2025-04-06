@@ -13,7 +13,7 @@ ThisEntityVariableContext::ThisEntityVariableContext(Game* game):
 {
 }
 
-NomadId ThisEntityVariableContext::register_variable(const NomadString &name, const Type *type) {
+NomadId ThisEntityVariableContext::registerVariable(const NomadString &name, const Type *type) {
     NomadString this_name, other_name;
 
     if (name.starts_with(THIS_ENTITY_VARIABLE_PREFIX)) {
@@ -27,8 +27,8 @@ NomadId ThisEntityVariableContext::register_variable(const NomadString &name, co
         return NOMAD_INVALID_ID;
     }
 
-    auto this_id = m_this_entity_variable_map.register_variable(this_name, type);
-    auto other_id = m_other_entity_variable_map.register_variable(other_name, type);
+    auto this_id = m_thisEntityVariableMap.registerVariable(this_name, type);
+    auto other_id = m_otherEntityVariableMap.registerVariable(other_name, type);
 
     // Sanity check...
     if (this_id != other_id) {
@@ -38,98 +38,98 @@ NomadId ThisEntityVariableContext::register_variable(const NomadString &name, co
     return this_id;
 }
 
-const NomadString & ThisEntityVariableContext::get_variable_name(NomadId variable_id) const {
-    return m_this_entity_variable_map.get_variable_name(variable_id);
+const NomadString & ThisEntityVariableContext::getVariableName(NomadId variableId) const {
+    return m_thisEntityVariableMap.getVariableName(variableId);
 }
 
-NomadId ThisEntityVariableContext::get_variable_id(const NomadString &name) const {
+NomadId ThisEntityVariableContext::getVariableId(const NomadString &name) const {
     if (name.starts_with(THIS_ENTITY_VARIABLE_PREFIX)) {
-        return m_this_entity_variable_map.get_variable_id(name);
+        return m_thisEntityVariableMap.getVariableId(name);
     } else if (name.starts_with(OTHER_ENTITY_VARIABLE_PREFIX)) {
-        return m_other_entity_variable_map.get_variable_id(name);
+        return m_otherEntityVariableMap.getVariableId(name);
     } else {
         log::error("[EntityVariableContext::get_variable_id] Unexpected variable name '" + name + "'");
         return NOMAD_INVALID_ID;
     }
 }
 
-void ThisEntityVariableContext::set_variable_type(NomadId variable_id, const Type *type) {
-    m_this_entity_variable_map.set_variable_type(variable_id, type);
-    m_other_entity_variable_map.set_variable_type(variable_id, type);
+void ThisEntityVariableContext::setVariableType(NomadId variableId, const Type *type) {
+    m_thisEntityVariableMap.setVariableType(variableId, type);
+    m_otherEntityVariableMap.setVariableType(variableId, type);
 }
 
-const Type* ThisEntityVariableContext::get_variable_type(NomadId variable_id) const {
-    return m_this_entity_variable_map.get_variable_type(variable_id);
+const Type* ThisEntityVariableContext::getVariableType(NomadId variableId) const {
+    return m_thisEntityVariableMap.getVariableType(variableId);
 }
 
-void ThisEntityVariableContext::set_value(NomadId variable_id, const ScriptValue& value) {
-    const auto entity = m_game->get_current_context()->get_this_entity();
+void ThisEntityVariableContext::setValue(NomadId variableId, const ScriptValue& value) {
+    const auto entity = m_game->getCurrentContext()->getThisEntity();
 
     if (entity) {
-        entity->set_variable_value(variable_id, value);
+        entity->setVariableValue(variableId, value);
     } else {
         log::error("EntityVariableContext::set_value: No entity in current context");
     }
 }
 
-void ThisEntityVariableContext::get_value(NomadId variable_id, ScriptValue& value) {
-    const auto entity = m_game->get_current_context()->get_this_entity();
+void ThisEntityVariableContext::getValue(NomadId variableId, ScriptValue& value) {
+    const auto entity = m_game->getCurrentContext()->getThisEntity();
 
     if (entity) {
-        entity->get_variable_value(variable_id, value);
+        entity->getVariableValue(variableId, value);
     } else {
        log::error("EntityVariableContext::set_value: No entity in current context");
     }
 }
 
-Game * ThisEntityVariableContext::get_game() const {
+Game * ThisEntityVariableContext::getGame() const {
     return m_game;
 }
 
-const VariableMap* ThisEntityVariableContext::get_this_variable_map() const {
-    return &m_this_entity_variable_map;
+const VariableMap* ThisEntityVariableContext::getThisVariableMap() const {
+    return &m_thisEntityVariableMap;
 }
 
-const VariableMap * ThisEntityVariableContext::get_other_variable_map() const {
-    return &m_other_entity_variable_map;
+const VariableMap * ThisEntityVariableContext::getOtherVariableMap() const {
+    return &m_otherEntityVariableMap;
 }
 
-OtherEntityVariableContext::OtherEntityVariableContext(ThisEntityVariableContext *this_entity_variable_context):
-    m_this_entity_variable_context(this_entity_variable_context)
+OtherEntityVariableContext::OtherEntityVariableContext(ThisEntityVariableContext *thisEntityVariableContext):
+    m_thisEntityVariableContext(thisEntityVariableContext)
 {
 }
 
-NomadId OtherEntityVariableContext::register_variable(const NomadString &name, const Type *type) {
-    return m_this_entity_variable_context->register_variable(name, type);
+NomadId OtherEntityVariableContext::registerVariable(const NomadString &name, const Type *type) {
+    return m_thisEntityVariableContext->registerVariable(name, type);
 }
 
-const NomadString & OtherEntityVariableContext::get_variable_name(NomadId variable_id) const {
-    return m_this_entity_variable_context->get_other_variable_map()->get_variable_name(variable_id);
+const NomadString & OtherEntityVariableContext::getVariableName(NomadId variableId) const {
+    return m_thisEntityVariableContext->getOtherVariableMap()->getVariableName(variableId);
 }
 
-NomadId OtherEntityVariableContext::get_variable_id(const NomadString &name) const {
-    return m_this_entity_variable_context->get_other_variable_map()->get_variable_id(name);
+NomadId OtherEntityVariableContext::getVariableId(const NomadString &name) const {
+    return m_thisEntityVariableContext->getOtherVariableMap()->getVariableId(name);
 }
 
-void OtherEntityVariableContext::set_variable_type(NomadId variable_id, const Type *type) {
-    return m_this_entity_variable_context->set_variable_type(variable_id, type);
+void OtherEntityVariableContext::setVariableType(NomadId variableId, const Type *type) {
+    return m_thisEntityVariableContext->setVariableType(variableId, type);
 }
 
-const Type* OtherEntityVariableContext::get_variable_type(NomadId variable_id) const {
-    return m_this_entity_variable_context->get_variable_type(variable_id);
+const Type* OtherEntityVariableContext::getVariableType(NomadId variableId) const {
+    return m_thisEntityVariableContext->getVariableType(variableId);
 }
 
-void OtherEntityVariableContext::set_value(NomadId variable_id, const ScriptValue &value) {
-    m_this_entity_variable_context->get_game()->get_current_context()->for_each_other_entities([&](Entity* entity) {
-        entity->set_variable_value(variable_id, value);
+void OtherEntityVariableContext::setValue(NomadId variableId, const ScriptValue &value) {
+    m_thisEntityVariableContext->getGame()->getCurrentContext()->forEachOtherEntities([&](Entity* entity) {
+        entity->setVariableValue(variableId, value);
     });
 }
 
-void OtherEntityVariableContext::get_value(NomadId variable_id, ScriptValue &value) {
-    auto entity = m_this_entity_variable_context->get_game()->get_current_context()->get_first_other_entity();
+void OtherEntityVariableContext::getValue(NomadId variableId, ScriptValue &value) {
+    auto entity = m_thisEntityVariableContext->getGame()->getCurrentContext()->getFirstOtherEntity();
 
     if (entity) {
-        entity->get_variable_value(variable_id, value);
+        entity->getVariableValue(variableId, value);
     }
 }
 

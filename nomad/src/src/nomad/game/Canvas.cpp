@@ -17,21 +17,21 @@ Canvas::Canvas(Game* game, SDL_Renderer* renderer):
 {
 }
 
-SDL_Renderer* Canvas::get_sdl_renderer() const {
+SDL_Renderer* Canvas::getSdlRenderer() const {
     return m_renderer;
 }
 
-Game* Canvas::get_game() const {
+Game* Canvas::getGame() const {
     return m_game;
 }
 
 void Canvas::clear(const Color& color) {
     int result = SDL_SetRenderDrawColor(
         m_renderer,
-        color.r,
-        color.g,
-        color.b,
-        color.a
+        color.red,
+        color.green,
+        color.blue,
+        color.alpha
     );
 
     if (result != 0) {
@@ -45,50 +45,50 @@ void Canvas::clear(const Color& color) {
     }
 }
 
-void Canvas::set_offset(const PointF &offset) {
+void Canvas::setOffset(const PointF &offset) {
     m_offset = offset;
 }
 
-void Canvas::set_offset(Coord x, Coord y) {
-    set_offset({x, y});
+void Canvas::setOffset(Coord x, Coord y) {
+    setOffset({x, y});
 }
 
-const PointF& Canvas::get_offset() const {
+const PointF& Canvas::getOffset() const {
     return m_offset;
 }
 
-void Canvas::render_sprite(const Sprite* sprite, Coord x, Coord y) const {
-    if (sprite->get_texture() == nullptr) {
+void Canvas::renderSprite(const Sprite* sprite, Coord x, Coord y) const {
+    if (sprite->getTexture() == nullptr) {
         log::warning("Trying to render a sprite with a null texture");
 
         return;
     }
 
-    auto& frame = sprite->get_frame();
+    auto& frame = sprite->getFrame();
 
     const auto& source = frame;
 
-    int left = static_cast<int>(x) + static_cast<int>(sprite->get_source().get_left());
-    int top = static_cast<int>(y) + static_cast<int>(sprite->get_source().get_top());
+    int left = static_cast<int>(x) + static_cast<int>(sprite->getSource().getLeft());
+    int top = static_cast<int>(y) + static_cast<int>(sprite->getSource().getTop());
     const auto destination = Rectangle(
         left,
         top,
-        frame.get_width(),
-        frame.get_height()
+        frame.getWidth(),
+        frame.getHeight()
     );
 
-    render_texture(sprite->get_texture(), source, destination);
+    renderTexture(sprite->getTexture(), source, destination);
 }
 
-void Canvas::render_texture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const {
-    auto sdl_texture = texture->get_sdl_texture();
+void Canvas::renderTexture(const Texture* texture, const Rectangle& source, const Rectangle& destination) const {
+    auto sdl_texture = texture->getSdlTexture();
 
-    auto src_rect = source.to_sdl_rect();
+    auto src_rect = source.toSdlRect();
 
-    auto dst_rect = destination.to_sdl_rect();
+    auto dst_rect = destination.toSdlRect();
 
-    dst_rect.x += static_cast<int>(m_offset.x());
-    dst_rect.y += static_cast<int>(m_offset.y());
+    dst_rect.x += static_cast<int>(m_offset.getX());
+    dst_rect.y += static_cast<int>(m_offset.getY());
 
     int result = SDL_RenderCopy(m_renderer, sdl_texture, &src_rect, &dst_rect);
 

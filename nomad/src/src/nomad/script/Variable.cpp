@@ -13,32 +13,32 @@ VariableDefinition::VariableDefinition(const NomadString& name, const Type* type
     m_type(type)
 {}
 
-const NomadString& VariableDefinition::get_name() const {
+const NomadString& VariableDefinition::getName() const {
     return m_name;
 }
 
-void VariableDefinition::set_type(const Type* type) {
+void VariableDefinition::setType(const Type* type) {
     m_type = type;
 }
 
-const Type* VariableDefinition::get_type() const {
+const Type* VariableDefinition::getType() const {
     return m_type;
 }
 
-NomadId VariableMap::register_variable(const NomadString& name, const Type* type) {
-    auto variable_id = get_variable_id(name);
+NomadId VariableMap::registerVariable(const NomadString& name, const Type* type) {
+    auto variable_id = getVariableId(name);
 
     if (variable_id == NOMAD_INVALID_ID) {
         variable_id = to_nomad_id(m_variables.size());
         m_variables.emplace_back(name, type);
     } else {
-        auto existing_type = get_variable_type(variable_id);
+        auto existing_type = getVariableType(variable_id);
 
         if (existing_type == nullptr) {
-            set_variable_type(variable_id, type);
+            setVariableType(variable_id, type);
         } else if (type != nullptr && existing_type != type) {
-            NomadString original_type = existing_type->get_name();
-            NomadString new_type = type->get_name();
+            NomadString original_type = existing_type->getName();
+            NomadString new_type = type->getName();
 
             log::error("[VariableMap::register_variable] Redefining variable `" + name + "` from `" + original_type + "` to `" + new_type + "`. Ignoring");
         }
@@ -47,9 +47,9 @@ NomadId VariableMap::register_variable(const NomadString& name, const Type* type
     return variable_id;
 }
 
-NomadId VariableMap::get_variable_id(const NomadString& name) const {
+NomadId VariableMap::getVariableId(const NomadString& name) const {
     for (auto i = 0; i < m_variables.size(); ++i) {
-        if (m_variables[i].get_name() == name) {
+        if (m_variables[i].getName() == name) {
             return to_nomad_id(i);
         }
     }
@@ -57,80 +57,80 @@ NomadId VariableMap::get_variable_id(const NomadString& name) const {
     return NOMAD_INVALID_ID;
 }
 
-const NomadString& VariableMap::get_variable_name(NomadId variable_id) const {
-    return m_variables[variable_id].get_name();
+const NomadString& VariableMap::getVariableName(NomadId variableId) const {
+    return m_variables[variableId].getName();
 }
 
-void VariableMap::set_variable_type(NomadId variable_id, const Type* type) {
-    m_variables[variable_id].set_type(type);
+void VariableMap::setVariableType(NomadId variableId, const Type* type) {
+    m_variables[variableId].setType(type);
 }
 
-const Type* VariableMap::get_variable_type(NomadId variable_id) const {
-    return m_variables[variable_id].get_type();
+const Type* VariableMap::getVariableType(NomadId variableId) const {
+    return m_variables[variableId].getType();
 }
 
-NomadIndex VariableMap::get_variable_count() const {
+NomadIndex VariableMap::getVariableCount() const {
     return m_variables.size();
 }
 
-VariableList::VariableList(const VariableMap* variable_map):
-    m_variable_map(*variable_map) {
-    m_variable_values.resize(m_variable_map.get_variable_count());
+VariableList::VariableList(const VariableMap* variableMap):
+    m_variableMap(*variableMap) {
+    m_variableValues.resize(m_variableMap.getVariableCount());
 
-    for (auto i = 0; i < m_variable_map.get_variable_count(); ++i) {
+    for (auto i = 0; i < m_variableMap.getVariableCount(); ++i) {
         NomadId variable_id = to_nomad_id(i);
-        auto type = m_variable_map.get_variable_type(variable_id);
+        auto type = m_variableMap.getVariableType(variable_id);
 
-        type->init_value(m_variable_values[variable_id]);
+        type->init_value(m_variableValues[variable_id]);
     }
 }
 
 VariableList::~VariableList() {
-    for (auto i = 0; i < m_variable_map.get_variable_count(); ++i) {
+    for (auto i = 0; i < m_variableMap.getVariableCount(); ++i) {
         NomadId variable_id = to_nomad_id(i);
 
-        auto type = m_variable_map.get_variable_type(variable_id);
+        auto type = m_variableMap.getVariableType(variable_id);
 
-        type->free_value(m_variable_values[variable_id]);
+        type->freeValue(m_variableValues[variable_id]);
     }
 }
 
-NomadId VariableList::get_variable_id(const NomadString& name) const {
-    return m_variable_map.get_variable_id(name);
+NomadId VariableList::getVariableId(const NomadString& name) const {
+    return m_variableMap.getVariableId(name);
 }
 
-const NomadString& VariableList::get_variable_name(NomadId variable_id) const {
-    return m_variable_map.get_variable_name(variable_id);
+const NomadString& VariableList::getVariableName(NomadId variableId) const {
+    return m_variableMap.getVariableName(variableId);
 }
 
-const Type* VariableList::get_variable_type(NomadId variable_id) const {
-    return m_variable_map.get_variable_type(variable_id);
+const Type* VariableList::getVariableType(NomadId variableId) const {
+    return m_variableMap.getVariableType(variableId);
 }
 
-NomadIndex VariableList::get_variable_count() const {
-    return m_variable_map.get_variable_count();
+NomadIndex VariableList::getVariableCount() const {
+    return m_variableMap.getVariableCount();
 }
 
-void VariableList::set_variable_value(NomadId variable_id, const ScriptValue& value) {
+void VariableList::setVariableValue(NomadId variableId, const ScriptValue& value) {
 #ifdef NOMAD_DEBUG
-    if (variable_id >= m_variable_values.size()) {
+    if (variableId >= m_variableValues.size()) {
         log::error("[VariableList::set_variable_value] Variable ID out of range");
     }
 #endif
 
-    m_variable_values[variable_id] = value;
+    m_variableValues[variableId] = value;
 }
 
-void VariableList::get_variable_value(NomadId variable_id, ScriptValue& value) const {
+void VariableList::getVariableValue(NomadId variableId, ScriptValue& value) const {
 #ifdef NOMAD_DEBUG
-    if (variable_id >= m_variable_values.size()) {
+    if (variableId >= m_variableValues.size()) {
         log::error("[VariableList::get_script_variable_value] Variable ID out of range");
 
         return;
     }
 #endif
 
-    value = m_variable_values[variable_id];
+    value = m_variableValues[variableId];
 }
 
 } // nomad

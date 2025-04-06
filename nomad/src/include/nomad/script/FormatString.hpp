@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_FORMATSTRING_HPP
-#define NOMAD_FORMATSTRING_HPP
+#pragma once
 
 #include "nomad/compiler/CompilerException.hpp"
 #include "nomad/compiler/Identifier.hpp"
@@ -32,10 +31,10 @@ class FormatString {
 
     struct Segment {
         SegmentType type;
-        IdentifierType variable_type;
-        const Type* value_type;
-        NomadId context_id;
-        NomadId variable_id;
+        IdentifierType variableType;
+        const Type* valueType;
+        NomadId contextId;
+        NomadId variableId;
         NomadString value;
     };
 
@@ -43,25 +42,24 @@ public:
     explicit FormatString(const NomadString& format_string, NomadId script_id);
     ~FormatString();
 
-    [[nodiscard]] const NomadString& get_format_string() const {
-        return m_format_string;
+    [[nodiscard]] const NomadString& getFormatString() const {
+        return m_formatString;
     }
 
-    [[nodiscard]] NomadId get_script_id() const {
-        return m_script_id;
+    [[nodiscard]] NomadId getScriptId() const {
+        return m_scriptId;
     }
 
-    void add_literal(const NomadString& literal);
-    void add_variable(IdentifierType identifier_type, const Type* value_type, NomadId context_id, NomadId variable_id);
+    void addLiteral(const NomadString& literal);
+    void addVariable(IdentifierType identifierType, const Type* valueType, NomadId contextId, NomadId variableId);
 
     NomadString format(Interpreter* interpreter) const;
 
 private:
-    NomadString m_format_string;
-    NomadId m_script_id;
+    NomadString m_formatString;
+    NomadId m_scriptId;
     std::vector<Segment> m_segments;
 };
 
 } // nomad
 
-#endif //NOMAD_FORMATSTRING_HPP

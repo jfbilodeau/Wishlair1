@@ -17,19 +17,19 @@ public:
     void update(Game* game);
     void render(Canvas* canvas);
 
-    void add_entity(Entity* entity);
-    void remove_entity(Entity* entity);
+    void addEntity(Entity* entity);
+    void removeEntity(Entity* entity);
 
-    void resize_tile_map(NomadIndex width, NomadIndex height);
-    [[nodiscard]] NomadIndex get_tile_layer_width() const;
-    [[nodiscard]] NomadIndex get_tile_layer_height() const;
-    void set_tile(NomadIndex x, NomadIndex y, NomadIndex tile_id);
-    [[nodiscard]] NomadIndex get_tile(NomadIndex x, NomadIndex y) const;
+    void resizeTileMap(NomadIndex width, NomadIndex height);
+    [[nodiscard]] NomadIndex getTileLayerWidth() const;
+    [[nodiscard]] NomadIndex getTileLayerHeight() const;
+    void setTile(NomadIndex x, NomadIndex y, NomadIndex tileId);
+    [[nodiscard]] NomadIndex getTile(NomadIndex x, NomadIndex y) const;
 
 private:
-    NomadIndex m_tile_layer_width = 0;
-    NomadIndex m_tile_layer_height = 0;
-    std::vector<NomadIndex> m_tile_layer;
+    NomadIndex m_tileLayerWidth = 0;
+    NomadIndex m_tileLayerHeight = 0;
+    std::vector<NomadIndex> m_tileLayer;
     std::vector<Entity*> m_entities;
 };
 

@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-11-14.
 //
 
-#ifndef NOMAD_CIRCLEF_HPP
-#define NOMAD_CIRCLEF_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -16,18 +15,18 @@ public:
     CircleF() = default;
     CircleF(NomadFloat x, NomadFloat y, NomadFloat radius);
 
-    [[nodiscard]] NomadFloat get_x() const;
-    [[nodiscard]] NomadFloat get_y() const;
-    [[nodiscard]] NomadFloat get_radius() const;
-    [[nodiscard]] const PointF& get_center() const;
-    [[nodiscard]] NomadFloat get_left() const;
-    [[nodiscard]] NomadFloat get_right() const;
-    [[nodiscard]] NomadFloat get_top() const;
-    [[nodiscard]] NomadFloat get_bottom() const;
+    [[nodiscard]] NomadFloat getX() const;
+    [[nodiscard]] NomadFloat getY() const;
+    [[nodiscard]] NomadFloat getRadius() const;
+    [[nodiscard]] const PointF& getCenter() const;
+    [[nodiscard]] NomadFloat getLeft() const;
+    [[nodiscard]] NomadFloat getRight() const;
+    [[nodiscard]] NomadFloat getTop() const;
+    [[nodiscard]] NomadFloat getBottom() const;
 
-    void set_x(NomadFloat x);
-    void set_y(NomadFloat y);
-    void set_radius(NomadFloat radius);
+    void setX(NomadFloat x);
+    void setY(NomadFloat y);
+    void setRadius(NomadFloat radius);
 
 private:
     PointF m_center;
@@ -36,4 +35,3 @@ private:
 
 } // namespace nomad
 
-#endif //NOMAD_CIRCLEF_HPP

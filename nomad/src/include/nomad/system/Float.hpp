@@ -2,8 +2,7 @@
 // Created by jbilodeau on 2024-09-17.
 //
 
-#ifndef NOMAD_FLOAT_HPP
-#define NOMAD_FLOAT_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -12,86 +11,85 @@
 namespace nomad {
 
 // Float operations
-inline NomadFloat float_add(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatAdd(NomadFloat a, NomadFloat b) {
     return a + b;
 }
 
-inline NomadFloat float_subtract(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatSubtract(NomadFloat a, NomadFloat b) {
     return a - b;
 }
 
-inline NomadFloat float_multiply(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatMultiply(NomadFloat a, NomadFloat b) {
     return a * b;
 }
 
-inline NomadFloat float_divide(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatDivide(NomadFloat a, NomadFloat b) {
     return a / b;
 }
 
-inline NomadFloat float_modulo(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatModulo(NomadFloat a, NomadFloat b) {
     return std::fmod(a, b);
 }
 
-inline NomadFloat float_power(NomadFloat a, NomadFloat b) {
+inline NomadFloat floatPower(NomadFloat a, NomadFloat b) {
     return std::pow(a, b);
 }
 
-inline NomadFloat float_absolute(NomadFloat a) {
+inline NomadFloat floatAbsolute(NomadFloat a) {
     return std::abs(a);
 }
 
-inline NomadFloat float_negate(NomadFloat a) {
+inline NomadFloat floatNegate(NomadFloat a) {
     return -a;
 }
 
-inline NomadFloat float_square_root(NomadFloat a) {
+inline NomadFloat floatSquareRoot(NomadFloat a) {
     return std::sqrt(a);
 }
 
-inline NomadFloat float_sin(NomadFloat a) {
+inline NomadFloat floatSin(NomadFloat a) {
     return std::sin(a);
 }
 
-inline NomadFloat float_cosine(NomadFloat a) {
+inline NomadFloat floatCosine(NomadFloat a) {
     return std::cos(a);
 }
 
-inline NomadFloat float_tangent(NomadFloat a) {
+inline NomadFloat floatTangent(NomadFloat a) {
     return std::tan(a);
 }
 
-inline NomadBoolean float_equal_to(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatEqualTo(NomadFloat a, NomadFloat b) {
     return a == b;
 }
 
-inline NomadBoolean float_not_equal_to(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatNotEqualTo(NomadFloat a, NomadFloat b) {
     return a != b;
 }
 
-inline NomadBoolean float_less_than(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatLessThan(NomadFloat a, NomadFloat b) {
     return a < b;
 }
 
-inline NomadBoolean float_less_than_or_equal(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatLessThanOrEqual(NomadFloat a, NomadFloat b) {
     return a <= b;
 }
 
-inline NomadBoolean float_greater_than(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatGreaterThan(NomadFloat a, NomadFloat b) {
     return a > b;
 }
 
-inline NomadBoolean float_greater_than_or_equal(NomadFloat a, NomadFloat b) {
+inline NomadBoolean floatGreaterThanOrEqual(NomadFloat a, NomadFloat b) {
     return a >= b;
 }
 
-inline NomadInteger float_to_integer(NomadFloat a) {
+inline NomadInteger floatToInteger(NomadFloat a) {
     return static_cast<NomadInteger>(a);
 }
 
-inline NomadString float_to_string(NomadFloat a) {
+inline NomadString floatToString(NomadFloat a) {
     return NomadString(std::to_string(a));
 }
 
 } // namespace nomad
 
-#endif // NOMAD_FLOAT_HPP

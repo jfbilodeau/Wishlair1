@@ -18,52 +18,52 @@
 namespace nomad {
 
 ParserException::ParserException(const NomadString& message, NomadIndex row, NomadIndex column):
-    NomadException("Parse error[" + to_string(row) + ":" + to_string(column) + "]: " + message),
+    NomadException("Parse error[" + toString(row) + ":" + toString(column) + "]: " + message),
     m_row(row),
     m_column(column) {
 }
 
 namespace parser {
 
-void throw_parser_error(const NomadString& message) {
+void throwParserError(const NomadString& message) {
     throw ParserException(message, 0, 0);
 }
 
-void throw_parser_error(const NomadString& message, Tokenizer* tokens) {
-    throw ParserException(message, tokens->get_line_index(), tokens->get_column_index());
+void throwParserError(const NomadString& message, Tokenizer* tokens) {
+    throw ParserException(message, tokens->getLineIndex(), tokens->getColumnIndex());
 }
 
 using ParseFunction = std::unique_ptr<Expression> (*)(Compiler*, Script*, Tokenizer*);
 
-std::unique_ptr<Expression> parse_binary_operator_expression(
+std::unique_ptr<Expression> parseBinaryOperatorExpression(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
     std::vector<BinaryOperator> operators,
-    ParseFunction next_parse_fn
+    ParseFunction nextParseFn
 ) {
-    auto expression = next_parse_fn(compiler, script, tokens);
+    auto expression = nextParseFn(compiler, script, tokens);
 
     while (true) {
-        if (!tokens->token_is(TokenType::Operator)) {
+        if (!tokens->tokenIs(TokenType::Operator)) {
             return expression;
         }
 
-        auto& operator_token = tokens->current_token();
+        auto& operatorToken = tokens->currentToken();
 
-        BinaryOperator op = get_binary_operator(operator_token.text_value);
+        BinaryOperator op = getBinaryOperator(operatorToken.textValue);
 
-        auto op_iterator = std::find(operators.begin(), operators.end(), op);
+        auto opIterator = std::find(operators.begin(), operators.end(), op);
 
-        if (op_iterator != operators.end()) {
-            tokens->next_token();
+        if (opIterator != operators.end()) {
+            tokens->nextToken();
 
             expression = std::make_unique<BinaryExpression>(
-                tokens->get_line_index(),
-                tokens->get_column_index(),
+                tokens->getLineIndex(),
+                tokens->getColumnIndex(),
                 op,
                 std::move(expression),
-                next_parse_fn(compiler, script, tokens)
+                nextParseFn(compiler, script, tokens)
             );
         } else {
             return expression;
@@ -71,165 +71,165 @@ std::unique_ptr<Expression> parse_binary_operator_expression(
     }
 }
 
-std::unique_ptr<StatementNode> parse_line(Compiler* compiler, Script* script, Tokenizer* tokenizer) {
-    if (tokenizer->end_of_line()) {
+std::unique_ptr<StatementNode> parseLine(Compiler* compiler, Script* script, Tokenizer* tokenizer) {
+    if (tokenizer->endOfLine()) {
         // Empty line
         return nullptr;
     }
 
-    if (tokenizer->get_token_count() >= 3 && tokenizer->get_token_at(1) == "=") {
-        return parse_assignment_statement(compiler, script, tokenizer);
+    if (tokenizer->getTokenCount() >= 3 && tokenizer->getTokenAt(1) == "=") {
+        return parseAssignmentStatement(compiler, script, tokenizer);
     }
 
-    return parse_statement(compiler, script, tokenizer);
+    return parseStatement(compiler, script, tokenizer);
 }
 
-void parse_block(
+void parseBlock(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
-    const std::vector<NomadString>& end_tokens,
+    const std::vector<NomadString>& endTokens,
     StatementList* statements
 ) {
     while (true) {
-        if (tokens->end_of_file()) {
-            throw_parser_error("Unexpected end of file", tokens);
+        if (tokens->isEndOfFile()) {
+            throwParserError("Unexpected end of file", tokens);
         }
 
-        auto& token = tokens->current_token();
+        auto& token = tokens->currentToken();
 
-        if (std::find(end_tokens.begin(), end_tokens.end(), token.text_value) != end_tokens.end()) {
+        if (std::find(endTokens.begin(), endTokens.end(), token.textValue) != endTokens.end()) {
             // Consumes the end token
-            tokens->next_token();
+            tokens->nextToken();
 
             return;
         }
 
-        auto statement = parse_line(compiler, script, tokens);
+        auto statement = parseLine(compiler, script, tokens);
 
-        statements->add_statement(std::move(statement));
+        statements->addStatement(std::move(statement));
 
-        tokens->next_line();
+        tokens->nextLine();
     }
 }
 
-std::unique_ptr<StatementNode> parse_statement(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    auto& statement_token = tokens->next_token();
-    auto& statement_name = statement_token.text_value;
+std::unique_ptr<StatementNode> parseStatement(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    auto& statementToken = tokens->nextToken();
+    auto& statementName = statementToken.textValue;
 
-    ParseStatementFn statement_fn;
+    ParseStatementFn statementFn;
 
-    if (compiler->get_parse_statement_fn(statement_name, statement_fn)) {
-        if (statement_fn == nullptr) {
+    if (compiler->getParseStatementFn(statementName, statementFn)) {
+        if (statementFn == nullptr) {
             return nullptr;
         }
 
-        auto current_line = tokens->get_line_index();
+        auto currentLine = tokens->getLineIndex();
 
-        auto statement = statement_fn(compiler, script, tokens);
+        auto statement = statementFn(compiler, script, tokens);
 
-        if (tokens->get_line_index() == current_line) {
-            expect_end_of_line(compiler, script, tokens);
+        if (tokens->getLineIndex() == currentLine) {
+            expectEndOfLine(compiler, script, tokens);
         }
 
         return statement;
     }
 
     CommandDefinition command;
-    if (compiler->get_runtime()->get_command_definition(statement_name, command)) {
-        auto statement = parse_command_statement(compiler, script, tokens, command);
+    if (compiler->getRuntime()->getCommandDefinition(statementName, command)) {
+        auto statement = parseCommandStatement(compiler, script, tokens, command);
 
-        expect_end_of_line(compiler, script, tokens);
-
-        return statement;
-    }
-
-    auto script_id = compiler->get_runtime()->get_script_id(statement_name);
-
-    if (script_id != NOMAD_INVALID_ID) {
-        auto statement = parse_script_call(compiler, script, tokens, statement_name);
-
-        expect_end_of_line(compiler, script, tokens);
+        expectEndOfLine(compiler, script, tokens);
 
         return statement;
     }
 
-    throw_parser_error("Unknown statement, command or script name: '" + statement_name + "'", tokens);
+    auto scriptId = compiler->getRuntime()->getScriptId(statementName);
+
+    if (scriptId != NOMAD_INVALID_ID) {
+        auto statement = parseScriptCall(compiler, script, tokens, statementName);
+
+        expectEndOfLine(compiler, script, tokens);
+
+        return statement;
+    }
+
+    throwParserError("Unknown statement, command or script name: '" + statementName + "'", tokens);
 }
 
-std::unique_ptr<StatementNode> parse_command_statement(Compiler* compiler, Script* script, Tokenizer* tokens, const CommandDefinition& command) {
-    auto line = tokens->get_line_index();
-    auto column = tokens->get_column_index();
+std::unique_ptr<StatementNode> parseCommandStatement(Compiler* compiler, Script* script, Tokenizer* tokens, const CommandDefinition& command) {
+    auto line = tokens->getLineIndex();
+    auto column = tokens->getColumnIndex();
 
-    auto command_statement = std::make_unique<CommandStatementNode>(
+    auto commandStatement = std::make_unique<CommandStatementNode>(
         line,
         column,
         command.name
     );
 
-    parse_command_arguments(compiler, script, tokens, command, command_statement->get_arguments());
+    parseCommandArguments(compiler, script, tokens, command, commandStatement->getArguments());
 
-    return command_statement;
+    return commandStatement;
 }
 
-std::unique_ptr<StatementNode> parse_script_call(
+std::unique_ptr<StatementNode> parseScriptCall(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
-    const NomadString& script_name
+    const NomadString& scriptName
 ) {
-    auto script_call_expression = std::make_unique<ScriptCallStatementNode>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        script_name
+    auto scriptCallExpression = std::make_unique<ScriptCallStatementNode>(
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
+        scriptName
     );
 
-    auto script_id = compiler->get_runtime()->get_script_id(script_name);
+    auto scriptId = compiler->getRuntime()->getScriptId(scriptName);
 
-    if (script_id == NOMAD_INVALID_ID) {
-        throw_parser_error("Unknown script name: '" + script_name + "'", tokens);
+    if (scriptId == NOMAD_INVALID_ID) {
+        throwParserError("Unknown script name: '" + scriptName + "'", tokens);
     }
 
-    auto target_script = compiler->get_runtime()->get_script(script_id);
+    auto targetScript = compiler->getRuntime()->getScript(scriptId);
 
-    parse_script_arguments(compiler, script, tokens, target_script, script_call_expression->get_arguments());
+    parseScriptArguments(compiler, script, tokens, targetScript, scriptCallExpression->getArguments());
 
-    return script_call_expression;
+    return scriptCallExpression;
 }
 
-std::unique_ptr<StatementNode> parse_return_statement(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    auto expression = parse_expression(compiler, script, tokens);
+std::unique_ptr<StatementNode> parseReturnStatement(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    auto expression = parseExpression(compiler, script, tokens);
 
-    return std::make_unique<ReturnStatementNode>(tokens->get_line_index(), tokens->get_column_index(), std::move(expression));
+    return std::make_unique<ReturnStatementNode>(tokens->getLineIndex(), tokens->getColumnIndex(), std::move(expression));
 }
 
-std::unique_ptr<Expression> parse_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_logical_and_expression(compiler, script, tokens);
+std::unique_ptr<Expression> parseExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseLogicalAndExpression(compiler, script, tokens);
 }
 
-std::unique_ptr<Expression> parse_logical_and_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseLogicalAndExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens,
         {BinaryOperator::AndAnd},
-        &parse_logical_or_expression
+        &parseLogicalOrExpression
     );
 }
 
 
-std::unique_ptr<Expression> parse_logical_or_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseLogicalOrExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens,
         {BinaryOperator::PipePipe},
-        &parse_relational_expression
+        &parseRelationalExpression
     );
 }
 
-std::unique_ptr<Expression> parse_relational_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseRelationalExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
@@ -240,57 +240,57 @@ std::unique_ptr<Expression> parse_relational_expression(Compiler* compiler, Scri
             BinaryOperator::GreaterThan,
             BinaryOperator::GreaterThanEqual,
         },
-        &parse_bitwise_and_expression
+        &parseBitwiseAndExpression
     );
 }
 
-std::unique_ptr<Expression> parse_bitwise_and_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseBitwiseAndExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
             BinaryOperator::And,
         },
-        &parse_bitwise_xor_expression
+        &parseBitwiseXorExpression
     );
 }
 
-std::unique_ptr<Expression> parse_bitwise_xor_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseBitwiseXorExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
             BinaryOperator::Caret,
         },
-        &parse_bitwise_or_expression
+        &parseBitwiseOrExpression
     );
 }
 
-std::unique_ptr<Expression> parse_bitwise_or_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseBitwiseOrExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
             BinaryOperator::Pipe,
         },
-        &parse_term_expression
+        &parseTermExpression
     );
 }
 
-std::unique_ptr<Expression> parse_term_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseTermExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
             BinaryOperator::Plus,
             BinaryOperator::Minus,
         },
-        &parse_product_expression
+        &parseProductExpression
     );
 }
 
-std::unique_ptr<Expression> parse_product_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    return parse_binary_operator_expression(
+std::unique_ptr<Expression> parseProductExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    return parseBinaryOperatorExpression(
         compiler,
         script,
         tokens, {
@@ -298,334 +298,329 @@ std::unique_ptr<Expression> parse_product_expression(Compiler* compiler, Script*
             BinaryOperator::Slash,
             BinaryOperator::Percent,
         },
-        &parse_parentheses_expression
+        &parseParenthesesExpression
     );
 }
 
-std::unique_ptr<Expression> parse_parentheses_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    if (tokens->token_is("(")) {
-        tokens->next_token();
+std::unique_ptr<Expression> parseParenthesesExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    if (tokens->tokenIs("(")) {
+        tokens->nextToken();
 
-        auto expression = parse_expression(compiler, script, tokens);
+        auto expression = parseExpression(compiler, script, tokens);
 
-        if (!tokens->token_is(")")) {
-            throw_parser_error("Expected ')'", tokens);
+        if (!tokens->tokenIs(")")) {
+            throwParserError("Expected ')'", tokens);
         }
 
-        tokens->next_token();
+        tokens->nextToken();
 
         return expression;
     }
 
-    return parse_unary_operator_expression(compiler, script, tokens);
+    return parseUnaryOperatorExpression(compiler, script, tokens);
 }
 
-std::unique_ptr<Expression> parse_unary_operator_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    auto token = tokens->current_token();
+std::unique_ptr<Expression> parseUnaryOperatorExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    auto token = tokens->currentToken();
 
-    auto op = get_unary_operator(token.text_value);
+    auto op = getUnaryOperator(token.textValue);
 
     if (op == UnaryOperator::Unknown) {
-        return parse_primary_expression(compiler, script, tokens);
+        return parsePrimaryExpression(compiler, script, tokens);
     }
 
-    tokens->next_token();
+    tokens->nextToken();
 
-    if (tokens->current_token().text_value == "(") {
-        tokens->next_token();
+    if (tokens->currentToken().textValue == "(") {
+        tokens->nextToken();
 
-        auto expression = parse_expression(compiler, script, tokens);
+        auto expression = parseExpression(compiler, script, tokens);
 
-        if (!tokens->token_is(")")) {
-            throw_parser_error("Expected ')'", tokens);
+        if (!tokens->tokenIs(")")) {
+            throwParserError("Expected ')'", tokens);
         }
 
-        tokens->next_token();
+        tokens->nextToken();
 
         return std::make_unique<UnaryExpression>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
             op,
             std::move(expression)
         );
     } else {
-        auto expression = parse_primary_expression(compiler, script, tokens);
+        auto expression = parsePrimaryExpression(compiler, script, tokens);
 
         return std::make_unique<UnaryExpression>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
             op,
             std::move(expression)
         );
     }
 }
 
-void expect_end_of_line(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    if (!tokens->end_of_line()) {
-        throw_parser_error("Expected end of line", tokens);
+void expectEndOfLine(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    if (!tokens->endOfLine()) {
+        throwParserError("Expected end of line", tokens);
     }
-
-//    tokens->next_line();
 }
 
-IdentifierType get_identifier_type(Compiler* compiler, const NomadString& name, Script* script) {
-    if (compiler->get_runtime()->get_keyword_id(name) != NOMAD_INVALID_ID) {
+IdentifierType getIdentifierType(Compiler* compiler, const NomadString& name, Script* script) {
+    if (compiler->getRuntime()->getKeywordId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Keyword;
     }
 
-    if (compiler->is_statement(name)) {
+    if (compiler->isStatement(name)) {
         return IdentifierType::Statement;
     }
 
     CommandDefinition commandDefinition;
 
-    if (compiler->get_runtime()->get_command_definition(name, commandDefinition)) {
+    if (compiler->getRuntime()->getCommandDefinition(name, commandDefinition)) {
         return IdentifierType::Command;
     }
 
-    if (compiler->get_runtime()->get_constant_id(name) != NOMAD_INVALID_ID) {
+    if (compiler->getRuntime()->getConstantId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Constant;
     }
 
-    if (compiler->get_runtime()->get_script_id(name) != NOMAD_INVALID_ID) {
+    if (compiler->getRuntime()->getScriptId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::Script;
     }
 
-    if (compiler->get_runtime()->get_dynamic_variable_id(name) != NOMAD_INVALID_ID) {
+    if (compiler->getRuntime()->getDynamicVariableId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::DynamicVariable;
     }
 
-    if (compiler->get_runtime()->get_variable_context_id_by_prefix(name) != NOMAD_INVALID_ID) {
+    if (compiler->getRuntime()->getVariableContextIdByPrefix(name) != NOMAD_INVALID_ID) {
         return IdentifierType::ContextVariable;
     }
 
-    if (script && script->get_variable_id(name) != NOMAD_INVALID_ID) {
+    if (script && script->getVariableId(name) != NOMAD_INVALID_ID) {
         return IdentifierType::ScriptVariable;
     }
 
     return IdentifierType::Unknown;
 }
 
-std::unique_ptr<StatementNode> parse_assignment_statement(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    auto& variable_name = tokens->current_token().text_value;
+std::unique_ptr<StatementNode> parseAssignmentStatement(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    auto& variableName = tokens->currentToken().textValue;
 
-    IdentifierDefinition identifier_definition;
-    compiler->get_identifier_definition(variable_name, script, identifier_definition);
+    IdentifierDefinition identifierDefinition;
+    compiler->getIdentifierDefinition(variableName, script, identifierDefinition);
 
-    if (identifier_definition.identifier_type == IdentifierType::Unknown) {
-        script->register_variable(variable_name, nullptr);
+    if (identifierDefinition.identifierType == IdentifierType::Unknown) {
+        script->registerVariable(variableName, nullptr);
     }
 
-    tokens->next_token(); // Consume variable name
+    tokens->nextToken(); // Consume variable name
     tokens->expect("=");  // Consume '='
 
-    auto expression = parse_expression(compiler, script, tokens);
+    auto expression = parseExpression(compiler, script, tokens);
 
-    expect_end_of_line(compiler, script, tokens);
+    expectEndOfLine(compiler, script, tokens);
 
     return std::make_unique<AssignmentStatementNode>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        variable_name,
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
+        variableName,
         std::move(expression)
     );
 }
 
-std::unique_ptr<Expression> parse_primary_expression(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    if (tokens->end_of_line()) {
-        throw_parser_error("Unexpected end of line", tokens);
+std::unique_ptr<Expression> parsePrimaryExpression(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    if (tokens->endOfLine()) {
+        throwParserError("Unexpected end of line", tokens);
     }
 
-    auto& token = tokens->next_token();
+    auto& token = tokens->nextToken();
 
     if (token.type == TokenType::FormatString) {
         return std::make_unique<FormatStringLiteral>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
-            token.text_value
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
+            token.textValue
         );
     }
 
     if (token.type == TokenType::String) {
         return std::make_unique<StringLiteral>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
-            token.text_value
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
+            token.textValue
         );
     }
 
     if (token.type == TokenType::Integer) {
         return std::make_unique<IntegerLiteral>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
-            token.integer_value
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
+            token.integerValue
         );
     }
 
     if (token.type == TokenType::Float) {
         return std::make_unique<FloatLiteral>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
-            token.float_value
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
+            token.floatValue
         );
     }
 
-    auto& identifier = token.text_value;
-
-//    auto identifier_type = get_identifier_type(compiler, identifier);
+    auto& identifier = token.textValue;
 
     if (token.type == TokenType::Identifier) {
         // Is it a command?
         CommandDefinition command;
-        if (compiler->get_runtime()->get_command_definition(token.text_value, command)) {
-            if (command.return_type->is_void()) {
-                throw_parser_error(
-                    "Cannot use command '" + token.text_value + "' in an expression because it does not return a value",
+        if (compiler->getRuntime()->getCommandDefinition(token.textValue, command)) {
+            if (command.returnType->isVoid()) {
+                throwParserError(
+                    "Cannot use command '" + token.textValue + "' in an expression because it does not return a value",
                     tokens
                 );
             }
 
-            return parse_command_call_expression(compiler, script, tokens, command);
+            return parseCommandCallExpression(compiler, script, tokens, command);
         }
 
         // Is it a script?
-        auto script_id = compiler->get_runtime()->get_script_id(token.text_value);
+        auto scriptId = compiler->getRuntime()->getScriptId(token.textValue);
 
-        if (script_id != NOMAD_INVALID_ID) {
-            return parse_script_call_expression(compiler, script, tokens, token.text_value);
+        if (scriptId != NOMAD_INVALID_ID) {
+            return parseScriptCallExpression(compiler, script, tokens, token.textValue);
         }
 
         // Constant?
-        auto constant_id = compiler->get_runtime()->get_constant_id(token.text_value);
+        auto constantId = compiler->getRuntime()->getConstantId(token.textValue);
 
-        if (constant_id != NOMAD_INVALID_ID) {
+        if (constantId != NOMAD_INVALID_ID) {
             return std::make_unique<ConstantValueExpression>(
-                tokens->get_line_index(),
-                tokens->get_column_index(),
-                token.text_value
+                tokens->getLineIndex(),
+                tokens->getColumnIndex(),
+                token.textValue
             );
         }
 
         // Identifier
         return std::make_unique<IdentifierExpression>(
-            tokens->get_line_index(),
-            tokens->get_column_index(),
-            token.text_value
+            tokens->getLineIndex(),
+            tokens->getColumnIndex(),
+            token.textValue
         );
     }
 
-    throw_parser_error("Unexpected token '" + token.text_value + "'", tokens);
+    throwParserError("Unexpected token '" + token.textValue + "'", tokens);
 }
 
-std::unique_ptr<Expression> parse_script_call_expression(
+std::unique_ptr<Expression> parseScriptCallExpression(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
-    const NomadString& script_name
+    const NomadString& scriptName
 ) {
-    auto script_call_expression = std::make_unique<ScriptCallExpression>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        script_name
+    auto scriptCallExpression = std::make_unique<ScriptCallExpression>(
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
+        scriptName
     );
 
-    auto script_id = compiler->get_runtime()->get_script_id(script_name);
-    auto target_script = compiler->get_runtime()->get_script(script_id);
-    auto parameter_count = target_script->get_parameter_count();
+    auto scriptId = compiler->getRuntime()->getScriptId(scriptName);
+    auto targetScript = compiler->getRuntime()->getScript(scriptId);
+    auto parameterCount = targetScript->getParameterCount();
 
-    for (auto i = 0; i < parameter_count; ++i) {
-        if (tokens->end_of_line()) {
+    for (auto i = 0; i < parameterCount; ++i) {
+        if (tokens->endOfLine()) {
             NomadString message =
                 "Expected arguments " +
-                to_string(parameter_count) +
+                toString(parameterCount) +
                 " for call to script '" +
-                script_name +
+                scriptName +
                 "' but only got "
-                + to_string(script_call_expression->get_argument_count()) +
+                + toString(scriptCallExpression->getArgumentCount()) +
                 " arguments";
 
-            throw_parser_error(message, tokens);
+            throwParserError(message, tokens);
         }
 
-        auto expression = parse_expression(compiler, script, tokens);
+        auto expression = parseExpression(compiler, script, tokens);
 
-        script_call_expression->add_argument(std::move(expression));
+        scriptCallExpression->addArgument(std::move(expression));
     }
 
-    return script_call_expression;
+    return scriptCallExpression;
 }
 
-void parse_script_arguments(
+void parseScriptArguments(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
-    Script* target_script,
+    Script* targetScript,
     ArgumentList* arguments
 ) {
-    auto parameter_count = target_script->get_parameter_count();
+    auto parameterCount = targetScript->getParameterCount();
 
-    for (auto i = 0; i < parameter_count; ++i) {
-        auto& parameter_name = target_script->get_parameter_name(i);
-        auto parameter_type = target_script->get_parameter_type(i);
+    for (auto i = 0; i < parameterCount; ++i) {
+        auto& parameterName = targetScript->getParameterName(i);
+        auto parameterType = targetScript->getParameterType(i);
 
-        if (tokens->end_of_line()) {
-            throw_parser_error("Expected arguments '" + parameter_name + "'", tokens);
+        if (tokens->endOfLine()) {
+            throwParserError("Expected arguments '" + parameterName + "'", tokens);
         }
 
-        auto argument_type = parameter_type;
+        auto argumentType = parameterType;
 
-        auto callback_type = argument_type->as_callback();
+        auto callbackType = argumentType->asCallback();
 
-        if (callback_type) {
+        if (callbackType) {
             // TODO: add support for script callback
             tokens->expect("fun");
 
-            auto script_name = generate_fun_script_name(compiler, script, tokens->get_line_index());
-            auto& script_path = script->get_path();
-            auto& script_source = script->get_source();
+            auto scriptName = generateFunScriptName(compiler, script, tokens->getLineIndex());
+            auto& scriptPath = script->getPath();
+            auto& scriptSource = script->getSource();
 
-            auto script_id = compiler->register_script_source(script_name, script_path, script_source);
+            auto scriptId = compiler->registerScriptSource(scriptName, scriptPath, scriptSource);
 
-            auto fun_script = compiler->get_runtime()->get_script(script_id);
+            auto funScript = compiler->getRuntime()->getScript(scriptId);
 
-            parse_callback_fun_parameters(compiler, fun_script, tokens, callback_type);
+            parseCallbackFunParameters(compiler, funScript, tokens, callbackType);
 
-            tokens->expect_end_of_line();
+            tokens->expectEndOfLine();
 
-            auto fun_body = parse_fun_body(compiler, fun_script, tokens);
+            auto funBody = parseFunBody(compiler, funScript, tokens);
 
-            compiler->set_script_node(script_id, std::move(fun_body));
+            compiler->setScriptNode(scriptId, std::move(funBody));
 
-            auto fun_argument = std::make_unique<FunCallbackArgument>(
-                tokens->get_line_index(),
-                tokens->get_column_index(),
-                argument_type,
-                script_id
+            auto funArgument = std::make_unique<FunCallbackArgument>(
+                tokens->getLineIndex(),
+                tokens->getColumnIndex(),
+                argumentType,
+                scriptId
             );
 
-            arguments->add(std::move(fun_argument));
+            arguments->add(std::move(funArgument));
         } else {
-            auto argument = parse_expression_argument(compiler, argument_type, script, tokens);
+            auto argument = parseExpressionArgument(compiler, argumentType, script, tokens);
 
             arguments->add(std::move(argument));
         }
     }
 }
 
-std::unique_ptr<Expression>
-parse_command_call_expression(Compiler* compiler, Script* script, Tokenizer* tokens, const CommandDefinition& command) {
-    auto command_expression = std::make_unique<CallCommandExpression>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
+std::unique_ptr<Expression> parseCommandCallExpression(Compiler* compiler, Script* script, Tokenizer* tokens, const CommandDefinition& command) {
+    auto commandExpression = std::make_unique<CallCommandExpression>(
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
         command.name
     );
 
-    parse_command_arguments(compiler, script, tokens, command, command_expression->get_arguments());
+    parseCommandArguments(compiler, script, tokens, command, commandExpression->getArguments());
 
-    return command_expression;
+    return commandExpression;
 }
 
-void parse_command_arguments(
+void parseCommandArguments(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens,
@@ -633,106 +628,106 @@ void parse_command_arguments(
     ArgumentList* arguments
 ) {
     for (auto& parameter: command.parameters) {
-        if (tokens->end_of_line()) {
-            throw_parser_error("Expected arguments '" + parameter.name + "'", tokens);
+        if (tokens->endOfLine()) {
+            throwParserError("Expected arguments '" + parameter.name + "'", tokens);
         }
 
-        auto argument_type = parameter.type;
+        auto argumentType = parameter.type;
 
-        auto callback_type = argument_type->as_callback();
+        auto callbackType = argumentType->asCallback();
 
-        if (callback_type) {
+        if (callbackType) {
             // TODO: add support for named script callback
             tokens->expect("fun");
 
-            auto script_name = generate_fun_script_name(compiler, script, tokens->get_line_index());
-            auto& script_path = script->get_path();
-            auto& script_source = script->get_source();
+            auto scriptName = generateFunScriptName(compiler, script, tokens->getLineIndex());
+            auto& scriptPath = script->getPath();
+            auto& scriptSource = script->getSource();
 
-            auto script_id = compiler->register_script_source(script_name, script_path, script_source);
+            auto scriptId = compiler->registerScriptSource(scriptName, scriptPath, scriptSource);
 
-            auto fun_script = compiler->get_runtime()->get_script(script_id);
+            auto funScript = compiler->getRuntime()->getScript(scriptId);
 
-            parse_callback_fun_parameters(compiler, fun_script, tokens, callback_type);
+            parseCallbackFunParameters(compiler, funScript, tokens, callbackType);
 
-            tokens->expect_end_of_line();
+            tokens->expectEndOfLine();
 
-            auto fun_body = parse_fun_body(compiler, fun_script, tokens);
+            auto funBody = parseFunBody(compiler, funScript, tokens);
 
-            compiler->set_script_node(script_id, std::move(fun_body));
+            compiler->setScriptNode(scriptId, std::move(funBody));
 
-            auto fun_argument = std::make_unique<FunCallbackArgument>(
-                tokens->get_line_index(),
-                tokens->get_column_index(),
-                argument_type,
-                script_id
+            auto funArgument = std::make_unique<FunCallbackArgument>(
+                tokens->getLineIndex(),
+                tokens->getColumnIndex(),
+                argumentType,
+                scriptId
             );
 
-            arguments->add(std::move(fun_argument));
+            arguments->add(std::move(funArgument));
 
             continue;
-        } else if (argument_type == compiler->get_runtime()->get_predicate_type()) {
-            auto argument = parse_predicate_argument(compiler, script, tokens);
+        } else if (argumentType == compiler->getRuntime()->getPredicateType()) {
+            auto argument = parsePredicateArgument(compiler, script, tokens);
 
             arguments->add(std::move(argument));
         } else {
-            auto argument = parse_expression_argument(compiler, argument_type, script, tokens);
+            auto argument = parseExpressionArgument(compiler, argumentType, script, tokens);
 
             arguments->add(std::move(argument));
         }
     }
 }
 
-std::unique_ptr<ExpressionArgument> parse_expression_argument(
+std::unique_ptr<ExpressionArgument> parseExpressionArgument(
     Compiler* compiler,
-    const Type* argument_type,
+    const Type* argumentType,
     Script* script,
     Tokenizer* tokens
 ) {
-    auto expression = parse_expression(compiler, script, tokens);
+    auto expression = parseExpression(compiler, script, tokens);
 
     return std::make_unique<ExpressionArgument>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        argument_type,
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
+        argumentType,
         std::move(expression)
     );
 }
 
-std::unique_ptr<PredicateArgument> parse_predicate_argument(
+std::unique_ptr<PredicateArgument> parsePredicateArgument(
     Compiler* compiler,
     Script* script,
     Tokenizer* tokens
 ) {
-    auto predicate_script_name = compiler->generate_script_name("predicate", script, tokens->get_line_index());
+    auto predicateScriptName = compiler->generateScriptName("predicate", script, tokens->getLineIndex());
 
-    auto predicate_script_id = compiler->register_script_source(
-        predicate_script_name,
-        script->get_path(),
-        tokens->get_line()
+    auto predicateScriptId = compiler->registerScriptSource(
+        predicateScriptName,
+        script->getPath(),
+        tokens->getLine()
     );
 
-    auto predicate_script = compiler->get_runtime()->get_script(predicate_script_id);
+    auto predicateScript = compiler->getRuntime()->getScript(predicateScriptId);
 
-    auto predicate_expression = parser::parse_expression(compiler, script, tokens);
+    auto predicateExpression = parser::parseExpression(compiler, script, tokens);
 
     // Wrap predicate in return statement.
-    auto return_statement = std::make_unique<ReturnStatementNode>(tokens->get_line_index(), tokens->get_column_index(), std::move(predicate_expression));
+    auto returnStatement = std::make_unique<ReturnStatementNode>(tokens->getLineIndex(), tokens->getColumnIndex(), std::move(predicateExpression));
 
     // Wrap statement in statement list.
-    auto script_node = std::make_unique<ScriptNode>(tokens->get_line_index(), tokens->get_column_index());
-    script_node->add_statement(std::move(return_statement));
+    auto scriptNode = std::make_unique<ScriptNode>(tokens->getLineIndex(), tokens->getColumnIndex());
+    scriptNode->addStatement(std::move(returnStatement));
 
     // Assign statement list to script
-    compiler->set_script_node(predicate_script_id, std::move(script_node));
+    compiler->setScriptNode(predicateScriptId, std::move(scriptNode));
 
-    auto predicate_argument = std::make_unique<PredicateArgument>(
-        tokens->get_line_index(),
-        tokens->get_column_index(),
-        predicate_script_id
+    auto predicateArgument = std::make_unique<PredicateArgument>(
+        tokens->getLineIndex(),
+        tokens->getColumnIndex(),
+        predicateScriptId
     );
 
-    return predicate_argument;
+    return predicateArgument;
 }
 
 } // namespace parser

@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_GAME_HPP
-#define NOMAD_GAME_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 #include "nomad/log/Logger.hpp"
@@ -46,156 +45,154 @@ public:
     Game(const Game&) = delete;
     ~Game();
 
-    [[nodiscard]] Runtime* get_runtime() const;
-    [[nodiscard]] Canvas* get_canvas();
-    [[nodiscard]] ResourceManager* get_resources() const;
+    [[nodiscard]] Runtime* getRuntime() const;
+    [[nodiscard]] Canvas* getCanvas();
+    [[nodiscard]] ResourceManager* getResources() const;
 
-    void set_debug(bool debug);
-    [[nodiscard]] bool is_debug() const;
+    void setDebug(bool debug);
+    [[nodiscard]] bool isDebug() const;
 
-    [[nodiscard]] const VariableMap* get_scene_variables() const;
-    [[nodiscard]] const VariableMap* get_entity_variables() const;
+    [[nodiscard]] const VariableMap* getSceneVariables() const;
+    [[nodiscard]] const VariableMap* getEntityVariables() const;
 
-    [[nodiscard]] const Point& get_resolution() const;
-    void set_fps(NomadInteger fps);
-    [[nodiscard]] NomadInteger get_fps() const;
+    [[nodiscard]] const Point& getResolution() const;
+    void setFps(NomadInteger fps);
+    [[nodiscard]] NomadInteger getFps() const;
 
-    [[nodiscard]] const NomadString& get_organization() const;
-    void set_organization(const NomadString& organization);
+    [[nodiscard]] const NomadString& getOrganization() const;
+    void setOrganization(const NomadString& organization);
 
-    [[nodiscard]] const NomadString& get_name() const;
-    void set_name(const NomadString& name);
+    [[nodiscard]] const NomadString& getName() const;
+    void setName(const NomadString& name);
 
-    [[nodiscard]] NomadString get_resource_path() const;
-    [[nodiscard]] NomadString get_state_path() const;
-    [[nodiscard]] NomadString get_save_path() const;
-    [[nodiscard]] NomadString get_settings_path() const;
+    [[nodiscard]] NomadString getResourcePath() const;
+    [[nodiscard]] NomadString getStatePath() const;
+    [[nodiscard]] NomadString getSavePath() const;
+    [[nodiscard]] NomadString getSettingsPath() const;
 
-    [[nodiscard]] NomadString make_resource_path(const NomadString& resource_name) const;
-    [[nodiscard]] NomadString make_state_path(const NomadString& state_name) const;
-    [[nodiscard]] NomadString make_save_path(const NomadString& save_name) const;
-    [[nodiscard]] NomadString make_settings_path(const NomadString& settings_name) const;
+    [[nodiscard]] NomadString makeResourcePath(const NomadString& resourceName) const;
+    [[nodiscard]] NomadString makeStatePath(const NomadString& stateName) const;
+    [[nodiscard]] NomadString makeSavePath(const NomadString& saveName) const;
+    [[nodiscard]] NomadString makeSettingsPath(const NomadString& settingsName) const;
 
-    [[nodiscard]] bool file_exists(const NomadString& file_name) const;
-    void delete_file(const NomadString& file_name) const;
+    [[nodiscard]] bool fileExists(const NomadString& fileName) const;
+    void deleteFile(const NomadString& fileName) const;
 
     void run();
     void quit();
-    [[nodiscard]] uint64_t get_update_duration() const;
-    [[nodiscard]] uint64_t get_render_duration() const;
+    [[nodiscard]] uint64_t getUpdateDuration() const;
+    [[nodiscard]] uint64_t getRenderDuration() const;
 
-    [[nodiscard]] NomadId get_script_id(const NomadString& script_name);
-    void execute_script_in_current_context(NomadId script_id);
-    void execute_script_in_current_context(NomadId script_id, ScriptValue& return_value);
-    void execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity);
-    void execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, Entity* other);
-    void execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, const std::vector<Entity*>& others);
-    void execute_script_in_new_context(NomadId script_id, Scene* scene, Entity* entity, ScriptValue& return_value);
-    void execute_script_in_context(NomadId script_id, GameExecutionContext* context);
-    void execute_script_in_context(NomadId script_id, GameExecutionContext* context, ScriptValue& return_value);
-    void execute_script_by_name(const NomadString& script_name, Scene* scene, Entity* entity, ScriptValue& return_value);
+    [[nodiscard]] NomadId getScriptId(const NomadString& scriptName);
+    void executeScriptInCurrentContext(NomadId scriptId);
+    void executeScriptInCurrentContext(NomadId scriptId, ScriptValue& returnValue);
+    void executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity);
+    void executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, Entity* other);
+    void executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, const std::vector<Entity*>& others);
+    void executeScriptInNewContext(NomadId scriptId, Scene* scene, Entity* entity, ScriptValue& returnValue);
+    void executeScriptInContext(NomadId scriptId, GameExecutionContext* context);
+    void executeScriptInContext(NomadId scriptId, GameExecutionContext* context, ScriptValue& returnValue);
+    void executeScriptByName(const NomadString& scriptName, Scene* scene, Entity* entity, ScriptValue& returnValue);
 
-    [[nodiscard]] bool execute_predicate(NomadId script_id);
+    [[nodiscard]] bool executePredicate(NomadId script_id);
 
-    Scene* create_scene();
-    void remove_scene(Scene* scene);
+    Scene* createScene();
+    void removeScene(Scene* scene);
 
     [[nodiscard]] bool running() const;
-    [[nodiscard]] bool is_paused() const;
+    [[nodiscard]] bool isPaused() const;
 
     void pause();
     void resume();
 
-    GameExecutionContext* get_current_context();
+    GameExecutionContext* getCurrentContext();
 
-    void set_language(const NomadString& language_code);
-    [[nodiscard]] const NomadString& get_language() const;
-    NomadString& get_text(const NomadString& key, NomadString& text) const;
+    void setLanguage(const NomadString& languageCode);
+    [[nodiscard]] const NomadString& getLanguage() const;
+    NomadString& getText(const NomadString& key, NomadString& text) const;
 
-    [[noreturn]] void raise_error(const NomadString& message);
+    [[noreturn]] void raiseError(const NomadString& message);
 
 private:
-    void init_sdl();
-    void init_sdl_ttf();
-    void init_resource_path();
-    void init_runtime();
+    void initSdl();
+    void initSdlTtf();
+    void initResourcePath();
+    void initRuntime();
 
-    void init_commands();
-    void init_game_commands();
-    void init_input_commands();
-    void init_other_entity_commands();
-    void init_scene_commands();
-    void init_this_entity_commands();
-    void init_window_commands();
-    void init_variable_context();
-    void init_resource_manager();
-    void init_constants();
-    void init_load_text();
-    void init_debug_console();
+    void initCommands();
+    void initGameCommands();
+    void initInputCommands();
+    void initOtherEntityCommands();
+    void initSceneCommands();
+    void initThisEntityCommands();
+    void initWindowCommands();
+    void initVariableContext();
+    void initResourceManager();
+    void initConstants();
+    void initLoadText();
+    void initDebugConsole();
 
     // Init dynamic variables
-    void init_dynamic_variables();
-    void init_game_dynamic_variables();
-    void init_input_dynamic_variables();
-    void init_other_dynamic_variables();
-    void init_scene_dynamic_variables();
-    void init_this_dynamic_variables();
-    void init_window_dynamic_variables();
+    void initDynamicVariables();
+    void initGameDynamicVariables();
+    void initInputDynamicVariables();
+    void initOtherDynamicVariables();
+    void initSceneDynamicVariables();
+    void initThisDynamicVariables();
+    void initWindowDynamicVariables();
 
-    void create_path_to_file(const NomadString& file_name) const;
-    void load_text_into_const(const NomadString& language_code);
+    void createPathToFile(const NomadString& fileName) const;
+    void loadTextIntoConst(const NomadString& languageCode);
 
-    void compile_scripts();
+    void compileScripts();
 
-    void push_execution_context(Scene* scene, Entity* entity);
-    void push_execution_context(Scene* scene, Entity* entity, Entity* other);
-    void push_execution_context(Scene* scene, Entity* entity, const std::vector<Entity*>& others);
-    void pop_execution_context();
-    void run_init_script();
+    void pushExecutionContext(Scene* scene, Entity* entity);
+    void pushExecutionContext(Scene* scene, Entity* entity, Entity* other);
+    void pushExecutionContext(Scene* scene, Entity* entity, const std::vector<Entity*>& others);
+    void popExecutionContext();
+    void runInitScript();
 
     void render(Canvas* canvas);
     void update();
 
-    void process_input(SDL_KeyboardEvent& event);
-    bool process_system_input(SDL_KeyboardEvent& event);
-    void process_input(SDL_MouseButtonEvent& event);
-    void process_input(SDL_ControllerButtonEvent& event) const;
-    void dispatch_input_event(const InputEvent& event) const;
+    void processInput(SDL_KeyboardEvent& event);
+    bool processSystemInput(SDL_KeyboardEvent& event);
+    void processInput(SDL_MouseButtonEvent& event);
+    void processInput(SDL_ControllerButtonEvent& event) const;
+    void dispatchInputEvent(const InputEvent& event) const;
 
     // The current scene being processed
-    [[nodiscard]] Scene* get_current_scene();
+    [[nodiscard]] Scene* getCurrentScene();
 
     NomadString m_title = "Nomad";
     Point m_resolution = {800, 600};
-    Point m_window_size = m_resolution;
+    Point m_windowSize = m_resolution;
     int m_fps = 30;
 
-//    std::unique_ptr<SimpleVariableContext> m_scene_variable_context;
-//    std::unique_ptr<EntityVariableContext> m_entity_variable_context;
-    const VariableMap* m_scene_variable_map = nullptr;
-    const VariableMap* m_this_entity_variable_map = nullptr;
-    const VariableMap* m_other_entity_variable_map = nullptr;
+    const VariableMap* m_sceneVariableMap = nullptr;
+    const VariableMap* m_thisEntityVariableMap = nullptr;
+    const VariableMap* m_otherEntityVariableMap = nullptr;
 
-    PointF m_mouse_position;
+    PointF m_mousePosition;
     struct MouseButtonState {
         bool pressed = false;
         bool held = false;
         bool released = false;
     };
-    std::array<MouseButtonState, 3> m_mouse_button_state = {
+    std::array<MouseButtonState, 3> m_mouseButtonState = {
         MouseButtonState{},
         MouseButtonState{},
         MouseButtonState{},
     };
 
-    PointF m_mouse_last_position;
-    ResourceManager* m_resource_manager = nullptr;
+    PointF m_mouseLastPosition;
+    ResourceManager* m_resourceManager = nullptr;
 
-    std::vector<Scene*> m_added_scenes;
-    std::vector<Scene*> m_removed_scenes;
+    std::vector<Scene*> m_addedScenes;
+    std::vector<Scene*> m_removedScenes;
     std::vector<Scene*> m_scenes;
 
-    NomadString m_resource_path;
+    NomadString m_resourcePath;
     NomadString m_organization;
     NomadString m_name;
 
@@ -208,15 +205,15 @@ private:
     Canvas* m_canvas = nullptr;
 
     // Performance
-    uint64_t m_render_duration = 0;
-    uint64_t m_update_duration = 0;
+    uint64_t m_renderDuration = 0;
+    uint64_t m_updateDuration = 0;
 
-    InputManager* m_input_manager = nullptr;
+    InputManager* m_inputManager = nullptr;
 
-    DebugConsole* m_debug_console = nullptr;
+    DebugConsole* m_debugConsole = nullptr;
 
     Runtime* m_runtime = nullptr;
-    std::array<GameExecutionContext, 10> m_context_stack = {
+    std::array<GameExecutionContext, 10> m_contextStack = {
         GameExecutionContext{},
         GameExecutionContext{},
         GameExecutionContext{},
@@ -228,14 +225,11 @@ private:
         GameExecutionContext{},
         GameExecutionContext{},
     };
-    GameExecutionContext* m_current_context = nullptr;
-    int m_context_index = 0;
+    GameExecutionContext* m_currentContext = nullptr;
+    int m_contextIndex = 0;
 
     NomadString m_language = "en";
-
-//    std::vector<Resource*> m_resources;
 };
 
 } // nomad
 
-#endif //NOMAD_GAME_HPP

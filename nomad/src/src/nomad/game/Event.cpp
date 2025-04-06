@@ -20,20 +20,20 @@ NomadId Event::get_script_id() const {
     return m_script_id;
 }
 
-void EventManager::add_event(const NomadString& name, NomadId script_id) {
+void EventManager::addEvent(const NomadString& name, NomadId scriptId) {
     // If the event handler already exists, replace it
     for (auto i = 0; i < m_events.size(); i++) {
         if (m_events[i].get_name() == name) {
-            m_events[i] = Event(name, script_id);
+            m_events[i] = Event(name, scriptId);
             return;
         }
     }
 
     // Event does not exist, add it
-    m_events.emplace_back(name, script_id);
+    m_events.emplace_back(name, scriptId);
 }
 
-void EventManager::remove_event(const NomadString& name) {
+void EventManager::removeEvent(const NomadString& name) {
     for (auto i = 0; i < m_events.size(); i++) {
         if (m_events[i].get_name() == name) {
             m_events.erase(m_events.begin() + i);
@@ -43,7 +43,7 @@ void EventManager::remove_event(const NomadString& name) {
     }
 }
 
-NomadId EventManager::get_script_id_for_event(const NomadString& name) const {
+NomadId EventManager::getScriptIdForEvent(const NomadString& name) const {
     for (auto& event : m_events) {
         if (event.get_name() == name) {
             return event.get_script_id();

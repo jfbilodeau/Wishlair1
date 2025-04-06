@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-25.
 //
 
-#ifndef NOMAD_FORMATSTRINGCOMPILER_HPP
-#define NOMAD_FORMATSTRINGCOMPILER_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -14,8 +13,7 @@ class Compiler;
 class FormatString;
 class Script;
 
-bool compile_format_string(Compiler* compiler, Script* script, const NomadString& format, FormatString* format_string);
+bool compileFormatString(Compiler* compiler, Script* script, const NomadString& format, FormatString* formatString);
 
 } // nomad
 
-#endif //NOMAD_FORMATSTRINGCOMPILER_HPP

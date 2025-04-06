@@ -30,11 +30,11 @@ public:
     EventManager(const EventManager&) = delete;
     ~EventManager() = default;
 
-    void add_event(const NomadString& name, NomadId script_id);
-    void remove_event(const NomadString& name);
+    void addEvent(const NomadString& name, NomadId scriptId);
+    void removeEvent(const NomadString& name);
 
     [[nodiscard]]
-    NomadId get_script_id_for_event(const NomadString& name) const;
+    NomadId getScriptIdForEvent(const NomadString& name) const;
 
 private:
     std::vector<Event> m_events;

@@ -19,19 +19,19 @@
 
 namespace nomad {
 
-ResourceManager::ResourceManager(Game* game, const NomadString& base_path) :
+ResourceManager::ResourceManager(Game* game, const NomadString& basePath) :
     m_game(game),
     m_animations(this),
     m_fonts(this),
     m_sprites(this),
     m_textures(this)
 {
-    if (base_path.empty() == false) {
+    if (basePath.empty() == false) {
         // Make sure base_path does not end with a path separator.
-        if (base_path.back() == '\\' || base_path.back() == '/') {
-            m_base_path = base_path.substr(0, base_path.size() - 1);
+        if (basePath.back() == '\\' || basePath.back() == '/') {
+            m_basePath = basePath.substr(0, basePath.size() - 1);
         } else {
-            m_base_path = base_path;
+            m_basePath = basePath;
         }
     }
 }
@@ -39,16 +39,16 @@ ResourceManager::ResourceManager(Game* game, const NomadString& base_path) :
 ResourceManager::~ResourceManager() {
 }
 
-Game* ResourceManager::get_game() const {
+Game* ResourceManager::getGame() const {
     return m_game;
 }
 
-const NomadString& ResourceManager::get_base_path() const {
-    return m_base_path;
+const NomadString& ResourceManager::getBasePath() const {
+    return m_basePath;
 }
 
-NomadString ResourceManager::make_resource_path(const NomadString& resource_name) const {
-    auto file_name = m_base_path + "/" + resource_name;
+NomadString ResourceManager::makeResourcePath(const NomadString& resourceName) const {
+    auto file_name = m_basePath + "/" + resourceName;
 
     // Adjust path for Windows.
     if (std::filesystem::path::preferred_separator == '\\') {
@@ -58,36 +58,36 @@ NomadString ResourceManager::make_resource_path(const NomadString& resource_name
     return file_name;
 }
 
-AnimationManager* ResourceManager::get_animations() {
+AnimationManager* ResourceManager::getAnimations() {
     return &m_animations;
 }
 
-FontManager* ResourceManager::get_fonts() {
+FontManager* ResourceManager::getFonts() {
     return &m_fonts;
 }
 
-SpriteManager* ResourceManager::get_sprites() {
+SpriteManager* ResourceManager::getSprites() {
     return &m_sprites;
 }
 
-TextManager* ResourceManager::get_text() {
+TextManager* ResourceManager::getText() {
     return &m_text;
 }
 
-TextureManager* ResourceManager::get_textures() {
+TextureManager* ResourceManager::getTextures() {
     return &m_textures;
 }
 
-void ResourceManager::load_sprite_atlas(const NomadString& resource_name) {
+void ResourceManager::loadSpriteAtlas(const NomadString& resourceName) {
     try {
-        log::debug("Loading sprite atlas: '" + resource_name + "'");
+        log::debug("Loading sprite atlas: '" + resourceName + "'");
 
-        NomadString path = make_resource_path(resource_name);
+        NomadString path = makeResourcePath(resourceName);
 
         std::ifstream file(path);
 
         if (!file.is_open()) {
-            throw ResourceException("Cloud not open file: '" + resource_name + "'");
+            throw ResourceException("Cloud not open file: '" + resourceName + "'");
         }
 
         boost::json::stream_parser parser;
@@ -102,10 +102,10 @@ void ResourceManager::load_sprite_atlas(const NomadString& resource_name) {
         auto json = parser.release().as_object();
 
         // Texture name is the resource name but with the extension replaced by .png
-        NomadString texture_name = resource_name.substr(0, resource_name.find_last_of('.')) + ".png";
+        NomadString texture_name = resourceName.substr(0, resourceName.find_last_of('.')) + ".png";
 
-        auto texture_id = get_textures()->register_texture(texture_name);
-        auto texture = get_textures()->get_texture(texture_id);
+        auto texture_id = getTextures()->registerTexture(texture_name);
+        auto texture = getTextures()->getTexture(texture_id);
 
         auto sprites = json.at("sprites").as_array();
 
@@ -128,7 +128,7 @@ void ResourceManager::load_sprite_atlas(const NomadString& resource_name) {
 
             log::debug("Loading sprite: '" + name + "'");
 
-            auto sprite_id = m_sprites.register_sprite(name, texture, source, frame);
+            auto sprite_id = m_sprites.registerSprite(name, texture, source, frame);
 
             if (sprite_id == NOMAD_INVALID_ID) {
                 throw ResourceException("Internal error: Failed to register sprite: '" + name + "'");
@@ -138,15 +138,15 @@ void ResourceManager::load_sprite_atlas(const NomadString& resource_name) {
         log::debug("Loading texture: '" + texture_name + "'");
     }
     catch (const boost::exception& e) {
-        throw ResourceException("Failed to load sprite atlas: '" + resource_name + "'");
+        throw ResourceException("Failed to load sprite atlas: '" + resourceName + "'");
     }
     catch (const std::exception& e) {
-        throw ResourceException("Failed to load sprite atlas: '" + resource_name + "' - " + e.what());
+        throw ResourceException("Failed to load sprite atlas: '" + resourceName + "' - " + e.what());
     }
 }
 
-NomadString ResourceManager::make_resource_name(const NomadString& base_path, const NomadString& file_name) {
-    return base_path + "/" + file_name;
+NomadString ResourceManager::makeResourceName(const NomadString& basePath, const NomadString& fileName) {
+    return basePath + "/" + fileName;
 }
 
 } // nomad

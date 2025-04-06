@@ -17,12 +17,12 @@ Argument::Argument(NomadIndex line, NomadIndex column, const Type* type):
 {
 }
 
-const Type* Argument::get_type() const {
+const Type* Argument::getType() const {
     return m_type;
 }
 
-void Argument::generate_code(Compiler* compiler, Script* script) {
-    on_compile(compiler, script);
+void Argument::generateCode(Compiler* compiler, Script* script) {
+    onCompile(compiler, script);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,26 +39,26 @@ ExpressionArgument::ExpressionArgument(
 {
 }
 
-void ExpressionArgument::on_compile(Compiler* compiler, Script* script) {
+void ExpressionArgument::onCompile(Compiler* compiler, Script* script) {
     m_expression->compile(compiler, script);
 
-    auto argument_type = get_type();
-    auto expression_type = m_expression->get_type();
+    auto argumentType = getType();
+    auto expressionType = m_expression->getType();
 
-    if ( argument_type == nullptr || expression_type == nullptr) {
-        compiler->report_error("Cannot determine type of argument");
+    if ( argumentType == nullptr || expressionType == nullptr) {
+        compiler->reportError("Cannot determine type of argument");
         return;
     }
 
-    if (!argument_type->same_type(expression_type)) {
-        compiler->report_error("Argument type mismatch. Expected " + argument_type->get_name() + " but got " + expression_type->get_name());
+    if (!argumentType->same_type(expressionType)) {
+        compiler->reportError("Argument type mismatch. Expected " + argumentType->getName() + " but got " + expressionType->getName());
         return;
     }
 
-    if (expression_type == compiler->get_runtime()->get_string_type()) {
-        compiler->add_op_code(OpCodes::op_string_push_r);
+    if (expressionType == compiler->getRuntime()->getStringType()) {
+        compiler->addOpCode(OpCodes::op_string_push_r);
     } else {
-        compiler->add_op_code(OpCodes::op_push_r);
+        compiler->addOpCode(OpCodes::op_push_r);
     }
 }
 
@@ -68,15 +68,15 @@ void ExpressionArgument::on_compile(Compiler* compiler, Script* script) {
 PredicateArgument::PredicateArgument(
     NomadIndex line,
     NomadIndex column,
-    NomadId predicate_script_id
+    NomadId predicateScriptId
 ):
     Argument(line, column, nullptr),
-    m_predicate_script_id(predicate_script_id)
+    m_predicateScriptId(predicateScriptId)
 {
 }
 
-void PredicateArgument::on_compile(Compiler* compiler, Script* script) {
-    compiler->add_index(m_predicate_script_id);
+void PredicateArgument::onCompile(Compiler* compiler, Script* script) {
+    compiler->addIndex(m_predicateScriptId);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // CallbackArgument
@@ -91,39 +91,39 @@ CallbackArgument::CallbackArgument(NomadIndex line, NomadIndex column, const Typ
 ///////////////////////////////////////////////////////////////////////////////
 ScriptCallbackArgument::ScriptCallbackArgument(NomadIndex line, NomadIndex column, const Type* type, NomadString name):
     CallbackArgument(line, column, type),
-    m_script_name(std::move(name))
+    m_scriptName(std::move(name))
 {
 }
 
-const NomadString& ScriptCallbackArgument::get_script_name() const {
-    return m_script_name;
+const NomadString& ScriptCallbackArgument::getScriptName() const {
+    return m_scriptName;
 }
 
-void ScriptCallbackArgument::on_compile(Compiler* compiler, Script* script) {
-    auto script_id = compiler->get_runtime()->get_script_id(m_script_name);
+void ScriptCallbackArgument::onCompile(Compiler* compiler, Script* script) {
+    auto scriptId = compiler->getRuntime()->getScriptId(m_scriptName);
 
-    if (script_id == NOMAD_INVALID_ID) {
-        compiler->report_error("Unknown callback script name: " + m_script_name);
+    if (scriptId == NOMAD_INVALID_ID) {
+        compiler->reportError("Unknown callback script name: " + m_scriptName);
         return;
     }
 
-    compiler->add_op_code(OpCodes::op_id_push);
-    compiler->add_index(script_id);
+    compiler->addOpCode(OpCodes::op_id_push);
+    compiler->addIndex(scriptId);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // FunCallbackArgument
 ///////////////////////////////////////////////////////////////////////////////
-FunCallbackArgument::FunCallbackArgument(NomadIndex line, NomadIndex column, const Type* type, NomadId script_id):
+FunCallbackArgument::FunCallbackArgument(NomadIndex line, NomadIndex column, const Type* type, NomadId scriptId):
     CallbackArgument(line, column, type),
-    m_script_id(script_id)
+    m_scriptId(scriptId)
 {
 
 }
 
-void FunCallbackArgument::on_compile(Compiler* compiler, Script* script) {
-    compiler->add_op_code(OpCodes::op_id_push);
-    compiler->add_index(m_script_id);
+void FunCallbackArgument::onCompile(Compiler* compiler, Script* script) {
+    compiler->addOpCode(OpCodes::op_id_push);
+    compiler->addIndex(m_scriptId);
 }
 
 } // namespace nomad

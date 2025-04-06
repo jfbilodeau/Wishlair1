@@ -11,36 +11,36 @@ namespace nomad {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Sprite
-Sprite::Sprite(const NomadString& sprite_name, const Texture* texture, const Rectangle& source, const Rectangle& frame):
-    m_name(sprite_name),
+Sprite::Sprite(const NomadString& spriteName, const Texture* texture, const Rectangle& source, const Rectangle& frame):
+    m_name(spriteName),
     m_texture(texture),
     m_source(source),
     m_frame(frame)
 {
 }
 
-const NomadString& Sprite::get_name() const {
+const NomadString& Sprite::getName() const {
     return m_name;
 }
 
-const Rectangle& Sprite::get_source() const {
+const Rectangle& Sprite::getSource() const {
     return m_source;
 }
 
-const Rectangle& Sprite::get_frame() const {
+const Rectangle& Sprite::getFrame() const {
     return m_frame;
 }
 
-const Texture* Sprite::get_texture() const {
+const Texture* Sprite::getTexture() const {
     return m_texture;
 }
 
-NomadInteger Sprite::get_width() const {
-    return m_source.get_width();
+NomadInteger Sprite::getWidth() const {
+    return m_source.getWidth();
 }
 
-NomadInteger Sprite::get_height() const {
-    return m_source.get_height();
+NomadInteger Sprite::getHeight() const {
+    return m_source.getHeight();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ SpriteManager::SpriteManager(ResourceManager* resources):
 {}
 
 
-NomadId SpriteManager::register_sprite(
+NomadId SpriteManager::registerSprite(
     const NomadString& sprite_name, const Texture* texture, const Rectangle& source, const Rectangle& frame
 ) {
     auto id = to_nomad_id(m_sprites.size());
@@ -67,7 +67,7 @@ NomadId SpriteManager::register_sprite(
     return id;
 }
 
-const Sprite* SpriteManager::get_sprite(NomadId sprite_id) const {
+const Sprite* SpriteManager::getSprite(NomadId sprite_id) const {
     if (sprite_id >= m_sprites.size()) {
         return nullptr;
     }
@@ -75,9 +75,9 @@ const Sprite* SpriteManager::get_sprite(NomadId sprite_id) const {
     return m_sprites[sprite_id].get();
 }
 
-const Sprite* SpriteManager::get_sprite_by_name(const NomadString& name) const {
+const Sprite* SpriteManager::getSpriteByName(const NomadString& name) const {
     for (const auto& sprite : m_sprites) {
-        if (sprite->get_name() == name) {
+        if (sprite->getName() == name) {
             return sprite.get();
         }
     }
@@ -85,9 +85,9 @@ const Sprite* SpriteManager::get_sprite_by_name(const NomadString& name) const {
     return nullptr;
 }
 
-void SpriteManager::get_sprites_by_prefix(const NomadString& prefix, std::vector<Sprite*>& sprites) const {
+void SpriteManager::getSpritesByPrefix(const NomadString& prefix, std::vector<Sprite*>& sprites) const {
     for (const auto& sprite : m_sprites) {
-        if (sprite->get_name().compare(0, prefix.size(), prefix) == 0) {
+        if (sprite->getName().compare(0, prefix.size(), prefix) == 0) {
             sprites.push_back(sprite.get());
         }
     }

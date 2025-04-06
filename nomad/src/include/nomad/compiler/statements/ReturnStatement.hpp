@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-12-11.
 //
 
-#ifndef NOMAD_RETURNSTATEMENT_HPP
-#define NOMAD_RETURNSTATEMENT_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -26,14 +25,13 @@ public:
     explicit ReturnStatementNode(NomadIndex line, NomadIndex column, std::unique_ptr<Expression> expression);
 
 protected:
-    void on_compile(Compiler* compiler, Script* script) override;
+    void onCompile(Compiler* compiler, Script* script) override;
 
 private:
     std::unique_ptr<Expression> m_expression;
 };
 
-std::unique_ptr<StatementNode> parse_return_statement(Compiler* compiler, Script* script, Tokenizer* tokens);
+std::unique_ptr<StatementNode> parseReturnStatement(Compiler* compiler, Script* script, Tokenizer* tokens);
 
 } // namespace nomad
 
-#endif //NOMAD_RETURNSTATEMENT_HPP

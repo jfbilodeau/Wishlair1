@@ -20,22 +20,22 @@ ReturnStatementNode::ReturnStatementNode(
 {
 }
 
-void ReturnStatementNode::on_compile(Compiler* compiler, Script* script) {
+void ReturnStatementNode::onCompile(Compiler* compiler, Script* script) {
     m_expression->compile(compiler, script);
 
-    compiler->add_op_code(OpCodes::op_return);
+    compiler->addOpCode(OpCodes::op_return);
 
-    if (script->get_return_type() == nullptr) {
-        script->set_return_type(m_expression->get_type());
-    } else if (script->get_return_type() != m_expression->get_type()) {
-        compiler->report_error("Return type mismatch in script '" + script->get_name() + "'. Script return type is '" + script->get_return_type()->get_name() + "' but expression type is '" + m_expression->get_type()->get_name() + "'");
+    if (script->getReturnType() == nullptr) {
+        script->setReturnType(m_expression->getType());
+    } else if (script->getReturnType() != m_expression->getType()) {
+        compiler->reportError("Return type mismatch in script '" + script->getName() + "'. Script return type is '" + script->getReturnType()->getName() + "' but expression type is '" + m_expression->getType()->getName() + "'");
     }
 }
 
-std::unique_ptr<StatementNode> parse_return_statement(Compiler* compiler, Script* script, Tokenizer* tokens) {
-    auto expression = parser::parse_expression(compiler, script, tokens);
+std::unique_ptr<StatementNode> parseReturnStatement(Compiler* compiler, Script* script, Tokenizer* tokens) {
+    auto expression = parser::parseExpression(compiler, script, tokens);
     
-    return std::make_unique<ReturnStatementNode>(tokens->get_line_index(), tokens->get_column_index(), std::move(expression));
+    return std::make_unique<ReturnStatementNode>(tokens->getLineIndex(), tokens->getColumnIndex(), std::move(expression));
 }
 
 } // namespace nomad

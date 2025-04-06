@@ -24,34 +24,34 @@ Script::~Script() = default;
 
 
 void Script::add_parameter(const NomadString& parameter_name, const Type* type) {
-    m_parameters.register_variable(parameter_name, type);
+    m_parameters.registerVariable(parameter_name, type);
 }
 
-NomadId Script::get_parameter_id(const NomadString& parameter_name) const {
-    return m_parameters.get_variable_id(parameter_name);
+NomadId Script::getParameterId(const NomadString& parameter_name) const {
+    return m_parameters.getVariableId(parameter_name);
 }
 
-const NomadString& Script::get_parameter_name(NomadId parameter_id) const {
-    return m_parameters.get_variable_name(parameter_id);
+const NomadString& Script::getParameterName(NomadId parameter_id) const {
+    return m_parameters.getVariableName(parameter_id);
 }
 
-const Type* Script::get_parameter_type(NomadId parameter_id) const {
-    return m_parameters.get_variable_type(parameter_id);
+const Type* Script::getParameterType(NomadId parameter_id) const {
+    return m_parameters.getVariableType(parameter_id);
 }
 
-NomadIndex Script::get_parameter_count() const {
-    return m_parameters.get_variable_count();
+NomadIndex Script::getParameterCount() const {
+    return m_parameters.getVariableCount();
 }
 
 
-NomadId Script::register_variable(const NomadString& variable_name, const Type* type) {
-    auto variable_id = m_variables.get_variable_id(variable_name);
+NomadId Script::registerVariable(const NomadString& variable_name, const Type* type) {
+    auto variable_id = m_variables.getVariableId(variable_name);
 
     if (variable_id != NOMAD_INVALID_ID) {
-        auto current_type = m_variables.get_variable_type(variable_id);
+        auto current_type = m_variables.getVariableType(variable_id);
 
         if (current_type == nullptr) {
-            m_variables.set_variable_type(variable_id, type);
+            m_variables.setVariableType(variable_id, type);
         } else if (current_type != type) {
             throw NomadException("[Script::register_variable] Internal error: Variable '" + variable_name + "' already exists with a different type");
         }
@@ -59,34 +59,34 @@ NomadId Script::register_variable(const NomadString& variable_name, const Type* 
         return variable_id;
     }
 
-    return m_variables.register_variable(variable_name, type);
+    return m_variables.registerVariable(variable_name, type);
 }
 
-NomadId Script::get_variable_id(const NomadString& variable_name) const {
-    return m_variables.get_variable_id(variable_name);
+NomadId Script::getVariableId(const NomadString& variable_name) const {
+    return m_variables.getVariableId(variable_name);
 }
 
 [[nodiscard]] const NomadString& Script::get_variable_name(NomadId variable_id) const {
-    return m_variables.get_variable_name(variable_id);
+    return m_variables.getVariableName(variable_id);
 }
 
 void Script::set_variable_type(NomadId variable_id, const Type* type) {
-    m_variables.set_variable_type(variable_id, type);
+    m_variables.setVariableType(variable_id, type);
 }
 
-const Type* Script::get_variable_type(NomadId variable_id) const {
-    return m_variables.get_variable_type(variable_id);
+const Type* Script::getVariableType(NomadId variable_id) const {
+    return m_variables.getVariableType(variable_id);
 }
 
-NomadIndex Script::get_variable_count() const {
-    return m_variables.get_variable_count();
+NomadIndex Script::getVariableCount() const {
+    return m_variables.getVariableCount();
 }
 
-void Script::set_return_type(const Type* return_type) {
+void Script::setReturnType(const Type* return_type) {
     m_return_type = return_type;
 }
 
-const Type* Script::get_return_type() const {
+const Type* Script::getReturnType() const {
     return m_return_type;
 }
 
@@ -112,15 +112,15 @@ const Type* Script::get_return_type() const {
 //    return m_format_strings[id];
 //}
 
-void Script::set_script_start(NomadIndex script_start_index) {
+void Script::setScriptStart(NomadIndex script_start_index) {
     m_script_start_index = script_start_index;
 }
 
-NomadIndex Script::get_script_start() const {
+NomadIndex Script::getScriptStart() const {
     return m_script_start_index;
 }
 
-void Script::set_script_end(NomadIndex script_end_index) {
+void Script::setScriptEnd(NomadIndex script_end_index) {
     m_script_end_index = script_end_index;
 }
 

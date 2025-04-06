@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-11-01.
 //
 
-#ifndef NOMAD_TILEMAP_HPP
-#define NOMAD_TILEMAP_HPP
+#pragma once
 
 #include "nomad/geometry/PointF.hpp"
 
@@ -30,7 +29,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class TileSet {
 public:
-    explicit TileSet(NomadIndex tile_count);
+    explicit TileSet(NomadIndex tileCount);
     ~TileSet();
 
 private:
@@ -42,14 +41,14 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class EntityDefinition {
 public:
-    explicit EntityDefinition(NomadId entity_id, NomadString script_name);
+    explicit EntityDefinition(NomadId entityId, NomadString scriptName);
 
-    [[nodiscard]] NomadId get_entity_id() const;
-    [[nodiscard]] const NomadString& get_script_name() const;
+    [[nodiscard]] NomadId getEntityId() const;
+    [[nodiscard]] const NomadString& getScriptName() const;
 
 private:
-    NomadId m_entity_id;
-    NomadString m_script_name;
+    NomadId m_entityId;
+    NomadString m_scriptName;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,11 +56,11 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class EntitySet {
 public:
-    explicit EntitySet(NomadIndex entity_count = 0);
+    explicit EntitySet(NomadIndex entityCount = 0);
 
-    NomadId register_entity(NomadId entity_id, const NomadString& name);
+    NomadId registerEntity(NomadId entityId, const NomadString& name);
 
-    [[nodiscard]] const EntityDefinition* get_entity(NomadIndex index) const;
+    [[nodiscard]] const EntityDefinition* getEntity(NomadIndex index) const;
 
 private:
     std::vector<EntityDefinition> m_entities;
@@ -72,20 +71,20 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class TileLayer {
 public:
-    TileLayer(NomadIndex width = 0, NomadIndex height = 0, TileSet* tile_set = nullptr);
+    TileLayer(NomadIndex width = 0, NomadIndex height = 0, TileSet* tileSet = nullptr);
 
-    [[nodiscard]] NomadIndex get_width() const;
-    [[nodiscard]] NomadIndex get_height() const;
+    [[nodiscard]] NomadIndex getWidth() const;
+    [[nodiscard]] NomadIndex getHeight() const;
 
-    [[nodiscard]] const Tile& get_tile(NomadIndex x, NomadIndex y) const;
-    void set_tile(NomadIndex x, NomadIndex y, const Tile& tile);
+    [[nodiscard]] const Tile& getTile(NomadIndex x, NomadIndex y) const;
+    void setTile(NomadIndex x, NomadIndex y, const Tile& tile);
 
-    [[nodiscard]] const TileSet* get_tile_set() const;
+    [[nodiscard]] const TileSet* getTileSet() const;
 
 private:
     NomadIndex m_width;
     NomadIndex m_height;
-    TileSet* m_tile_set;
+    TileSet* m_tileSet;
     std::vector<Tile> m_tiles;
 };
 
@@ -94,15 +93,15 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class EntityInstance {
 public:
-    EntityInstance(NomadString entity_id, NomadString  script_name, NomadInteger layer, const PointF& location);
+    EntityInstance(NomadString entityId, NomadString  scriptName, NomadInteger layer, const PointF& location);
 
-    [[nodiscard]] const NomadString& get_entity_id() const;
-    [[nodiscard]] const NomadString& get_script_name() const;
-    [[nodiscard]] const PointF& get_location() const;
+    [[nodiscard]] const NomadString& getEntityId() const;
+    [[nodiscard]] const NomadString& getScriptName() const;
+    [[nodiscard]] const PointF& getLocation() const;
 
 private:
-    NomadString m_entity_id;
-    NomadString m_script_name;
+    NomadString m_entityId;
+    NomadString m_scriptName;
     NomadInteger m_layer;
     PointF m_location;
 };
@@ -112,13 +111,13 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 class TileMap {
 public:
-    TileMap(NomadIndex width, NomadIndex height, NomadIndex layer_count);
+    TileMap(NomadIndex width, NomadIndex height, NomadIndex layerCount);
 
-    [[nodiscard]] NomadIndex get_width() const;
-    [[nodiscard]] NomadIndex get_height() const;
-    [[nodiscard]] NomadIndex get_layer_count() const;
+    [[nodiscard]] NomadIndex getWidth() const;
+    [[nodiscard]] NomadIndex getHeight() const;
+    [[nodiscard]] NomadIndex getLayerCount() const;
 
-    [[nodiscard]] const TileLayer* get_layer(NomadIndex index) const;
+    [[nodiscard]] const TileLayer* getLayer(NomadIndex index) const;
 
 private:
     NomadIndex m_width, m_height;
@@ -128,4 +127,3 @@ private:
 
 } // namespace nomad
 
-#endif //NOMAD_TILEMAP_HPP

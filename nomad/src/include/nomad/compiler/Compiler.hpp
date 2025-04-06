@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-04.
 //
 
-#ifndef NOMAD_COMPILER_HPP
-#define NOMAD_COMPILER_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -13,7 +12,6 @@
 
 #include "nomad/script/Command.hpp"
 #include "nomad/script/OpCode.hpp"
-#include "nomad/script/Runtime.hpp"
 
 #include <unordered_map>
 #include <vector>
@@ -41,88 +39,88 @@ public:
     Compiler(const Compiler& other) = delete;
     ~Compiler();
 
-    [[nodiscard]] Runtime* get_runtime() const;
+    [[nodiscard]] Runtime* getRuntime() const;
 
     // Error reporting
-    [[noreturn]] void report_error(const NomadString& message);
-    [[noreturn]] void report_error(const NomadString& message, Script* script, Tokenizer* tokenizer);
-    [[noreturn]] void report_error(const NomadString& message, const NomadString& script_name, NomadIndex line, NomadIndex column);
-    [[noreturn]] void report_internal_error(const NomadString& message);
+    [[noreturn]] void reportError(const NomadString& message);
+    [[noreturn]] void reportError(const NomadString& message, Script* script, Tokenizer* tokenizer);
+    [[noreturn]] void reportError(const NomadString& message, const NomadString& scriptName, NomadIndex line, NomadIndex column);
+    [[noreturn]] void reportInternalError(const NomadString& message);
 
     // Currently compiling script
 //    void set_current_script(Script* current_script);
 //    [[nodiscard]] Script* get_current_script() const;
 
     // Statements
-    void register_parse_statement_fn(const NomadString& name, ParseStatementFn fn, PreParseStatementFn pre_fn = nullptr);
-    [[nodiscard]] bool is_statement(const NomadString& name) const;
-    [[nodiscard]] bool get_parse_statement_fn(const NomadString& name, ParseStatementFn& fn) const;
-    [[nodiscard]] bool get_pre_parse_statement_fn(const NomadString& name, PreParseStatementFn& fn) const;
-    void get_registered_statements(std::vector<NomadString>& parsers) const;
+    void registerParseStatementFn(const NomadString& name, ParseStatementFn fn, PreParseStatementFn preFn = nullptr);
+    [[nodiscard]] bool isStatement(const NomadString& name) const;
+    [[nodiscard]] bool getParseStatementFn(const NomadString& name, ParseStatementFn& fn) const;
+    [[nodiscard]] bool getGetPreParseStatementFn(const NomadString& name, PreParseStatementFn& fn) const;
+    void getRegisteredStatements(std::vector<NomadString>& parsers) const;
 
     // Constant folding
-    void register_unary_operator(UnaryOperator op, const Type* operand, const Type* result, const NomadString& op_code_name, UnaryFoldingFn fn);
-    void register_binary_operator(BinaryOperator op, const Type* lhs, const Type* rhs, const Type* result, const NomadString& op_code_name, BinaryFoldingFn fn);
-    [[nodiscard]] const Type* get_unary_operator_result_type(UnaryOperator op, const Type* operand_type) const;
-    [[nodiscard]] const Type* get_binary_operator_result_type(BinaryOperator op, const Type* lhs_type, const Type* rhs_type) const;
-    [[nodiscard]] NomadId get_unary_operator_op_code_id(UnaryOperator op, const Type* operand) const;
-    [[nodiscard]] NomadId get_binary_operator_op_code_id(BinaryOperator op, const Type* lhs, const Type* rhs) const;
-    [[nodiscard]] bool fold_unary(
+    void registerUnaryOperator(UnaryOperator op, const Type* operand, const Type* result, const NomadString& opCodeName, UnaryFoldingFn fn);
+    void registerBinaryOperator(BinaryOperator op, const Type* lhs, const Type* rhs, const Type* result, const NomadString& opCodeName, BinaryFoldingFn fn);
+    [[nodiscard]] const Type* getUnaryOperatorResultType(UnaryOperator op, const Type* operandType) const;
+    [[nodiscard]] const Type* getBinaryOperatorResultType(BinaryOperator op, const Type* lhsType, const Type* rhsType) const;
+    [[nodiscard]] NomadId getUnaryOperatorOpCodeId(UnaryOperator op, const Type* operand) const;
+    [[nodiscard]] NomadId getBinaryOperatorOpCodeId(BinaryOperator op, const Type* lhs, const Type* rhs) const;
+    [[nodiscard]] bool foldUnary(
         UnaryOperator op,
-        const Type* operand_type,
+        const Type* operandType,
         const ScriptValue& value,
         ScriptValue& result
     ) const;
-    [[nodiscard]] bool fold_binary(
+    [[nodiscard]] bool foldBinary(
         BinaryOperator op,
-        const Type* lhs_type,
+        const Type* lhsType,
         const ScriptValue& lhs,
-        const Type* rhs_type,
+        const Type* rhsType,
         const ScriptValue& rhs,
         ScriptValue& result
     ) const;
 
     // Identifier identification
-    IdentifierType get_identifier_type(const NomadString& name, Script* script);
-    void get_identifier_definition(const NomadString& name, Script* script, IdentifierDefinition& definition);
+    IdentifierType getIdentifierType(const NomadString& name, Script* script);
+    void getIdentifierDefinition(const NomadString& name, Script* script, IdentifierDefinition& definition);
 
     // Opcode generation
-    [[nodiscard]] NomadIndex get_op_code_size() const;
+    [[nodiscard]] NomadIndex getOpCodeSize() const;
 
-    NomadIndex add_op_code(NomadId op_code);
-    NomadIndex add_op_code(const NomadString& op_code_name);
-    NomadIndex add_id(NomadId id);
-    NomadIndex add_index(NomadIndex index);
-    NomadIndex add_integer(NomadInteger value);
-    NomadIndex add_float(NomadFloat value);
-    NomadIndex add_load_value(const Type* type, const ScriptValue& value);
-    NomadIndex add_load_boolean_value(bool value);
-    NomadIndex add_load_float_value(NomadFloat value);
-    NomadIndex add_load_integer_value(NomadInteger value);
-    NomadIndex add_load_string_value(const NomadString& value);
+    NomadIndex addOpCode(NomadId opCode);
+    NomadIndex addOpCode(const NomadString& opCodeName);
+    NomadIndex addId(NomadId id);
+    NomadIndex addIndex(NomadIndex index);
+    NomadIndex addInteger(NomadInteger value);
+    NomadIndex addFloat(NomadFloat value);
+    NomadIndex addLoadValue(const Type* type, const ScriptValue& value);
+    NomadIndex addLoadBooleanValue(bool value);
+    NomadIndex addLoadFloatValue(NomadFloat value);
+    NomadIndex addLoadIntegerValue(NomadInteger value);
+    NomadIndex addLoadStringValue(const NomadString& value);
 
-    NomadIndex add_push_result(const Type* type);
-    NomadIndex add_pop_intermediate(const Type* type);
+    NomadIndex addPushResult(const Type* type);
+    NomadIndex addPopIntermediate(const Type* type);
 
-    NomadIndex add_script_call(NomadId target_script_id);
-    NomadIndex add_command_call(NomadId command_id);
+    NomadIndex addScriptCall(NomadId targetScriptId);
+    NomadIndex addCommandCall(NomadId commandId);
 
-    void set_op_code(NomadIndex index, const NomadString& op_code_name);
-    void set_op_code(NomadIndex index, NomadId op_code_id);
-    void set_id(NomadIndex index, NomadId id);
-    void set_index(NomadIndex index, NomadIndex value);
+    void setOpCode(NomadIndex index, const NomadString& opCodeName);
+    void setOpCode(NomadIndex index, NomadId opCodeId);
+    void setId(NomadIndex index, NomadId id);
+    void setIndex(NomadIndex index, NomadIndex value);
 
-    NomadId register_script_file(const NomadString& script_name, const NomadString& file_name, const NomadString& source);
-    NomadId register_script_source(const NomadString& script_name, const NomadString& file_name, const NomadString& source);
-    void set_script_node(NomadId script_id, std::unique_ptr<ScriptNode> ast);
-    void load_scripts_from_path(const NomadString& path);
-    void compile_scripts();
-    void add_script_link(NomadId script_id, NomadIndex call_index);
-    void link_scripts();
+    NomadId registerScriptFile(const NomadString& scriptName, const NomadString& fileName, const NomadString& source);
+    NomadId registerScriptSource(const NomadString& scriptName, const NomadString& fileName, const NomadString& source);
+    void setScriptNode(NomadId scriptId, std::unique_ptr<ScriptNode> ast);
+    void loadScriptsFromPath(const NomadString& path);
+    void compileScripts();
+    void addScriptLink(NomadId scriptId, NomadIndex callIndex);
+    void linkScripts();
 
     // Generate script names for internal scripts
-    NomadString generate_script_name(const NomadString& generated_name, const NomadString& host_script_name, NomadIndex line);
-    NomadString generate_script_name(const NomadString& name, const Script* script, NomadIndex line);
+    NomadString generateScriptName(const NomadString& generatedName, const NomadString& hostScriptName, NomadIndex line);
+    NomadString generateScriptName(const NomadString& name, const Script* script, NomadIndex line);
 
 private:
     struct ScriptSource {
@@ -132,24 +130,24 @@ private:
     };
 
     struct ScriptFile {
-        NomadString script_name;
-        NomadString file_name;
+        NomadString scriptName;
+        NomadString fileName;
         NomadString source;
         Tokenizer tokens;
 
-        NomadId script_id;
+        NomadId scriptId;
     };
 
 //    void compile_init_script(Script* script);
-    void pre_parse_script(ScriptFile& script_file);
-    void parse_script(ScriptFile& file);
-    void compile_script(ScriptSource& source);
-    void scan_directory_for_scripts(const NomadString& base_path, const NomadString& sub_path, NomadIndex max_depth);
+    void preParseScript(ScriptFile& scriptFile);
+    void parseScript(ScriptFile& file);
+    void compileScript(ScriptSource& source);
+    void scanDirectoryForScripts(const NomadString& basePath, const NomadString& sub_path, NomadIndex max_depth);
 
     Runtime* m_runtime;
 
     struct ParseStatementFnRegistration {
-        PreParseStatementFn pre_fn;
+        PreParseStatementFn preFn;
         ParseStatementFn fn;
     };
 
@@ -163,7 +161,7 @@ private:
         UnaryOperator op;
         const Type* operand;
         const Type* result;
-        NomadId op_code_id;
+        NomadId opCodeId;
         UnaryFoldingFn fn;
     };
 
@@ -172,26 +170,25 @@ private:
         const Type* lhs;
         const Type* rhs;
         const Type* result;
-        NomadId op_code_id;
+        NomadId opCodeId;
         BinaryFoldingFn fn;
     };
 
     struct ScriptLink {
-        NomadId script_id;
-        NomadIndex call_index;
+        NomadId scriptId;
+        NomadIndex callIndex;
     };
 
 //    Script* m_current_script;
     std::unordered_map<NomadString, ParseStatementFnRegistration> m_statements;
-    std::vector<OpCodeRegistration> m_op_code_registrations;
-    std::vector<UnaryOperatorRegistration> m_unary_operators;
-    std::vector<BinaryOperatorRegistration> m_binary_operators;
+    std::vector<OpCodeRegistration> m_opCodeRegistrations;
+    std::vector<UnaryOperatorRegistration> m_unaryOperators;
+    std::vector<BinaryOperatorRegistration> m_binaryOperators;
     std::vector<ScriptFile> m_files;
     std::vector<ScriptSource> m_sources;
-    std::vector<ScriptLink> m_script_links;
+    std::vector<ScriptLink> m_scriptLinks;
     std::vector<Instruction>& m_instructions;
 };
 
 } // nomad
 
-#endif //NOMAD_COMPILER_HPP

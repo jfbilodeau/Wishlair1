@@ -19,36 +19,36 @@ PointF::PointF(Coord x, Coord y):
 {
 }
 
-NomadFloat PointF::distance_to(const PointF& other) const {
+NomadFloat PointF::distanceTo(const PointF& other) const {
     return std::sqrt(
         std::pow(m_x - other.m_x, 2) +
         std::pow(m_y - other.m_y, 2)
     );
 }
 
-NomadFloat PointF::distance_to(Coord x, Coord y) const {
+NomadFloat PointF::distanceTo(Coord x, Coord y) const {
     return std::sqrt(
         std::pow(m_x - x, 2) +
         std::pow(m_y - y, 2)
     );
 }
 
-SDL_Point& PointF::to_sdl_point(SDL_Point& point) const {
+SDL_Point& PointF::toSdlPoint(SDL_Point& point) const {
     point.x = int(m_x);
     point.y = int(m_y);
 
     return point;
 }
 
-SDL_Point PointF::to_sdl_point() const {
+SDL_Point PointF::toSdlPoint() const {
     return SDL_Point{int(m_x), int(m_y)};
 }
 
-SDL_FPoint PointF::to_sdl_fpoint() const {
+SDL_FPoint PointF::toSdlFpoint() const {
     return SDL_FPoint{float(m_x), float(m_y)};
 }
 
-SDL_FPoint& PointF::to_sdl_fpoint(SDL_FPoint& point) const {
+SDL_FPoint& PointF::toSdlFpoint(SDL_FPoint& point) const {
     point.x = float(m_x);
     point.y = float(m_y);
 

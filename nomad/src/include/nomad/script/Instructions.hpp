@@ -2,29 +2,26 @@
 // Created by jfbil on 2023-06-04.
 //
 
-#ifndef CPP_INSTRUCTIONS_HPP
-#define CPP_INSTRUCTIONS_HPP
+#pragma once
 
 namespace nomad {
 
 class Interpreter;
 
-void instruction_nop(Interpreter * interpreter);
-void instruction_return(Interpreter * interpreter);
-void instruction_return_zero(Interpreter * interpreter);
-void instruction_yield(Interpreter * interpreter);
-void instruction_call_command(Interpreter* interpreter);
-//void instruction_call_fun(Interpreter * interpreter);
-void instruction_call_script(Interpreter * interpreter);
-void instruction_jump(Interpreter * interpreter);
-void instruction_if(Interpreter * interpreter);
-void instruction_set_constant(Interpreter * interpreter);
-void instruction_set_dynamic_variable(Interpreter * interpreter);
-void instruction_set_context_variable(Interpreter * interpreter);
-void instruction_set_script_variable(Interpreter * interpreter);
-void instruction_assert(Interpreter * interpreter);
-void instruction_string_assert(Interpreter * interpreter);
+void instructionNop(Interpreter * interpreter);
+void instructionReturn(Interpreter * interpreter);
+void instructionReturnZero(Interpreter * interpreter);
+void instructionYield(Interpreter * interpreter);
+void instructionCallCommand(Interpreter* interpreter);
+void instructionCallScript(Interpreter * interpreter);
+void instructionJump(Interpreter * interpreter);
+void instructionIf(Interpreter * interpreter);
+void instructionSetConstant(Interpreter * interpreter);
+void instructionSetDynamicVariable(Interpreter * interpreter);
+void instructionSetContextVariable(Interpreter * interpreter);
+void instructionSetScriptVariable(Interpreter * interpreter);
+void instructionAssert(Interpreter * interpreter);
+void instructionStringAssert(Interpreter * interpreter);
 
 } // nomad
 
-#endif //CPP_INSTRUCTIONS_HPP

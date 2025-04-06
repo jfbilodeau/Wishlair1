@@ -11,63 +11,63 @@ namespace nomad {
 void GameExecutionContext::reset(Scene* scene, Entity* entity) {
     m_scene = scene;
     m_entity = entity;
-    clear_other_entities();
+    clearOtherEntities();
 }
 
-void GameExecutionContext::set_scene(Scene* scene) {
+void GameExecutionContext::setScene(Scene* scene) {
     m_scene = scene;
 }
 
-Scene* GameExecutionContext::get_scene() const {
+Scene* GameExecutionContext::getScene() const {
     return m_scene;
 }
 
-void GameExecutionContext::set_this_entity(Entity* entity) {
+void GameExecutionContext::setThisEntity(Entity* entity) {
     m_entity = entity;
 }
 
-Entity* GameExecutionContext::get_this_entity() const {
+Entity* GameExecutionContext::getThisEntity() const {
     return m_entity;
 }
 
-void GameExecutionContext::push_other_entity(Entity* entity) {
-    m_other_entities.push_back(entity);
+void GameExecutionContext::pushOtherEntity(Entity* entity) {
+    m_otherEntities.push_back(entity);
 }
 
-NomadIndex GameExecutionContext::get_other_entity_count() const {
-    return m_other_entities.size();
+NomadIndex GameExecutionContext::getOtherEntityCount() const {
+    return m_otherEntities.size();
 }
 
-void GameExecutionContext::clear_other_entities() {
-    m_other_entities.clear();
+void GameExecutionContext::clearOtherEntities() {
+    m_otherEntities.clear();
 }
 
-void GameExecutionContext::add_other_entity(Entity* entity) {
-    m_other_entities.push_back(entity);
+void GameExecutionContext::addOtherEntity(Entity* entity) {
+    m_otherEntities.push_back(entity);
 }
 
-void GameExecutionContext::clear_other_entities_and_add(Entity* entity) {
-    m_other_entities.clear();
-    m_other_entities.push_back(entity);
+void GameExecutionContext::clearOtherEntitiesAndAdd(Entity* entity) {
+    m_otherEntities.clear();
+    m_otherEntities.push_back(entity);
 }
 
-void GameExecutionContext::set_other_entities(const std::vector<Entity*>& entities) {
-    m_other_entities = entities;
+void GameExecutionContext::setOtherEntities(const std::vector<Entity*>& entities) {
+    m_otherEntities = entities;
 }
 
-void GameExecutionContext::set_other_entities(const TempVector<Entity*>& entities) {
-    m_other_entities.assign(entities.begin(), entities.end());
+void GameExecutionContext::setOtherEntities(const TempVector<Entity*>& entities) {
+    m_otherEntities.assign(entities.begin(), entities.end());
 }
 
-const std::vector<Entity*>& GameExecutionContext::get_other_entities() const {
-    return m_other_entities;
+const std::vector<Entity*>& GameExecutionContext::getOtherEntities() const {
+    return m_otherEntities;
 }
 
-Entity * GameExecutionContext::get_first_other_entity() const {
-    if (m_other_entities.empty()) {
+Entity * GameExecutionContext::getFirstOtherEntity() const {
+    if (m_otherEntities.empty()) {
         return nullptr;
     }
 
-    return m_other_entities.front();
+    return m_otherEntities.front();
 }
 } // nomad

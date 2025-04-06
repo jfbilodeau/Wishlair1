@@ -19,11 +19,11 @@ AstException::AstException(const NomadString& message, NomadIndex line, NomadInd
     m_column(column) {
 }
 
-NomadIndex AstException::get_line() const {
+NomadIndex AstException::getLine() const {
     return m_line;
 }
 
-NomadIndex AstException::get_column() const {
+NomadIndex AstException::getColumn() const {
     return m_column;
 }
 
@@ -35,15 +35,15 @@ AstNode::AstNode(NomadIndex line, NomadIndex column):
     m_column(column) {
 }
 
-void AstNode::raise_exception(const NomadString& message) const {
+void AstNode::raiseException(const NomadString& message) const {
     throw AstException(message, m_line, m_column);
 }
 
-NomadIndex AstNode::get_line() const {
+NomadIndex AstNode::getLine() const {
     return m_line;
 }
 
-NomadIndex AstNode::get_column() const {
+NomadIndex AstNode::getColumn() const {
     return m_column;
 }
 
@@ -56,7 +56,7 @@ void ArgumentList::add(std::unique_ptr<Argument> argument) {
 void ArgumentList::compile(Compiler* compiler, Script* script) {
     // Push arguments in reverse order
     for (auto argument = m_arguments.rbegin(); argument != m_arguments.rend(); ++argument) {
-        (*argument)->generate_code(compiler, script);
+        (*argument)->generateCode(compiler, script);
     }
 }
 
@@ -67,18 +67,18 @@ StatementNode::StatementNode(NomadIndex line, NomadIndex column):
 }
 
 void StatementNode::parse(Compiler* compiler, Script* script) {
-    on_parse(compiler, script);
+    onParse(compiler, script);
 }
 
 void StatementNode::compile(Compiler* compiler, Script* script) {
-    on_compile(compiler, script);
+    onCompile(compiler, script);
 }
 
-void StatementNode::on_parse(Compiler* compiler, Script* script) {
+void StatementNode::onParse(Compiler* compiler, Script* script) {
     // Default implementation does nothing
 }
 
-void StatementNode::on_compile(Compiler* compiler, Script* script) {
+void StatementNode::onCompile(Compiler* compiler, Script* script) {
     // Default implementation does nothing
 }
 
@@ -89,7 +89,7 @@ NullStatementNode::NullStatementNode(NomadIndex line, NomadIndex column):
 
 }
 
-void NullStatementNode::on_compile(nomad::Compiler* compiler, Script* script) {
+void NullStatementNode::onCompile(nomad::Compiler* compiler, Script* script) {
     // Nothing to do...
 }
 
@@ -107,110 +107,110 @@ AssignmentStatementNode::AssignmentStatementNode(
 
 }
 
-void AssignmentStatementNode::on_parse(Compiler* compiler, Script* script) {
+void AssignmentStatementNode::onParse(Compiler* compiler, Script* script) {
     m_expression->parse(compiler, script);
 
-    auto expression_type = m_expression->get_type();
+    auto expression_type = m_expression->getType();
 
     // if (expression_type == nullptr) {
     //     raise_exception("Cannot determine type of assignment expression");
     // }
 
     IdentifierDefinition identifier;
-    compiler->get_identifier_definition(m_identifier, script, identifier);
+    compiler->getIdentifierDefinition(m_identifier, script, identifier);
 
-    if (identifier.identifier_type == IdentifierType::Unknown) {
+    if (identifier.identifierType == IdentifierType::Unknown) {
         // New script variable
-        auto variable_id = script->register_variable(
+        auto variable_id = script->registerVariable(
             m_identifier,
             expression_type
         );
 
         if (variable_id == NOMAD_INVALID_ID) {
-            raise_exception("Cannot register variable '" + m_identifier + "'");
+            raiseException("Cannot register variable '" + m_identifier + "'");
         }
-    } else if (identifier.identifier_type == IdentifierType::ContextVariable) {
-        auto context = compiler->get_runtime()->get_variable_context(identifier.context_id);
+    } else if (identifier.identifierType == IdentifierType::ContextVariable) {
+        auto context = compiler->getRuntime()->getVariableContext(identifier.contextId);
 
-        context->register_variable(m_identifier, expression_type);
+        context->registerVariable(m_identifier, expression_type);
     }
 }
 
-void AssignmentStatementNode::on_compile(Compiler* compiler, Script* script) {
+void AssignmentStatementNode::onCompile(Compiler* compiler, Script* script) {
     m_expression->compile(compiler, script);
 
     IdentifierDefinition identifier;
 
-    compiler->get_identifier_definition(m_identifier, script, identifier);
+    compiler->getIdentifierDefinition(m_identifier, script, identifier);
 
-    switch (identifier.identifier_type) {
+    switch (identifier.identifierType) {
         case IdentifierType::ScriptVariable: {
-            auto expression_type = m_expression->get_type();
-            auto variable_type = script->get_variable_type(identifier.variable_id);
+            auto expression_type = m_expression->getType();
+            auto variable_type = script->getVariableType(identifier.variableId);
 
             if (variable_type == nullptr) {
-                script->set_variable_type(identifier.variable_id, expression_type);
+                script->set_variable_type(identifier.variableId, expression_type);
             } else if (variable_type != expression_type) {
-                raise_exception("Cannot assign value of type '" + expression_type->get_name() + "' to variable '" + m_identifier + "' of type '" + variable_type->get_name() + "'");
+                raiseException("Cannot assign value of type '" + expression_type->getName() + "' to variable '" + m_identifier + "' of type '" + variable_type->getName() + "'");
             }
 
-            if (expression_type == compiler->get_runtime()->get_string_type()) {
-                compiler->add_op_code(OpCodes::op_script_variable_string_set);
+            if (expression_type == compiler->getRuntime()->getStringType()) {
+                compiler->addOpCode(OpCodes::op_script_variable_string_set);
             } else {
-                compiler->add_op_code(OpCodes::op_script_variable_set);
+                compiler->addOpCode(OpCodes::op_script_variable_set);
             }
-            compiler->add_id(identifier.variable_id);
+            compiler->addId(identifier.variableId);
 
             break;
         }
         case IdentifierType::DynamicVariable:
-            if (m_expression->get_type() == nullptr) {
-                raise_exception("Cannot determine type of assignment expression");
+            if (m_expression->getType() == nullptr) {
+                raiseException("Cannot determine type of assignment expression");
             }
 
-            if (m_expression->get_type() != compiler->get_runtime()->get_dynamic_variable_type(identifier.variable_id)) {
-                raise_exception("Cannot assign value of type '" + m_expression->get_type()->get_name() + "' to dynamic variable '" + m_identifier + "' of type '" + compiler->get_runtime()->get_dynamic_variable_type(identifier.variable_id)->get_name() + "'");
+            if (m_expression->getType() != compiler->getRuntime()->getDynamicVariableType(identifier.variableId)) {
+                raiseException("Cannot assign value of type '" + m_expression->getType()->getName() + "' to dynamic variable '" + m_identifier + "' of type '" + compiler->getRuntime()->getDynamicVariableType(identifier.variableId)->getName() + "'");
             }
 
-            if (m_expression->get_type() == compiler->get_runtime()->get_string_type()) {
-                compiler->add_op_code(OpCodes::op_dynamic_variable_string_set);
+            if (m_expression->getType() == compiler->getRuntime()->getStringType()) {
+                compiler->addOpCode(OpCodes::op_dynamic_variable_string_set);
             } else {
-                compiler->add_op_code(OpCodes::op_dynamic_variable_set);
+                compiler->addOpCode(OpCodes::op_dynamic_variable_set);
             }
-            compiler->add_id(identifier.variable_id);
+            compiler->addId(identifier.variableId);
             break;
         case IdentifierType::ContextVariable: {
-            auto context = compiler->get_runtime()->get_variable_context(identifier.context_id);
+            auto context = compiler->getRuntime()->getVariableContext(identifier.contextId);
 
-            auto variable_type = context->get_variable_type(identifier.variable_id);
+            auto variable_type = context->getVariableType(identifier.variableId);
 
             if (variable_type == nullptr) {
-                context->register_variable(m_identifier, m_expression->get_type());
-            } else if (variable_type != m_expression->get_type()) {
-                raise_exception("Cannot assign value of type '" + m_expression->get_type()->get_name() + "' to variable '" + m_identifier + "' of type '" + variable_type->get_name() + "'");
+                context->registerVariable(m_identifier, m_expression->getType());
+            } else if (variable_type != m_expression->getType()) {
+                raiseException("Cannot assign value of type '" + m_expression->getType()->getName() + "' to variable '" + m_identifier + "' of type '" + variable_type->getName() + "'");
             }
 
-            if (m_expression->get_type() == compiler->get_runtime()->get_string_type()) {
-                compiler->add_op_code(OpCodes::op_context_variable_string_set);
+            if (m_expression->getType() == compiler->getRuntime()->getStringType()) {
+                compiler->addOpCode(OpCodes::op_context_variable_string_set);
             } else {
-                compiler->add_op_code(OpCodes::op_context_variable_set);
+                compiler->addOpCode(OpCodes::op_context_variable_set);
             }
-            compiler->add_id(identifier.context_id);
-            compiler->add_id(identifier.variable_id);
+            compiler->addId(identifier.contextId);
+            compiler->addId(identifier.variableId);
             break;
         }
         case IdentifierType::Constant:
-            raise_exception("Cannot assign value to constant '" + m_identifier + "'");
+            raiseException("Cannot assign value to constant '" + m_identifier + "'");
         case IdentifierType::Keyword:
-            raise_exception("Cannot assign value to keyword '" + m_identifier + "'");
+            raiseException("Cannot assign value to keyword '" + m_identifier + "'");
         case IdentifierType::Statement:
-            raise_exception("Cannot assign to use statement '" + m_identifier + "'e");
+            raiseException("Cannot assign to use statement '" + m_identifier + "'e");
         case IdentifierType::Command:
-            raise_exception("Cannot assign to command '" + m_identifier + "'");
+            raiseException("Cannot assign to command '" + m_identifier + "'");
         case IdentifierType::Script:
-            raise_exception("Cannot assign to script '" + m_identifier + "'e");
+            raiseException("Cannot assign to script '" + m_identifier + "'e");
         default:
-            raise_exception("Cannot assign to unknown identifier '" + m_identifier + "'");
+            raiseException("Cannot assign to unknown identifier '" + m_identifier + "'");
     }
 }
 
@@ -221,24 +221,24 @@ CommandStatementNode::CommandStatementNode(NomadIndex line, NomadIndex column, N
     m_name(std::move(name)) {
 }
 
-void CommandStatementNode::on_compile(Compiler* compiler, Script* script) {
+void CommandStatementNode::onCompile(Compiler* compiler, Script* script) {
     m_arguments.compile(compiler,script);
 
-    auto command_id = compiler->get_runtime()->get_command_id(m_name);
+    auto command_id = compiler->getRuntime()->getCommandId(m_name);
 
     if (command_id == NOMAD_INVALID_ID) {
-        raise_exception("Unknown command '" + m_name + "'");
+        raiseException("Unknown command '" + m_name + "'");
     }
 
-    compiler->add_command_call(command_id);
+    compiler->addCommandCall(command_id);
 }
 
 
-void CommandStatementNode::add_argument(std::unique_ptr<Argument> argument) {
+void CommandStatementNode::addArgument(std::unique_ptr<Argument> argument) {
     m_arguments.add(std::move(argument));
 }
 
-ArgumentList* CommandStatementNode::get_arguments() {
+ArgumentList* CommandStatementNode::getArguments() {
     return &m_arguments;
 }
 
@@ -249,19 +249,19 @@ ScriptCallStatementNode::ScriptCallStatementNode(NomadIndex line, NomadIndex col
     m_name(std::move(name)) {
 }
 
-void ScriptCallStatementNode::on_compile(Compiler* compiler, Script* script) {
+void ScriptCallStatementNode::onCompile(Compiler* compiler, Script* script) {
     m_arguments.compile(compiler, script);
 
-    auto target_script_id = compiler->get_runtime()->get_script_id(m_name);
+    auto target_script_id = compiler->getRuntime()->getScriptId(m_name);
 
-    compiler->add_script_call(target_script_id);
+    compiler->addScriptCall(target_script_id);
 }
 
-void ScriptCallStatementNode::add_argument(std::unique_ptr<Argument> argument) {
+void ScriptCallStatementNode::addArgument(std::unique_ptr<Argument> argument) {
     m_arguments.add(std::move(argument));
 }
 
-ArgumentList* ScriptCallStatementNode::get_arguments() {
+ArgumentList* ScriptCallStatementNode::getArguments() {
     return &m_arguments;
 }
 
@@ -279,7 +279,7 @@ void StatementList::compile(Compiler* compiler, Script* script) {
     }
 }
 
-void StatementList::add_statement(std::unique_ptr<StatementNode> statement) {
+void StatementList::addStatement(std::unique_ptr<StatementNode> statement) {
     if (statement == nullptr) {
         // Skip null statements
         return;
@@ -288,11 +288,11 @@ void StatementList::add_statement(std::unique_ptr<StatementNode> statement) {
     m_statements.push_back(std::move(statement));
 }
 
-NomadIndex StatementList::get_statement_count() const {
+NomadIndex StatementList::getStatementCount() const {
     return m_statements.size();
 }
 
-NomadIndex StatementList::is_empty() const {
+NomadIndex StatementList::isEmpty() const {
     return m_statements.empty();
 }
 
@@ -310,11 +310,11 @@ void ScriptNode::compile(Compiler* compiler, Script* script) {
     m_statements.compile(compiler, script);
 }
 
-void ScriptNode::add_statement(std::unique_ptr<StatementNode> statement) {
-    m_statements.add_statement(std::move(statement));
+void ScriptNode::addStatement(std::unique_ptr<StatementNode> statement) {
+    m_statements.addStatement(std::move(statement));
 }
 
-StatementList* ScriptNode::get_statements() {
+StatementList* ScriptNode::getStatements() {
     return &m_statements;
 }
 

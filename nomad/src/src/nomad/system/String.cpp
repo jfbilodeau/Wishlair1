@@ -8,19 +8,19 @@
 #include "nomad/system/String.hpp"
 
 namespace nomad {
-NomadString to_string(NomadBoolean value) {
+NomadString toString(NomadBoolean value) {
     return value ? "true" : "false";
 }
 
-NomadString to_string(NomadId value) {
+NomadString toString(NomadId value) {
     return std::to_string(value);
 }
 
-NomadString to_string(NomadInteger value) {
+NomadString toString(NomadInteger value) {
     return std::to_string(value);
 }
 
-NomadString to_string(NomadFloat value) {
+NomadString toString(NomadFloat value) {
     std::stringstream ss;
 
     ss << std::setprecision(15) << std::noshowpoint << value;
@@ -28,7 +28,7 @@ NomadString to_string(NomadFloat value) {
     return ss.str();
 }
 
-NomadString to_string(NomadIndex index) {
+NomadString toString(NomadIndex index) {
     return std::to_string(index);
 }
 
@@ -45,7 +45,7 @@ void split(const TempString& text, const NomadString& separator, TempStringVecto
     lines.push_back(text.substr(start));
 }
 
-void split_lines(const NomadString &text, std::vector<NomadString> &lines) {
+void splitLines(const NomadString &text, std::vector<NomadString> &lines) {
     size_t start = 0;
     size_t end = text.find_first_of("\r\n");
 
@@ -62,7 +62,7 @@ void split_lines(const NomadString &text, std::vector<NomadString> &lines) {
     lines.push_back(text.substr(start));
 }
 
-void split_lines(const TempString &text, TempStringVector &lines) {
+void splitLines(const TempString &text, TempStringVector &lines) {
     size_t start = 0;
     size_t end = text.find_first_of("\r\n");
 

@@ -21,19 +21,19 @@ namespace nomad {
 
 Interpreter::Interpreter(Runtime* runtime, NomadIndex stack_size):
     m_runtime(runtime),
-    m_instructions(runtime->get_instructions())
+    m_instructions(runtime->getInstructions())
 {
     m_stack.resize(stack_size);
 }
 
 Interpreter::~Interpreter() = default;
 
-void Interpreter::set_script_variable_value(NomadId variable_id, const ScriptValue& value) {
-    m_stack[m_variable_index + variable_id] = value;
+void Interpreter::setScriptVariableValue(NomadId variableId, const ScriptValue& value) {
+    m_stack[m_variableIndex + variableId] = value;
 }
 
-const ScriptValue& Interpreter::get_script_variable_value(NomadId variable_id) const {
-    return m_stack[m_variable_index + variable_id];
+const ScriptValue& Interpreter::getScriptVariableValue(NomadId variableId) const {
+    return m_stack[m_variableIndex + variableId];
 }
 
 void Interpreter::run(Script* script, const std::vector<ScriptValue>& parameters) {
@@ -46,10 +46,10 @@ void Interpreter::run(Script* script, const std::vector<ScriptValue>& parameters
     m_yielded = false;
 
     for (auto parameter = parameters.rbegin(); parameter != parameters.rend(); parameter++) {
-        push_value(*parameter);
+        pushValue(*parameter);
     }
 
-    call_script(script->get_script_start());
+    callScript(script->getScriptStart());
 
     do {
 #ifdef NOMAD_DEBUG
@@ -59,9 +59,9 @@ void Interpreter::run(Script* script, const std::vector<ScriptValue>& parameters
 //        log::debug("Executing: " + name + "(ip: " + to_string(m_instruction_index) + ", sp: " + to_string(m_stack_index) + ")");
 //        log::flush();
 #endif
-        auto& instruction = m_instructions[m_instruction_index];
+        auto& instruction = m_instructions[m_instructionIndex];
 
-        m_instruction_index++;
+        m_instructionIndex++;
 
         instruction.fn(this);
     } while (m_running);
@@ -69,7 +69,7 @@ void Interpreter::run(Script* script, const std::vector<ScriptValue>& parameters
     m_running = false;
 
     if (!m_yielded) {
-        m_instruction_index = 0;
+        m_instructionIndex = 0;
     }
 
     // Free parameters
@@ -95,165 +95,165 @@ void Interpreter::stop(const ScriptValue& result) {
     m_yielded = false;
 }
 
-void Interpreter::fault(const NomadString& fault_message) {
-    throw InterpreterException(fault_message);
+void Interpreter::fault(const NomadString& faultMessage) {
+    throw InterpreterException(faultMessage);
 }
 
-void Interpreter::call_script(NomadIndex jump_index) {
-    auto previous_parameter_index = m_parameter_index;
-    m_parameter_index = m_stack_index;
+void Interpreter::callScript(NomadIndex jumpIndex) {
+    auto previous_parameter_index = m_parameterIndex;
+    m_parameterIndex = m_stack_index;
 
-    push_index(m_instruction_index);
-    push_index(previous_parameter_index);
-    push_index(m_variable_index);
+    pushIndex(m_instructionIndex);
+    pushIndex(previous_parameter_index);
+    pushIndex(m_variableIndex);
 
-    m_variable_index = m_stack_index;
+    m_variableIndex = m_stack_index;
 
-    jump(jump_index);
+    jump(jumpIndex);
 }
 
-void Interpreter::call_command(NomadId command_id) {
-    auto previous_parameter_index = m_parameter_index;
-    m_parameter_index = m_stack_index;
+void Interpreter::callCommand(NomadId commandId) {
+    auto previous_parameter_index = m_parameterIndex;
+    m_parameterIndex = m_stack_index;
 
-    push_index(previous_parameter_index);
+    pushIndex(previous_parameter_index);
 
-    auto command_fn = m_runtime->get_command_fn(command_id);
+    auto command_fn = m_runtime->getCommandFn(commandId);
 
 #ifdef NOMAD_DEBUG
     if (command_fn == nullptr) {
-        log::error("Command not found: " + to_string(command_id));
+        log::error("Command not found: " + toString(commandId));
         return;
     }
 #endif
 
     command_fn(this);
 
-    m_parameter_index = pop_index();
+    m_parameterIndex = popIndex();
 }
 
-void Interpreter::return_script(NomadIndex variable_count) {
-    pop_n(variable_count);
+void Interpreter::returnScript(NomadIndex variableCount) {
+    popN(variableCount);
 
-    m_variable_index = pop_index();
-    m_parameter_index = pop_index();
-    m_instruction_index = pop_index();
+    m_variableIndex = popIndex();
+    m_parameterIndex = popIndex();
+    m_instructionIndex = popIndex();
 }
 
-void Interpreter::push_result() {
+void Interpreter::pushResult() {
     m_stack_index++;
     m_stack[m_stack_index] = m_result;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_intermediate() {
+void Interpreter::pushIntermediate() {
     m_stack_index++;
     m_stack[m_stack_index] = m_intermediate;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_string_result() {
+void Interpreter::pushStringResult() {
     m_stack_index++;
     m_stack[m_stack_index].move_string_value(m_result);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_string_intermediate() {
+void Interpreter::pushStringIntermediate() {
     m_stack_index++;
     m_stack[m_stack_index].move_string_value(m_intermediate);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::free_string_variable(NomadIndex variable_index) {
-    m_stack[m_variable_index + variable_index].free_string_value();
+void Interpreter::freeStringVariable(NomadIndex variable_index) {
+    m_stack[m_variableIndex + variable_index].freeStringValue();
 }
 
-void Interpreter::free_string_stack(NomadIndex index) {
-    m_stack[m_stack_index - index].free_string_value();
+void Interpreter::freeStringStack(NomadIndex index) {
+    m_stack[m_stack_index - index].freeStringValue();
 }
 
-void Interpreter::pop_result() {
+void Interpreter::popResult() {
     m_result = m_stack[m_stack_index];
     m_stack_index--;
     TEST_STACK_UNDERFLOW
 }
 
-void Interpreter::pop_intermediate() {
+void Interpreter::popIntermediate() {
     m_intermediate = m_stack[m_stack_index];
     m_stack_index--;
     TEST_STACK_UNDERFLOW
 }
 
-void Interpreter::pop_string_result() {
+void Interpreter::popStringResult() {
     m_result.move_string_value(m_stack[m_stack_index]);
     m_stack_index--;
     TEST_STACK_UNDERFLOW
 }
 
-void Interpreter::pop_string_intermediate() {
+void Interpreter::popStringIntermediate() {
     m_intermediate.move_string_value(m_stack[m_stack_index]);
     m_stack_index--;
     TEST_STACK_UNDERFLOW
 }
 
 
-void Interpreter::push_value(const ScriptValue& value) {
+void Interpreter::pushValue(const ScriptValue& value) {
     m_stack_index++;
     m_stack[m_stack_index] = value;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_boolean(NomadBoolean value) {
+void Interpreter::pushBoolean(NomadBoolean value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_boolean_value(value);
+    m_stack[m_stack_index].setBooleanValue(value);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_integer(NomadInteger value) {
+void Interpreter::pushInteger(NomadInteger value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_integer_value(value);
+    m_stack[m_stack_index].setIntegerValue(value);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_float(NomadFloat value) {
+void Interpreter::pushFloat(NomadFloat value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_float_value(value);
+    m_stack[m_stack_index].setFloatValue(value);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_id(NomadId value) {
+void Interpreter::pushId(NomadId value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_id_value(value);
+    m_stack[m_stack_index].setIdValue(value);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_string(const NomadString& value) {
+void Interpreter::pushString(const NomadString& value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_string_value(value);
+    m_stack[m_stack_index].setStringValue(value);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::push_n(NomadIndex count) {
+void Interpreter::pushN(NomadIndex count) {
     m_stack_index += count;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::pop_1() {
+void Interpreter::pop1() {
     m_stack_index--;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::pop_2() {
+void Interpreter::pop2() {
     m_stack_index -= 2;
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::pop_n(NomadIndex count) {
+void Interpreter::popN(NomadIndex count) {
     m_stack_index -= count;
     TEST_STACK_UNDERFLOW
 }
 
-const ScriptValue& Interpreter::pop_value() {
+const ScriptValue& Interpreter::popValue() {
     auto& value= m_stack[m_stack_index];
     m_stack_index--;
     TEST_STACK_UNDERFLOW
@@ -261,127 +261,127 @@ const ScriptValue& Interpreter::pop_value() {
     return value;
 }
 
-NomadBoolean Interpreter::pop_boolean() {
-    auto value = m_stack[m_stack_index].get_boolean_value();
+NomadBoolean Interpreter::popBoolean() {
+    auto value = m_stack[m_stack_index].getBooleanValue();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-NomadInteger Interpreter::pop_integer() {
-    auto value = m_stack[m_stack_index].get_integer_value();
+NomadInteger Interpreter::popInteger() {
+    auto value = m_stack[m_stack_index].getIntegerValue();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-NomadFloat Interpreter::pop_float() {
-    auto value = m_stack[m_stack_index].get_float_value();
+NomadFloat Interpreter::popFloat() {
+    auto value = m_stack[m_stack_index].getFloatValue();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-NomadId Interpreter::pop_id() {
-    auto value = m_stack[m_stack_index].get_id_value();
+NomadId Interpreter::popId() {
+    auto value = m_stack[m_stack_index].getIdValue();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-NomadString Interpreter::pop_string() {
-    auto value = m_stack[m_stack_index].get_string_value();
+NomadString Interpreter::popString() {
+    auto value = m_stack[m_stack_index].getStringValue();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-NomadId Interpreter::next_id() {
-    auto id = m_instructions[m_instruction_index].value.get_id_value();
+NomadId Interpreter::nextId() {
+    auto id = m_instructions[m_instructionIndex].value.getIdValue();
 
-    m_instruction_index++;
+    m_instructionIndex++;
 
     return id;
 }
 
-NomadIndex Interpreter::next_index() {
-    auto index = m_instructions[m_instruction_index].value.get_index_value();
+NomadIndex Interpreter::nextIndex() {
+    auto index = m_instructions[m_instructionIndex].value.get_index_value();
 
-    m_instruction_index++;
+    m_instructionIndex++;
 
     return index;
 }
 
-NomadInteger Interpreter::next_integer() {
-    const auto integer_value = m_instructions[m_instruction_index].value.get_integer_value();
+NomadInteger Interpreter::nextInteger() {
+    const auto integer_value = m_instructions[m_instructionIndex].value.getIntegerValue();
 
-    m_instruction_index++;
+    m_instructionIndex++;
 
     return integer_value;
 }
 
-NomadFloat Interpreter::next_float() {
-    const auto float_value = m_instructions[m_instruction_index].value.get_float_value();
+NomadFloat Interpreter::nextFloat() {
+    const auto float_value = m_instructions[m_instructionIndex].value.getFloatValue();
 
-    m_instruction_index++;
+    m_instructionIndex++;
 
     return float_value;
 }
 
 void Interpreter::jump(NomadIndex index) {
-    m_instruction_index = index;
+    m_instructionIndex = index;
 }
 
-bool Interpreter::get_variable_value(IdentifierType identifier_type, NomadId context_id, NomadId variable_id, ScriptValue& value) {
+bool Interpreter::getVariableValue(IdentifierType identifier_type, NomadId contextId, NomadId variableId, ScriptValue& value) {
     switch (identifier_type) {
     case IdentifierType::Constant:
-        m_runtime->get_constant_value(variable_id, value);
+        m_runtime->getConstantValue(variableId, value);
         return true;
 
     case IdentifierType::DynamicVariable:
-        m_runtime->get_dynamic_variable_value(this, variable_id, value);
+        m_runtime->getDynamicVariableValue(this, variableId, value);
         return true;
 
     case IdentifierType::ContextVariable:
-        m_runtime->get_context_variable_value(context_id, variable_id, value);
+        m_runtime->getContextVariableValue(contextId, variableId, value);
         return true;
 
     case IdentifierType::ScriptVariable:
-        get_script_variable_value(variable_id, value);
+        getScriptVariableValue(variableId, value);
         return true;
 
     case IdentifierType::Parameter:
-        value = get_parameter(variable_id);
+        value = getParameter(variableId);
         return true;
 
     default:
-        log::warning("Unexpected identifier type: " + to_string(static_cast<int>(identifier_type)));
+        log::warning("Unexpected identifier type: " + toString(static_cast<int>(identifier_type)));
     }
 
     return false;
 }
 
-void Interpreter::push_index(NomadIndex value) {
+void Interpreter::pushIndex(NomadIndex value) {
     m_stack_index++;
-    m_stack[m_stack_index].set_index_value(value);
+    m_stack[m_stack_index].setIndexValue(value);
     TEST_STACK_OVERFLOW
 }
 
-NomadIndex Interpreter::pop_index() {
+NomadIndex Interpreter::popIndex() {
     auto value = m_stack[m_stack_index].get_index_value();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
     return value;
 }
 
-void Interpreter::push_op_code_index() {
+void Interpreter::pushOpCodeIndex() {
     m_stack_index++;
-    m_stack[m_stack_index].set_index_value(m_instruction_index);
+    m_stack[m_stack_index].setIndexValue(m_instructionIndex);
     TEST_STACK_OVERFLOW
 }
 
-void Interpreter::pop_op_code_index() {
-    m_instruction_index = m_stack[m_stack_index].get_index_value();
+void Interpreter::popOpCodeIndex() {
+    m_instructionIndex = m_stack[m_stack_index].get_index_value();
     m_stack_index--;
     TEST_STACK_UNDERFLOW
 }

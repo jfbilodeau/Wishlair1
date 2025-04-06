@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-11-29.
 //
 
-#ifndef NOMAD_BODY_HPP
-#define NOMAD_BODY_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -37,34 +36,34 @@ public:
 
     ~Body() = default;
 
-    [[nodiscard]] BodyShape get_shape() const;
+    [[nodiscard]] BodyShape getShape() const;
 
-    [[nodiscard]] BodyType get_type() const;
+    [[nodiscard]] BodyType getType() const;
 
-    [[nodiscard]] NomadFloat get_x() const;
-    void set_x(NomadFloat x);
-
-    [[nodiscard]]
-    NomadFloat get_y() const;
-    void set_y(NomadFloat y);
+    [[nodiscard]] NomadFloat getX() const;
+    void setX(NomadFloat x);
 
     [[nodiscard]]
-    const PointF& get_location() const;
+    NomadFloat getY() const;
+    void setY(NomadFloat y);
+
+    [[nodiscard]]
+    const PointF& getLocation() const;
     void set_location(NomadFloat x, NomadFloat y);
     void set_location(const PointF& location);
 
-    void translate(NomadFloat delta_x, NomadFloat delta_y);
+    void translate(NomadFloat deltaX, NomadFloat deltaY);
     void translate(const PointF& delta);
 
-    [[nodiscard]] NomadFloat get_width() const;
+    [[nodiscard]] NomadFloat getWidth() const;
 
-    [[nodiscard]] NomadFloat get_height() const;
+    [[nodiscard]] NomadFloat getHeight() const;
 
-    [[nodiscard]] NomadFloat get_radius() const;
+    [[nodiscard]] NomadFloat getRadius() const;
 
-    void set_no_body();
-    void set_rectangle_body(BodyType type, NomadFloat width, NomadFloat height);
-    void set_circle_body(BodyType type, NomadFloat radius);
+    void setNoBody();
+    void setRectangleBody(BodyType type, NomadFloat width, NomadFloat height);
+    void setCircleBody(BodyType type, NomadFloat radius);
 
     [[nodiscard]] bool contains(const PointF& point) const;
     [[nodiscard]] bool intersects(const Body& other) const;
@@ -81,9 +80,8 @@ private:
     NomadFloat m_height = 0.0f;
     NomadFloat m_radius = 0.0f;
 
-    NomadBoolean m_body_valid = false;
+    NomadBoolean m_bodyValid = false;
 };
 
 } // namespace nomad
 
-#endif //NOMAD_BODY_HPP

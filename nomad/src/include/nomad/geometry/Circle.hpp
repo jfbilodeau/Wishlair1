@@ -2,8 +2,7 @@
 // Created by jfbil on 2024-11-14.
 //
 
-#ifndef NOMAD_CIRCLE_HPP
-#define NOMAD_CIRCLE_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -16,18 +15,18 @@ public:
     Circle() = default;
     Circle(NomadInteger x, NomadInteger y, NomadInteger radius);
 
-    [[nodiscard]] NomadInteger get_x() const;
-    [[nodiscard]] NomadInteger get_y() const;
-    [[nodiscard]] NomadInteger get_radius() const;
-    [[nodiscard]] const Point& get_center() const;
-    [[nodiscard]] NomadInteger get_left() const;
-    [[nodiscard]] NomadInteger get_right() const;
-    [[nodiscard]] NomadInteger get_top() const;
-    [[nodiscard]] NomadInteger get_bottom() const;
+    [[nodiscard]] NomadInteger getX() const;
+    [[nodiscard]] NomadInteger getY() const;
+    [[nodiscard]] NomadInteger getRadius() const;
+    [[nodiscard]] const Point& getCenter() const;
+    [[nodiscard]] NomadInteger getLeft() const;
+    [[nodiscard]] NomadInteger getRight() const;
+    [[nodiscard]] NomadInteger getTop() const;
+    [[nodiscard]] NomadInteger getBottom() const;
 
-    void set_x(NomadInteger x);
-    void set_y(NomadInteger y);
-    void set_radius(NomadInteger radius);
+    void setX(NomadInteger x);
+    void setY(NomadInteger y);
+    void setRadius(NomadInteger radius);
 
 private:
     Point m_center;
@@ -36,4 +35,3 @@ private:
 
 } // namespace nomad
 
-#endif //NOMAD_CIRCLEF_HPP

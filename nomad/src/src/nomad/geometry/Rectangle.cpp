@@ -29,7 +29,7 @@ Rectangle& Rectangle::set(const SDL_FRect& rect) {
     );
 }
 
-RectangleF Rectangle::to_rectanglef() const {
+RectangleF Rectangle::toRectanglef() const {
     return {
         static_cast<Coord>(m_x),
         static_cast<Coord>(m_y),
@@ -38,7 +38,7 @@ RectangleF Rectangle::to_rectanglef() const {
     };
 }
 
-SDL_Rect Rectangle::to_sdl_rect() const {
+SDL_Rect Rectangle::toSdlRect() const {
     return SDL_Rect{
         static_cast<int>(m_x),
         static_cast<int>(m_y),
@@ -47,7 +47,7 @@ SDL_Rect Rectangle::to_sdl_rect() const {
     };
 }
 
-SDL_FRect Rectangle::to_sdl_frect() const {
+SDL_FRect Rectangle::toSdlFrect() const {
     return SDL_FRect{
         static_cast<float>(m_x),
         static_cast<float>(m_y),

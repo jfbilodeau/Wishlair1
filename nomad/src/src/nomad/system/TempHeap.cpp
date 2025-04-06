@@ -14,11 +14,11 @@ namespace {
     auto temp_buffer = std::pmr::monotonic_buffer_resource(buffer.begin(), buffer.size());
 }
 
-std::pmr::monotonic_buffer_resource* get_temp_buffer() {
+std::pmr::monotonic_buffer_resource* getTempBuffer() {
     return &temp_buffer;
 }
 
-void fast_temp_heap_reset() {
+void fastTempHeapReset() {
     temp_buffer.release();
 }
 

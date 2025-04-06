@@ -22,48 +22,48 @@ public:
     ThisEntityVariableContext(const ThisEntityVariableContext&) = delete;
     ~ThisEntityVariableContext() override = default;
 
-    NomadId register_variable(const NomadString &name, const Type* type) override;
-    const NomadString & get_variable_name(NomadId variable_id) const override;
-    NomadId get_variable_id(const NomadString &name) const override;
+    NomadId registerVariable(const NomadString &name, const Type* type) override;
+    const NomadString & getVariableName(NomadId variableId) const override;
+    NomadId getVariableId(const NomadString &name) const override;
 
-    void set_variable_type(NomadId variable_id, const Type* type) override;
-    const Type* get_variable_type(NomadId variable_id) const override;
+    void setVariableType(NomadId variableId, const Type* type) override;
+    const Type* getVariableType(NomadId variableId) const override;
 
-    void set_value(NomadId variable_id, const ScriptValue& value) override;
-    void get_value(NomadId variable_id, ScriptValue& value) override;
-
-    [[nodiscard]]
-    Game* get_game() const;
+    void setValue(NomadId variableId, const ScriptValue& value) override;
+    void getValue(NomadId variableId, ScriptValue& value) override;
 
     [[nodiscard]]
-    const VariableMap* get_this_variable_map() const;
+    Game* getGame() const;
+
     [[nodiscard]]
-    const VariableMap* get_other_variable_map() const;
+    const VariableMap* getThisVariableMap() const;
+    [[nodiscard]]
+    const VariableMap* getOtherVariableMap() const;
 
 private:
     Game* m_game;
-    VariableMap m_this_entity_variable_map;
-    VariableMap m_other_entity_variable_map;
+    VariableMap m_thisEntityVariableMap;
+    VariableMap m_otherEntityVariableMap;
 };
 
 class OtherEntityVariableContext : public VariableContext {
 public:
-    explicit OtherEntityVariableContext(ThisEntityVariableContext* this_entity_variable_context);
+    explicit OtherEntityVariableContext(ThisEntityVariableContext* thisEntityVariableContext);
     OtherEntityVariableContext(const OtherEntityVariableContext&) = delete;
     ~OtherEntityVariableContext() override = default;
 
-    NomadId register_variable(const NomadString &name, const Type *type) override;
-    const NomadString & get_variable_name(NomadId variable_id) const override;
-    NomadId get_variable_id(const NomadString &name) const override;
+    NomadId registerVariable(const NomadString &name, const Type *type) override;
+    const NomadString & getVariableName(NomadId variableId) const override;
+    NomadId getVariableId(const NomadString &name) const override;
 
-    void set_variable_type(NomadId variable_id, const Type *type) override;
-    const Type * get_variable_type(NomadId variable_id) const override;
+    void setVariableType(NomadId variableId, const Type *type) override;
+    const Type * getVariableType(NomadId variableId) const override;
 
-    void set_value(NomadId variable_id, const ScriptValue& value) override;
-    void get_value(NomadId variable_id, ScriptValue& value) override;
+    void setValue(NomadId variableId, const ScriptValue& value) override;
+    void getValue(NomadId variableId, ScriptValue& value) override;
 
 private:
-    ThisEntityVariableContext* m_this_entity_variable_context;
+    ThisEntityVariableContext* m_thisEntityVariableContext;
 };
 
 } // nomad

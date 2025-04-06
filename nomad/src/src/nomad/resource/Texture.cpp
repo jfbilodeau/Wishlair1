@@ -17,12 +17,12 @@
 
 namespace nomad {
 
-Texture::Texture(const NomadString& name, const NomadString& file_name, Game* game):
+Texture::Texture(const NomadString& name, const NomadString& fileName, Game* game):
     Resource(name)
 {
-    auto surface = IMG_Load(file_name.c_str());
+    auto surface = IMG_Load(fileName.c_str());
 
-    SDL_Renderer* renderer = game->get_canvas()->get_sdl_renderer();
+    SDL_Renderer* renderer = game->getCanvas()->getSdlRenderer();
 
     m_texture = SDL_CreateTextureFromSurface(renderer, surface);
 
@@ -31,14 +31,14 @@ Texture::Texture(const NomadString& name, const NomadString& file_name, Game* ga
     SDL_FreeSurface(surface);
 
     if (m_texture == nullptr) {
-        throw ResourceException("Failed to load image: " + file_name + "\n" + IMG_GetError());
+        throw ResourceException("Failed to load image: " + fileName + "\n" + IMG_GetError());
     }
 }
 
 Texture::Texture(const NomadString &name, Game* game, int width, int height):
     Resource(name)
 {
-    auto renderer = game->get_canvas()->get_sdl_renderer();
+    auto renderer = game->getCanvas()->getSdlRenderer();
 
     m_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, width, height);
 
@@ -62,11 +62,11 @@ Texture::~Texture() {
     }
 }
 
-int Texture::get_width() const { return width; }
+int Texture::getWidth() const { return width; }
 
-int Texture::get_height() const { return height; }
+int Texture::getHeight() const { return height; }
 
-SDL_Texture* Texture::get_sdl_texture() const {
+SDL_Texture* Texture::getSdlTexture() const {
     assert(m_texture != nullptr);
 
     return m_texture;
@@ -79,35 +79,35 @@ TextureManager::TextureManager(ResourceManager* resources):
 {
 }
 
-NomadId TextureManager::register_texture(const NomadString& texture_name) {
-    log::debug("Loading texture: " + texture_name);
+NomadId TextureManager::registerTexture(const NomadString& textureName) {
+    log::debug("Loading texture: " + textureName);
 
-    const NomadString file_name = m_resources->make_resource_path(texture_name);
+    const NomadString file_name = m_resources->makeResourcePath(textureName);
 
     auto texture_id = to_nomad_id(m_textures.size());
 
     m_textures.emplace_back(
         std::make_unique<Texture>(
-            texture_name,
+            textureName,
             file_name,
-            m_resources->get_game()
+            m_resources->getGame()
         )
     );
 
     return texture_id;
 }
 
-const Texture* TextureManager::get_texture(NomadId texture_id) const {
-    if (texture_id >= m_textures.size()) {
+const Texture* TextureManager::getTexture(NomadId textureId) const {
+    if (textureId >= m_textures.size()) {
         return nullptr;
     }
 
-    return m_textures[texture_id].get();
+    return m_textures[textureId].get();
 }
 
-const Texture* TextureManager::get_texture_by_name(const NomadString& texture_name) const {
+const Texture* TextureManager::getTextureByName(const NomadString& textureName) const {
     for (const auto& texture : m_textures) {
-        if (texture->get_name() == texture_name) {
+        if (texture->getName() == textureName) {
             return texture.get();
         }
     }

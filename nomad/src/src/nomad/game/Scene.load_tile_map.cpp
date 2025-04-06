@@ -26,21 +26,21 @@ struct TileMapEntity {
 };
 
 // Load tile map
-void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_set_texture_name) {
+void Scene::loadTileMap(const NomadString& fileName, const NomadString& tileSetTextureName) {
     try {
-        log::debug("Loading map '" + file_name + "' with tile texture: '" + tile_set_texture_name + "'");
+        log::debug("Loading map '" + fileName + "' with tile texture: '" + tileSetTextureName + "'");
 
         // Get texture
 //        auto texture_id = m_game->get_resources()->get_textures()->register_texture(tile_set_name);
-        auto texture = m_game->get_resources()->get_textures()->get_texture_by_name(tile_set_texture_name);
+        auto texture = m_game->getResources()->getTextures()->getTextureByName(tileSetTextureName);
 
         if (texture == nullptr) {
-            log::error("Texture '" + tile_set_texture_name + "' not found");
+            log::error("Texture '" + tileSetTextureName + "' not found");
             return;
         }
 
         // Load tile map
-        auto tile_map_file_name = m_game->make_resource_path(file_name);
+        auto tile_map_file_name = m_game->makeResourcePath(fileName);
 
         std::ifstream file(tile_map_file_name);
 
@@ -86,8 +86,8 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
             auto ground_layer_name = layer_name + "-ground";
             auto wall_layer_name = layer_name + "-walls";
 
-            has_ground_tile_map[i] = load_tile_map_layer(ground_layer_name, tile_map_height, tile_map_width, layers, ground_tile_map);
-            has_wall_tile_map[i] = load_tile_map_layer(wall_layer_name, tile_map_height, tile_map_width, layers, wall_tile_map);
+            has_ground_tile_map[i] = loadTileMapLayer(ground_layer_name, tile_map_height, tile_map_width, layers, ground_tile_map);
+            has_wall_tile_map[i] = loadTileMapLayer(wall_layer_name, tile_map_height, tile_map_width, layers, wall_tile_map);
 
             // Load entities
             layer_name += "-entities";
@@ -145,33 +145,33 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
         NomadIndex start_tile_index = 1;
 
         // Load complete. Initialize the scene.
-        set_tile_set(texture, tile_width, tile_height, start_tile_index);
+        setTileSet(texture, tile_width, tile_height, start_tile_index);
 
-        set_tile_map_size(tile_map_width, tile_map_height);
+        setTileMapSize(tile_map_width, tile_map_height);
 
         m_entities.clear();
 
         for (auto i = 0; i < SCENE_LAYER_COUNT; ++i) {
-            m_layers[i].has_wall_tile_map = has_wall_tile_map[i];
-            m_layers[i].has_ground_tile_map = has_ground_tile_map[i];
+            m_layers[i].hasWallTileMap = has_wall_tile_map[i];
+            m_layers[i].hasGroundTileMap = has_ground_tile_map[i];
 
             auto& ground_tile_map = ground_tile_maps[i];
             auto& wall_tile_map = wall_tile_maps[i];
 
             auto& layer = m_layers[i];
-            layer.ground_tile_map = std::move(ground_tile_map);
-            layer.wall_tile_map = std::move(wall_tile_map);
+            layer.groundTileMap = std::move(ground_tile_map);
+            layer.wallTileMap = std::move(wall_tile_map);
 
             layer.entities.clear();
 
             for (auto& entity: entities[i]) {
-                create_entity(entity.scriptName, entity.x, entity.y, i, entity.id, entity.text_id);
+                createEntity(entity.scriptName, entity.x, entity.y, i, entity.id, entity.text_id);
             }
         }
 
         // Make sure entities are ready to go by the first frame.
         // Otherwise, the first frame will not contain any entities.
-        process_add_remove_entities();
+        processAddEntities();
 
         log::debug("Map loaded");
     } catch (const std::exception& e) {
@@ -179,21 +179,21 @@ void Scene::load_tile_map(const NomadString& file_name, const NomadString& tile_
     }
 }
 
-bool Scene::load_tile_map_layer(
-    const NomadString& ground_layer_name,
-    NomadInteger tile_map_height,
-    NomadInteger tile_map_width,
+bool Scene::loadTileMapLayer(
+    const NomadString& groundLayerName,
+    NomadInteger tileMapHeight,
+    NomadInteger tileMapWidth,
     boost::json::array& layers,
-    std::vector<NomadIndex>& tile_map
+    std::vector<NomadIndex>& tileMap
 ) const {
     for (auto& layer: layers) {
-        if (layer.at("name").as_string().c_str() == ground_layer_name) {
+        if (layer.at("name").as_string().c_str() == groundLayerName) {
             auto data = layer.at("data").as_array();
 
-            for (NomadIndex y = 0; y < tile_map_height; ++y) {
-                for (NomadIndex x = 0; x < tile_map_width; ++x) {
-                    auto tile_id = data[y * tile_map_width + x].as_int64();
-                    tile_map[y * tile_map_width + x] = tile_id;
+            for (NomadIndex y = 0; y < tileMapHeight; ++y) {
+                for (NomadIndex x = 0; x < tileMapWidth; ++x) {
+                    auto tile_id = data[y * tileMapWidth + x].as_int64();
+                    tileMap[y * tileMapWidth + x] = tile_id;
                 }
             }
 

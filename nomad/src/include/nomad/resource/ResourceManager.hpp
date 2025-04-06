@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-17.
 //
 
-#ifndef NOMAD_RESOURCEMANAGER_HPP
-#define NOMAD_RESOURCEMANAGER_HPP
+#pragma once
 
 #include "nomad/resource/Resource.hpp"
 
@@ -28,32 +27,32 @@ public:
 
 class ResourceManager {
 public:
-    explicit ResourceManager(Game* game, const NomadString& base_path);
+    explicit ResourceManager(Game* game, const NomadString& basePath);
     ResourceManager(const ResourceManager& other) = delete;
     ResourceManager(ResourceManager&& other) noexcept = delete;
     ResourceManager& operator=(const ResourceManager& other) = delete;
     ~ResourceManager();
 
-    [[nodiscard]] Game* get_game() const;
+    [[nodiscard]] Game* getGame() const;
 
-    [[nodiscard]] const NomadString& get_base_path() const;
-    [[nodiscard]] NomadString make_resource_path(const NomadString& resource_name) const;
+    [[nodiscard]] const NomadString& getBasePath() const;
+    [[nodiscard]] NomadString makeResourcePath(const NomadString& resourceName) const;
 
     // Individual resource managers
-    AnimationManager* get_animations();
-    FontManager* get_fonts();
-    SpriteManager* get_sprites();
-    TextManager* get_text();
-    TextureManager* get_textures();
+    AnimationManager* getAnimations();
+    FontManager* getFonts();
+    SpriteManager* getSprites();
+    TextManager* getText();
+    TextureManager* getTextures();
 
     // TODO: These specialized method should be move elsewhere...
-    void load_sprite_atlas(const NomadString& resource_name);
+    void loadSpriteAtlas(const NomadString& resourceName);
 
 private:
-    NomadString make_resource_name(const NomadString& base_path, const NomadString& file_name);
+    NomadString makeResourceName(const NomadString& basePath, const NomadString& fileName);
 
     Game* m_game;
-    NomadString m_base_path;
+    NomadString m_basePath;
     AnimationManager m_animations;
     FontManager m_fonts;
     SpriteManager m_sprites;
@@ -63,4 +62,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_RESOURCEMANAGER_HPP

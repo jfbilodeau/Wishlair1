@@ -16,14 +16,14 @@ Point::Point(int x, int y):
     m_x(x),
     m_y(y) { }
 
-PointF Point::to_pointf() const {
+PointF Point::toPointf() const {
     return {
         static_cast<Coord>(m_x),
         static_cast<Coord>(m_y)
     };
 }
 
-PointF & Point::to_pointf(PointF &point) const {
+PointF & Point::toPointf(PointF &point) const {
     point.set(
         static_cast<Coord>(m_x),
         static_cast<Coord>(m_y)
@@ -32,25 +32,25 @@ PointF & Point::to_pointf(PointF &point) const {
     return point;
 }
 
-SDL_Point Point::to_sdl_point() const {
+SDL_Point Point::toSdlPoint() const {
     return SDL_Point{m_x, m_y};
 }
 
-SDL_Point& Point::to_sdl_point(SDL_Point& point) const {
+SDL_Point& Point::toSdlPoint(SDL_Point& point) const {
     point.x = m_x;
     point.y = m_y;
 
     return point;
 }
 
-SDL_FPoint Point::to_sdl_fpoint() const {
+SDL_FPoint Point::toSdlFpoint() const {
     return SDL_FPoint{
         float(m_x),
         float(m_y)
     };
 }
 
-SDL_FPoint& Point::to_sdl_fpoint(SDL_FPoint& point) const {
+SDL_FPoint& Point::toSdlFpoint(SDL_FPoint& point) const {
     point.x = float(m_x);
     point.y = float(m_y);
 

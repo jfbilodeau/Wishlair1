@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_RECTANGLEF_HPP
-#define NOMAD_RECTANGLEF_HPP
+#pragma once
 
 #include <SDL.h>
 
@@ -22,60 +21,60 @@ public:
     RectangleF& operator=(const RectangleF& other) = default;
     RectangleF& operator=(RectangleF&& other) noexcept = default;
 
-    [[nodiscard]] Coord get_left() const {
+    [[nodiscard]] Coord getLeft() const {
         return m_x;
     }
 
-    [[nodiscard]] Coord get_right() const {
+    [[nodiscard]] Coord getRight() const {
         return m_x + m_width;
     }
 
-    [[nodiscard]] Coord get_top() const {
+    [[nodiscard]] Coord getTop() const {
         return m_y;
     }
 
-    [[nodiscard]] Coord get_bottom() const {
+    [[nodiscard]] Coord getBottom() const {
         return m_y + m_height;
     }
 
-    [[nodiscard]] Coord get_width() const {
+    [[nodiscard]] Coord getWidth() const {
         return m_width;
     }
 
-    [[nodiscard]] Coord get_height() const {
+    [[nodiscard]] Coord getHeight() const {
         return m_height;
     }
 
     [[nodiscard]] bool contains(const PointF& point) const {
-        return point.x() >= get_left() && point.x() <= get_right() && point.y() >= get_top() && point.y() <=
-                                                                                                        get_bottom();
+        return point.getX() >= getLeft() && point.getX() <= getRight() && point.getY() >= getTop() && point.getY() <=
+                                                                                                        getBottom();
     }
 
     [[nodiscard]] bool intersects(const RectangleF& other) const {
-        return get_left() < other.get_right() && get_right() > other.get_left() && get_top() < other.get_bottom() &&
-                get_bottom() >
-                                                                                                                 other.get_top();
+        return getLeft() < other.getRight() && getRight() > other.getLeft() && getTop() < other.getBottom() &&
+                getBottom() >
+                                                                                                                 other.getTop();
     }
 
-    [[nodiscard]] RectangleF intersection(const RectangleF& other) const {
+    [[nodiscard]] RectangleF intersectionRect(const RectangleF& other) const {
         if (!intersects(other)) {
             return {};
         }
 
         return {
-            std::max(get_left(), other.get_left()),
-            std::max(get_top(), other.get_top()),
-            std::min(get_right(), other.get_right()) - std::max(get_left(), other.get_left()),
-            std::min(get_bottom(), other.get_bottom()) - std::max(get_top(), other.get_top())
+            std::max(getLeft(), other.getLeft()),
+            std::max(getTop(), other.getTop()),
+            std::min(getRight(), other.getRight()) - std::max(getLeft(), other.getLeft()),
+            std::min(getBottom(), other.getBottom()) - std::max(getTop(), other.getTop())
         };
     }
 
-    [[nodiscard]] RectangleF union_rect(const RectangleF& other) const {
+    [[nodiscard]] RectangleF unionRect(const RectangleF& other) const {
         return {
-            std::min(get_left(), other.get_left()),
-            std::min(get_top(), other.get_top()),
-            std::max(get_right(), other.get_right()) - std::min(get_left(), other.get_left()),
-            std::max(get_bottom(), other.get_bottom()) - std::min(get_top(), other.get_top())
+            std::min(getLeft(), other.getLeft()),
+            std::min(getTop(), other.getTop()),
+            std::max(getRight(), other.getRight()) - std::min(getLeft(), other.getLeft()),
+            std::max(getBottom(), other.getBottom()) - std::min(getTop(), other.getTop())
         };
     }
 
@@ -86,7 +85,7 @@ public:
     }
 
     RectangleF& move(const PointF& point) {
-        return move(point.x(), point.y());
+        return move(point.getX(), point.getY());
     }
 
     RectangleF& resize(Coord width, Coord height) {
@@ -96,57 +95,57 @@ public:
     }
 
     RectangleF& resize(const PointF& point) {
-        return resize(point.x(), point.y());
+        return resize(point.getX(), point.getY());
     }
 
-    RectangleF& set_left(Coord left) {
+    RectangleF& setLeft(Coord left) {
         m_x = left;
         return *this;
     }
 
-    RectangleF& set_right(Coord right) {
+    RectangleF& setRight(Coord right) {
         m_width = right - m_x;
         return *this;
     }
 
-    RectangleF& set_top(Coord top) {
+    RectangleF& setTop(Coord top) {
         m_y = top;
         return *this;
     }
 
-    RectangleF& set_bottom(Coord bottom) {
+    RectangleF& setBottom(Coord bottom) {
         m_height = bottom - m_y;
         return *this;
     }
 
-    RectangleF& set_width(Coord width) {
+    RectangleF& setWidth(Coord width) {
         m_width = width;
         return *this;
     }
 
-    RectangleF& set_height(Coord height) {
+    RectangleF& setHeight(Coord height) {
         m_height = height;
         return *this;
     }
 
-    RectangleF& set_position(Coord x, Coord y) {
+    RectangleF& setPosition(Coord x, Coord y) {
         m_x = x;
         m_y = y;
         return *this;
     }
 
-    RectangleF& set_position(const PointF& point) {
-        return set_position(point.x(), point.y());
+    RectangleF& setPosition(const PointF& point) {
+        return setPosition(point.getX(), point.getY());
     }
 
-    RectangleF& set_size(Coord width, Coord height) {
+    RectangleF& setSize(Coord width, Coord height) {
         m_width = width;
         m_height = height;
         return *this;
     }
 
-    RectangleF& set_size(const PointF& point) {
-        return set_size(point.x(), point.y());
+    RectangleF& setSize(const PointF& point) {
+        return setSize(point.getX(), point.getY());
     }
 
     RectangleF& set(Coord x, Coord y, Coord width, Coord height) {
@@ -158,7 +157,7 @@ public:
     }
 
     RectangleF& set(const PointF& point, const PointF& size) {
-        return set(point.x(), point.y(), size.x(), size.y());
+        return set(point.getX(), point.getY(), size.getX(), size.getY());
     }
 
     RectangleF& set(const RectangleF& other) {
@@ -173,8 +172,8 @@ public:
         return set(rect.x, rect.y, rect.w, rect.h);
     }
 
-    [[nodiscard]] SDL_Rect to_sdl_rect() const;
-    [[nodiscard]] SDL_FRect to_sdl_frect() const;
+    [[nodiscard]] SDL_Rect toSdlRect() const;
+    [[nodiscard]] SDL_FRect toSdlFrect() const;
 
 private:
     Coord m_x;
@@ -185,4 +184,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_RECTANGLEF_HPP

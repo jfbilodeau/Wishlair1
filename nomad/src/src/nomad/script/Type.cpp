@@ -16,7 +16,7 @@ void Type::init_value(ScriptValue& value) const {
     // Default implementation does nothing
 }
 
-void Type::free_value(ScriptValue& value) const {
+void Type::freeValue(ScriptValue& value) const {
     // Default implementation does nothing
 }
 
@@ -61,28 +61,28 @@ bool Type::same_type(const Type* other) const {
         return true;
     }
 
-    if (other->get_name() == get_name()) {
+    if (other->getName() == getName()) {
         return true;
     }
 
     return false;
 }
 
-const ScriptType* Type::as_callback() const {
+const ScriptType* Type::asCallback() const {
     return nullptr;
 }
 
-bool Type::is_void() const {
+bool Type::isVoid() const {
     return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // VoidType
-NomadString VoidType::get_name() const {
+NomadString VoidType::getName() const {
     return VOID_TYPE_NAME;
 }
 
-void VoidType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
+void VoidType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
     // Nothing to do...
 }
 
@@ -91,88 +91,88 @@ void VoidType::to_string(const ScriptValue& value, NomadString& string) const {
     string = "";
 }
 
-bool VoidType::is_void() const {
+bool VoidType::isVoid() const {
     return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // IdType
-NomadString IdType::get_name() const {
+NomadString IdType::getName() const {
     return ID_TYPE_NAME;
 }
 
-void IdType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_id_value(source_value.get_id_value());
+void IdType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setIdValue(source_value.getIdValue());
 }
 
 void IdType::to_string(const ScriptValue& value, NomadString& string) const {
-    string = nomad::to_string(value.get_id_value());
+    string = nomad::toString(value.getIdValue());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // FloatType
-NomadString FloatType::get_name() const {
+NomadString FloatType::getName() const {
     return FLOAT_TYPE_NAME;
 }
 
-void FloatType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_float_value(source_value.get_float_value());
+void FloatType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setFloatValue(source_value.getFloatValue());
 }
 
 void FloatType::to_string(const ScriptValue& value, NomadString& string) const {
-    string = nomad::to_string(value.get_float_value());
+    string = nomad::toString(value.getFloatValue());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // IntegerType
-NomadString IntegerType::get_name() const {
+NomadString IntegerType::getName() const {
     return INTEGER_TYPE_NAME;
 }
 
-void IntegerType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_integer_value(source_value.get_integer_value());
+void IntegerType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setIntegerValue(source_value.getIntegerValue());
 }
 
 void IntegerType::to_string(const ScriptValue& value, NomadString& string) const {
-    string = nomad::to_string(value.get_integer_value());
+    string = nomad::toString(value.getIntegerValue());
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // BooleanType
-NomadString BooleanType::get_name() const {
+NomadString BooleanType::getName() const {
     return BOOLEAN_TYPE_NAME;
 }
 
-void BooleanType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_integer_value(source_value.get_integer_value());
+void BooleanType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setIntegerValue(source_value.getIntegerValue());
 }
 
 void BooleanType::to_string(const ScriptValue& value, NomadString& string) const {
-    auto boolean_value = value.get_boolean_value();
+    auto boolean_value = value.getBooleanValue();
 
-    string = nomad::to_string(boolean_value);
+    string = nomad::toString(boolean_value);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // StringType
-NomadString StringType::get_name() const {
+NomadString StringType::getName() const {
     return STRING_TYPE_NAME;
 }
 
 void StringType::init_value(ScriptValue& value) const {
-    value.set_string_value(nullptr);
+    value.setStringValue(nullptr);
 }
 
-void StringType::free_value(ScriptValue& value) const {
-    delete[] value.get_string_value();
+void StringType::freeValue(ScriptValue& value) const {
+    delete[] value.getStringValue();
 }
 
-void StringType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_string_value(source_value.get_string_value());
+void StringType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setStringValue(source_value.getStringValue());
 }
 
 void StringType::to_string(const ScriptValue& value, NomadString& string) const {
-    string = value.get_string_value();
+    string = value.getStringValue();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -184,26 +184,26 @@ ScriptType::ScriptType(const std::vector<const Type*>& parameter_types, const Ty
     m_name = SCRIPT_TYPE_NAME + "(";
 
     for (auto parameter_type : parameter_types) {
-        m_name += parameter_type->get_name();
+        m_name += parameter_type->getName();
 
         if (parameter_type != parameter_types.back()) {
             m_name += ", ";
         }
     }
 
-    m_name += "):" + return_type->get_name();
+    m_name += "):" + return_type->getName();
 }
 
-NomadString ScriptType::get_name() const {
+NomadString ScriptType::getName() const {
     return SCRIPT_TYPE_NAME;
 }
 
-void ScriptType::copy_value(const ScriptValue& source_value, ScriptValue& destination_value) const {
-    destination_value.set_id_value(source_value.get_id_value());
+void ScriptType::copyValue(const ScriptValue& source_value, ScriptValue& destination_value) const {
+    destination_value.setIdValue(source_value.getIdValue());
 }
 
 void ScriptType::to_string(const ScriptValue& value, NomadString& string) const {
-    string = nomad::to_string(value.get_id_value());
+    string = nomad::toString(value.getIdValue());
 }
 
 NomadIndex ScriptType::get_parameter_count() const {
@@ -219,7 +219,7 @@ const Type* ScriptType::get_return_type() const {
 }
 
 bool ScriptType::same_type(const Type* other) const {
-    auto other_callback = other->as_callback();
+    auto other_callback = other->asCallback();
 
     // Probably not necessary
     if (other_callback == nullptr) {
@@ -243,7 +243,7 @@ bool ScriptType::same_type(const Type* other) const {
     return true;
 }
 
-const ScriptType* ScriptType::as_callback() const {
+const ScriptType* ScriptType::asCallback() const {
     return this;
 }
 

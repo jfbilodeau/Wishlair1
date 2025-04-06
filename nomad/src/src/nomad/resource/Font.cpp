@@ -21,21 +21,21 @@ namespace nomad {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Font
-Font::Font(const NomadString& name, const NomadString& file_name, int point_size):
+Font::Font(const NomadString& name, const NomadString& fileName, int pointSize):
     m_name(name)
 {
-    m_point_size = point_size;
+    m_pointSize = pointSize;
 
-    m_font = TTF_OpenFont(file_name.c_str(), point_size);
+    m_font = TTF_OpenFont(fileName.c_str(), pointSize);
 
     if (m_font == nullptr) {
         auto error_message = TTF_GetError();
 
-        throw ResourceException("Failed to load font: " + file_name + ". Reason: " + error_message);
+        throw ResourceException("Failed to load font: " + fileName + ". Reason: " + error_message);
     }
 }
 
-const NomadString& Font::get_name() const {
+const NomadString& Font::getName() const {
     return m_name;
 }
 
@@ -43,22 +43,22 @@ Font::~Font() {
     TTF_CloseFont(m_font);
 }
 
-int Font::get_point_size() const {
-    return m_point_size;
+int Font::getPointSize() const {
+    return m_pointSize;
 }
 
-TTF_Font* Font::get_ttf_font() const {
+TTF_Font* Font::getTtfFont() const {
     return m_font;
 }
 
-Texture* Font::generate_texture(
+Texture* Font::generateTexture(
     Canvas* canvas,
     const NomadString& text,
     const Color& color,
     HorizontalAlignment alignment,
-    NomadInteger max_text_width_pixels,
-    NomadInteger max_text_height_pixels,
-    NomadInteger line_spacing
+    NomadInteger maxTextWidthPixels,
+    NomadInteger maxTextHeightPixels,
+    NomadInteger lineSpacing
 ) const {
     struct Line {
         TempString text;
@@ -67,48 +67,48 @@ Texture* Font::generate_texture(
 
     if (text.empty()) {
         // Create a 1x1 texture
-        return new Texture("", canvas->get_game(), 1, 1);
+        return new Texture("", canvas->getGame(), 1, 1);
     }
 
-    const auto font_height = get_font_height();
-    const auto line_height = font_height + line_spacing;
+    const auto font_height = getFontHeight();
+    const auto line_height = font_height + lineSpacing;
 
     SDL_Surface* surface;
 
-    if (max_text_width_pixels == 0) {
-        surface = TTF_RenderUTF8_Blended_Wrapped(m_font, text.c_str(), color.to_sdl_color(), 0);
+    if (maxTextWidthPixels == 0) {
+        surface = TTF_RenderUTF8_Blended_Wrapped(m_font, text.c_str(), color.toSdlColor(), 0);
     } else {
         // Pre-allocate strings to avoid allocations at each iteration.
-        auto test_line = create_temp_string();
-        auto current_line = create_temp_string();
+        auto test_line = createTempString();
+        auto current_line = createTempString();
         NomadInteger longest_line_width = 0;
 
-        auto lines = create_temp_vector<Line>();
+        auto lines = createTempVector<Line>();
 
-        auto split_text = create_temp_string_vector();
-        split_lines(create_temp_string(text), split_text);
+        auto split_text = createTempStringVector();
+        splitLines(createTempString(text), split_text);
 
         for (const auto& line : split_text) {
             auto current_text_height = static_cast<NomadInteger>(lines.size()) * line_height;
 
-            if (max_text_height_pixels != 0 && current_text_height > max_text_height_pixels) {
+            if (maxTextHeightPixels != 0 && current_text_height > maxTextHeightPixels) {
                 break;
             }
 
-            auto words = create_temp_string_vector();
+            auto words = createTempStringVector();
             split(line, " ", words);
 
             for (const auto& word : words) {
                 test_line.clear();
                 test_line.append(current_line).append(current_line.empty() ? "" : " ").append(word);
-                auto line_width = get_text_width(test_line.c_str());
+                auto line_width = getTextWidth(test_line.c_str());
 
-                if (line_width > max_text_width_pixels) {
+                if (line_width > maxTextWidthPixels) {
                     if (!current_line.empty()) {
                         lines.emplace_back(
                             Line{
                                 current_line,
-                                get_text_width(current_line.c_str())
+                                getTextWidth(current_line.c_str())
                             }
                         );
                         current_line = word; // Start next line with 'word'
@@ -117,13 +117,13 @@ Texture* Font::generate_texture(
                         lines.emplace_back(
                             Line{
                                 word,
-                                get_text_width(word.c_str())
+                                getTextWidth(word.c_str())
                             }
                         );
                     }
 
                     // Update max_line_width
-                    line_width = get_text_width(lines.back().text.c_str());
+                    line_width = getTextWidth(lines.back().text.c_str());
                     longest_line_width = std::max(longest_line_width, line_width);
                 } else {
                     current_line = test_line;
@@ -134,22 +134,22 @@ Texture* Font::generate_texture(
                 lines.emplace_back(
                     Line {
                         current_line,
-                        get_text_width(current_line.c_str())
+                        getTextWidth(current_line.c_str())
                     }
                 );
-                longest_line_width = std::max(longest_line_width, get_text_width(current_line.c_str()));
+                longest_line_width = std::max(longest_line_width, getTextWidth(current_line.c_str()));
             }
         }
 
         NomadInteger current_text_height = static_cast<NomadInteger>(lines.size()) * line_height;
 
-        auto surface_height = max_text_height_pixels;
+        auto surface_height = maxTextHeightPixels;
 
         if (surface_height == 0) {
             surface_height = current_text_height;
         }
 
-        auto surface_width = max_text_width_pixels;
+        auto surface_width = maxTextWidthPixels;
 
         if (surface_width == 0) {
             surface_width = longest_line_width;
@@ -166,7 +166,7 @@ Texture* Font::generate_texture(
         for (NomadIndex line_index = 0; line_index < lines.size(); ++line_index) {
             auto& line = lines[line_index];
 
-            auto text_surface = TTF_RenderUTF8_Blended(m_font, line.text.c_str(), color.to_sdl_color());
+            auto text_surface = TTF_RenderUTF8_Blended(m_font, line.text.c_str(), color.toSdlColor());
 
             SDL_Rect destination_rect;
 
@@ -205,7 +205,7 @@ Texture* Font::generate_texture(
         }
     }
 
-    auto texture = SDL_CreateTextureFromSurface(canvas->get_sdl_renderer(), surface);
+    auto texture = SDL_CreateTextureFromSurface(canvas->getSdlRenderer(), surface);
 
     if (texture == nullptr) {
         auto error_message = SDL_GetError();
@@ -218,7 +218,7 @@ Texture* Font::generate_texture(
     return new Texture(text, texture);
 }
 
-NomadInteger Font::get_text_width(const NomadChar* text) const {
+NomadInteger Font::getTextWidth(const NomadChar* text) const {
     int width = 0;
 
     TTF_SizeUTF8(m_font, text, &width, nullptr);
@@ -226,11 +226,11 @@ NomadInteger Font::get_text_width(const NomadChar* text) const {
     return static_cast<NomadInteger>(width);
 }
 
-NomadInteger Font::get_text_width(const NomadString& text) const {
-    return get_text_width(text.c_str());
+NomadInteger Font::getTextWidth(const NomadString& text) const {
+    return getTextWidth(text.c_str());
 }
 
-NomadInteger Font::get_text_height(const NomadString& text) const {
+NomadInteger Font::getTextHeight(const NomadString& text) const {
     int height = 0;
 
     TTF_SizeUTF8(m_font, text.c_str(), nullptr, &height);
@@ -238,7 +238,7 @@ NomadInteger Font::get_text_height(const NomadString& text) const {
     return height;
 }
 
-NomadInteger Font::get_font_height() const {
+NomadInteger Font::getFontHeight() const {
     int font_height = TTF_FontHeight(m_font);
 
     return font_height;
@@ -250,33 +250,33 @@ FontManager::FontManager(ResourceManager* resources):
     m_resources(resources)
 {}
 
-NomadId FontManager::register_font(const NomadString& font_name, int point_size) {
+NomadId FontManager::registerFont(const NomadString& fontName, int pointSize) {
     auto font_id = to_nomad_id(m_fonts.size());
 
-    const auto file_name = m_resources->make_resource_path(font_name);
+    const auto file_name = m_resources->makeResourcePath(fontName);
 
     m_fonts.emplace_back(
         std::make_unique<Font>(
-            font_name,
+            fontName,
             file_name,
-            point_size
+            pointSize
         )
     );
 
     return font_id;
 }
 
-const Font* FontManager::get_font(NomadId font_id) const {
-    if (font_id >= m_fonts.size()) {
+const Font* FontManager::getFont(NomadId fontId) const {
+    if (fontId >= m_fonts.size()) {
         return nullptr;
     }
 
-    return m_fonts[font_id].get();
+    return m_fonts[fontId].get();
 }
 
-const Font* FontManager::get_font_by_name(const NomadString& font_name) const {
+const Font* FontManager::getFontByName(const NomadString& fontName) const {
     for (const auto& font : m_fonts) {
-        if (font->get_name() == font_name) {
+        if (font->getName() == fontName) {
             return font.get();
         }
     }

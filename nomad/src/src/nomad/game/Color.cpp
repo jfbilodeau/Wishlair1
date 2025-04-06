@@ -17,28 +17,28 @@ Color::Color(const Color& other) {
     rgba = other.rgba;
 }
 
-Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a):
-    r(r),
-    g(g),
-    b(b),
-    a(a)
+Color::Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha):
+    red(red),
+    green(green),
+    blue(blue),
+    alpha(alpha)
 {
 }
 
-SDL_Color Color::to_sdl_color() const {
+SDL_Color Color::toSdlColor() const {
     return {
-        .r = r,
-        .g = g,
-        .b = b,
-        .a = a
+        .r = red,
+        .g = green,
+        .b = blue,
+        .a = alpha
     };
 }
 
-void Color::to_sdl_color(SDL_Color& sdl_color) const {
-    sdl_color.r = r;
-    sdl_color.g = g;
-    sdl_color.b = b;
-    sdl_color.a = a;
+void Color::toSdlColor(SDL_Color& sdlColor) const {
+    sdlColor.r = red;
+    sdlColor.g = green;
+    sdlColor.b = blue;
+    sdlColor.a = alpha;
 }
 
 } // nomad

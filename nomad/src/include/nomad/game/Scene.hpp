@@ -40,107 +40,113 @@ public:
     Scene(const Scene& other) = delete;
     ~Scene();
 
-    [[nodiscard]] Game* get_game() const;
-    void set_game(Game* game);;
+    [[nodiscard]] Game* getGame() const;
+    void setGame(Game* game);
 
-    void set_name(const NomadString& name);;
-    [[nodiscard]] NomadString get_name() const;;
+    void setName(const NomadString& name);
+    [[nodiscard]] NomadString getName() const;
 
-    void set_z(NomadInteger z);
-    [[nodiscard]] NomadInteger get_z() const;;
+    void setZ(NomadInteger z);
+    [[nodiscard]] NomadInteger getZ() const;
+
+    void setFrameNumber(NomadInteger frameNumber);
+    NomadInteger getFrameNumber() const;
 
     void update(Game* game);
     void render(Canvas* canvas);
-    void process_input_event(const InputEvent& event);
+    void processInputEvent(const InputEvent& event);
 
-    void set_variable_value(NomadId variable_id, const ScriptValue& value);
-    void get_variable_value(NomadId variable_id, ScriptValue& value) const;
+    void setVariableValue(NomadId variableId, const ScriptValue& value);
+    void getVariableValue(NomadId variableId, ScriptValue& value) const;
 
-    void create_entity(
-        const NomadString& init_script_name,
+    void createEntity(
+        const NomadString& initScriptName,
         NomadFloat x,
         NomadFloat y,
         NomadInteger layer,
         NomadId id = NOMAD_INVALID_ID,
         const NomadString& text = NOMAD_EMPTY_STRING);
-    void remove_entity(Entity* entity);
+    void removeEntity(Entity* entity);
 
-    [[nodiscard]] Entity* get_entity_by_id(NomadId id) const;
+    [[nodiscard]]
+    Entity* getEntityById(NomadId id) const;
 
-    [[nodiscard]] Entity* get_entity_by_name(const NomadString& name) const;
-    void get_entities_by_name(const NomadString& name, EntityList& entities) const;
+    [[nodiscard]]
+    Entity* getEntityByName(const NomadString& name) const;
+    void getEntitiesByName(const NomadString& name, EntityList& entities) const;
 
-    void pause_other_entities(Entity* entity);
-    void pause_other_entities(const std::vector<Entity*>& entities);
-    void pause_all_entities();
-    void unpause_all_entities();
-    void unpause_all_visible_entities();
+    void pauseOtherEntities(Entity* entity);
+    void pauseOtherEntities(const std::vector<Entity*>& entities);
+    void pauseAllEntities();
+    void unpauseAllEntities();
+    void unpauseAllVisibleEntities();
 
-    void add_event(const NomadString& name, NomadId script_id);
-    void remove_event(const NomadString& name);
+    void addEvent(const NomadString& name, NomadId scriptId);
+    void removeEvent(const NomadString& name);
 
-    void load_action_mapping(const NomadString& mapping_name);
-    void save_action_mapping(const NomadString& mapping_name);
-    void reset_action_mapping(const NomadString& mapping_name);
+    void loadActionMapping(const NomadString& mappingName);
+    void saveActionMapping(const NomadString& mappingName);
+    void resetActionMapping(const NomadString& mappingName);
 
-    void add_action_pressed(const NomadString& action_name, NomadId script_id, NomadId entity_id = NOMAD_INVALID_ID);
-    void add_action_released(const NomadString& action_name, NomadId script_id, NomadId entity_id = NOMAD_INVALID_ID);
+    void addActionPressed(const NomadString& actionName, NomadId scriptId, NomadId entityId = NOMAD_INVALID_ID);
+    void addActionReleased(const NomadString& actionName, NomadId scriptId, NomadId entityId = NOMAD_INVALID_ID);
 
-    void remove_action_pressed(const NomadString& action_name, NomadId entity_id = NOMAD_INVALID_ID);
-    void remove_action_released(const NomadString& action_name, NomadId entity_id = NOMAD_INVALID_ID);
+    void removeActionPressed(const NomadString& actionName, NomadId entityId = NOMAD_INVALID_ID);
+    void removeActionReleased(const NomadString& actionName, NomadId entityId = NOMAD_INVALID_ID);
 
     // Tile map
-    void load_tile_map(const NomadString& file_name, const NomadString& tile_set_texture_name);
+    void loadTileMap(const NomadString& fileName, const NomadString& tileSetTextureName);
 
-    void set_tile_set(const Texture* texture, NomadInteger tile_width, NomadInteger tile_height, NomadIndex first_tile_index);
-    void set_tile_mask(NomadIndex tile_index, NomadInteger tile_mask);
-    [[nodiscard]] NomadInteger get_tile_mask(NomadIndex tile_index) const;
+    void setTileSet(const Texture* texture, NomadInteger tileWidth, NomadInteger tileHeight, NomadIndex firstTileIndex);
+    void setTileMask(NomadIndex tileIndex, NomadInteger tileMask);
+    [[nodiscard]] NomadInteger getTileMask(NomadIndex tileIndex) const;
 
-    void set_tile_map_size(NomadInteger width, NomadInteger height);
-    [[nodiscard]] NomadInteger get_tile_map_width() const;
-    [[nodiscard]] NomadInteger get_tile_map_height() const;
+    void setTileMapSize(NomadInteger width, NomadInteger height);
+    [[nodiscard]] NomadInteger getTileMapWidth() const;
+    [[nodiscard]] NomadInteger getTileMapHeight() const;
 
-    void set_ground_tile_index(NomadIndex layer, NomadInteger x, NomadInteger y, NomadIndex tile_index);
-    void set_wall_tile_index(NomadIndex layer, NomadInteger x, NomadInteger y, NomadIndex tile_index);
-    void set_wall_mask(NomadInteger mask);
-    [[nodiscard]] NomadInteger get_wall_mask() const;
-    [[nodiscard]] NomadIndex get_ground_tile_index(NomadIndex layer, NomadInteger x, NomadInteger y) const;
-    [[nodiscard]] NomadIndex get_wall_tile_index(NomadIndex layer, NomadInteger x, NomadInteger y) const;
-    [[nodiscard]] NomadInteger get_tile_mask(NomadIndex layer, NomadInteger x, NomadInteger y) const;
+    void setGroundTileIndex(NomadIndex layer, NomadInteger x, NomadInteger y, NomadIndex tile_index);
+    void setWallTileIndex(NomadIndex layer, NomadInteger x, NomadInteger y, NomadIndex tile_index);
+    void setWallMask(NomadInteger mask);
+    [[nodiscard]] NomadInteger getWallMask() const;
+    [[nodiscard]] NomadIndex getGroundTileIndex(NomadIndex layer, NomadInteger x, NomadInteger y) const;
+    [[nodiscard]] NomadIndex getWallTileIndex(NomadIndex layer, NomadInteger x, NomadInteger y) const;
+    [[nodiscard]] NomadInteger getTileMask(NomadIndex layer, NomadInteger x, NomadInteger y) const;
 
-    void process_tiles_at(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const;
+    void processTilesAt(NomadIndex layer, const Rectangle& rectangle, TileCallback callback) const;
 
     // Camera
-    void set_camera_position(const PointF& position);
-    void set_camera_position(NomadFloat x, NomadFloat y);
-    void set_camera_x(NomadFloat x);
-    void set_camera_y(NomadFloat y);
-    void camera_start_follow_entity(NomadId entity_id);
-    void camera_stop_follow_entity();
+    void setCameraPosition(const PointF& position);
+    void setCameraPosition(NomadFloat x, NomadFloat y);
+    void setCameraX(NomadFloat x);
+    void setCameraY(NomadFloat y);
+    void cameraStartFollowEntity(NomadId entity_id);
+    void cameraStopFollowEntity();
 
-    [[nodiscard]] PointF get_camera_position() const;
-    [[nodiscard]] NomadFloat get_camera_x() const;
-    [[nodiscard]] NomadFloat get_camera_y() const;
+    [[nodiscard]] PointF getCameraPosition() const;
+    [[nodiscard]] NomadFloat getCameraX() const;
+    [[nodiscard]] NomadFloat getCameraY() const;
 
     // Mask
-    [[nodiscard]] NomadInteger get_mask_at_entity(const Entity* entity) const;
-    [[nodiscard]] NomadInteger get_mask_at_entity(const Entity* entity, const PointF& location) const;
-    [[nodiscard]] NomadInteger get_mask_from_entities_at(NomadIndex layer, const RectangleF& rectangle, const Entity* exclude) const;
-    [[nodiscard]] NomadInteger get_mask_from_entities_at(NomadIndex layer, const CircleF& circle, const Entity* exclude) const;
-    [[nodiscard]] NomadInteger get_mask_in_rectangle(NomadIndex layer, const RectangleF& rectangle, const Entity* exclude) const;
-    [[nodiscard]] NomadInteger get_mask_in_circle(NomadIndex layer, const CircleF& circle, const Entity* exclude) const;
+    [[nodiscard]] NomadInteger getMaskAtEntity(const Entity* entity) const;
+    [[nodiscard]] NomadInteger getMaskAtEntity(const Entity* entity, const PointF& location) const;
+    [[nodiscard]] NomadInteger getMaskFromEntitiesAt(NomadIndex layer, const RectangleF& rectangle, const Entity* exclude) const;
+    [[nodiscard]] NomadInteger getMaskFromEntitiesAt(NomadIndex layer, const CircleF& circle, const Entity* exclude) const;
+    [[nodiscard]] NomadInteger getMaskInRectangle(NomadIndex layer, const RectangleF& rectangle, const Entity* exclude) const;
+    [[nodiscard]] NomadInteger getMaskInCircle(NomadIndex layer, const CircleF& circle, const Entity* exclude) const;
 
     // Events
-    void register_entity_event(const NomadString& name, NomadId entity_id, NomadId script_id);
-    void unregister_entity_event(const NomadString& name, NomadId entity_id);
-    void unregister_entity_all_events(NomadId entity_id);
-    void trigger_event(const NomadString& name);
-    void trigger_event(const NomadString& name, Entity* entity);
-    void trigger_event_layer(const NomadString& name, NomadIndex layer_id);
+    void registerEntityEvent(const NomadString& name, NomadId entityId, NomadId scriptId);
+    void unregisterEntityEvent(const NomadString& name, NomadId entityId);
+    void unregisterEntityAllEvents(NomadId entityId);
+    void triggerEvent(const NomadString& name);
+    void triggerEvent(const NomadString& name, Entity* entity);
+    void triggerEventLayer(const NomadString& name, NomadIndex layerId);
+    void scheduleEvent(const NomadString& name, NomadInteger frameCount);
 
     // Entity iteration
-    void for_each_entities(const std::function<void(Entity*)>& callback) const;
-    void for_each_entity_by_layer(NomadIndex layer_index, const std::function<void(Entity*)>& callback) const;
+    void forEachEntities(const std::function<void(Entity*)>& callback) const;
+    void forEachEntityByLayer(NomadIndex layerIndex, const std::function<void(Entity*)>& callback) const;
 
 private: // structs
     struct TileDefinition {
@@ -156,37 +162,37 @@ private: // structs
 
         NomadId id = NOMAD_INVALID_ID;
         EntityList entities;
-        std::vector<NomadIndex> ground_tile_map;
-        bool has_ground_tile_map = false;
-        std::vector<NomadIndex> wall_tile_map;
-        bool has_wall_tile_map = false;
+        std::vector<NomadIndex> groundTileMap;
+        bool hasGroundTileMap = false;
+        std::vector<NomadIndex> wallTileMap;
+        bool hasWallTileMap = false;
         std::vector<b2BodyId> walls;
-        bool walls_invalidated = true;
+        bool wallsInvalidated = true;
 
-        b2WorldId world_id;  // Initialized by Scene
+        b2WorldId worldId;  // Initialized by Scene
     };
 
     struct ActionMapping {
         NomadString name;
         InputAction action = InputAction::Unknown;
-        NomadId script_id = NOMAD_INVALID_ID;
-        NomadId entity_id = NOMAD_INVALID_ID;
+        NomadId scriptId = NOMAD_INVALID_ID;
+        NomadId entityId = NOMAD_INVALID_ID;
         bool pressed = false;
         bool released = false;
         bool held = false;
     };
 
     struct AddedEntity {
-        NomadId init_script_id;
+        NomadId initScriptId;
         NomadFloat x, y;
         NomadInteger layer;
         NomadId id;
-        NomadString text_id;
+        NomadString textId;
     };
 
     struct Event {
-        NomadId entity_id;
-        NomadId script_id;
+        NomadId entityId;
+        NomadId scriptId;
     };
 
     struct EventRegistrations {
@@ -195,61 +201,70 @@ private: // structs
         std::vector<Event> registrations;
     };
 
-private: // methods
-    NomadId get_next_entity_id();
-    ActionMapping* get_action_mapping(const NomadString& name, InputAction type, NomadId entity_id = NOMAD_INVALID_ID);
+    struct ScheduledEventRegistration {
+        NomadString name;
+        NomadInteger frameNumber;
+    };
 
-    bool load_tile_map_layer(
-        const NomadString& ground_layer_name,
-        NomadInteger tile_map_height,
-        NomadInteger tile_map_width,
+private: // methods
+    NomadId getNextEntityId();
+    ActionMapping* getActionMapping(const NomadString& name, InputAction type, NomadId entityId = NOMAD_INVALID_ID);
+
+    bool loadTileMapLayer(
+        const NomadString& groundLayerName,
+        NomadInteger tileMapHeight,
+        NomadInteger tileMapWidth,
         boost::json::array& layers,
-        std::vector<NomadIndex>& tile_map
+        std::vector<NomadIndex>& tileMap
     ) const;
 
-    void update_physics();
-    void update_entity_layers();
-    void update_camera();
+    void updateScheduledEvents();
+    void updatePhysics();
+    void updateEntityLayers();
+    void updateCamera();
 
-    void render_tile_map(Canvas* canvas, const Layer& layer);
-    void render_tile(Canvas* canvas, int y, int x, NomadIndex ground_tile_index);
+    void processRemoveEntities();
+    void processAddEntities();
 
-    void process_add_remove_entities();
+    void renderTileMap(Canvas* canvas, const Layer& layer);
+    void renderTile(Canvas* canvas, int y, int x, NomadIndex groundTileIndex);
 
 private: // data
     Game* m_game;
     NomadString m_name;
     NomadInteger m_z = 0;
+    NomadInteger m_frameNumber = 0;
 
     VariableList m_variables;
 
     // Entities
-    NomadId m_entity_id_counter = NOMAD_ID_MIN;
+    NomadId m_entityIdCounter = NOMAD_ID_MIN;
 
-    std::vector<AddedEntity> m_added_entities;
-    EntityList m_removed_entities;
+    std::vector<AddedEntity> m_addedEntities;
+    EntityList m_removedEntities;
     EntityList m_entities;
 
     // Tiles
-    const Texture* m_tile_texture = nullptr;
-    NomadInteger m_tile_count = 0;
-    NomadInteger m_tile_width = 0, m_tile_height = 0;
-    NomadInteger m_tile_map_width = 0, m_tile_map_height = 0;
-    b2Filter m_wall_filter = b2DefaultFilter();
+    const Texture* m_tileTexture = nullptr;
+    NomadInteger m_tileCount = 0;
+    NomadInteger m_tileWidth = 0, m_tileHeight = 0;
+    NomadInteger m_tileMapWidth = 0, m_tileMapHeight = 0;
+    b2Filter m_wallFilter = b2DefaultFilter();
     std::vector<TileDefinition> m_tiles;
     std::array<Layer, SCENE_LAYER_COUNT> m_layers;
 
     // Camera
-    PointF m_camera_position;
-    NomadId m_camera_follow_entity_id = NOMAD_INVALID_ID;
+    PointF m_cameraPosition;
+    NomadId m_cameraFollowEntityId = NOMAD_INVALID_ID;
 
     // Events
-    std::vector<EventRegistrations> m_entity_events;
+    std::vector<EventRegistrations> m_entityEvents;
+    std::vector<ScheduledEventRegistration> m_scheduledEvents;
 
     EventManager m_events;
-    ActionManager m_action_manager;
-    std::vector<ActionMapping> m_action_mapping;
-    GameExecutionContext m_execution_context;
+    ActionManager m_actionManager;
+    std::vector<ActionMapping> m_actionMapping;
+    GameExecutionContext m_executionContext;
 };
 
 } // nomad

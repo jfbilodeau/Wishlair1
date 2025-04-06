@@ -14,7 +14,7 @@ namespace nomad {
 
 #if defined(NOMAD_SCRIPT_DOC)
 
-void generate_documentation(Runtime* runtime, std::ostream& out) {
+void generateDocumentation(Runtime* runtime, std::ostream& out) {
 
     boost::json::object root;
 
@@ -23,7 +23,7 @@ void generate_documentation(Runtime* runtime, std::ostream& out) {
 
     std::vector<KeywordDefinition> keywords;
 
-    runtime->get_keywords(keywords);
+    runtime->getKeywords(keywords);
 
     for (const KeywordDefinition& keyword : keywords) {
         auto& keyword_object = keywords_object[keyword.keyword].emplace_object();
@@ -73,7 +73,7 @@ void generate_documentation(Runtime* runtime, std::ostream& out) {
     // Commands.
     std::vector<CommandDefinition> commands;
 
-    runtime->get_commands(commands);
+    runtime->getCommands(commands);
 
     auto& commands_object = root["commands"].emplace_object();
 
@@ -86,7 +86,7 @@ void generate_documentation(Runtime* runtime, std::ostream& out) {
         auto& parameters_array = command_object["parameters"].emplace_array();
 
         for (auto& parameter : command.parameters) {
-            NomadString parameter_type = parameter.type->get_name();
+            NomadString parameter_type = parameter.type->getName();
 
             auto& parameter_object = command_object["parameters"].emplace_object();
 
@@ -98,12 +98,12 @@ void generate_documentation(Runtime* runtime, std::ostream& out) {
     out << boost::json::serialize(root);
 }
 
-void generate_keywords(Runtime* runtime, std::ostream& out) {
+void generateKeywords(Runtime* runtime, std::ostream& out) {
     out << "--- Keywords ---\n";
 
     std::vector<KeywordDefinition> keywords;
 
-    runtime->get_keywords(keywords);
+    runtime->getKeywords(keywords);
 
     for (const KeywordDefinition& keyword : keywords) {
         out << keyword.keyword << "\n";
@@ -111,9 +111,9 @@ void generate_keywords(Runtime* runtime, std::ostream& out) {
 
     out << "--- Statements --- \n";
 
-    auto compiler = runtime->create_compiler();
+    auto compiler = runtime->createCompiler();
     std::vector<NomadString> statements;
-    compiler->get_registered_statements(statements);
+    compiler->getRegisteredStatements(statements);
 
     for (auto& statement : statements) {
         out << statement << "\n";
@@ -122,7 +122,7 @@ void generate_keywords(Runtime* runtime, std::ostream& out) {
     out << "--- Commands ---\n";
 
     std::vector<CommandDefinition> commands;
-    runtime->get_commands(commands);
+    runtime->getCommands(commands);
 
     for (const CommandDefinition& command : commands) {
         out << command.name << "\n";

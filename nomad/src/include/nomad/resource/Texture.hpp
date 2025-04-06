@@ -2,8 +2,7 @@
 // Created by Jean-François Bilodeau on 2023-06-18.
 //
 
-#ifndef NOMAD_TEXTURE_HPP
-#define NOMAD_TEXTURE_HPP
+#pragma once
 
 #include "nomad/resource/Resource.hpp"
 
@@ -23,16 +22,16 @@ class ResourceManager;
 ///////////////////////////////////////////////////////////////////////////////
 class Texture : public Resource {
 public:
-    Texture(const NomadString& name, const NomadString& file_name, Game* game);
+    Texture(const NomadString& name, const NomadString& fileName, Game* game);
     Texture(const NomadString& name, Game* game, int width, int height);
     Texture(const NomadString& name, SDL_Texture* texture);
     Texture(const Texture& other) = delete;
     ~Texture() override;
 
-    [[nodiscard]] int get_width() const;
-    [[nodiscard]] int get_height() const;
+    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] int getHeight() const;
 
-    [[nodiscard]] SDL_Texture* get_sdl_texture() const;
+    [[nodiscard]] SDL_Texture* getSdlTexture() const;
 
 private:
     SDL_Texture* m_texture = nullptr;
@@ -47,9 +46,9 @@ class TextureManager {
 public:
     explicit TextureManager(ResourceManager* resources);
 
-    [[nodiscard]] NomadId register_texture(const NomadString& texture_name);
-    [[nodiscard]] const Texture* get_texture(NomadId texture_id) const;
-    [[nodiscard]] const Texture* get_texture_by_name(const NomadString& texture_name) const;
+    [[nodiscard]] NomadId registerTexture(const NomadString& textureName);
+    [[nodiscard]] const Texture* getTexture(NomadId textureId) const;
+    [[nodiscard]] const Texture* getTextureByName(const NomadString& textureName) const;
 
 private:
     ResourceManager* m_resources;
@@ -58,4 +57,3 @@ private:
 
 } // nomad
 
-#endif //NOMAD_TEXTURE_HPP

@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-06-07.
 //
 
-#ifndef NOMAD_GEOMETRY_HPP
-#define NOMAD_GEOMETRY_HPP
+#pragma once
 
 #include "nomad/nomad.hpp"
 
@@ -15,4 +14,3 @@ using Coord = NomadFloat;
 
 }
 
-#endif //NOMAD_GEOMETRY_HPP

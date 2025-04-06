@@ -2,8 +2,7 @@
 // Created by jfbil on 2023-09-12.
 //
 
-#ifndef NOMAD_COLOR_HPP
-#define NOMAD_COLOR_HPP
+#pragma once
 
 #include "SDL_pixels.h"
 
@@ -18,19 +17,18 @@ public:
     Color() = default;
     explicit Color(Rgba rgba);
     Color(const Color& other);
-    Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+    Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha = 255);
 
-    SDL_Color to_sdl_color() const;
-    void to_sdl_color(SDL_Color& sdl_color) const;
+    SDL_Color toSdlColor() const;
+    void toSdlColor(SDL_Color& sdlColor) const;
 
     union {
         Rgba rgba = 0;
-        //SDL_Color sdl_color;
         struct {
-            Uint8 a;
-            Uint8 b;
-            Uint8 g;
-            Uint8 r;
+            Uint8 alpha;
+            Uint8 blue;
+            Uint8 green;
+            Uint8 red;
         };
     };
 };
@@ -57,4 +55,3 @@ namespace Colors {
 
 } // nomad
 
-#endif //NOMAD_COLOR_HPP
