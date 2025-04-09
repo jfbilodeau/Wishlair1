@@ -143,25 +143,13 @@
                  "id":25,
                  "template":"entities\/camera.tx",
                  "x":400,
-                 "y":720
+                 "y":1200
                 }, 
                 {
                  "id":28,
                  "template":"entities\/text.tx",
                  "x":29,
                  "y":1080
-                }, 
-                {
-                 "id":29,
-                 "properties":[
-                        {
-                         "name":"text",
-                         "type":"string",
-                         "value":"scene.opening.father"
-                        }],
-                 "template":"entities\/text.tx",
-                 "x":29,
-                 "y":580
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -170,7 +158,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":30,
+ "nextobjectid":29,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
