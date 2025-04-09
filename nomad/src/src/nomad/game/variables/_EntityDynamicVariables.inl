@@ -528,7 +528,7 @@ m_runtime->registerDynamicVariable(
         END_SINGLE_ENTITY_BLOCK(NOMAD_DEFAULT_INTEGER)
     },
     m_runtime->getIntegerType(),
-    NomadDoc("The color for the text of an entity.")
+    NomadDoc("The text color of an entity.")
 );
 
 m_runtime->registerDynamicVariable(

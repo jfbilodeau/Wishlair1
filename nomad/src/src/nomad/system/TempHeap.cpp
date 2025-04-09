@@ -18,7 +18,7 @@ std::pmr::monotonic_buffer_resource* getTempBuffer() {
     return &temp_buffer;
 }
 
-void fastTempHeapReset() {
+void resetTempHeap() {
     temp_buffer.release();
 }
 

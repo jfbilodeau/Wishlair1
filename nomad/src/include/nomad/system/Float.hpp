@@ -59,6 +59,18 @@ inline NomadFloat floatTangent(NomadFloat a) {
     return std::tan(a);
 }
 
+inline NomadFloat floatFloor(NomadFloat a) {
+    return std::floor(a);
+}
+
+inline NomadFloat floatCeiling(NomadFloat a) {
+    return std::ceil(a);
+}
+
+inline NomadFloat floatRound(NomadFloat a) {
+    return std::round(a);
+}
+
 inline NomadBoolean floatEqualTo(NomadFloat a, NomadFloat b) {
     return a == b;
 }

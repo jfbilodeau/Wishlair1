@@ -1,6 +1,9 @@
 const border.margin = 10.0 / 2.0
 const border.size = 10.0
 
+# Name of the event to trigger when the borders need to be repositioned.
+const on.repositionBorders = "repositionBorders"
+
 fun createBorders
     # Create for layer 0
     scene.createEntity "entities.border.north" 0.0 0.0 0
@@ -41,18 +44,19 @@ fun initBorderEntity room.x:float room.y:float
     this.mask = mask.ui
     this.collisionMask = mask.player
 
-    scene.room.x = room.x
-    scene.room.y = room.y
-
     this.on.collisionStart fun
         log.info "Contact"
+
+        # Reposition room index.
+        scene.room.x = scene.room.x + this.room.deltaX
+        scene.room.y = scene.room.y + this.room.deltaY
 
         select.byName "camera"
 
         other.pauseOthers
 
-        other.moveTo this.room.x + room.middle.x this.room.y + room.middle.y 600.0 fun
-            log.info $"Move to: {this.room.x}, {this.room.y}"
+        other.moveTo room.current.left + room.middle.x room.current.top + room.middle.y 600.0 fun
+            log.info $"Move to: {scene.room.x}, {scene.room.y}"
 
             repositionBorders
 
@@ -64,12 +68,7 @@ fun initBorderEntity room.x:float room.y:float
 end
 
 fun repositionBorders
-    room.x = scene.room.x / room.width
-    room.y = scene.room.y / room.height
-
-    log.info $"Reposition borders: {scene.room.x}, {scene.room.y} ({room.x}, {room.y})"
-
-    scene.events.trigger "endChangeRoom"
+    scene.events.trigger on.repositionBorders
 
 #    select.all.byName "border.north"
 #    other.x = room.x + room.middle.x
@@ -107,13 +106,14 @@ fun entities.border.north
     this.width = room.width + border.margin * 2.0
     this.height = border.size
 
+    this.room.deltaX = 0.0
+    this.room.deltaY = -1.0
+
     initBorderEntity 0.0 (-room.height)
 
-    this.on "endChangeRoom" fun
-        this.x = scene.room.x + room.middle.x
-        this.y = scene.room.y + (-border.size) - border.margin
-        this.room.x = scene.room.x
-        this.room.y = scene.room.y - room.height
+    this.on on.repositionBorders fun
+        this.x = room.current.left + room.middle.x
+        this.y = room.current.top + (-border.size) - border.margin
     end
 end
 
@@ -125,13 +125,14 @@ fun entities.border.south
     this.width = room.width + border.margin * 2.0
     this.height = border.size
 
+    this.room.deltaX = 0.0
+    this.room.deltaY = 1.0
+
     initBorderEntity 0.0 room.height
 
-    this.on "endChangeRoom" fun
-        this.x = scene.room.x + room.middle.x
-        this.y = scene.room.y + room.height + border.margin + border.size
-        this.room.x = scene.room.x
-        this.room.y = scene.room.y + room.height
+    this.on on.repositionBorders fun
+        this.x = room.current.left + room.middle.x
+        this.y = room.current.top + room.height + border.margin + border.size
     end
 end
 
@@ -143,13 +144,14 @@ fun entities.border.east
     this.width = border.size
     this.height = room.height + border.margin * 2.0
 
+    this.room.deltaX = 1.0
+    this.room.deltaY = 0.0
+
     initBorderEntity room.width 0.0
 
-    this.on "endChangeRoom" fun
-        this.x = scene.room.x + room.width + border.size + border.margin
-        this.y = scene.room.y + room.middle.y
-        this.room.x = scene.room.x + room.width
-        this.room.y = scene.room.y
+    this.on on.repositionBorders fun
+        this.x = room.current.left + room.width + border.size + border.margin
+        this.y = room.current.top + room.middle.y
     end
 end
 
@@ -161,12 +163,13 @@ fun entities.border.west
     this.width = border.size
     this.height = room.height + border.margin * 2.0
 
+    this.room.deltaX = -1.0
+    this.room.deltaY = 0.0
+
     initBorderEntity (-room.width) 0.0
 
-    this.on "endChangeRoom" fun
-        this.x = scene.room.x + (-border.size) - border.margin
-        this.y = scene.room.y + room.middle.y
-        this.room.x = scene.room.x - room.width
-        this.room.y = scene.room.y
+    this.on on.repositionBorders fun
+        this.x = room.current.left + (-border.size) - border.margin
+        this.y = room.current.top + room.middle.y
     end
 end

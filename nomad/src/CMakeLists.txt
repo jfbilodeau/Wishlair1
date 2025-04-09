@@ -238,6 +238,8 @@ set(
 
         ${DEAR_IMGUI_SOURCE}
 
+        ${NOMAD_SOURCE_DIR}/nomad/nomad.cpp
+
         ${NOMAD_SOURCE_DIR}/nomad/compiler/Argument.cpp
         ${NOMAD_SOURCE_DIR}/nomad/compiler/Compiler.cpp
         ${NOMAD_SOURCE_DIR}/nomad/compiler/Expression.cpp

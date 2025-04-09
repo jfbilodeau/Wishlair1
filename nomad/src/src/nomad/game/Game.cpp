@@ -775,7 +775,7 @@ void Game::update() {
         return a->getZ() < b->getZ();
     });
 
-    fastTempHeapReset();
+    resetTempHeap();
 }
 
 bool Game::processSystemInput(SDL_KeyboardEvent& event) {

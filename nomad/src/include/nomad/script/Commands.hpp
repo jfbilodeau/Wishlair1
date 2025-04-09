@@ -10,9 +10,10 @@
 
 namespace nomad {
 
-void commandLogInfo(Interpreter* interpreter);
-void commandToFloat(Interpreter* interpreter);
-void commandToInteger(Interpreter* interpreter);
+void registerBuildInCommands(Runtime* runtime);
+// void commandLogInfo(Interpreter* interpreter);
+// void commandToFloat(Interpreter* interpreter);
+// void commandToInteger(Interpreter* interpreter);
 
 } // nomad
 

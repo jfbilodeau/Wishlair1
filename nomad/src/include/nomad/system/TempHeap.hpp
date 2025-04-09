@@ -19,7 +19,8 @@ using TempStringVector = TempVector<TempString>;
 
 std::pmr::monotonic_buffer_resource* getTempBuffer();
 
-void fastTempHeapReset();
+// Free all memory allocated in the temporary heap
+void resetTempHeap();
 
 template<typename T>
 TempVector<T> createTempVector() {

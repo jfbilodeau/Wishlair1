@@ -20,7 +20,8 @@ using NomadFloat = double;
 constexpr NomadBoolean NOMAD_FALSE = false;
 constexpr NomadBoolean NOMAD_TRUE = true;
 
-constexpr NomadFloat NOMAD_PI = 3.14159265358979323846;
+constexpr NomadFloat NOMAD_PI = std::numbers::pi;
+// constexpr NomadFloat NOMAD_PI = 3.14159265358979323846;
 
 using NomadChar = char;
 using NomadString = std::string;
@@ -46,7 +47,9 @@ NomadId to_nomad_id(T value) {
 
 class NomadException : public std::exception {
 public:
-    explicit NomadException(NomadString message) : m_message(std::move(message)) {}
+    explicit NomadException(const NomadString& message) {
+        m_message = message;
+    }
 
     [[nodiscard]] const char* what() const noexcept override {
         return m_message.c_str();
@@ -56,7 +59,9 @@ public:
         return m_message;
     }
 private:
-    NomadString m_message;
+    // HACK: The exception--and by extension the message--may be deallocated by the exception handler
+    // As a solution, let's use a static variable to store the message.
+    static NomadString m_message;
 };
 
 // Default values

@@ -30,32 +30,8 @@ Runtime::Runtime() {
     // Register instructions
     registerDefaultInstructions();
 
-    registerCommand(
-        "log.info",
-        commandLogInfo, {
-            defParameter("message", getStringType(), NomadParamDoc("The text to print"))
-        },
-        getVoidType(),
-        NomadDoc("Write a 'info' level string to the log.")
-    );
-
-    registerCommand(
-        "toFloat",
-        commandToFloat, {
-            defParameter("value", getIntegerType(), NomadParamDoc("The integer to convert to a float"))
-        },
-        getFloatType(),
-        NomadDoc("Convert an integer to a float.")
-    );
-
-    registerCommand(
-        "toInteger",
-        commandToInteger, {
-            defParameter("value", getFloatType(), NomadParamDoc("The float to convert to an integer"))
-        },
-        getIntegerType(),
-        NomadDoc("Convert a float to an integer.")
-    );
+    // Register build-in commands
+    registerBuildInCommands(this);
 
 //    register_keyword("stringId" NomadDoc("Load the string id of the given string"));
     registerKeyword("fun", NomadDoc("Declares a function"));

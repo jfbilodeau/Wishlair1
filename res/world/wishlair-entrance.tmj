@@ -171,7 +171,7 @@
                  "visible":true,
                  "width":64,
                  "x":400,
-                 "y":1200
+                 "y":720
                 }, 
                 {
                  "gid":4109,
@@ -195,6 +195,29 @@
                  "width":32,
                  "x":29,
                  "y":1080
+                }, 
+                {
+                 "gid":4109,
+                 "height":32,
+                 "id":29,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"scriptName",
+                         "type":"string",
+                         "value":"entities.ui.text"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"scene.opening.father"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":29,
+                 "y":580
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -203,7 +226,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":29,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",
