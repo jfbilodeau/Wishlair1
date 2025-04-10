@@ -13,6 +13,7 @@
 #include "nomad/script/DynamicVariable.hpp"
 #include "nomad/script/Script.hpp"
 #include "nomad/script/VariableContext.hpp"
+#include "nomad/system/TempHeap.hpp"
 
 namespace nomad {
 
@@ -181,7 +182,8 @@ public:
     [[nodiscard]] NomadId getScriptId(const NomadString& name) const;
     [[nodiscard]] Script* getScript(NomadId script_id) const;
     [[nodiscard]] NomadIndex getScriptCount() const;
-    void getScripts(std::vector<Script*>& scripts);
+    void getScripts(std::vector<Script*>& scripts) const;
+    void getScripts(TempVector<Script*>& scripts);
     [[nodiscard]] NomadIndex getScriptSize() const;
 
     std::unique_ptr<Compiler> createCompiler();

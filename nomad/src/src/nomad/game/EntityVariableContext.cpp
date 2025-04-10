@@ -23,7 +23,7 @@ NomadId ThisEntityVariableContext::registerVariable(const NomadString &name, con
         this_name = THIS_ENTITY_VARIABLE_PREFIX + name.substr(OTHER_ENTITY_VARIABLE_PREFIX.size());
         other_name = name;
     } else {
-        log::error("[EntityVariableContext::register_variable] Unexpected variable name '" + name + "'");
+        log::error("Unexpected variable name '" + name + "'");
         return NOMAD_INVALID_ID;
     }
 
@@ -32,7 +32,7 @@ NomadId ThisEntityVariableContext::registerVariable(const NomadString &name, con
 
     // Sanity check...
     if (this_id != other_id) {
-        log::error("[EntityVariableContext::register_variable] Variable IDs do not match");
+        log::error("Variable IDs do not match");
     }
 
     return this_id;
@@ -48,7 +48,7 @@ NomadId ThisEntityVariableContext::getVariableId(const NomadString &name) const 
     } else if (name.starts_with(OTHER_ENTITY_VARIABLE_PREFIX)) {
         return m_otherEntityVariableMap.getVariableId(name);
     } else {
-        log::error("[EntityVariableContext::get_variable_id] Unexpected variable name '" + name + "'");
+        log::error("Unexpected variable name '" + name + "'");
         return NOMAD_INVALID_ID;
     }
 }

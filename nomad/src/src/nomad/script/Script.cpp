@@ -23,20 +23,20 @@ Script::Script(
 Script::~Script() = default;
 
 
-void Script::add_parameter(const NomadString& parameter_name, const Type* type) {
-    m_parameters.registerVariable(parameter_name, type);
+void Script::addParameter(const NomadString& parameterName, const Type* type) {
+    m_parameters.registerVariable(parameterName, type);
 }
 
-NomadId Script::getParameterId(const NomadString& parameter_name) const {
-    return m_parameters.getVariableId(parameter_name);
+NomadId Script::getParameterId(const NomadString& parameterName) const {
+    return m_parameters.getVariableId(parameterName);
 }
 
-const NomadString& Script::getParameterName(NomadId parameter_id) const {
-    return m_parameters.getVariableName(parameter_id);
+const NomadString& Script::getParameterName(NomadId parameterId) const {
+    return m_parameters.getVariableName(parameterId);
 }
 
-const Type* Script::getParameterType(NomadId parameter_id) const {
-    return m_parameters.getVariableType(parameter_id);
+const Type* Script::getParameterType(NomadId parameterId) const {
+    return m_parameters.getVariableType(parameterId);
 }
 
 NomadIndex Script::getParameterCount() const {
@@ -44,105 +44,70 @@ NomadIndex Script::getParameterCount() const {
 }
 
 
-NomadId Script::registerVariable(const NomadString& variable_name, const Type* type) {
-    auto variable_id = m_variables.getVariableId(variable_name);
+NomadId Script::registerVariable(const NomadString& variableName, const Type* type) {
+    auto variableId = m_variables.getVariableId(variableName);
 
-    if (variable_id != NOMAD_INVALID_ID) {
-        auto current_type = m_variables.getVariableType(variable_id);
+    if (variableId != NOMAD_INVALID_ID) {
+        auto currentType = m_variables.getVariableType(variableId);
 
-        if (current_type == nullptr) {
-            m_variables.setVariableType(variable_id, type);
-        } else if (current_type != type) {
-            throw NomadException("[Script::register_variable] Internal error: Variable '" + variable_name + "' already exists with a different type");
+        if (currentType == nullptr) {
+            m_variables.setVariableType(variableId, type);
+        } else if (currentType != type) {
+            throw NomadException("Internal error: Variable '" + variableName + "' already exists with a different type");
         }
 
-        return variable_id;
+        return variableId;
     }
 
-    return m_variables.registerVariable(variable_name, type);
+    return m_variables.registerVariable(variableName, type);
 }
 
-NomadId Script::getVariableId(const NomadString& variable_name) const {
-    return m_variables.getVariableId(variable_name);
+NomadId Script::getVariableId(const NomadString& variableName) const {
+    return m_variables.getVariableId(variableName);
 }
 
-[[nodiscard]] const NomadString& Script::get_variable_name(NomadId variable_id) const {
-    return m_variables.getVariableName(variable_id);
+[[nodiscard]] const NomadString& Script::getVariableName(NomadId variableId) const {
+    return m_variables.getVariableName(variableId);
 }
 
-void Script::set_variable_type(NomadId variable_id, const Type* type) {
-    m_variables.setVariableType(variable_id, type);
+void Script::setVariableType(NomadId variableId, const Type* type) {
+    m_variables.setVariableType(variableId, type);
 }
 
-const Type* Script::getVariableType(NomadId variable_id) const {
-    return m_variables.getVariableType(variable_id);
+const Type* Script::getVariableType(NomadId variableId) const {
+    return m_variables.getVariableType(variableId);
 }
 
 NomadIndex Script::getVariableCount() const {
     return m_variables.getVariableCount();
 }
 
-void Script::setReturnType(const Type* return_type) {
-    m_return_type = return_type;
+void Script::setReturnType(const Type* returnType) {
+    m_returnType = returnType;
 }
 
 const Type* Script::getReturnType() const {
-    return m_return_type;
+    return m_returnType;
 }
 
-//NomadId Script::register_format_string(const FormatString& format_string) {
-//    const auto id = to_nomad_id(m_format_strings.size());
-//
-//    m_format_strings.emplace_back(format_string);
-//
-//    return id;
-//}
-//
-//NomadId Script::get_format_string_id(const NomadString& format_string) const {
-//    for (auto i = 0; i < m_format_strings.size(); ++i) {
-//        if (m_format_strings[i].get_format_string() == format_string) {
-//            return to_nomad_id(i);
-//        }
-//    }
-//
-//    return NOMAD_INVALID_ID;
-//}
-//
-//const FormatString& Script::get_format_string(NomadId id) const {
-//    return m_format_strings[id];
-//}
-
-void Script::setScriptStart(NomadIndex script_start_index) {
-    m_script_start_index = script_start_index;
+void Script::setScriptStart(NomadIndex scriptStartIndex) {
+    m_scriptStartIndex = scriptStartIndex;
 }
 
 NomadIndex Script::getScriptStart() const {
-    return m_script_start_index;
+    return m_scriptStartIndex;
 }
 
-void Script::setScriptEnd(NomadIndex script_end_index) {
-    m_script_end_index = script_end_index;
+void Script::setScriptEnd(NomadIndex scriptEndIndex) {
+    m_scriptEndIndex = scriptEndIndex;
 }
 
-NomadIndex Script::get_script_end() const {
-    return m_script_end_index;
+NomadIndex Script::getScriptEnd() const {
+    return m_scriptEndIndex;
 }
 
-NomadIndex Script::get_script_length() const {
-    return m_script_end_index - m_script_start_index;
+NomadIndex Script::getScriptLength() const {
+    return m_scriptEndIndex - m_scriptStartIndex;
 }
-
-//
-//NomadInteger Script::get_integer(NomadIndex index) const {
-//    const auto value = *reinterpret_cast<const NomadInteger *>(&m_op_codes[index]);
-//
-//    return value;
-//}
-//
-//NomadFloat Script::get_float(NomadIndex index) const {
-//    const auto value = *reinterpret_cast<const NomadFloat*>(&m_op_codes[index]);
-//
-//    return value;
-//}
 
 } // nomad

@@ -110,7 +110,7 @@ void preParseFunStatement(Compiler* compiler, Script* script, Tokenizer* tokens)
 //            parser::throw_parser_error("Unknown type '" + parameter_type_name + "' for parameter", tokens);
 //        }
 //
-//        script->add_parameter(parameter_name, paramenter_type);
+//        script->addParameter(parameter_name, paramenter_type);
 //    }
 //
 //    tokens->next_line();
@@ -127,7 +127,7 @@ void parseCallbackFunParameters(Compiler* compiler, Script* script, Tokenizer* t
             parser::throwParserError("Parameter '" + parameter_name + "' is already defined", tokens);
         }
 
-        script->add_parameter(parameter_name, parameter_type);
+        script->addParameter(parameter_name, parameter_type);
     }
 }
 
@@ -173,7 +173,7 @@ std::unique_ptr<StatementNode> parseFunStatement(Compiler* compiler, Script* scr
     auto fun_script = compiler->getRuntime()->getScript(fun_id);
 
     if (fun_script == nullptr) {
-        parser::throwParserError("[parse_fun_statement()] Internal error: Failed to get script '" + fun_name + "'", tokens);
+        parser::throwParserError("Internal error: Failed to get script '" + fun_name + "'", tokens);
     }
 
     // Parse parameters
@@ -737,7 +737,7 @@ void preParseParamsStatement(Compiler* compiler, Script* script, Tokenizer* toke
             parser::throwParserError("Unknown type '" + parameter_type_name + "' for parameter", tokens);
         }
 
-        script->add_parameter(parameter_name, parameter_type);
+        script->addParameter(parameter_name, parameter_type);
     }
 }
 

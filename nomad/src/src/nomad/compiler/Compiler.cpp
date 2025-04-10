@@ -176,13 +176,13 @@ void Compiler::registerUnaryOperator(
 ) {
     // Sanity check
     if (m_runtime->getInstructionId(opCodeName) == NOMAD_INVALID_ID) {
-        reportInternalError("[Compiler::registerUnaryOperator]: Unknown op code '" + opCodeName + "'");
+        reportInternalError("Unknown op code '" + opCodeName + "'");
     }
 
     // Make sure the operator with the same and type doesn't already exist
     for (auto& definition: m_unaryOperators) {
         if (definition.op == op && definition.operand == operand) {
-            reportInternalError("[Compiler::registerUnaryOperator]: Unary operator '" + opCodeName + "' already registered for type '" + operand->getName() + "'");
+            reportInternalError("Unary operator '" + opCodeName + "' already registered for type '" + operand->getName() + "'");
         }
     }
 
@@ -190,7 +190,7 @@ void Compiler::registerUnaryOperator(
 
     // Sanity check
     if (opCodeId == NOMAD_INVALID_ID) {
-        reportInternalError("[Compiler::registerUnaryOperator]: Unknown op code '" + opCodeName + "'");
+        reportInternalError("Unknown op code '" + opCodeName + "'");
     }
 
     m_unaryOperators.emplace_back(UnaryOperatorRegistration{op, operand, result, opCodeId, fn});
@@ -206,13 +206,13 @@ void Compiler::registerBinaryOperator(
 ) {
     // Sanity check
     if (m_runtime->getInstructionId(opCodeName) == NOMAD_INVALID_ID) {
-        reportInternalError("[Compiler::registerBinaryOperator]: Unknown op code '" + opCodeName + "'");
+        reportInternalError("Unknown op code '" + opCodeName + "'");
     }
 
     // Make sure the operator with the same and type doesn't already exist
     for (auto& definition: m_binaryOperators) {
         if (definition.op == op && definition.lhs == lhs && definition.rhs == rhs) {
-            reportInternalError("[Compiler::registerBinaryOperator]: Binary operator '" + opCodeName + "' already registered for types '" + lhs->getName() + "' and '" + rhs->getName() + "'");
+            reportInternalError("Binary operator '" + opCodeName + "' already registered for types '" + lhs->getName() + "' and '" + rhs->getName() + "'");
         }
     }
 
@@ -220,7 +220,7 @@ void Compiler::registerBinaryOperator(
 
     // Sanity check
     if (opCodeId == NOMAD_INVALID_ID) {
-        reportInternalError("[Compiler::registerBinaryOperator]: Unknown op code '" + opCodeName + "'");
+        reportInternalError("Unknown op code '" + opCodeName + "'");
     }
 
     m_binaryOperators.emplace_back(BinaryOperatorRegistration{op, lhs, rhs, result, opCodeId, fn});
@@ -444,7 +444,7 @@ NomadIndex Compiler::addOpCode(NomadId opCode) {
     auto fn = m_runtime->getInstructionFn(opCode);
 
     if (fn == nullptr) {
-        reportInternalError("[Compiler::addOpCode] Unknown op code: " + toString(opCode));
+        reportInternalError("Unknown op code: " + toString(opCode));
     }
 
     m_instructions.emplace_back(fn);
@@ -456,7 +456,7 @@ NomadIndex Compiler::addOpCode(const NomadString& opCodeName) {
     auto opCodeId = m_runtime->getInstructionId(opCodeName);
 
     if (opCodeId == NOMAD_INVALID_ID) {
-        reportError("[Compiler::addOpCode] Unknown instruction: " + opCodeName);
+        reportError("Unknown instruction: " + opCodeName);
     }
 
     return addOpCode(opCodeId);
@@ -505,7 +505,7 @@ NomadIndex Compiler::addLoadValue(const Type* type, const ScriptValue& value) {
         return addLoadStringValue(value.getStringValue());
     }
 
-    reportInternalError("[Compiler::addLoadValue] Unknown type: " + type->getName());
+    reportInternalError("Unknown type: " + type->getName());
 
     return NOMAD_INVALID_INDEX;
 }
@@ -569,7 +569,7 @@ NomadIndex Compiler::addScriptCall(NomadId targetScriptId) {
     auto script = getRuntime()->getScript(targetScriptId);
 
     if (script == nullptr) {
-        reportInternalError("[Compiler::addScriptCall] Unknown script id: " + toString(targetScriptId));
+        reportInternalError("Unknown script id: " + toString(targetScriptId));
     }
     
     addOpCode(OpCodes::op_call_script);
@@ -607,7 +607,7 @@ NomadIndex Compiler::addCommandCall(NomadId commandId) {
     auto result = m_runtime->getCommandDefinition(commandId, command);
 
     if (result == false) {
-        reportInternalError("[Compiler::addCommandCall] Unknown command: " + toString(commandId));
+        reportInternalError("Unknown command: " + toString(commandId));
     }
 
     addOpCode(OpCodes::op_call_command);
@@ -634,7 +634,7 @@ void Compiler::setOpCode(NomadIndex index, const NomadString& opCodeName) {
     NomadId opCodeId = m_runtime->getInstructionId(opCodeName);
 
     if (opCodeId == NOMAD_INVALID_ID) {
-        reportInternalError("[Compiler::setOpCode] Unknown op code: " + opCodeName);
+        reportInternalError("Unknown op code: " + opCodeName);
     }
 
     setOpCode(index, opCodeId);
@@ -644,7 +644,7 @@ void Compiler::setOpCode(NomadIndex index, NomadId opCodeId) {
     auto fn = m_runtime->getInstructionFn(opCodeId);
 
     if (fn == nullptr) {
-        reportInternalError("[Compiler::setOpCode] Unknown op code: " + toString(opCodeId));
+        reportInternalError("Unknown op code: " + toString(opCodeId));
     }
 
     m_instructions[index].fn = fn;
@@ -793,7 +793,7 @@ void Compiler::setScriptNode(NomadId scriptId, std::unique_ptr<ScriptNode> ast) 
         }
     }
 
-    reportInternalError("[Compiler::setScriptNode] Unknown script id: " + toString(scriptId));
+    reportInternalError("Unknown script id: " + toString(scriptId));
 }
 
 void Compiler::loadScriptsFromPath(const NomadString& path) {
@@ -867,10 +867,10 @@ void Compiler::linkScripts() {
         auto script = m_runtime->getScript(link.scriptId);
 
         if (script == nullptr) {
-            reportError("[Compiler::linkScripts] Failed to link script '" + toString(link.scriptId) + "'");
+            reportError("Failed to link script '" + toString(link.scriptId) + "'");
         }
         if (script->getScriptStart() == NOMAD_INVALID_INDEX) {
-            reportError("[Compiler::linkScripts] Script '" + script->getName() + "' has not been compiled");
+            reportError("Script '" + script->getName() + "' has not been compiled");
         }
 
         setIndex(link.callIndex, script->getScriptStart());

@@ -326,6 +326,7 @@ private:
 
     void invalidateTextTexture();
     void generateTextTexture(Canvas* canvas);
+    void destroyBody();
 };
 
 using EntityList = std::vector<Entity*>;

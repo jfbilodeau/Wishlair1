@@ -149,7 +149,7 @@ void AssignmentStatementNode::onCompile(Compiler* compiler, Script* script) {
             auto variable_type = script->getVariableType(identifier.variableId);
 
             if (variable_type == nullptr) {
-                script->set_variable_type(identifier.variableId, expression_type);
+                script->setVariableType(identifier.variableId, expression_type);
             } else if (variable_type != expression_type) {
                 raiseException("Cannot assign value of type '" + expression_type->getName() + "' to variable '" + m_identifier + "' of type '" + variable_type->getName() + "'");
             }

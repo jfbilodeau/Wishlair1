@@ -727,17 +727,14 @@ void Scene::unregisterEntityEvent(const NomadString &name, NomadId entityId) {
     }
 }
 
-void Scene::unregisterEntityAllEvents(NomadId entityId) {
-    for (auto& events : m_entityEvents) {
-        auto& registrations = events.registrations;
-
-        auto it = std::remove_if(
-            registrations.begin(),
-            registrations.end(),
+void Scene::unregisterEntityFromAllEvents(NomadId entityId) {
+    for (auto&[name, registrations] : m_entityEvents) {
+        auto it = std::ranges::remove_if(
+            registrations,
             [entityId](const Event& registration) {
                 return registration.entityId == entityId;
             }
-        );
+        ).begin();
 
         registrations.erase(it, registrations.end());
     }
@@ -761,21 +758,20 @@ void Scene::triggerEvent(const NomadString &name) {
             }
         }
     } else {
-        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+        log::warning("Event '" + name + "' not found");
     }
 }
 
 void Scene::triggerEvent(const NomadString &name, Entity *entity) {
-    auto events_it = std::find_if(
-        m_entityEvents.begin(),
-        m_entityEvents.end(),
+    auto events_it = std::ranges::find_if(
+        m_entityEvents,
         [&name](const auto& event) {
             return event.name == name;
         }
     );
 
     if (events_it == m_entityEvents.end()) {
-        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+        log::warning("Event '" + name + "' not found");
         return;
     }
 
@@ -809,7 +805,7 @@ void Scene::triggerEventLayer(const NomadString &name, NomadIndex layerId) {
             }
         }
     } else {
-        log::warning("[Entity::trigger_event] Event '" + name + "' not found");
+        log::warning("Event '" + name + "' not found");
     }
 }
 

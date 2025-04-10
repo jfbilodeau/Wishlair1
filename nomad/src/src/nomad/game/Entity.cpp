@@ -456,7 +456,7 @@ RectangleF& Entity::getBoundingBox(RectangleF &bounding_box) const {
             });
             break;
         default:
-            log::error("[Entity::get_bounding_box] Invalid body shape: " + toString(static_cast<int>(m_bodyShape)));
+            log::error("Invalid body shape: " + toString(static_cast<int>(m_bodyShape)));
     }
 
     return bounding_box;
@@ -507,10 +507,18 @@ void Entity::invalidatePhysicsBody() {
 }
 
 void Entity::beforeSimulationUpdate(b2WorldId world) {
+    // if (m_paused) {
+    //     if (m_hasBody) {
+    //         // Entity is paused. Destroy the body so it does not participate in the simulation.
+    //         destroyBody();
+    //
+    //         return;
+    //     }
+    // }
+
     if (m_bodyInvalidated) {
         if (m_hasBody) {
-            b2DestroyBody(m_b2Body);
-            m_hasBody = false;
+            destroyBody();
         }
 
         m_bodyInvalidated = false;
@@ -603,7 +611,7 @@ void Entity::afterSimulationUpdate(b2WorldId world) {
         auto position = b2Body_GetPosition(m_b2Body);
         m_position.set(position.x, position.y);
     } else {
-        // Manually update velocity.
+        // When no physics body, manually update velocity.
         m_position.translate(m_velocity);
     }
 }
@@ -1149,6 +1157,11 @@ void Entity::generateTextTexture(Canvas* canvas) {
             static_cast<NomadInteger>(m_textLineSpacing)
         );
     }
+}
+
+void Entity::destroyBody() {
+    b2DestroyBody(m_b2Body);
+    m_hasBody = false;
 }
 
 } // namespace nomad

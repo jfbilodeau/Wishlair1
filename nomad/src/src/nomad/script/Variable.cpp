@@ -40,7 +40,7 @@ NomadId VariableMap::registerVariable(const NomadString& name, const Type* type)
             NomadString original_type = existing_type->getName();
             NomadString new_type = type->getName();
 
-            log::error("[VariableMap::register_variable] Redefining variable `" + name + "` from `" + original_type + "` to `" + new_type + "`. Ignoring");
+            log::error("Redefining variable `" + name + "` from `" + original_type + "` to `" + new_type + "`. Ignoring");
         }
     }
 
@@ -114,7 +114,7 @@ NomadIndex VariableList::getVariableCount() const {
 void VariableList::setVariableValue(NomadId variableId, const ScriptValue& value) {
 #ifdef NOMAD_DEBUG
     if (variableId >= m_variableValues.size()) {
-        log::error("[VariableList::set_variable_value] Variable ID out of range");
+        log::error("Variable ID out of range");
     }
 #endif
 
@@ -124,7 +124,7 @@ void VariableList::setVariableValue(NomadId variableId, const ScriptValue& value
 void VariableList::getVariableValue(NomadId variableId, ScriptValue& value) const {
 #ifdef NOMAD_DEBUG
     if (variableId >= m_variableValues.size()) {
-        log::error("[VariableList::get_script_variable_value] Variable ID out of range");
+        log::error("Variable ID out of range");
 
         return;
     }

@@ -53,6 +53,8 @@ public:
     void stop(const ScriptValue& result);
     void fault(const NomadString& faultMessage);
 
+    Script* getCurrentScript() const;
+
     void callScript(NomadIndex jumpIndex);
     void callCommand(NomadId commandId);
     void returnScript(NomadIndex variableCount);

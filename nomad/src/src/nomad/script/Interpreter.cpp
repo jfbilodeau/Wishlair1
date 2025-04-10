@@ -99,6 +99,20 @@ void Interpreter::fault(const NomadString& faultMessage) {
     throw InterpreterException(faultMessage);
 }
 
+Script * Interpreter::getCurrentScript() const {
+    auto tempScripts = createTempVector<Script*>();
+
+    m_runtime->getScripts(tempScripts);
+
+    for (auto script : tempScripts) {
+        if (m_instructionIndex >= script->getScriptStart() && m_instructionIndex <= script->getScriptEnd()) {
+            return script;
+        }
+    }
+
+    return nullptr;
+}
+
 void Interpreter::callScript(NomadIndex jumpIndex) {
     auto previous_parameter_index = m_parameterIndex;
     m_parameterIndex = m_stack_index;

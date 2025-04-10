@@ -35,28 +35,28 @@ LogLevel Logger::getLogLevel() const {
     return m_logLevel;
 }
 
-void Logger::debug(const NomadString& message) {
-    log(LogLevel::Debug, message);
+void Logger::debug(const NomadString& message, const Location& location) {
+    log(LogLevel::Debug, message, location);
 }
 
 
-void Logger::info(const NomadString& message) {
-    log(LogLevel::Info, message);
+void Logger::info(const NomadString& message, const Location& location) {
+    log(LogLevel::Info, message, location);
 }
 
-void Logger::warning(const NomadString& message) {
-    log(LogLevel::Warning, message);
+void Logger::warning(const NomadString& message, const Location& location) {
+    log(LogLevel::Warning, message, location);
 }
 
-void Logger::error(const NomadString& message) {
-    log(LogLevel::Error, message);
+void Logger::error(const NomadString& message, const Location& location) {
+    log(LogLevel::Error, message, location);
 
     // Make sure the error is logged immediately.
     flush();
 }
 
-void Logger::fatal(const NomadString& message) {
-    log(LogLevel::Fatal, message);
+void Logger::fatal(const NomadString& message, const Location& location) {
+    log(LogLevel::Fatal, message, location);
 
     // Make sure the error is logged immediately.
     flush();
@@ -87,7 +87,7 @@ void Logger::flush() {
 
 }
 
-void Logger::log(LogLevel level, const NomadString& message) {
+void Logger::log(LogLevel level, const NomadString& message, const Location& location) {
     if (level < m_logLevel) {
         // Skip!
         return;
@@ -118,7 +118,16 @@ void Logger::log(LogLevel level, const NomadString& message) {
 
     auto time = std::chrono::system_clock::now();
 
-    auto line = std::format("{0:%F}T{0:%T} [{1}] {2}", time, logLevelName, message);
+    auto line = std::format(
+        "{0:%F}T{0:%T} [{1}] [{2}] [{3}:{4}:{5}] {6}",
+        time,
+        logLevelName,
+        location.function,
+        location.file,
+        location.line,
+        location.column,
+        message
+    );
 
     m_entries.emplace_back(LogEntry{
         time,
@@ -132,24 +141,24 @@ namespace log {
 // Global logger:
 auto logger = new Logger(new ConsoleSink());
 
-void debug(const NomadString& message) {
-    logger->debug(message);
+void debug(const NomadString& message, const Location& location) {
+    logger->debug(message, location);
 }
 
-void info(const NomadString& message) {
-    logger->info(message);
+void info(const NomadString& message, const Location& location) {
+    logger->info(message, location);
 }
 
-void warning(const NomadString& message) {
-    logger->warning(message);
+void warning(const NomadString& message, const Location& location) {
+    logger->warning(message, location);
 }
 
-void error(const NomadString& message) {
-    logger->error(message);
+void error(const NomadString& message, const Location& location) {
+    logger->error(message, location);
 }
 
-void fatal(const NomadString& message) {
-    logger->fatal(message);
+void fatal(const NomadString& message, const Location& location) {
+    logger->fatal(message, location);
 }
 
 void flush() {

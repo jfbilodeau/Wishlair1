@@ -19,7 +19,24 @@ void registerBuildInCommands(Runtime *runtime) {
         [](Interpreter* interpreter) {
             auto message = interpreter->getStringParameter(0);
 
-           log::info(message);
+            TempString scriptName = "<unknown";
+            TempString fileName = "<unknown>";
+
+            auto script = interpreter->getCurrentScript();
+
+            if (script) {
+                scriptName = script->getName();
+                fileName = script->getPath();
+            }
+
+            Location location(
+                scriptName.c_str(),
+                fileName.c_str(),
+                0,
+                0
+            );
+
+           log::info(message, location);
         },  // Command function
         {
             defParameter("message", runtime->getStringType(), NomadParamDoc("The text to print"))

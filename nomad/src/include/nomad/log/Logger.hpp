@@ -5,6 +5,7 @@
 #pragma once
 
 #include <chrono>
+#include <source_location>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,27 @@ enum class LogLevel {
     Warning = 3,
     Error = 4,
     Fatal = 5,
+};
+
+struct Location {
+    explicit Location(const std::source_location& location = std::source_location::current()) {
+        function = location.function_name();
+        file = location.file_name();
+        line = location.line();
+        column = location.column();
+    }
+
+    Location(const NomadChar* function, const NomadChar* file, NomadInteger line, NomadInteger column):
+        function(function),
+        file(file),
+        line(line),
+        column(column)
+    {}
+
+    const NomadChar* function = "";
+    const NomadChar* file = "";
+    NomadInteger line = 0;
+    NomadInteger column = 0;
 };
 
 struct LogEntry {
@@ -52,11 +74,11 @@ public:
     void setLogLevel(LogLevel level);
     [[nodiscard]] LogLevel getLogLevel() const;
 
-    void debug(const NomadString& message);
-    void info(const NomadString& message);
-    void warning(const NomadString& message);
-    void error(const NomadString& message);
-    void fatal(const NomadString& message);
+    void debug(const NomadString& message, const Location& location = Location());
+    void info(const NomadString& message, const Location& location = Location());
+    void warning(const NomadString& message, const Location& location = Location());
+    void error(const NomadString& message, const Location& location = Location());
+    void fatal(const NomadString& message, const Location& location = Location());
 
     void addSink(LogSink* sink);
     void removeSink(LogSink* sink);
@@ -64,20 +86,20 @@ public:
     void flush();
 
 private:
-    void log(LogLevel level, const NomadString& message);
+    void log(LogLevel level, const NomadString& message, const Location& location);
 
-    LogLevel m_logLevel;
+    LogLevel m_logLevel = LogLevel::Info;
     std::vector<LogSink*> m_sinks;
     std::vector<LogEntry> m_entries;
 };
 
 namespace log {
 
-void debug(const NomadString& message);
-void info(const NomadString& message);
-void warning(const NomadString& message);
-void error(const NomadString& message);
-void fatal(const NomadString& message);
+void debug(const NomadString& message, const Location& location = Location());
+void info(const NomadString& message, const Location& location = Location());
+void warning(const NomadString& message, const Location& location = Location());
+void error(const NomadString& message, const Location& location = Location());
+void fatal(const NomadString& message, const Location& location = Location());
 
 void flush();
 

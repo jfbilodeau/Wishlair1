@@ -566,19 +566,21 @@ NomadIndex Runtime::getScriptCount() const {
     return m_scripts.size();
 }
 
-void Runtime::getScripts(std::vector<Script*>& scripts) {
-    scripts.reserve(m_scripts.size() + scripts.size());
+void Runtime::getScripts(std::vector<Script*>& scripts) const {
+    scripts = m_scripts;
+}
 
-    for (auto script: m_scripts) {
-        scripts.push_back(script);
-    }
+void Runtime::getScripts(TempVector<Script*>& scripts) {
+    scripts.clear();
+
+    scripts.insert(scripts.end(), m_scripts.begin(), m_scripts.end());
 }
 
 NomadIndex Runtime::getScriptSize() const {
     NomadIndex size = 0;
 
     for (const auto& script: m_scripts) {
-        size += script->get_script_length();
+        size += script->getScriptLength();
     }
 
     return size;
@@ -710,7 +712,7 @@ void Runtime::dumpInstructions(std::ostream& out) {
 
     for (auto i = 0; i < m_instructions.size(); ++i) {
         // Should we move to the next script?
-        if (i == script->get_script_end()) {
+        if (i == script->getScriptEnd()) {
             script_id++;
             script = getScript(script_id);
         }
@@ -767,7 +769,7 @@ void Runtime::dumpInstructions(std::ostream& out) {
                     break;
                 }
                 case Operand::ScriptVariable:
-                    text_value = script->get_variable_name(value.getIdValue());
+                    text_value = script->getVariableName(value.getIdValue());
                     break;
                 case Operand::DynamicVariable:
                     text_value = getDynamicVariableName(value.getIdValue());
@@ -780,14 +782,14 @@ void Runtime::dumpInstructions(std::ostream& out) {
                 }
                 case Operand::ContextVariableId:
                     continue; // Skip over context variable id
-                    log::debug("[Runtime::get_operand_text] ContextVariableId operand type should have already been handled");
+                    log::debug("ContextVariableId operand type should have already been handled");
                     break;
                 case Operand::FormatString:
                     text_value = "$\"" + getFormatString(value.getIdValue())->getFormatString() + "\"";
                     break;
                 default:
                     text_value = "unknown";
-                    log::debug("[Runtime::get_operand_text] Unknown operand type: " + std::to_string(static_cast<int>(operand)));
+                    log::debug("Unknown operand type: " + std::to_string(static_cast<int>(operand)));
             }
 
             out

@@ -138,7 +138,7 @@ public:
     // Events
     void registerEntityEvent(const NomadString& name, NomadId entityId, NomadId scriptId);
     void unregisterEntityEvent(const NomadString& name, NomadId entityId);
-    void unregisterEntityAllEvents(NomadId entityId);
+    void unregisterEntityFromAllEvents(NomadId entityId);
     void triggerEvent(const NomadString& name);
     void triggerEvent(const NomadString& name, Entity* entity);
     void triggerEventLayer(const NomadString& name, NomadIndex layerId);
@@ -244,14 +244,19 @@ private: // data
     EntityList m_removedEntities;
     EntityList m_entities;
 
-    // Tiles
+    // Physics
+    bool m_physicsEnabled = true;
+
+    // Layers
+    std::array<Layer, SCENE_LAYER_COUNT> m_layers;
+
+    // Tile map
     const Texture* m_tileTexture = nullptr;
     NomadInteger m_tileCount = 0;
     NomadInteger m_tileWidth = 0, m_tileHeight = 0;
     NomadInteger m_tileMapWidth = 0, m_tileMapHeight = 0;
     b2Filter m_wallFilter = b2DefaultFilter();
     std::vector<TileDefinition> m_tiles;
-    std::array<Layer, SCENE_LAYER_COUNT> m_layers;
 
     // Camera
     PointF m_cameraPosition;

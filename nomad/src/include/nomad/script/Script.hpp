@@ -34,29 +34,29 @@ public:
     [[nodiscard]] const NomadString& getPath() const { return m_path; }
     [[nodiscard]] const NomadString& getSource() const { return m_source; }
 
-    void add_parameter(const NomadString& parameter_name, const Type* type);
-    [[nodiscard]] NomadId getParameterId(const NomadString& parameter_name) const;
-    [[nodiscard]] const NomadString& getParameterName(NomadId parameter_id) const;
-    [[nodiscard]] const Type* getParameterType(NomadId parameter_id) const;
+    void addParameter(const NomadString& parameterName, const Type* type);
+    [[nodiscard]] NomadId getParameterId(const NomadString& parameterName) const;
+    [[nodiscard]] const NomadString& getParameterName(NomadId parameterId) const;
+    [[nodiscard]] const Type* getParameterType(NomadId parameterId) const;
     [[nodiscard]] NomadIndex getParameterCount() const;
 
-    NomadId registerVariable(const NomadString& variable_name, const Type* type);
-    [[nodiscard]] NomadId getVariableId(const NomadString& variable_name) const;
-    [[nodiscard]] const NomadString& get_variable_name(NomadId variable_id) const;
-    void set_variable_type(NomadId variable_id, const Type* type);
-    [[nodiscard]] const Type* getVariableType(NomadId variable_id) const;
+    NomadId registerVariable(const NomadString& variableName, const Type* type);
+    [[nodiscard]] NomadId getVariableId(const NomadString& variableName) const;
+    [[nodiscard]] const NomadString& getVariableName(NomadId variableId) const;
+    void setVariableType(NomadId variableId, const Type* type);
+    [[nodiscard]] const Type* getVariableType(NomadId variableId) const;
     [[nodiscard]] NomadIndex getVariableCount() const;
 
-    void setReturnType(const Type* return_type);
+    void setReturnType(const Type* returnType);
     [[nodiscard]] const Type* getReturnType() const;
 
-    void setScriptStart(NomadIndex script_start_index);
+    void setScriptStart(NomadIndex scriptStartIndex);
     [[nodiscard]] NomadIndex getScriptStart() const;
 
-    void setScriptEnd(NomadIndex script_end_index);
-    [[nodiscard]] NomadIndex get_script_end() const;
+    void setScriptEnd(NomadIndex scriptEndIndex);
+    [[nodiscard]] NomadIndex getScriptEnd() const;
 
-    [[nodiscard]] NomadIndex get_script_length() const;
+    [[nodiscard]] NomadIndex getScriptLength() const;
 
 //    void set_code(const std::vector<NomadId>& op_codes) { m_op_codes = op_codes; }
 //
@@ -77,11 +77,11 @@ private:
     NomadString m_name;
     NomadString m_path;
     NomadString m_source;
-    NomadIndex m_script_start_index = NOMAD_INVALID_INDEX;
-    NomadIndex m_script_end_index = NOMAD_INVALID_INDEX;
+    NomadIndex m_scriptStartIndex = NOMAD_INVALID_INDEX;
+    NomadIndex m_scriptEndIndex = NOMAD_INVALID_INDEX;
     VariableMap m_variables;
     VariableMap m_parameters;
-    const Type* m_return_type = nullptr;
+    const Type* m_returnType = nullptr;
 };
 
 } // nomad
